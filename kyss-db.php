@@ -7,7 +7,27 @@
  * @since  0.1.0
  */
 
-class KYSSDB {
+class kyssdb {
+
+	/**
+	 * Whether to show SQL/DB errors.
+	 *
+	 * @since  0.1.0
+	 * @access private
+	 * @var  bool
+	 */
+	private $show_errors = true;
+
+	/**
+	 * The number of times to retry reconnecting before dying.
+	 *
+	 * @since  0.1.0
+	 * @access protected
+	 * @see kyssdb::check_connection()
+	 * @var  int
+	 */
+	protected $reconnect_retries = 5;
+
 	/**
 	 * Database Username
 	 *
@@ -54,6 +74,15 @@ class KYSSDB {
 	protected $dbh;
 
 	/**
+	 * Whether we've managed to successfully connect at some point.
+	 *
+	 * @since  0.1.0
+	 * @access private
+	 * @var  bool
+	 */
+	private $has_connected = false;
+
+	/**
 	 * Connect to the database server and select a database.
 	 *
 	 * PHP5 style constructor for compatibility with PHP5.
@@ -68,12 +97,27 @@ class KYSSDB {
 	 * @param  string $dbhost MySQL database host.
 	 */
 	function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
+		register_shutdown_function( array( $this, '__destruct' ) );
+
 		$this->dbuser = $dbuser;
 		$this->dbpassword = $dbpassword;
 		$this->dbname = $dbname;
 		$this->dbhost = $dbhost;
 
 		$this->db_connect();
+	}
+
+	/**
+	 * PHP5 style destructor.
+	 *
+	 * Will run when database object is destroyed.
+	 *
+	 * @see  kyssdb::__construct()
+	 * @since  0.1.0
+	 * @return  bool true
+	 */
+	function __destruct() {
+		return true;
 	}
 
 	/**
@@ -88,9 +132,48 @@ class KYSSDB {
 		$this->dbh = mysql_connect( $this->dbhost, $this->dbuser, $this->dbpassword );
 
 		if ( $this->dbh ) {
+			$this->has_connected = true;
 			$this->select( $this->dbname, $this->dbh );
 
 			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check that the connection to the database is still up. If not, try to reconnect.
+	 *
+	 * If this function is unable to reconnect, it will forcibly die.
+	 *
+	 * @since  0.1.0
+	 *
+	 * @return bool True if the connection is up.
+	 */
+	function check_connection() {
+		if ( @mysql_ping( $this->dbh ) )
+			return true;
+
+		// Disable warning, as we don't want to see a multitude of "unable to connect" messages.
+		$error_reporting = error_reporting();
+		error_reporting( $error_reporting & ~E_WARNING );
+
+		for ( $tries = 1; $tries <= $this->reconnect_retries; $tries++ ) {
+			// On the last try, re-enable warnings. We want to see a single instance of the
+			// "unable to connect" message on the bail() screen, if it appears.
+			if ( $this->reconnect_retries === $tries ) {
+				error_reporting( $error_reporting );
+			}
+
+			if ( $this->db_connect( false ) ) {
+				if ( $error_reporting ) {
+					error_reporting( $error_reporting );
+				}
+
+				return true;
+			}
+
+			sleep(1);
 		}
 
 		return false;
@@ -106,11 +189,35 @@ class KYSSDB {
 	 * @todo  Handle errors.
 	 *
 	 * @param  string $db MySQL database name.
+	 * @param  resource $dbh Optional. Link identifier.
 	 * @return null Always null.
 	 */
-	function select( $db ) {
-		$success = @mysql_select_db( $db, $this->dbh );
+	function select( $db, $dbh = null ) {
+		if ( is_null($dbh) )
+			$dbh = $this->dbh;
 
-		return;
+		$success = @mysql_select_db( $db, $dbh );
+	}
+
+	/**
+	 * Wraps errors in a nice header and footer and dies.
+	 *
+	 * Will not die if kyssdb::$show_errors is false.
+	 *
+	 * @since  0.1.0
+	 *
+	 * @param  string $message The Error message.
+	 * @param  string $error_code Optional. A Computer readable string to identify the error.
+	 * @return false|void
+	 */
+	function bail( $message, $error_code = '500' ) {
+		if ( !$this->show_errors ) {
+			if ( class_exists( 'KYSS_Error' ) )
+				$this->error = new WP_Error( $error_code, $message );
+			else
+				$this->error = $message;
+			return false;
+		}
+		kyss_die($message);
 	}
 }
