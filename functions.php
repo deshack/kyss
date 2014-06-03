@@ -172,5 +172,8 @@ function kyss_parse_args( $args, $defaults = '' ) {
 
 	if ( is_array( $defaults ) )
 		return array_merge( $defaults, $r );
+
+	// If $defaults is not an array, it's either empty or not accepted,
+	// so simply return $r.
 	return $r;
 }
