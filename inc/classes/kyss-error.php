@@ -100,6 +100,7 @@ class KYSS_Error {
 	 * Retrieve all error messages or error messages matching code.
 	 *
 	 * @since  0.2.0
+	 * @access public
 	 *
 	 * @param  string|int $code Optional. Retrieve messages matching code, if exists.
 	 * @return  array Error strings on success, or empty array on failure (using code parameter).
@@ -127,6 +128,7 @@ class KYSS_Error {
 	 * If no code is given the first code available will be used.
 	 *
 	 * @since  0.2.0
+	 * @access public
 	 *
 	 * @param  string|int $code Optional. Error code to retrieve message.
 	 * @return  string
@@ -144,6 +146,7 @@ class KYSS_Error {
 	 * Retrieve error data for error code.
 	 *
 	 * @since  0.2.0
+	 * @access public
 	 *
 	 * @param  string|int $code Optional. Error code.
 	 * @return  mixed Null, if no errors.
@@ -158,7 +161,7 @@ class KYSS_Error {
 	}
 
 	/**
-	 * Append more error messages to the list of error messages.
+	 * Append more error messages to the list of errors.
 	 *
 	 * @since  0.2.0
 	 * @access public
@@ -179,6 +182,7 @@ class KYSS_Error {
 	 * The error code can only contain one error data.
 	 *
 	 * @since  0.2.0
+	 * @access public
 	 *
 	 * @param  mixed $data Error data.
 	 * @param  string|int $code Error code.

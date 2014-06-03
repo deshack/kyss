@@ -138,6 +138,19 @@ class kyssdb {
 			return true;
 		}
 
+		// If we are here, the connection failed, so we need to handle the exception.
+		$this->bail( sprintf( "
+<h1>Error establishing a database connection</h1>
+<p>This either means that the data provided in the configuration file is incorrect or we can't contact the database server at <code>%s</code>.
+This could mean your host's database server is down.</p>
+<ul>
+	<li>Are you sure you have the correct username and password?</li>
+	<li>Are you sure that you have typed the correct hostname?</li>
+	<li>Are you sure that the database server is running?</li>
+</ul>
+<p>If you are unsure what these terms mean, you should probably contact your host.</p>
+", htmlspecialchars( $this->dbhost, ENT_QUOTES ) ), 'db_connect_fail' );
+
 		return false;
 	}
 
@@ -176,7 +189,19 @@ class kyssdb {
 			sleep(1);
 		}
 
-		return false;
+		// We weren't able to reconnect, so we better bail.
+		$this->bail( sprintf( "
+<h1>Error reconnecting to the database</h1>
+<p>This means that we lost contact with the database server at <code>%s</code>. This could mean your host's database server is down.</p>
+<ul>
+	<li>Are you sure that the database server is running?</li>
+	<li>Are you sure that the database server is not under particulary heavy load?</li>
+</ul>
+<p>If you're unsure what these terms mean you should probably contact your host.</p>
+", htmlspecialchars( $this->dbhost, ENT_QUOTES) ), 'db_connect_fail' );
+
+		// Call dead_db() if bail didn't die, because the db is dead (at least temporarily).
+		dead_db();
 	}
 
 	/**
@@ -213,7 +238,7 @@ class kyssdb {
 	function bail( $message, $error_code = '500' ) {
 		if ( !$this->show_errors ) {
 			if ( class_exists( 'KYSS_Error' ) )
-				$this->error = new WP_Error( $error_code, $message );
+				$this->error = new KYSS_Error( $error_code, $message );
 			else
 				$this->error = $message;
 			return false;
