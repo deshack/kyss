@@ -37,7 +37,7 @@ if ( file_exists( ABSPATH . 'config.php' ) ) {
 	$die = '<h1>Missing config file</h1>';
 	$die .= "<p>There doesn't seem to be a <code>config.php</code> file. I need this before we can get started.</p>";
 	$die .= '<p>You can create a <code>config.php</code> file through a web interface or manually.</p>';
-	$die .= '<p><a href="' . $path . '" class="button">Create a configuration file</a>';
+	$die .= '<p><a href="' . $path . '" class="button">Create a configuration file</a></p>';
 
 	kyss_die( $die, 'KYSS Error' );
 }
