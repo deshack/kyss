@@ -1,0 +1,83 @@
+<?php
+/**
+ * Function that may be overridden.
+ *
+ * Wrap all functions in this file in an `if( !function_exists() )` conditional to be
+ * able to override them.
+ *
+ * @package  KYSS
+ */
+
+if ( !function_exists('generate_password') ) :
+/**
+ * Generate strong password.
+ *
+ * Generates a random password drawn from the defined set of characters.
+ *
+ * @since 0.3.0
+ *
+ * @param  int $length Length of the password to generate. Default <10>.
+ * @param  bool $special_chars Whether to include standard special characters. Default <true>.
+ * @param  bool $extra_chars Whether to include other special characters. Used when
+ *                           generating secret keys and salts. Default <false>.
+ * @return string The generated password.
+ */
+function generate_password( $length = 10, $special_chars = true, $extra_chars = false ) {
+	$chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+	if ( $special_chars )
+		$chars .= '!@#$%^&*()';
+	if ( $extra_chars )
+		$chars .= '-_ []{}<>~`+=,.;:/?|';
+
+	$password = '';
+	for ( $i = 0; $i < $length; $i++ ) {
+		$password .= substr($chars, randomize(0, strlen($chars) - 1), 1);
+	}
+
+	return $password;
+}
+endif; // generate_password()
+
+if ( !function_exists('randomize') ) :
+/**
+ * Generate random number.
+ *
+ * @since  0.3.0
+ * 
+ * @param  integer $min Lower limit for the generated number.
+ * @param  integer $max Upper limit for the generated number.
+ * @return integer A random number between min and max.
+ */
+function randomize( $min = 0, $max = 0 ) {
+	global $rnd;
+
+	// Reset $rnd after 14 uses.
+	// 32(md5) + 40(sha1) + 40(sha1) / 8 = 14 random numbers from $rnd.
+	if ( strlen($rnd) < 8 ) {
+		static $seed = '';
+		$rnd = md5( uniqid(microtime() . mt_rand(), true ) . $seed );
+		$rnd .= sha1($rnd);
+		$rnd .= sha1( $rnd . $seed );
+		$seed = md5($seed . $rnd);
+	}
+
+	// Take the first 8 digits of $rnd
+	$value = substr($rnd, 0, 8);
+
+	// Strip the first eight, leaving the remainder for the next call to randomize().
+	$rnd = substr($rnd, 8);
+
+	$value = abs(hexdec($value));
+
+	// Some misconfigured 32bit environments (Entropy PHP, for example) truncate integers larger
+	// than PHP_INT_MAX to PHP_INT_MAX rather than overflowing them to floats.
+	// Credit: WordPress.
+	$max_random_number = 3000000000 === 2147483647 ? (float) "4294967295" : 4294967295; // 4294967295 = 0xffffffff
+
+	// Reduce the value to be within the min-max range.
+	if ( $max != 0 )
+		$value = $min + ($max - $min + 1) * $value / ( $max_random_number + 1 );
+
+	return abs(intval($value));
+}
+endif; // randomize()

@@ -16,7 +16,7 @@ class kyssdb {
 	 * @access private
 	 * @var  bool
 	 */
-	private $show_errors = true;
+	private $show_errors = false;
 
 	/**
 	 * The number of times to retry reconnecting before dying.
@@ -91,18 +91,18 @@ class kyssdb {
 	 *
 	 * @since  0.1.0
 	 *
+	 * @param  string $dbhost MySQL database host.
+	 * @param  string $dbname MySQL database name.
 	 * @param  string $dbuser MySQL database user.
 	 * @param  string $dbpassword MySQL database password.
-	 * @param  string $dbname MySQL database name.
-	 * @param  string $dbhost MySQL database host.
 	 */
-	function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
+	function __construct( $dbhost, $dbname, $dbuser, $dbpassword ) {
 		register_shutdown_function( array( $this, '__destruct' ) );
 
+		$this->dbhost = $dbhost;
+		$this->dbname = $dbname;
 		$this->dbuser = $dbuser;
 		$this->dbpassword = $dbpassword;
-		$this->dbname = $dbname;
-		$this->dbhost = $dbhost;
 
 		$this->db_connect();
 	}
