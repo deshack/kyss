@@ -20,12 +20,15 @@ define('KYSS_INSTALLING', true);
 
 /**
  * Disable error reporting.
- *
- * Set this to error_reporting( E_ALL ) or error_reporting( E_ALL | E_STRICT ) for debugging.
  */
-//error_reporting(0);
-error_reporting( E_ALL );
-ini_set('display_errors', 'on');
+error_reporting(0);
+/**
+ * Enable error reporting.
+ *
+ * Uncomment the following lines to display errors.
+ */
+//error_reporting( E_ALL );
+//ini_set('display_errors', 'on');
 
 // These defines are required to allow us to build paths.
 define('ABSPATH', dirname(dirname(__FILE__)) . '/');
@@ -68,7 +71,7 @@ switch($step) {
  * @return  null
  */
 function setup_config_header() {
-	global $kyss_version;
+	global $kyss_version, $step;
 
 	header( 'Content-Type: text/html; charset=utf-8');
 ?>
@@ -96,8 +99,12 @@ function setup_config_header() {
 	?>
 	<link rel="stylesheet" href="../assets/css/install.css?ver=<?php echo preg_replace( '/[^0-9a-z\.-]/i', '', $kyss_version ); ?>" type="text/css" />
 	<link rel="stylesheet" href="../assets/css/buttons.css?ver=<?php echo preg_replace( '/[^0-9a-z\.-]/i', '', $kyss_version ); ?>" type="text/css" />
+<?php if ($step == 1) : ?>
+	<link rel="stylesheet" href="../assets/css/forms.css?ver=<?php echo preg_replace( '/[^0-9a-z\.-]/i', '', $kyss_version ); ?>" type="text/css" />
+<?php endif; ?>
 </head>
 <body>
+<div class="container">
 	<h1 id="logo">KYSS</h1>
 <?php
 } // End setup_config_header()
@@ -108,7 +115,26 @@ function setup_config_header() {
  * @since  0.3.0
  */
 function setup_config_footer() {
-?>
+	global $step;
+
+if ( $step == 1 ) : ?>
+<script type="text/javascript">
+var button = document.getElementById('show-button');
+
+button.onclick = function() {
+	var pass = document.getElementById('dbpass');
+
+	if(pass.type=='password') {
+		pass.type = 'text';
+		button.innerHTML = "Hide";
+	} else {
+		pass.type = 'password';
+		button.innerHTML = "Show";
+	}
+};
+</script>
+<?php endif; ?>
+</div>
 </body>
 </html>
 <?php
@@ -123,7 +149,7 @@ function setup_config_first() {
 		<li>Database username</li>
 		<li>Database password</li>
 	</ol>
-	<p><a href="setup-config.php?step=1" class="button">Start</a></p>
+	<p><a href="setup-config.php?step=1" class="button primary">Start</a></p>
 <?php
 } // End setup_config_first()
 
@@ -150,10 +176,14 @@ function setup_config_second() {
 	<input name="dbuser" id="dbuser" type="text" size="25" placeholder="username" />
 
 	<label for="dbpass">Database Password</label>
-	<input name="dbpass" id="dbpass" type="password" size="25" autocomplete="off" />
-	<button type="button" onclick="showPassword();">Show</button>
+	<div class="input-group">
+		<input name="dbpass" id="dbpass" type="password" size="25" autocomplete="off" />
+		<span class="addon">
+			<button type="button" id="show-button" onclick="showPassword();">Show</button>
+		</span>
+	</div>
 
-	<p><input name="submit" type="submit" value="Submit" class="button" /></p>
+	<p><input name="submit" type="submit" value="Submit" class="button primary" /></p>
 </form>
 <?php
 } // End setup_config_second()
@@ -176,7 +206,7 @@ function setup_config_third() {
 	foreach ( array( 'dbhost', 'dbname', 'dbuser', 'dbpass' ) as $key )
 		$$key = trim( stripslashes_deep( $_POST[$key] ) );
 
-	$tryagain = '</p><p><a href="setup-config.php?step=1" onclick="javascript:history.go(-1);return false;" class="button">Try again</a>';
+	$tryagain = '</p><p><a href="setup-config.php?step=1" onclick="javascript:history.go(-1);return false;" class="button primary">Try again</a>';
 
 	// Test db connection.
 	define('DB_HOST', $dbhost);
@@ -232,7 +262,7 @@ require_once(ABSPATH . 'settings.php');\r\n";
 		echo htmlentities($content, ENT_COMPAT, 'UTF-8');
 	?></textarea>
 	<p>After you&#8217;ve done that, click &#8221;Run the install&#8221;.</p>
-	<p><a href="install.php" class="button">Run the install</a></p>
+	<p><a href="install.php" class="button primary">Run the install</a></p>
 	<script>
 (function(){
 	var el=document.getElementById('config');
@@ -253,7 +283,7 @@ require_once(ABSPATH . 'settings.php');\r\n";
 ?>
 	<p>All right, you&#8217;ve made it through the hardest part of the installation. KYSS can now communicate with your database.
 		If you are ready, it&#8217;s time to&hellip;</p>
-	<p><a href="install.php" class="button">Run the install</a></p>
+	<p><a href="install.php" class="button primary">Run the install</a></p>
 <?php
 		setup_config_footer();
 	endif; // !is_writable(ABSPATH)

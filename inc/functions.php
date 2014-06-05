@@ -66,87 +66,13 @@ function kyss_die( $message = '', $title = '', $args = array() ) {
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?php echo $title; ?></title>
-	<style type="text/css">
-		html {
-			background: #f7f7f7;
-		}
-		body {
-			background: #fff;
-			color: #444;
-			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-			margin: 2em auto;
-			padding: 1em 2em;
-			max-width: 700px;
-		}
-		h1 {
-			border-bottom: 1px solid #dadada;
-			clear: both;
-			color: #666;
-			font-size: 24px;
-			margin: 30px 0 0 0;
-			padding: 0;
-			padding-bottom: 7px;
-		}
-		#error-page {
-			margin-top: 50px;
-		}
-		#error-page p {
-			font-size: 16px;
-			line-height: 1.5;
-			margin: 25px 0 20px;
-		}
-		#error-page code {
-			font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-		}
-		ul li {
-			margin-bottom: 10px;
-			font-size: 16px;
-		}
-		a {
-			color: #dd4814;
-			text-decoration: none;
-		}
-		a:hover,
-		a:focus {
-			color: #bc3d11;
-		}
-		.button {
-			background: #f7f7f7;
-			border: 1px solid #ccc;
-			color: #555;
-			display: inline-block;
-			text-decoration: none;
-			font-size: 14px;
-			line-height: 28px;
-			height: 32px;
-			margin: 0;
-			padding: 0 10px 1px;
-			cursor: pointer;
-			-webkit-border-radius: 4px;
-			-moz-border-radius: 4px;
-			border-radius: 4px;
-			-webkit-appearance: none;
-			white-space: nowrap;
-			-webkit-box-sizing: border-box;
-			-moz-box-sizing: border-box;
-			box-sizing: border-box;
-			vertical-align: top;
-		}
-		.button:hover,
-		.button:focus {
-			background: #fafafa;
-			border-color: #999;
-			color: #333;
-		}
-		.button:active {
-			background: #eee;
-			border-color: #999;
-			color: #333;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="/assets/css/install.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/buttons.css" />
 </head>
 <body id="error-page">
+<div class="container">
 	<?php echo $message; ?>
+</div>
 </body>
 </html>
 <?php

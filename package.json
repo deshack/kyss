@@ -1,0 +1,29 @@
+{
+  "name": "kyss",
+  "version": "0.3.0",
+  "description": "Simple management system for Linux User Groups to handle members, meetings, documents, and other useful stuffs.",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/deshack/kyss.git"
+  },
+  "bugs": {
+    "url": "https://bitbucket.org/deshack/kyss/issues"
+  },
+  "author": "Mattia 'deshack' Migliorini <deshack@ubuntu.com> (http://www.deshack.net/)",
+  "contributors": [
+    "Nicola 'nikname' Dalla Costa"
+  ],
+  "license": "GPLv2+",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-sass": "^0.7.3",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-jshint": "^0.10.0"
+  }
+}

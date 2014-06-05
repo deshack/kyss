@@ -1,0 +1,59 @@
+/**
+ * KYSS Install Styles
+ *
+ * @project		KYSS
+ * @section 	Install
+ */
+
+@import "partials/variables"
+@import "partials/mixins"
+@import "../../lib/destrap/sass/partials/normalize"
+
+// Reset the box-sizing
+*,
+*:before,
+*:after
+	+box-sizing
+
+html
+	font-size: 62.5%
+	-webkit-tap-highlight-color: rgba(0,0,0,0)
+
+body
+	background-color: $body-bg
+	font-family: $font-family-base
+	font-size: $font-size-base
+	line-height: $line-height-base
+	color: $text-color
+
+a
+	color: $link-color
+	text-decoration: none
+
+	&:hover,
+	&:focus
+		color: $link-hover-color
+		text-decoration: underline
+
+	&:focus
+		+tab-focus
+
+h1
+	border-bottom: 1px solid #dadada
+	clear: both
+	color: $gray
+	font-size: 28px
+	margin: 30px 0
+	padding: 0
+	padding-bottom: 7px
+
+ul
+	li
+		margin-bottom: 10px
+
+.container
+	margin: 2em auto
+	padding: 1em 2em
+	max-width: 700px
+	background-color: #fff
+	+border-radius
