@@ -27,7 +27,7 @@ legend {
   width: 100%;
   padding: 0;
   margin-bottom: 24px;
-  font-size: 24px;
+  font-size: 20px;
   line-height: inherit;
   color: #333333;
   border: 0;
@@ -186,55 +186,74 @@ input[type="color"] {
   input[type="tel"]::-webkit-input-placeholder,
   input[type="color"]::-webkit-input-placeholder {
     color: #999999; }
-  select[disabled],
+  select[disabled], select[readonly], fieldset[disabled] select,
   textarea[disabled],
-  input[disabled][type="text"],
-  input[disabled][type="password"],
-  input[disabled][type="datetime"],
-  input[disabled][type="datetime-local"],
-  input[disabled][type="date"],
-  input[disabled][type="month"],
-  input[disabled][type="time"],
-  input[disabled][type="week"],
-  input[disabled][type="number"],
-  input[disabled][type="email"],
-  input[disabled][type="url"],
-  input[disabled][type="search"],
-  input[disabled][type="tel"],
-  input[disabled][type="color"], select[readonly],
-  textarea[readonly],
-  input[readonly][type="text"],
-  input[readonly][type="password"],
-  input[readonly][type="datetime"],
-  input[readonly][type="datetime-local"],
-  input[readonly][type="date"],
-  input[readonly][type="month"],
-  input[readonly][type="time"],
-  input[readonly][type="week"],
-  input[readonly][type="number"],
-  input[readonly][type="email"],
-  input[readonly][type="url"],
-  input[readonly][type="search"],
-  input[readonly][type="tel"],
-  input[readonly][type="color"], fieldset[disabled] select,
-  fieldset[disabled] textarea,
-  fieldset[disabled] input[type="text"],
-  fieldset[disabled] input[type="password"],
-  fieldset[disabled] input[type="datetime"],
-  fieldset[disabled] input[type="datetime-local"],
-  fieldset[disabled] input[type="date"],
-  fieldset[disabled] input[type="month"],
-  fieldset[disabled] input[type="time"],
-  fieldset[disabled] input[type="week"],
-  fieldset[disabled] input[type="number"],
-  fieldset[disabled] input[type="email"],
-  fieldset[disabled] input[type="url"],
-  fieldset[disabled] input[type="search"],
-  fieldset[disabled] input[type="tel"],
-  fieldset[disabled] input[type="color"] {
+  textarea[readonly], fieldset[disabled]
+  textarea,
+  input[type="text"][disabled],
+  input[type="text"][readonly], fieldset[disabled]
+  input[type="text"],
+  input[type="password"][disabled],
+  input[type="password"][readonly], fieldset[disabled]
+  input[type="password"],
+  input[type="datetime"][disabled],
+  input[type="datetime"][readonly], fieldset[disabled]
+  input[type="datetime"],
+  input[type="datetime-local"][disabled],
+  input[type="datetime-local"][readonly], fieldset[disabled]
+  input[type="datetime-local"],
+  input[type="date"][disabled],
+  input[type="date"][readonly], fieldset[disabled]
+  input[type="date"],
+  input[type="month"][disabled],
+  input[type="month"][readonly], fieldset[disabled]
+  input[type="month"],
+  input[type="time"][disabled],
+  input[type="time"][readonly], fieldset[disabled]
+  input[type="time"],
+  input[type="week"][disabled],
+  input[type="week"][readonly], fieldset[disabled]
+  input[type="week"],
+  input[type="number"][disabled],
+  input[type="number"][readonly], fieldset[disabled]
+  input[type="number"],
+  input[type="email"][disabled],
+  input[type="email"][readonly], fieldset[disabled]
+  input[type="email"],
+  input[type="url"][disabled],
+  input[type="url"][readonly], fieldset[disabled]
+  input[type="url"],
+  input[type="search"][disabled],
+  input[type="search"][readonly], fieldset[disabled]
+  input[type="search"],
+  input[type="tel"][disabled],
+  input[type="tel"][readonly], fieldset[disabled]
+  input[type="tel"],
+  input[type="color"][disabled],
+  input[type="color"][readonly], fieldset[disabled]
+  input[type="color"] {
     cursor: not-allowed;
     background-color: #eeeeee;
     opacity: 1; }
+  select + .help,
+  textarea + .help,
+  input[type="text"] + .help,
+  input[type="password"] + .help,
+  input[type="datetime"] + .help,
+  input[type="datetime-local"] + .help,
+  input[type="date"] + .help,
+  input[type="month"] + .help,
+  input[type="time"] + .help,
+  input[type="week"] + .help,
+  input[type="number"] + .help,
+  input[type="email"] + .help,
+  input[type="url"] + .help,
+  input[type="search"] + .help,
+  input[type="tel"] + .help,
+  input[type="color"] + .help {
+    margin-top: -0.75em;
+    color: #978e83;
+    font-size: 85%; }
 
 textarea {
   height: auto; }
@@ -252,7 +271,8 @@ input[type="month"] {
 .input-group {
   position: relative;
   display: table;
-  border-collapse: separate; }
+  border-collapse: separate;
+  margin-bottom: 1em; }
   .input-group[class*="col-"] {
     float: none;
     padding-left: 0;

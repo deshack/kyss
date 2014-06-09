@@ -25,7 +25,7 @@ legend
 	width: 100%
 	padding: 0
 	margin-bottom: $line-height-computed
-	font-size: ($font-size-base * 1.5)
+	font-size: ($font-size-base * 1.25)
 	line-height: inherit
 	color: $gray-dark
 	border: 0
@@ -87,25 +87,23 @@ output
 
 // Shared size and type resets for form controls.
 // Available for any of thee following form controls:
-//
-// select
-// textarea
-// input[type="text"]
-// input[type="password"]
-// input[type="datetime"]
-// input[type="datetime-local"]
-// input[type="date"]
-// input[type="month"]
-// input[type="time"]
-// input[type="week"]
-// input[type="number"]
-// input[type="email"]
-// input[type="url"]
-// input[type="search"]
-// input[type="tel"]
-// input[type="color"]
 
-%form-control
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"]
 	display: block
 	width: 100%
 	height: $input-height-base
@@ -138,23 +136,10 @@ output
 		// iOS fix for unreadable disabled content
 		opacity: 1
 
-select,
-textarea,
-input[type="text"],
-input[type="password"],
-input[type="datetime"],
-input[type="datetime-local"],
-input[type="date"],
-input[type="month"],
-input[type="time"],
-input[type="week"],
-input[type="number"],
-input[type="email"],
-input[type="url"],
-input[type="search"],
-input[type="tel"],
-input[type="color"]
-	@extend %form-control
+	+ .help
+		margin-top: -0.75em
+		color: darken($disabled, 10%)
+		font-size: 85%
 
 // Reset height for textareas
 textarea
@@ -188,6 +173,8 @@ input[type="month"]
 	display: table
 	// Prevent input groups from inheriting border styles from table cells when placed within a table.
 	border-collapse: separate
+
+	margin-bottom: 1em
 
 	// Undo padding and float of grid classes
 	&[class*="col-"]

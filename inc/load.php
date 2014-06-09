@@ -15,8 +15,10 @@
  *
  * @since  0.3.0
  * @global  $kyssdb KYSS Database Object.
+ *
+ * @param  bool $create Whether to create a new database. It will be passed to the kyssdb constructor. Default <false>.
  */
-function load_kyssdb() {
+function load_kyssdb( $create = false ) {
 	global $kyssdb;
 
 	require_once( ABSPATH . KYSSINC . '/kyss-db.php' );
@@ -24,5 +26,5 @@ function load_kyssdb() {
 	if ( isset( $kyssdb ) )
 		return;
 
-	$kyssdb = new kyssdb( DB_HOST, DB_NAME, DB_USER, DB_PASS );
+	$kyssdb = new kyssdb( DB_HOST, DB_NAME, DB_USER, DB_PASS, $create );
 }

@@ -164,26 +164,32 @@ function setup_config_second() {
 ?>
 
 <form method="post" action="setup-config.php?step=2">
-	<p>Enter your database connection details below.</p>
+	<fieldset>
+		<legend>Enter your database connection details below.</legend>
 
-	<label for="dbhost">Database Host</label>
-	<input name="dbhost" id="dbhost" type="text" size="25" value="localhost" />
+		<label for="dbhost">Database Host</label>
+		<input name="dbhost" id="dbhost" type="text" size="25" value="localhost" />
+		<p class="help"><em>localhost</em> might probably be your Database Host.</p>
 
-	<label for="dbname">Database Name</label>
-	<input name="dbname" id="dbname" type="text" size="25" placeholder="kyss" />
+		<label for="dbname">Database Name</label>
+		<input name="dbname" id="dbname" type="text" size="25" placeholder="kyss" />
 
-	<label for="dbuser">Database Username</label>
-	<input name="dbuser" id="dbuser" type="text" size="25" placeholder="username" />
+		<label for="dbuser">Database Username</label>
+		<input name="dbuser" id="dbuser" type="text" size="25" placeholder="username" />
 
-	<label for="dbpass">Database Password</label>
-	<div class="input-group">
-		<input name="dbpass" id="dbpass" type="password" size="25" autocomplete="off" />
-		<span class="addon">
-			<button type="button" id="show-button" onclick="showPassword();">Show</button>
-		</span>
-	</div>
+		<label for="dbpass">Database Password</label>
+		<div class="input-group">
+			<input name="dbpass" id="dbpass" type="password" size="25" autocomplete="off" />
+			<span class="addon">
+				<button type="button" id="show-button" onclick="showPassword();">Show</button>
+			</span>
+		</div>
 
-	<p><input name="submit" type="submit" value="Submit" class="button primary" /></p>
+		<input name="dbcreate" id="dbcreate" type="checkbox" />
+		<label for="dbcreate">Create new database?</label>
+
+		<p><input name="submit" type="submit" value="Submit" class="button primary" /></p>
+	</fieldset>
 </form>
 <?php
 } // End setup_config_second()
@@ -205,6 +211,7 @@ function setup_config_third() {
 
 	foreach ( array( 'dbhost', 'dbname', 'dbuser', 'dbpass' ) as $key )
 		$$key = trim( stripslashes_deep( $_POST[$key] ) );
+	$dbcreate = $_POST['dbcreate'];
 
 	$tryagain = '</p><p><a href="setup-config.php?step=1" onclick="javascript:history.go(-1);return false;" class="button primary">Try again</a>';
 
@@ -215,7 +222,7 @@ function setup_config_third() {
 	define('DB_PASS', $dbpass);
 
 	// That's the actual test.
-	load_kyssdb();
+	load_kyssdb( $dbcreate );
 
 	// Check for errors in the $kyssdb object.
 	if ( !empty( $kyssdb->error ) )

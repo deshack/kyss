@@ -95,8 +95,9 @@ class kyssdb {
 	 * @param  string $dbname MySQL database name.
 	 * @param  string $dbuser MySQL database user.
 	 * @param  string $dbpassword MySQL database password.
+	 * @param  bool   $create Whether to create a new database or not. Default <false>
 	 */
-	function __construct( $dbhost, $dbname, $dbuser, $dbpassword ) {
+	function __construct( $dbhost, $dbname, $dbuser, $dbpassword, $create = false ) {
 		register_shutdown_function( array( $this, '__destruct' ) );
 
 		$this->dbhost = $dbhost;
@@ -104,7 +105,7 @@ class kyssdb {
 		$this->dbuser = $dbuser;
 		$this->dbpassword = $dbpassword;
 
-		$this->db_connect();
+		$this->db_connect( $create );
 	}
 
 	/**
@@ -126,13 +127,18 @@ class kyssdb {
 	 * @since  0.1.0
 	 * @todo  Handle errors.
 	 *
+	 * @param  bool $create Whether to create a new db or not. Default <false>.
 	 * @return bool True with a successful connection, false on failure.
 	 */
-	function db_connect() {
+	function db_connect( $create = false ) {
 		$this->dbh = mysql_connect( $this->dbhost, $this->dbuser, $this->dbpassword );
 
 		if ( $this->dbh ) {
 			$this->has_connected = true;
+			if ( $create )
+				if ( ! $this->create( $this->dbname, $this->dbh ) )
+					return true;
+
 			$this->select( $this->dbname, $this->dbh );
 
 			return true;
@@ -211,7 +217,6 @@ This could mean your host's database server is down.</p>
 	 * On failure, the execution will bail and display a DB error.
 	 *
 	 * @since 0.1.0
-	 * @todo  Handle errors.
 	 *
 	 * @param  string $db MySQL database name.
 	 * @param  resource $dbh Optional. Link identifier.
@@ -222,6 +227,52 @@ This could mean your host's database server is down.</p>
 			$dbh = $this->dbh;
 
 		$success = @mysql_select_db( $db, $dbh );
+
+		if ( ! $success ) {
+			$this->bail( sprintf( '<h1>Can&#8217;t select database</h1>
+<p>We were able to connect to the database server (which means your username and password are okay) but not able to select the <code>%1$s</code> database.</p>
+<ul>
+	<li>Are you sure it exists?</li>
+	<li>Does the user <code>%2$s</code> have permission to use the <code>%1$s</code> database?</li>
+	<li>On some systems the name of your database is prefixed with your username, so it would be like <code>username_%1$s</code>. Could that be the problem?</li>
+</ul>
+<p>If you don&#8217;t know how to set up a database you should <strong>contact your host</strong>.</p>', htmlspecialchars( $db, ENT_QUOTES ), htmlspecialchars( $this->dbuser, ENT_QUOTES ) ), 'db_select_fail' );
+
+			return;
+		}
+	}
+
+	/**
+	 * Create database using the current database connection.
+	 *
+	 * The database name will be changed based on the current database connection.
+	 * On failure, the execution will bail and display a DB error.
+	 *
+	 * @since  0.4.0
+	 *
+	 * @param  string $db MySQL database name.
+	 * @param  resource $dbh Optional. Link identifier.
+	 * @return bool True on success, false on failure.
+	 */
+	function create( $db, $dbh = null ) {
+		if ( is_null( $dbh ) )
+			$dbh = $this->dbh;
+
+		$query = 'CREATE DATABASE ' . $db;
+		$success = mysql_query( $query, $dbh );
+
+		if ( ! $success ) {
+			$this->bail( sprintf( '<h1>Can&#8217;t create database</h1>
+<p>We were able to connect to the database server (which means your username and password are okay) but not able to create the <code>%1$s</code> database.</p>
+<ul>
+	<li>Does the user <code>%2$s</code> have permission to create a new database?</li>
+</ul>
+<p>If the user <code>%2$s</code> doesn&#8217;t have permission to create a new database, maybe it already has permission to use one. Your host should have given its name.</p>', htmlspecialchars($db, ENT_QUOTES), htmlspecialchars($this->dbuser, ENT_QUOTES) ), 'db_create_fail' );
+
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
