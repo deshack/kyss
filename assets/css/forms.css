@@ -256,7 +256,10 @@ input[type="color"] {
     font-size: 85%; }
 
 textarea {
-  height: auto; }
+  height: auto;
+  padding: 0.5em;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 85%; }
 
 input[type="search"] {
   -webkit-appearance: none; }

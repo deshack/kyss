@@ -99,7 +99,7 @@ function setup_config_header() {
 	?>
 	<link rel="stylesheet" href="../assets/css/install.css?ver=<?php echo preg_replace( '/[^0-9a-z\.-]/i', '', $kyss_version ); ?>" type="text/css" />
 	<link rel="stylesheet" href="../assets/css/buttons.css?ver=<?php echo preg_replace( '/[^0-9a-z\.-]/i', '', $kyss_version ); ?>" type="text/css" />
-<?php if ($step == 1) : ?>
+<?php if ($step == 1 || $step == 2) : ?>
 	<link rel="stylesheet" href="../assets/css/forms.css?ver=<?php echo preg_replace( '/[^0-9a-z\.-]/i', '', $kyss_version ); ?>" type="text/css" />
 <?php endif; ?>
 </head>
@@ -258,7 +258,7 @@ if ( !defined('ABSPATH') )
 /**
  * Sets up KYSS variables and includes needed files.
  */
-require_once(ABSPATH . 'settings.php');\r\n";
+require_once(ABSPATH . 'settings.php');";
 
 	if ( ! is_writable(ABSPATH) ) :
 		setup_config_header();

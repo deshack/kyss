@@ -258,8 +258,7 @@ This could mean your host's database server is down.</p>
 		if ( is_null( $dbh ) )
 			$dbh = $this->dbh;
 
-		$query = 'CREATE DATABASE ' . $db;
-		$success = mysql_query( $query, $dbh );
+		$success = mysql_create_db( $db, $dbh );
 
 		if ( ! $success ) {
 			$this->bail( sprintf( '<h1>Can&#8217;t create database</h1>
