@@ -144,6 +144,7 @@ function kyss_guess_url() {
 	} else {
 		$schema = is_ssl() ? 'https://' : 'http://';
 		$url = $schema . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		$url = preg_replace( '/\/[a-zA-Z0-9-_]+.php(.*)$/', '', $url );
 	}
 
 	return rtrim($url, '/');
