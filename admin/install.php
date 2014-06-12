@@ -38,6 +38,11 @@ define( 'KYSS_INSTALLING', true );
 require_once( dirname(dirname(__FILE__)) . '/load.php' );
 
 /**
+ * Load KYSS Administration Upgrade API.
+ */
+require_once( ABSPATH . 'admin/inc/upgrade.php');
+
+/**
  * Load kyssdb.
  */
 require_once( ABSPATH . 'inc/kyss-db.php' );

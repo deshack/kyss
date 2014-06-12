@@ -53,7 +53,7 @@ function kyss_not_installed() {
  */
 function set_internal_encoding() {
 	if ( function_exists('mb_internal_encoding') ) {
-		if ( ! @mb_internal_encoding( 'UTF-8' )
+		if ( ! @mb_internal_encoding( 'UTF-8' ) )
 			mb_internal_encoding( 'UTF-8' );
 	}
 }

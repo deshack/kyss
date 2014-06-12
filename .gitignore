@@ -1,5 +1,4 @@
 *.sublime*
-docs/
 config.php
 node_modules
 .sass-cache
