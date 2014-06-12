@@ -246,6 +246,7 @@ function setup_config_third() {
  * Last calls the settings.php file, which is responsible for loading the application.
  *
  * @package KYSS
+ * @subpackage Loader
  */\r\n\r\n";
 
 	foreach ( $constants as $const )

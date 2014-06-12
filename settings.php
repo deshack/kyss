@@ -1,0 +1,75 @@
+<?php
+/**
+ * Used to set up common variables and include all
+ * necessary files and libraries needed by KYSS.
+ *
+ * Allows for some configurations in config.php.
+ *
+ * @package  KYSS
+ * @subpackage  Loader
+ */
+
+/**
+ * Stores the location of the KYSS directory of functions, classes, and core content.
+ *
+ * @since  0.6.0
+ */
+define( 'INC', 'inc' );
+
+/**
+ * Stores the location of the KYSS directory of classes.
+ *
+ * @since  0.6.0
+ */
+define( 'CLASSES', 'inc/classes' );
+
+// Include files required for initialization.
+require( ABSPATH . INC . '/load.php' );
+
+/**
+ * This can't be directly globalized in version.php. When updating,
+ * we're including version.php from another install and don't want
+ * this value to be overridden if already set.
+ */
+global $wp_version;
+require( ABSPATH . INC . '/version.php' );
+
+// Disable magic quotes at runtime. Magic quotes are added using kyssdb later.
+@ini_set( 'magic_quotes_runtime', 0 );
+@ini_set( 'magic_quotes_sybase', 0 );
+
+// Calculate offsets from UTC.
+date_default_timezone_set( 'UTC' );
+
+// Load early KYSS files.
+require( ABSPATH . INC . '/functions.php' );
+require( ABSPATH . CLASSES . '/kyss-error.php' );
+
+// Include the kyssdb class.
+load_kyssdb();
+
+// Run the installer if KYSS is not installed.
+kyss_not_installed();
+
+// Load most of KYSS.
+// ToDo: Require all needed files.
+require(ABSPATH . INC . '/formatting.php');
+
+// Load pluggable functions.
+require(ABSPATH . INC . '/pluggable.php');
+
+// Set internal encoding.
+set_internal_encoding();
+
+// Add magic quotes and set up $_REQUEST ( $_GET + $_POST ).
+kyss_magic_quotes();
+
+/**
+ * KYSS Object
+ *
+ * @since  x.x.x
+ */
+//$GLOBALS['kyss'] = new KYSS();
+
+// Set up current user.
+//$GLOBALS['kyss']->init();

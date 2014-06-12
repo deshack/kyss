@@ -144,6 +144,9 @@ function kyss_guess_url() {
 	} else {
 		$schema = is_ssl() ? 'https://' : 'http://';
 		$url = $schema . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		// Strip filenames and options from the url.
+		// NOTE: this regex targets only filenames with alphanumerical characters
+		// and '-', '_'.
 		$url = preg_replace( '/\/[a-zA-Z0-9-_]+.php(.*)$/', '', $url );
 	}
 
@@ -324,4 +327,71 @@ function get_nocache_headers() {
 
 	$headers['Last-Modified'] = false;
 	return $headers;
+}
+
+/**
+ * Walks the array while sanitizing the contents.
+ *
+ * @since  0.6.0
+ *
+ * @param  array $array Array to walk while sanitizing contents.
+ * @return  array Sanitized $array.
+ */
+function add_magic_quotes( $array ) {
+	foreach ( (array) $array as $k => $v ) {
+		if ( is_array( $v ) )
+			$array[$k] = add_magic_quotes( $v );
+		else
+			$array[$k] = addcslashes( $v );
+	}
+	return $array;
+}
+
+/**
+ * Get functions that have been called until now.
+ *
+ * Returns a comma separated string of functions that have been called to get
+ * to the current point in the code.
+ *
+ * @since  0.6.0
+ *
+ * @param  string $ignore_class A class to ignore all function calls within - 
+ *                              useful when you want to just give info about the
+ *                              callee.
+ * @param  int $skip_frames A number of stack frames to skip - useful for unwinding
+ *                          back to the source of the issue.
+ * @param  bool $pretty Whether or not you want a comma separated string or raw array returned.
+ * @return  string|array Either a string containing a reversed comma separated trace or
+ *                              an array of individual calls.
+ */
+function debug_backtrace_summary( $ignore_class = null, $skip_frames = 0, $pretty = true ) {
+	if ( version_compare( PHP_VERSION, '5.2.5', '>=' ) )
+		$trace = debug_backtrace( false );
+	else
+		$trace = debug_backtrace();
+
+	$caller = array();
+	$check_class = ! is_null( $ignore_class );
+	$skip_frames++; // skip this function
+
+	foreach ( $trace as $call ) {
+		if ( $skip_frames > 0 ) {
+			$skip_frames--;
+		} elseif ( isset( $call['class'] ) ) {
+			if ( $check_class && $ignore_class == $call['class'] )
+				continue; // Filter out class
+
+			$caller[] = "{$call['class']}{$call['type']}{$call['function']}";
+		} else {
+			if ( in_array( $call['function'], array( 'include', 'include_once', 'require', 'require_once' ) ) ) {
+				$caller[] = $call['function'] . "('" . str_replace( array( ABSPATH ), '', $call['args'][0] ) . "')";
+			} else {
+				$caller[] = $call['function'];
+			}
+		}
+	}
+	if ( $pretty )
+		return join( ', ', array_reverse( $caller ) );
+	else
+		return $caller;
 }
