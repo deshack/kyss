@@ -296,3 +296,4 @@ require_once(ABSPATH . 'settings.php');";
 		setup_config_footer();
 	endif; // !is_writable(ABSPATH)
 }
+

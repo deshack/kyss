@@ -13,15 +13,6 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
-		phpdocumentor: {
-			dist: {
-				options: {
-					directory: './',
-					target: 'docs/api',
-					phar: null
-				}
-			}
-		},
 		jshint: {
 			gruntfile: ['Gruntfile.js']
 		},
