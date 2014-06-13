@@ -3,13 +3,15 @@
  * KYSS User API.
  *
  * @package  KYSS
- * @subpackage  API
+ * @subpackage User
  */
 
 /**
  * KYSS User class.
  *
  * @since  0.7.0
+ * @package  KYSS
+ * @subpackage  User
  */
 class KYSS_User {
 	/**
@@ -34,10 +36,19 @@ class KYSS_User {
 	 * The user's roles.
 	 *
 	 * @since  0.7.0
-	 * @access public
+	 * @access private
 	 * @var  array
 	 */
-	public $roles = array();
+	private $roles = array();
+
+	/**
+	 * The user's office.
+	 *
+	 * @since  0.8.0
+	 * @access private
+	 * @var  string
+	 */
+	private $office = '';
 
 	/**
 	 * Constructor.

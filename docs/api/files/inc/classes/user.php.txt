@@ -3,13 +3,15 @@
  * KYSS User API.
  *
  * @package  KYSS
- * @subpackage  API
+ * @subpackage User
  */
 
 /**
  * KYSS User class.
  *
  * @since  0.7.0
+ * @package  KYSS
+ * @subpackage  User
  */
 class KYSS_User {
 	/**

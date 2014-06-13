@@ -10,6 +10,8 @@
  * KYSS DB Class
  *
  * @since  0.1.0
+ * @package  KYSS
+ * @subpackage  DB
  */
 class KYSS_DB {
 

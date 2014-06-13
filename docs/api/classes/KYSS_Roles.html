@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2061652909"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2125009443"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-2061652909" class="accordion-body collapse in">
+            <div id="namespace-2125009443" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -167,12 +167,9 @@
                                             </nav>
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
-                    <h1><small>\</small>KYSS_Error</h1>
-                    <p><em>KYSS Error Class.</em></p>
-                    <p>Container for checking for KYSS errors and error messages.
-Return KYSS_Error and use {@link is_kyss_error()} to check if this class
-is returned. Many KYSS functions pass this class in the event of an error
-and if not handled properly will result in code errors.</p>
+                    <h1><small>\</small>KYSS_Roles</h1>
+                    <p><em>KYSS Roles class.</em></p>
+                    
 
                     <section id="summary">
                         <h2>Summary</h2>
@@ -189,14 +186,14 @@ and if not handled properly will result in code errors.</p>
                         </section>
                         <section class="row-fluid public">
                             <section class="span4">
-                                                                    <a href="../classes/KYSS_Error.html#method___construct" class="">__construct()</a><br />
-                                                                    <a href="../classes/KYSS_Error.html#method_get_error_codes" class="">get_error_codes()</a><br />
-                                                                    <a href="../classes/KYSS_Error.html#method_get_error_code" class="">get_error_code()</a><br />
-                                                                    <a href="../classes/KYSS_Error.html#method_get_error_messages" class="">get_error_messages()</a><br />
-                                                                    <a href="../classes/KYSS_Error.html#method_get_error_message" class="">get_error_message()</a><br />
-                                                                    <a href="../classes/KYSS_Error.html#method_get_error_data" class="">get_error_data()</a><br />
-                                                                    <a href="../classes/KYSS_Error.html#method_add" class="">add()</a><br />
-                                                                    <a href="../classes/KYSS_Error.html#method_add_data" class="">add_data()</a><br />
+                                                                    <a href="../classes/KYSS_Roles.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/KYSS_Roles.html#method_add_role" class="">add_role()</a><br />
+                                                                    <a href="../classes/KYSS_Roles.html#method_remove_role" class="">remove_role()</a><br />
+                                                                    <a href="../classes/KYSS_Roles.html#method_add_permission" class="">add_permission()</a><br />
+                                                                    <a href="../classes/KYSS_Roles.html#method_remove_permission" class="">remove_permission()</a><br />
+                                                                    <a href="../classes/KYSS_Roles.html#method_get_role" class="">get_role()</a><br />
+                                                                    <a href="../classes/KYSS_Roles.html#method_get_names" class="">get_names()</a><br />
+                                                                    <a href="../classes/KYSS_Roles.html#method_is_role" class="">is_role()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No public properties found</em>
@@ -207,7 +204,7 @@ and if not handled properly will result in code errors.</p>
                         </section>
                         <section class="row-fluid protected">
                             <section class="span4">
-                                                                    <em>No protected methods found</em>
+                                                                    <a href="../classes/KYSS_Roles.html#method__init" class="">_init()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No protected properties found</em>
@@ -221,8 +218,9 @@ and if not handled properly will result in code errors.</p>
                                                                     <em>No private methods found</em>
                                                             </section>
                             <section class="span4">
-                                                                    <a href="../classes/KYSS_Error.html#property_errors" class="">$errors</a><br />
-                                                                    <a href="../classes/KYSS_Error.html#property_error_data" class="">$error_data</a><br />
+                                                                    <a href="../classes/KYSS_Roles.html#property_roles" class="">$roles</a><br />
+                                                                    <a href="../classes/KYSS_Roles.html#property_role_obj" class="">$role_obj</a><br />
+                                                                    <a href="../classes/KYSS_Roles.html#property_role_names" class="">$role_names</a><br />
                                                             </section>
                             <section class="span4">
                                 <em>N/A</em>
@@ -235,12 +233,12 @@ and if not handled properly will result in code errors.</p>
                     
                     <dl>
                         <dt>File</dt>
-                            <dd><a href="../files/inc.classes.kyss-error.php.html"><div class="path-wrapper">inc/classes/kyss-error.php</div></a></dd>
+                            <dd><a href="../files/inc.classes.roles.php.html"><div class="path-wrapper">inc/classes/roles.php</div></a></dd>
                                                 <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">\KYSS\Execption</div></dd>
+                            <dd><div class="namespace-wrapper">\KYSS\User</div></dd>
                                                 <dt>Class hierarchy</dt>
                             <dd class="hierarchy">
-                                                                                                                                                                    <div class="namespace-wrapper">\KYSS_Error</div>
+                                                                                                                                                                    <div class="namespace-wrapper">\KYSS_Roles</div>
                             </dd>
 
                         
@@ -280,11 +278,11 @@ and if not handled properly will result in code errors.</p>
 
                                                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="property_errors" name="property_errors" class="anchor"></a>
+            <a id="property_roles" name="property_roles" class="anchor"></a>
             <article class="property">
-                <h3 class="private ">$errors</h3>
-                <pre class="signature">$errors : array</pre>
-                <p><em>Stores the list of errors.</em></p>
+                <h3 class="private ">$roles</h3>
+                <pre class="signature">$roles : array</pre>
+                <p><em>List of roles.</em></p>
                 
 
                                 <h4>Type</h4>
@@ -318,11 +316,49 @@ and if not handled properly will result in code errors.</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="property_error_data" name="property_error_data" class="anchor"></a>
+            <a id="property_role_obj" name="property_role_obj" class="anchor"></a>
             <article class="property">
-                <h3 class="private ">$error_data</h3>
-                <pre class="signature">$error_data : array</pre>
-                <p><em>Stores the list of data for error codes.</em></p>
+                <h3 class="private ">$role_obj</h3>
+                <pre class="signature">$role_obj : array</pre>
+                <p><em>List of the role objects.</em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_role_names" name="property_role_names" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$role_names</h3>
+                <pre class="signature">$role_names : array</pre>
+                <p><em>List of role names.</em></p>
                 
 
                                 <h4>Type</h4>
@@ -367,35 +403,74 @@ and if not handled properly will result in code errors.</p>
             <article class="method">
                 <h3 class="public ">__construct()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">__construct(string|int <span class="argument">$code</span>, string <span class="argument">$message</span>, mixed <span class="argument">$data</span>) : \KYSS_Error</pre>
-                <p><em>Constructor - Set up error message.</em></p>
-                <p>If code parameter is empty then nothing will be done. To add multiple
-messages to the same code use other methods in the class.</p>
-<p>All parameters are optional, but if the code parameter is set, then the
-data parameter is optional.</p>
+                <pre class="signature" style="margin-right: 54px;">__construct()</pre>
+                <p><em>Constructor.</em></p>
+                <p>Calls the KYSS_Roles::_init() method.</p>
+
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.8.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_add_role" name="method_add_role" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">add_role()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">add_role(string <span class="argument">$role</span>, string <span class="argument">$display_name</span>, array <span class="argument">$permissions</span>) : \KYSS_Role|null</pre>
+                <p><em>Add role name with permissions to list.</em></p>
+                <p>Updates the list of roles, if the role doesn't already exist.</p>
+<p>The permissions are defined in the following format <code>array( 'read' =&gt; true );</code>
+To explicitly deny a role a permission, set the value for that permission to false.</p>
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td>string|int</td>
-                                <td>$code </td>
-                                <td><p>Error code.</p></td>
+                                <td>string</td>
+                                <td>$role </td>
+                                <td><p>Role name.</p></td>
                             </tr>
                                                     <tr>
                                 <td>string</td>
-                                <td>$message </td>
-                                <td><p>Error message.</p></td>
+                                <td>$display_name </td>
+                                <td><p>Role display name.</p></td>
                             </tr>
                                                     <tr>
-                                <td>mixed</td>
-                                <td>$data </td>
-                                <td><p>Optional. Error data.</p></td>
+                                <td>array</td>
+                                <td>$permissions </td>
+                                <td><p>List of role permissions in the above format.</p></td>
                             </tr>
                                             </table>
                 
                 
                                     <h4>Returns</h4>
-                    <a href="../classes/KYSS_Error.html">\KYSS_Error</a>
+                    <a href="../classes/KYSS_Role.html">\KYSS_Role</a>|null
+                                            &mdash; <p>KYSS_Role object if role is added, null if already exists.</p>
                                                 </article>
         </div>
         <aside class="span4 detailsbar">
@@ -409,7 +484,7 @@ data parameter is optional.</p>
                             since
                         </th>
                         <td>
-                                                            0.2.0                                
+                                                            0.8.0                                
                                                     </td>
                     </tr>
                                     <tr>
@@ -425,264 +500,20 @@ data parameter is optional.</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_get_error_codes" name="method_get_error_codes" class="anchor"></a>
+            <a id="method_remove_role" name="method_remove_role" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">get_error_codes()</h3>
+                <h3 class="public ">remove_role()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_error_codes() : array</pre>
-                <p><em>Retrieve all error codes.</em></p>
-                
-
-                
-                
-                                    <h4>Returns</h4>
-                    array
-                                            &mdash; <p>List of error codes, if available.</p>
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            0.2.0                                
-                                                    </td>
-                    </tr>
-                                    <tr>
-                        <th>
-                            todo
-                        </th>
-                        <td>
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_get_error_code" name="method_get_error_code" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">get_error_code()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_error_code() : string|int</pre>
-                <p><em>Retrieve first error code available.</em></p>
-                
-
-                
-                
-                                    <h4>Returns</h4>
-                    string|int
-                                            &mdash; <p>Empty string, if no error codes.</p>
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            0.2.0                                
-                                                    </td>
-                    </tr>
-                                    <tr>
-                        <th>
-                            todo
-                        </th>
-                        <td>
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_get_error_messages" name="method_get_error_messages" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">get_error_messages()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_error_messages(string|int <span class="argument">$code</span>) : array</pre>
-                <p><em>Retrieve all error messages or error messages matching code.</em></p>
+                <pre class="signature" style="margin-right: 54px;">remove_role(string <span class="argument">$role</span>)</pre>
+                <p><em>Remove role by name.</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string|int</td>
-                                <td>$code </td>
-                                <td><p>Optional. Retrieve messages matching code, if exists.</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    array
-                                            &mdash; <p>Error strings on success, or empty array on failure (using code parameter).</p>
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            0.2.0                                
-                                                    </td>
-                    </tr>
-                                    <tr>
-                        <th>
-                            todo
-                        </th>
-                        <td>
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_get_error_message" name="method_get_error_message" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">get_error_message()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_error_message(string|int <span class="argument">$code</span>) : string</pre>
-                <p><em>Get single error message.</em></p>
-                <p>This will get the first message available for the supplied code.
-If no code is given the first code available will be used.</p>
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string|int</td>
-                                <td>$code </td>
-                                <td><p>Optional. Error code to retrieve message.</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    string
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            0.2.0                                
-                                                    </td>
-                    </tr>
-                                    <tr>
-                        <th>
-                            todo
-                        </th>
-                        <td>
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_get_error_data" name="method_get_error_data" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">get_error_data()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_error_data(string|int <span class="argument">$code</span>) : mixed</pre>
-                <p><em>Retrieve error data for error code.</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string|int</td>
-                                <td>$code </td>
-                                <td><p>Optional. Error code.</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    mixed
-                                            &mdash; <p>Null, if no errors.</p>
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            0.2.0                                
-                                                    </td>
-                    </tr>
-                                    <tr>
-                        <th>
-                            todo
-                        </th>
-                        <td>
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_add" name="method_add" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">add()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">add(string|int <span class="argument">$code</span>, string <span class="argument">$message</span>, mixed <span class="argument">$data</span>)</pre>
-                <p><em>Append more error messages to the list of errors.</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string|int</td>
-                                <td>$code </td>
-                                <td><p>Error code.</p></td>
-                            </tr>
                                                     <tr>
                                 <td>string</td>
-                                <td>$message </td>
-                                <td><p>Error message.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>mixed</td>
-                                <td>$data </td>
-                                <td><p>Optional. Error data.</p></td>
+                                <td>$role </td>
+                                <td><p>Role name.</p></td>
                             </tr>
                                             </table>
                 
@@ -700,7 +531,7 @@ If no code is given the first code available will be used.</p>
                             since
                         </th>
                         <td>
-                                                            0.2.0                                
+                                                            0.8.0                                
                                                     </td>
                     </tr>
                                     <tr>
@@ -716,30 +547,38 @@ If no code is given the first code available will be used.</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_add_data" name="method_add_data" class="anchor"></a>
+            <a id="method_add_permission" name="method_add_permission" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">add_data()</h3>
+                <h3 class="public ">add_permission()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">add_data(mixed <span class="argument">$data</span>, string|int <span class="argument">$code</span>)</pre>
-                <p><em>Add data for error code.</em></p>
-                <p>The error code can only contain one error data.</p>
+                <pre class="signature" style="margin-right: 54px;">add_permission(string <span class="argument">$role</span>, string <span class="argument">$permission</span>, bool <span class="argument">$grant</span>) : null</pre>
+                <p><em>Add permission to role.</em></p>
+                
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td>mixed</td>
-                                <td>$data </td>
-                                <td><p>Error data.</p></td>
+                                <td>string</td>
+                                <td>$role </td>
+                                <td><p>Role name.</p></td>
                             </tr>
                                                     <tr>
-                                <td>string|int</td>
-                                <td>$code </td>
-                                <td><p>Error code.</p></td>
+                                <td>string</td>
+                                <td>$permission </td>
+                                <td><p>Permission name.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>bool</td>
+                                <td>$grant </td>
+                                <td><p>Optional. Whether role is capable of performing
+capability. Default <true>.</p></td>
                             </tr>
                                             </table>
                 
                 
-                            </article>
+                                    <h4>Returns</h4>
+                    null
+                                                </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -752,7 +591,7 @@ If no code is given the first code available will be used.</p>
                             since
                         </th>
                         <td>
-                                                            0.2.0                                
+                                                            0.8.0                                
                                                     </td>
                     </tr>
                                     <tr>
@@ -766,16 +605,261 @@ If no code is given the first code available will be used.</p>
         </aside>
     </div>
 
-                                                                    </div>
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_permission" name="method_remove_permission" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">remove_permission()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_permission(string <span class="argument">$role</span>, string <span class="argument">$permission</span>) : null</pre>
+                <p><em>Remove permission from role.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$role </td>
+                                <td><p>Role name.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$permission </td>
+                                <td><p>Permission name.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    null
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.8.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_role" name="method_get_role" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_role()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_role(string <span class="argument">$role</span>) : \KYSS_Role|null</pre>
+                <p><em>Retrieve role object by name.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$role </td>
+                                <td><p>Role name.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/KYSS_Role.html">\KYSS_Role</a>|null
+                                            &mdash; <p>KYSS_Role object if found, null if the role
+does not exist.</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.8.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_names" name="method_get_names" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_names()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_names() : array</pre>
+                <p><em>Retrieve list of role names.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>List of role names.</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.8.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_is_role" name="method_is_role" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">is_role()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">is_role(string <span class="argument">$role</span>) : bool</pre>
+                <p><em>Whether role name is currently in the list of available roles.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$role </td>
+                                <td><p>Role name to look up.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.8.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method__init" name="method__init" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">_init()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">_init() : null</pre>
+                <p><em>Set up the object properties.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    null
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.8.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>array user_roles Used to set the <code>roles</code> property value.</p>
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    </div>
     </section>
 
     <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="source-view-label">kyss-error.php</h3>
+            <h3 id="source-view-label">roles.php</h3>
         </div>
         <div class="modal-body">
-            <pre data-src="../files/inc/classes/kyss-error.php.txt" class="language-php line-numbers"></pre>
+            <pre data-src="../files/inc/classes/roles.php.txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 
