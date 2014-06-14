@@ -27,9 +27,9 @@ if ( file_exists( ABSPATH . 'config.php' ) ) {
 	require_once( ABSPATH . 'config.php' );
 } else {
 	// A config file doesn't exist.
-	define( 'KYSSINC', 'inc' );
-	require_once( ABSPATH . KYSSINC . '/load.php' );
-	require_once( ABSPATH . KYSSINC . '/functions.php' );
+	define( 'INC', 'inc' );
+	require_once( ABSPATH . INC . '/load.php' );
+	require_once( ABSPATH . INC . '/functions.php' );
 
 	$path = kyss_guess_url() . '/admin/setup-config.php';
 

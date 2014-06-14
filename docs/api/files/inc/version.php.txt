@@ -4,4 +4,4 @@
  *
  * @global  string $kyss_version
  */
-$kyss_version = '0.7.0';
+$kyss_version = '0.8.0';

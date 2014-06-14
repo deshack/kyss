@@ -45,7 +45,7 @@ require_once( ABSPATH . 'admin/inc/upgrade.php');
 /**
  * Load kyssdb.
  */
-require_once( ABSPATH . 'inc/kyss-db.php' );
+require_once( ABSPATH . 'inc/classes/kyss-db.php' );
 
 $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : 0;
 

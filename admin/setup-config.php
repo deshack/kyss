@@ -32,13 +32,13 @@ ini_set('display_errors', 'on');
 
 // These defines are required to allow us to build paths.
 define('ABSPATH', dirname(dirname(__FILE__)) . '/');
-define('KYSSINC', 'inc');
+define('INC', 'inc');
 
-require(ABSPATH . KYSSINC . '/version.php');
-require_once(ABSPATH . KYSSINC . '/functions.php');
-require_once(ABSPATH . KYSSINC . '/load.php');
-require_once(ABSPATH . KYSSINC . '/formatting.php');
-require_once(ABSPATH . KYSSINC . '/classes/kyss-error.php');
+require(ABSPATH . INC . '/version.php');
+require_once(ABSPATH . INC . '/functions.php');
+require_once(ABSPATH . INC . '/load.php');
+require_once(ABSPATH . INC . '/formatting.php');
+require_once(ABSPATH . INC . '/classes/kyss-error.php');
 
 // Check if config.php has been created
 if ( file_exists( ABSPATH . 'config.php' ) )

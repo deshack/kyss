@@ -21,7 +21,7 @@
 function load_kyssdb( $create = false ) {
 	global $kyssdb;
 
-	require_once( ABSPATH . KYSSINC . '/kyss-db.php' );
+	require_once( ABSPATH . INC . '/classes/kyss-db.php' );
 
 	if ( isset( $kyssdb ) )
 		return;
@@ -32,10 +32,12 @@ function load_kyssdb( $create = false ) {
 /**
  * Redirect to the installer if KYSS is not installed.
  *
+ * @todo  Create function is_installed().
+ *
  * @since 0.6.0
  */
 function kyss_not_installed() {
-	if ( is_blog_installed() || false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || defined( 'KYSS_INSTALLING' ) )
+	if ( is_installed() || false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || defined( 'KYSS_INSTALLING' ) )
 		return;
 
 	$link = kyss_guess_url() . '/admin/install.php';
@@ -82,4 +84,38 @@ function kyss_magic_quotes() {
 
 	// Forse REQUEST to be GET + POST.
 	$_REQUEST = array_merge( $_GET, $_POST );
+}
+
+/**
+ * Set PHP error handling and handle KYSS debug mode.
+ *
+ * Uses `DEBUG` constant, that can be defined in config.php.
+ *
+ * @example
+ * ```
+ * <code>define( 'DEBUG', true );</code>
+ * ```
+ *
+ * When `DEBUG` is true, all PHP notices are reported. KYSS will also display
+ * notices, including one when a deprecated KYSS function, function argument,
+ * or file is used. Deprecated code may be removed from a later version.
+ *
+ * It is strongly recommended that `DEBUG` is used only in development environment.
+ *
+ * All errors will be displayed and logged to log/kyss.log.
+ *
+ * `DEBUG` defaults to false.
+ *
+ * @access private
+ * @since  0.8.0
+ */
+function debug_mode() {
+	if ( DEBUG ) {
+		error_reporting( E_ALL );
+		ini_set( 'display_errors', 1);
+		ini_set( 'log_errors', 1);
+		ini_set( 'error_log', ABSPATH . 'log/kyss.log' );
+	} else {
+		error_reporting( E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR );
+	}
 }

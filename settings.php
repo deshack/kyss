@@ -25,6 +25,7 @@ define( 'CLASSES', 'inc/classes' );
 
 // Include files required for initialization.
 require( ABSPATH . INC . '/load.php' );
+require( ABSPATH . INC . '/default-constants.php' );
 
 /**
  * This can't be directly globalized in version.php. When updating,
@@ -38,8 +39,14 @@ require( ABSPATH . INC . '/version.php' );
 @ini_set( 'magic_quotes_runtime', 0 );
 @ini_set( 'magic_quotes_sybase', 0 );
 
-// Calculate offsets from UTC.
-date_default_timezone_set( 'UTC' );
+// Set initial default constants including DEBUG.
+initial_constants();
+
+// Start loading timer.
+timer_start();
+
+// Check if we're in debug mode.
+debug_mode();
 
 // Load early KYSS files.
 require( ABSPATH . INC . '/functions.php' );

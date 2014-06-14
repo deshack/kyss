@@ -92,7 +92,7 @@ class KYSS_User {
 	 * @since  0.7.0
 	 * @access private
 	 *
-	 * @param  object $data User DB row object.
+	 * @param  object $data User DB row object?
 	 */
 	private function init( $data ) {
 		$this->data = $data;

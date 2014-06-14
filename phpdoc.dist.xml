@@ -14,6 +14,7 @@
 	<files>
 		<directory>./</directory>
 		<ignore>tests/*</ignore>
+		<ignore>node_modules/*</ignore>
 	</files>
 	<logging>
 		<level>warn</level>
