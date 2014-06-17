@@ -222,11 +222,11 @@ function setup_config_third() {
 	define('DB_PASS', $dbpass);
 
 	// That's the actual test.
-	load_kyssdb( $dbcreate );
+	load_kyssdb();
 
 	// Check for errors in the $kyssdb object.
-	if ( !empty( $kyssdb->error ) )
-		kyss_die( $kyssdb->error->get_error_message() . $tryagain );
+	if ( !empty( $kyssdb->last_error ) )
+		kyss_die( $kyssdb->last_error->get_error_message() . $tryagain );
 
 	$config_file = ABSPATH . 'config.php';
 

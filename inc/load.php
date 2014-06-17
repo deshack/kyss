@@ -26,7 +26,7 @@ function load_kyssdb( $create = false ) {
 	if ( isset( $kyssdb ) )
 		return;
 
-	$kyssdb = new KYSS_DB( DB_HOST, DB_NAME, DB_USER, DB_PASS, $create );
+	$kyssdb = new KYSS_DB( DB_HOST, DB_USER, DB_PASS, DB_NAME );
 }
 
 /**

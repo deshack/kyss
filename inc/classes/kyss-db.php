@@ -2,6 +2,9 @@
 /**
  * KYSS Database API
  *
+ * Provide all necessary methods to connect to the server and
+ * executing queries.
+ *
  * @package  KYSS
  * @subpackage  API
  */
@@ -9,11 +12,16 @@
 /**
  * KYSS DB Class
  *
- * @since  0.1.0
+ * Uses MySQLi PHP extension, as of PHP 5.5 MySQL extension is
+ * deprecated.
+ *
  * @package  KYSS
  * @subpackage  DB
+ * @since  0.1.0
+ * @since  0.9.0 Extend mysqli.
+ * @see  http://www.php.net/manual/en/book.mysqli.php mysqli class documentation.
  */
-class KYSS_DB {
+class KYSS_DB extends mysqli {
 
 	/**
 	 * Whether to show SQL/DB errors.
@@ -165,23 +173,23 @@ class KYSS_DB {
 	 *
 	 * @todo  Populate array.
 	 *
-	 * @since  x.x.x
+	 * @since  0.9.0
 	 * @access private
 	 * @see kyssdb::tables()
 	 * @var  array
 	 */
-	//private $tables = array();
+	private $tables = array( 'users' );
 
 	/**
 	 * KYSS Users table.
 	 *
 	 * @todo  Add similar properties for all db tables.
 	 *
-	 * @since  x.x.x
+	 * @since  0.9.0
 	 * @access public
 	 * @var  string
 	 */
-	//public $users;
+	public $users;
 
 	/**
 	 * Database Username
@@ -220,6 +228,24 @@ class KYSS_DB {
 	protected $dbhost;
 
 	/**
+	 * Database Port
+	 *
+	 * @since 0.9.0
+	 * @access protected
+	 * @var string
+	 */
+	protected $dbport;
+
+	/**
+	 * Database Socket
+	 *
+	 * @since  0.9.0
+	 * @access protected
+	 * @var string
+	 */
+	protected $dbsocket;
+
+	/**
 	 * Database Handle
 	 *
 	 * @since  0.1.0
@@ -256,35 +282,28 @@ class KYSS_DB {
 	 * @since  0.1.0
 	 *
 	 * @param  string $dbhost MySQL database host.
-	 * @param  string $dbname MySQL database name.
 	 * @param  string $dbuser MySQL database user.
 	 * @param  string $dbpassword MySQL database password.
-	 * @param  bool   $create Whether to create a new database or not. Default <false>
+	 * @param  string $dbname Optional. MySQL database name. Defaults to empty string.
+	 * @return  Returns an object which represents the connection to a MySQL server.
 	 */
-	function __construct( $dbhost, $dbname, $dbuser, $dbpassword, $create = false ) {
-		register_shutdown_function( array( $this, '__destruct' ) );
-
+	function __construct( $dbhost, $dbuser, $dbpassword, $dbname = '' ) {
 		$this->init_charset();
 
 		$this->dbhost = $dbhost;
-		$this->dbname = $dbname;
 		$this->dbuser = $dbuser;
 		$this->dbpassword = $dbpassword;
+		$this->dbname = $dbname;
 
-		$this->db_connect( $create );
-	}
+		$this->get_port_socket();
 
-	/**
-	 * PHP5 style destructor.
-	 *
-	 * Will run when database object is destroyed.
-	 *
-	 * @see  kyssdb::__construct()
-	 * @since  0.1.0
-	 * @return  bool true
-	 */
-	function __destruct() {
-		return true;
+		@parent::__construct( $this->dbhost, $this->dbuser, $this->dbpassword, $this->dbname, $this->dbport, $this->dbsocket );
+
+		if ( $this->connect_errno ) {
+			$title = '<h1>Error establishing a database connection</h1>';
+			$message = '<p>' . $this->connect_error . '</p>';
+			$this->bail( $title . $message, $this->connect_errno );
+		}
 	}
 
 	/**
@@ -316,6 +335,44 @@ class KYSS_DB {
 	}
 
 	/**
+	 * Retrieve database port and database socket.
+	 *
+	 * Retrieves the database port and socket from the database host, if present.
+	 *
+	 * @since  0.9.0
+	 * @access private
+	 *
+	 * @return  null
+	 */
+	private function get_port_socket() {
+		$port = null;
+		$socket = null;
+		$port_or_socket = strstr( $this->dbhost, ':' );
+
+		if ( ! empty( $port_or_socket ) ) {
+			// We have detected a port or a socket or both in the host.
+			// First, isolate the host.
+			$this->dbhost = substr( $this->dbhost, 0, strpos( $this->dbhost, ':' ) );
+			$port_or_socket = substr( $port_or_socket, 1 );
+			if ( 0 !== strpos( $port_or_socket, '/' ) ) {
+				// We have a port.
+				$port = intval( $port_or_socket );
+				$socket = strstr( $port_or_socket, ':' );
+				if ( ! empty( $socket ) )
+					// We have a socket too.
+					$socket = substr( $socket, 1 );
+			} else {
+				// We only have a socket.
+				$socket = $port_or_socket;
+			}
+		}
+
+		// Assign detected values if present, defaults otherwise.
+		$this->dbport = is_null( $port ) ? ini_get("mysqli.default_port") : $port;
+		$this->dbsocket = is_null( $socket ) ? ini_get("mysqli.default_socket") : $socket;
+	}
+
+	/**
 	 * Connect to and select database.
 	 *
 	 * @since  0.1.0
@@ -325,8 +382,6 @@ class KYSS_DB {
 	 * @return bool True with a successful connection, false on failure.
 	 */
 	function db_connect( $create = false ) {
-		$this->dbh = mysql_connect( $this->dbhost, $this->dbuser, $this->dbpassword );
-
 		if ( $this->dbh ) {
 			$this->has_connected = true;
 			$this->set_charset( $this->dbh );
@@ -1039,7 +1094,7 @@ This could mean your host's database server is down.</p>
 	 *                         {@link http://php.net/sprintf sprintf()}.
 	 * @return  null|false|string Sanitized query string, null if there is no query, false if there is an error and string
 	 *                            if there was something to prepare.
-	 */
+	 *//*
 	public function prepare( $query, $args ) {
 		if ( is_null( $query ) )
 			return;
@@ -1065,7 +1120,7 @@ This could mean your host's database server is down.</p>
 		$query = preg_replace( '|(?<!%)%s|', "'%s'", $query );
 		array_walk( $args, array( $this, 'escape_by_ref' ) );
 		return @vsprintf( $query, $args );
-	}
+	}*/
 
 	/**
 	 * Print SQL/DB error.
@@ -1294,9 +1349,9 @@ This could mean your host's database server is down.</p>
 	function bail( $message, $error_code = '500' ) {
 		if ( !$this->show_errors ) {
 			if ( class_exists( 'KYSS_Error' ) )
-				$this->error = new KYSS_Error( $error_code, $message );
+				$this->last_error = new KYSS_Error( $error_code, $message );
 			else
-				$this->error = $message;
+				$this->last_error = $message;
 			return false;
 		}
 		kyss_die($message);

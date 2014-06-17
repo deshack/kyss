@@ -5,7 +5,7 @@
  * Contains the KYSS_Error class and the is_kyss_error() function.
  *
  * @package  KYSS
- * @subpackage  Exception
+ * @subpackage  Errors
  */
 
 /**
@@ -17,7 +17,7 @@
  * and if not handled properly will result in code errors.
  *
  * @package  KYSS
- * @subpackage  Execption
+ * @subpackage  Errors
  * @since  0.2.0
  */
 class KYSS_Error {
