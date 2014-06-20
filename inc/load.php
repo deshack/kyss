@@ -21,12 +21,12 @@
 function load_kyssdb( $create = false ) {
 	global $kyssdb;
 
-	require_once( ABSPATH . INC . '/classes/kyss-db.php' );
+	require_once( INC . 'classes/kyss-db.php' );
 
 	if ( isset( $kyssdb ) )
 		return;
 
-	$kyssdb = new KYSS_DB( DB_HOST, DB_USER, DB_PASS, DB_NAME );
+	$kyssdb = new KYSS_DB( DB_HOST, DB_USER, DB_PASS, (defined('DB_NAME') ? DB_NAME : '') );
 }
 
 /**

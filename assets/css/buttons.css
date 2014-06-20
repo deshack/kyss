@@ -34,7 +34,8 @@ button {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none; }
+  user-select: none;
+  line-height: 1.5; }
   .button:focus, .button.active:focus, .button:active:focus,
   button:focus,
   button.active:focus,

@@ -323,7 +323,8 @@ input[type="month"] {
     .input-group .addon > .button,
     .input-group .addon > button {
       margin: 0;
-      border-color: transparent; }
+      border-color: transparent;
+      line-height: 1; }
   .input-group input:first-child,
   .input-group .addon:first-child,
   .input-group .addon:first-child > .button,

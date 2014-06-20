@@ -30,7 +30,7 @@ endif;
  * @since  0.6.0
  * @var  bool
  */
-define( 'KYSS_INSTALLING', true );
+define( 'INSTALLING', true );
 
 /**
  * Load KYSS Bootstrap.
