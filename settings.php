@@ -14,18 +14,18 @@
  *
  * @since  0.6.0
  */
-define( 'INC', 'inc' );
+define( 'INC', ABSPATH . 'inc/' );
 
 /**
  * Stores the location of the KYSS directory of classes.
  *
  * @since  0.6.0
  */
-define( 'CLASSES', 'inc/classes' );
+define( 'CLASSES', INC . 'classes/' );
 
 // Include files required for initialization.
-require( ABSPATH . INC . '/load.php' );
-require( ABSPATH . INC . '/default-constants.php' );
+require( INC . 'load.php' );
+require( INC . 'default-constants.php' );
 
 /**
  * This can't be directly globalized in version.php. When updating,
@@ -33,7 +33,7 @@ require( ABSPATH . INC . '/default-constants.php' );
  * this value to be overridden if already set.
  */
 global $wp_version;
-require( ABSPATH . INC . '/version.php' );
+require( INC . 'version.php' );
 
 // Disable magic quotes at runtime. Magic quotes are added using kyssdb later.
 @ini_set( 'magic_quotes_runtime', 0 );
@@ -43,14 +43,14 @@ require( ABSPATH . INC . '/version.php' );
 initial_constants();
 
 // Start loading timer.
-timer_start();
+//timer_start();
 
 // Check if we're in debug mode.
 debug_mode();
 
 // Load early KYSS files.
-require( ABSPATH . INC . '/functions.php' );
-require( ABSPATH . CLASSES . '/kyss-error.php' );
+require( INC . 'functions.php' );
+require( CLASSES . 'kyss-error.php' );
 
 // Include the kyssdb class.
 load_kyssdb();
@@ -60,10 +60,10 @@ kyss_not_installed();
 
 // Load most of KYSS.
 // ToDo: Require all needed files.
-require(ABSPATH . INC . '/formatting.php');
+require(INC . 'formatting.php');
 
 // Load pluggable functions.
-require(ABSPATH . INC . '/pluggable.php');
+require(INC . 'pluggable.php');
 
 // Set internal encoding.
 set_internal_encoding();

@@ -20,7 +20,7 @@
  *
  * @todo  Add Schema API
  */
-//require_once(ABSPATH . 'admin/inc/schema.php');
+require_once(ABSPATH . 'admin/inc/schema.php');
 
 /**
  * Installs the application.

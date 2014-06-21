@@ -94,6 +94,15 @@ class KYSS_DB extends mysqli {
 	private $ready = false;
 
 	/**
+	 * Last error as a KYSS_Error object.
+	 *
+	 * @since  0.9.0
+	 * @access private
+	 * @var  KYSS_Error
+	 */
+	public $last_error;
+
+	/**
 	 * Connect to the database server.
 	 *
 	 * Does the actual setting up of the class properties and
@@ -127,7 +136,7 @@ class KYSS_DB extends mysqli {
 		if ( $this->connect_errno ) {
 			$title = '<h1>Error establishing a database connection</h1>';
 			$message = $title . '<p>' . $this->connect_error . '</p>';
-			//$this->bail()
+			$this->raise_error( $message, $this->connect_errno );
 		}
 	}
 
@@ -189,7 +198,9 @@ class KYSS_DB extends mysqli {
 			return true;
 		}
 
-		//$this->bail()
+		$title = '<h1>Database creation error</h1>';
+		$message = $title . '<p>' . $this->error . '</p>';
+		$this->raise_error( $message, $this->errno );
 		return false;
 	}
 
@@ -207,5 +218,25 @@ class KYSS_DB extends mysqli {
 		if ( '00000' == $this->sqlstate )
 			return false;
 		return true;
+	}
+
+	/**
+	 * Raise KYSS_Error.
+	 *
+	 * Turns an error string into a KYSS_Error object and terminates the execution.
+	 *
+	 * @since  0.9.0
+	 * @access protected
+	 *
+	 * @param  string $message The error message.
+	 * @param  string $code Optional. A string to identify the error.
+	 * @return  false|null
+	 */
+	protected function raise_error( $message, $code = '500' ) {
+		if ( class_exists( 'KYSS_Error' ) )
+			$this->last_error = new KYSS_Error( $code, $message );
+		else
+			return false;
+		kyss_die( $message );
 	}
 }

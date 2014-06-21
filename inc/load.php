@@ -46,6 +46,45 @@ function kyss_not_installed() {
 }
 
 /**
+ * Check if KYSS is installed.
+ *
+ * Looks at the database to find if there are KYSS tables.
+ * If there are only some tables, this function raises an error.
+ *
+ * @since  0.9.0
+ * @global  kyssdb
+ *
+ * @return  bool True if KYSS is installed, false otherwise.
+ */
+function is_installed() {
+	global $kyssdb;
+
+	// Returns a mysqli_result
+	$present = $kyssdb->query( "SHOW TABLES" );
+	// Database empty.
+	if ( 0 == $present->num_rows )
+		return false;
+
+	// Database not empty, check against KYSS table names.
+	$tables = $kyssdb->tables();
+	$count = 0;
+	foreach ( $tables as $table ) {
+		while ( $row = $present->fetch_row() ) {
+			if ( $row[0] == $table ) {
+				$count++;
+				break;
+			}
+		}
+	}
+	if ( $count == 0 )
+		return false;
+	elseif ( $count == count( $tables ) )
+		return true;
+	else
+		kyss_die( '<h1>KYSS Installation Broken</h1><p>We have detected a broken installation of KYSS. Remove the tables prefixed by <code>kyss_</code> from your database.</p>' );
+}
+
+/**
  * Set internal encoding using mb_internal_encoding().
  *
  * In most cases the default internal encoding is latin1, which is of no use,
