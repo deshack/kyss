@@ -61,6 +61,7 @@ kyss_not_installed();
 // Load most of KYSS.
 // ToDo: Require all needed files.
 require(INC . 'formatting.php');
+require(CLASSES . 'kses.php');
 
 // Load pluggable functions.
 require(INC . 'pluggable.php');

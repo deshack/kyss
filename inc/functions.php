@@ -342,7 +342,7 @@ function add_magic_quotes( $array ) {
 		if ( is_array( $v ) )
 			$array[$k] = add_magic_quotes( $v );
 		else
-			$array[$k] = addcslashes( $v );
+			$array[$k] = addcslashes( $v, "\\'" );
 	}
 	return $array;
 }
@@ -394,4 +394,33 @@ function debug_backtrace_summary( $ignore_class = null, $skip_frames = 0, $prett
 		return join( ', ', array_reverse( $caller ) );
 	else
 		return $caller;
+}
+
+/**
+ * Get stylesheet tag.
+ *
+ * @param string $name Stylesheet name.
+ * @param bool $echo Optional. True to echo the result, false to return. Default <false>.
+ * @return  string The HTML string to be used in page `<head>`.
+ */
+function kyss_css( $name, $echo = false ) {
+	
+}
+
+/**
+ * Redirect to another page.
+ *
+ * @since  0.6.0
+ *
+ * @param  string $location The path to redirect to.
+ * @param  int $status Status code to use.
+ * @return  bool False if $location is not provided, true otherwise.
+ */
+function kyss_redirect($location, $status = 302) {
+	if ( ! $location )
+		return false;
+
+	header("Location: $location", true, $status);
+
+	return true;
 }

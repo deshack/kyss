@@ -30,7 +30,7 @@ endif;
  * @since  0.6.0
  * @var  bool
  */
-define( 'KYSS_INSTALLING', true );
+define( 'INSTALLING', true );
 
 /**
  * Load KYSS Bootstrap.
@@ -45,7 +45,7 @@ require_once( ABSPATH . 'admin/inc/upgrade.php');
 /**
  * Load kyssdb.
  */
-require_once( ABSPATH . 'inc/kyss-db.php' );
+require_once( CLASSES . 'kyss-db.php' );
 
 $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : 0;
 

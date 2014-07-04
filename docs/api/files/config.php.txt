@@ -10,9 +10,9 @@
  */
 
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'kyss');
 define('DB_USER', 'kyss');
 define('DB_PASS', 'Vappatodne.31');
+define('DB_NAME', 'kyss');
 
 
 if ( !defined('ABSPATH') )

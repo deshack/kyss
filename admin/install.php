@@ -49,6 +49,13 @@ require_once( CLASSES . 'kyss-db.php' );
 
 $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : 0;
 
+switch ( $step ) {
+	case 0:
+		install_header();
+		install_footer();
+		break;
+}
+
 /**
  * Display install header.
  *

@@ -180,8 +180,6 @@ function setup_config_second() {
 	$dbhost = isset($_SESSION['dbhost']) ? $_SESSION['dbhost'] : 'localhost';
 	$dbuser = isset($_SESSION['dbuser']) ? ' value="' . $_SESSION['dbuser'] . '"' : '';
 	$dbname = isset($_SESSION['dbname']) ? ' value="' . $_SESSION['dbname'] . '"' : '';
-
-	echo join(' - ', array( $dbhost, $dbuser, $dbname ) );
 ?>
 <form method="post" action="setup-config.php?step=2">
 	<fieldset>

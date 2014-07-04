@@ -342,7 +342,7 @@ function add_magic_quotes( $array ) {
 		if ( is_array( $v ) )
 			$array[$k] = add_magic_quotes( $v );
 		else
-			$array[$k] = addcslashes( $v );
+			$array[$k] = addcslashes( $v, "\\'" );
 	}
 	return $array;
 }

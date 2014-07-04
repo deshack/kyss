@@ -81,23 +81,3 @@ function randomize( $min = 0, $max = 0 ) {
 	return abs(intval($value));
 }
 endif; // randomize()
-
-if ( ! function_exists('kyss_redirect') ) :
-/**
- * Redirect to another page.
- *
- * @since  0.6.0
- *
- * @param  string $location The path to redirect to.
- * @param  int $status Status code to use.
- * @return  bool False if $location is not provided, true otherwise.
- */
-function kyss_redirect($location, $status = 302) {
-	if ( ! $location )
-		return false;
-
-	header("Location: $location", true, $status);
-
-	return true;
-}
-endif; // kyss_redirect()
