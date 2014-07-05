@@ -52,6 +52,7 @@ $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : 0;
 switch ( $step ) {
 	case 0:
 		install_header();
+		install_form();
 		install_footer();
 		break;
 }
@@ -68,7 +69,7 @@ function install_header() {
 <html lang="en">
 <head>
 	<meta name="viewport" content="width=device-width" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="UTF-8" />
 	<title>KYSS &rsaquo; Installation</title>
 	<?php kyss_css( 'install', true ); ?>
 </head>
@@ -90,3 +91,109 @@ function install_footer() {
 </html>
 <?php
 } // End install_footer()
+
+/**
+ * Display install form.
+ *
+ * @since  0.9.0
+ *
+ * @param  string|null $error Error message (if any).
+ */
+function install_form( $error = null ) {
+	global $kyssdb;
+
+	$name = isset( $_POST['name'] ) ? trim( unslash( $_POST['name'] ) ) : '';
+	$admin_name = isset( $_POST['admin_name'] ) ? trim( unslash( $_POST['admin_name'] ) ) : '';
+	$admin_surname = isset( $_POST['admin_surname'] ) ? trim( unslash( $_POST['admin_surname'] ) ) : '';
+	$admin_email = isset( $_POST['admin_email'] ) ? trim( unslash( $_POST['admin_email'] ) ) : '';
+	$admin_password = isset( $_POST['admin_password'] ) ? trim( unslash( $_POST['admin_password'] ) ) : '';
+?>
+	<section>
+		<p>Benvenuto all'installer di KYSS!</p>
+		<p>Abbiamo bisogno di alcune informazioni, ma ti basteranno solamente cinque minuti.</p>
+	</section>
+<?php
+	if ( ! is_null( $error ) ) :
+?>
+	<div data-alert class="alert-box error"><?php echo $error; ?></p>
+<?php
+	endif;
+?>
+	<form id="setup" method="post" action="install.php?step=1">
+		<div class="row">
+			<div class="medium-12 columns">
+				<label for="name">Nome dell'associazione</label>
+				<input name="name" id="name" type="text" autofocus>
+			</div>
+		</div>
+		<fieldset>
+			<legend>Utente amministratore</legend>
+			<div class="row">
+				<div class="medium-6 columns">
+					<label for="admin_name">Nome</label>
+					<input name="admin_name" id="admin_name" type="text">
+				</div>
+				<div class="medium-6 columns">
+					<label for="admin_surname">Cognome</label>
+					<input name="admin_surname" id="admin_surname" type="text">
+				</div>
+			</div>
+			<div class="row">
+				<div class="medium-12 columns">
+					<label for="admin_email">Email</label>
+					<input name="admin_email" id="admin_email" type="email">
+				</div>
+			</div>
+			<div class="row">
+				<div class="medium-6 columns">
+					<label for="admin_password">Password</label>
+					<input name="admin_password" id="admin_password" type="password">
+				</div>
+				<div class="medium-6 columns">
+					<label for="admin_password_check">Conferma password</label>
+					<input name="admin_password_check" id="admin_password_check" type="password">
+				</div>
+			</div>
+			<div class="row">
+				<div class="small-4 columns">
+					<input type="submit" name="submit" value="Installa KYSS" class="button">
+				</div>
+			</div>
+		</fieldset>
+	</form>
+<?php
+}
+
+/**
+ * Validate form data.
+ *
+ * @since  0.9.0
+ */
+function install_validate() {
+	$name = isset( $_POST['name'] ) ? trim( unslash( $_POST['name'] ) ) : '';
+	$admin_name = isset( $_POST['admin_name'] ) ? trim( unslash( $_POST['admin_name'] ) ) : '';
+	$admin_surname = isset( $_POST['admin_surname'] ) ? trim( unslash( $_POST['admin_surname'] ) ) : '';
+	$admin_email = isset( $_POST['admin_email'] ) ? trim( unslash( $_POST['admin_email'] ) ) : '';
+	$admin_password = isset( $_POST['admin_password'] ) ? trim( unslash( $_POST['admin_password'] ) ) : '';
+	$admin_password_check = isset( $_POST['admin_password_check'] ) ? trim( unslash( $_POST['admin_password_check'] ) ) : '';
+
+	$error = false;
+	if ( empty( $admin_name ) ) {
+		install_form( "Devi inserire il nome dell'amministratore." );
+		$error = true;
+	} elseif ( empty( $admin_surname ) ) {
+		install_form( "Devi inserire il cognome dell'amministratore." );
+		$error = true;
+	} elseif ( $admin_password != $admin_password_check ) {
+		// TODO: perform this check at runtime and disable submit if they don't match.
+		install_form( "Le password non coincidono. Riprovare." );
+		$error = true;
+	} elseif ( empty( $admin_email ) ) {
+		install_form( "Devi inserire l'email dell'amministratore." );
+		$error = true;
+	} elseif ( ! is_email( $admin_email ) ) {
+		install_form( "L'indirizzo email inserito non &egrave; valido." );
+		$error = true;
+	}
+
+}

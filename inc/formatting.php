@@ -37,6 +37,48 @@ function stripslashes_deep($value) {
 }
 
 /**
+ * Remove slashes from a string or array of strings.
+ *
+ * This should be used to remove slashes from data passed to core API that
+ * expects data to be unslashed.
+ *
+ * @since  0.9.0
+ *
+ * @param  string|array $value String or array of strings to unslash.
+ * @return  string|array Unslashed $value.
+ */
+function unslash( $value ) {
+	return stripslashes_deep( $value );
+}
+
+/**
+ * Add slashes to a string or array of strings.
+ *
+ * This should be used when preparing data for core API that expects slashed daata.
+ * This should not be used to escape data going directly into an SQL query.
+ *
+ * @since  0.9.0
+ *
+ * @param  string|array $value String or array of strings to slash.
+ * @return  string|array Slashed $value.
+ */
+function slash( $value ) {
+	if ( is_array( $value ) ) {
+		foreach ( $value as $k => $v ) {
+			if ( is_array( $v ) ) {
+				$value[$k] = slash( $v );
+			} else {
+				$value[$k] = addslashes( $v );
+			}
+		}
+	} else {
+		$value = addslashes( $value );
+	}
+
+	return $value;
+}
+
+/**
  * Check and clean a URL.
  *
  * Eliminates invalid and dangerous characters.
@@ -145,4 +187,83 @@ function trailingslashit( $string ) {
  */
 function untrailingslashit( $string ) {
 	return rtrim( $string, '/\\' );
+}
+
+/**
+ * Check if email is valid.
+ *
+ * Does not grok i18n domains. Not RFC compliant.
+ *
+ * @since  0.9.0
+ *
+ * @param  string $email Email address to verify.
+ * @return string|bool Either false or the valid email address.
+ */
+function is_email( $email ) {
+	if ( strlen( $email ) < 3 ) {
+		/**
+		 * Filter whether an email address is valid.
+		 *
+		 * This hook is evaluated under several different contexts, such as 'email_too_short',
+		 * 'email_no_at', 'local_invalid_chars', 'domain_period_sequence', 'domain_period_limits',
+		 * 'domain_no_periods', 'sub_hyphen_limits', 'sub_invalid_chars', or no specific context.
+		 *
+		 * @since  0.9.0
+		 *
+		 * @param  bool $is_email Whether the email address has passed the is_email() checks. Default <false>.
+		 * @param  string $email The email address being checked.
+		 * @param  string $message An explanatory message to the user.
+		 * @param  string $context Context under which the email was tested.
+		 */
+		return run_hook( 'is_email', false, $email, 'email_too_short' );
+	}
+
+	// Test for an @ character after the first position.
+	if ( strpos( $email, '@', 1 ) === false ) {
+		return run_hook( 'is_email', false, $email, 'email_no_at' );
+	}
+
+	// Split out the local and domain parts.
+	list( $local, $domain ) = explode( '@', $email, 2 );
+
+	// LOCAL PART
+	// Test for invalid characters.
+	if ( ! preg_match( '/^[a-zA-Z0-9!#$%&\'*+\/=?^_`{|}~\.-]+$/', $local ) ) {
+		return run_hook( 'is_email', false, $email, 'local_invalid_chars' );
+	}
+
+	// DOMAIN PART
+	// Test for sequences of periods.
+	if ( preg_match( '/\.{2}/', $domain ) ) {
+		return run_hook( 'is_email', false, $email, 'domain_period_sequence' );
+	}
+
+	// Test for leading and trailing periods and whitespace.
+	if ( trim( $domain, " \t\n\r\0\x0B." ) !== $domain ) {
+		return run_hook( 'is_email', false, $email, 'domain_period_limits' );
+	}
+
+	// Split the domain into subs.
+	$subs = explode( '.', $domain );
+
+	// Assume the domain will have at least two subs.
+	if ( 2 > count( $subs ) ) {
+		return run_hook( 'is_email', false, $email, 'domain_no_periods' );
+	}
+
+	// Loop through each sub.
+	foreach ( $subs as $sub ) {
+		// Test for leading and trailing hyphens and whitespace.
+		if ( trim( $sub, " \t\n\r\0\x0B-" ) !== $sub ) {
+			return run_hook( 'is_email', false, $email, 'sub_hyphen_limits' );
+		}
+
+		// Test for invalid characters.
+		if ( ! preg_match( '/^[a-z0-9-]+$/i', $sub ) ) {
+			return run_hook( 'is_email', false, $email, 'sub_invalid_chars' );
+		}
+	}
+
+	// Yeah, the email made it!
+	return run_hook( 'is_email', $email, $email, null );
 }

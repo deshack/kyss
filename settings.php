@@ -32,7 +32,7 @@ require( INC . 'default-constants.php' );
  * we're including version.php from another install and don't want
  * this value to be overridden if already set.
  */
-global $wp_version;
+global $kyss_version;
 require( INC . 'version.php' );
 
 // Disable magic quotes at runtime. Magic quotes are added using kyssdb later.

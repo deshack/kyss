@@ -430,15 +430,19 @@ function debug_backtrace_summary( $ignore_class = null, $skip_frames = 0, $prett
 /**
  * Get stylesheet tag.
  *
+ * @global  kyss_version
+ *
  * @param string $name Stylesheet name.
  * @param bool $echo Optional. True to echo the result, false to return. Default <false>.
  * @return  string The HTML string to be used in page `<head>`.
  */
 function kyss_css( $name, $echo = false ) {
+	global $kyss_version;
+
 	$name = trim($name);
 	$output = sprintf( '<link rel="stylesheet" id="%1$s" href="%2$s" type="text/css" media="all">',
 		$name,
-		clean_url( get_asset_url() . $name . '.css' )
+		clean_url( get_asset_url() . $name . '.css?' . $kyss_version )
 	);
 
 	if ( $echo ) {

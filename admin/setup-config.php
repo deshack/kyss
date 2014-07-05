@@ -89,7 +89,7 @@ function setup_config_header() {
 <html lang="en">
 <head>
 	<meta name="viewport" content="width=device-width" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="URF-8" />
 	<title>KYSS &rsaquo; Setup Configuration File</title>
 	<?php
 	/**
@@ -107,10 +107,12 @@ function setup_config_header() {
 	
 	// Passing the version parameter allows a proper caching of the resource.
 	$version = preg_replace( '/[^0-9a-z\.-]/i', '', $kyss_version );
+
+	// Load required stylesheets
+	kyss_css( 'install', true );
+	kyss_css( 'buttons', true );
+	kyss_css( 'forms', true );
 ?>
-	<link rel="stylesheet" href="../assets/css/install.css?ver=<?php echo $version; ?>" type="text/css" />
-	<link rel="stylesheet" href="../assets/css/buttons.css?ver=<?php echo $version; ?>" type="text/css" />
-	<link rel="stylesheet" href="../assets/css/forms.css?ver=<?php echo $version; ?>" type="text/css" />
 </head>
 <body>
 <div class="container">
