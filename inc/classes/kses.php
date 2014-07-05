@@ -38,9 +38,9 @@ if(substr(phpversion(), 0, 1) < 5)
 /**
 *	Only install KSES once
 */
-if ( ! defined('KYSS_KSES') ) :
+if ( ! defined('KSES') ) :
 
-define('KYSS_KSES', true);
+define('KSES', true);
 
 /**
 * Kses strips evil scripts!
@@ -63,7 +63,7 @@ define('KYSS_KSES', true);
 *	@package    KYSS
 *	@subpackage kses
 */
-class kses {
+class KSES {
 	/**#@+
 	 *	@access private
 	 *	@var array
@@ -1050,7 +1050,7 @@ class kses {
 	 *	@see check_attribute_value()
 	 *	@since 1.0.0
 	 */
-	private function check_attribute_valueMinval($value, $checkvalue)
+	private function check_attribute_value_minval($value, $checkvalue)
 	{
 		if (!preg_match('/^\s{0,6}[0-9]{1,6}\s{0,6}$/', $value))
 		{
@@ -1126,4 +1126,7 @@ class kses {
 		return '1.0.2';
 	}
 }
+
+// Instantiate kses object
+$kses = new KSES();
 endif;

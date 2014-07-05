@@ -147,10 +147,41 @@ function kyss_guess_url() {
 		// Strip filenames and options from the url.
 		// NOTE: this regex targets only filenames with alphanumerical characters
 		// and '-', '_'.
-		$url = preg_replace( '/\/[a-zA-Z0-9-_]+.php(.*)$/', '', $url );
+		$url = preg_replace('/(\/admin|inc)?\/[a-zA-Z0-9-_]+.php(.*)$/', '', $url );
 	}
 
 	return rtrim($url, '/');
+}
+
+/**
+ * Retrieve the assets directory URL.
+ *
+ * If the asset type is not recognized, it returns the main asset directory.
+ * E.g: `$type = 'css' => $url = 'http://www.example.com/assets/css/'`
+ * `$type = 'foo' => $url = 'http://www.example.com/assets/'`
+ *
+ * @since  0.9.0
+ * @see  kyss_guess_url()
+ *
+ * @param  string $type Optional. Asset type. Default <css>. Accepts <css>,<js>,<img>.
+ * @return  string Asset directory URL.
+ */
+function get_asset_url( $type = 'css' ) {
+	$accepted = array( 'css', 'js', 'img' );
+
+	$url = kyss_guess_url() . '/assets/';
+
+	if ( ! in_array( $type, $accepted ) ) {
+		trigger_error( sprintf('Unrecognized type %1$s in %2$s. Available types are: <strong>css</strong>, <strong>js</strong>, <strong>img</strong>.',
+			$type,
+			__FUNCTION__
+		) );
+		return $url;
+	}
+
+	$url .= $type;
+
+	return trailingslashit( $url );
 }
 
 /**
@@ -404,7 +435,17 @@ function debug_backtrace_summary( $ignore_class = null, $skip_frames = 0, $prett
  * @return  string The HTML string to be used in page `<head>`.
  */
 function kyss_css( $name, $echo = false ) {
-	
+	$name = trim($name);
+	$output = sprintf( '<link rel="stylesheet" id="%1$s" href="%2$s" type="text/css" media="all">',
+		$name,
+		clean_url( get_asset_url() . $name . '.css' )
+	);
+
+	if ( $echo ) {
+		echo $output;
+		return;
+	}
+	return $output;
 }
 
 /**

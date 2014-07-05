@@ -42,13 +42,16 @@ function stripslashes_deep($value) {
  * Eliminates invalid and dangerous characters.
  * The `clean_url` hook is applied to the returned cleaned URL.
  *
- * @see  sourceforge.net/projects/kses
- *
  * @since  0.9.0
+ * @see kses::parse()
+ *
+ * @global  kses
  *
  * @param  string $url The URL to be cleaned.
  */
 function clean_url( $url ) {
+	global $kses;
+
 	$original_url = $url;
 
 	if ( '' == $url )
@@ -67,7 +70,7 @@ function clean_url( $url ) {
 		$url = 'http://' . $url;
 
 	// Replace ampersands and single quotes with ASCII code.
-	$url = kses::normalize_entities( $url );
+	$url = $kses->parse( $url );
 	$url = str_replace( '&amp;', '&#038;', $url );
 	$url = str_replace( "'", '&#039;', $url );
 
@@ -79,7 +82,8 @@ function clean_url( $url ) {
 	 * @param  string $clean_url The cleaned URL to be returned.
 	 * @param  string $original_url The URL prior to cleaning.
 	 */
-	return run_hook( 'clean_url', $clean_url, $original_url );
+	//return run_hook( 'clean_url', $clean_url, $original_url );
+	return $url;
 }
 
 /**
@@ -108,4 +112,37 @@ function _deep_replace( $needle, $haystack ) {
 	}
 
 	return $haystack;
+}
+
+/**
+ * Appends a trailing slash.
+ *
+ * Will remove trailing forward and backslashes if it exists already before adding
+ * a trailing forward slash. This prevents double slashing a string or path.
+ *
+ * The primary use of this is for paths and thus should be used for paths. It is
+ * not restricted to paths and offers no specific path support.
+ *
+ * @since  0.9.0
+ *
+ * @param  string $string What to add the trailing slash to.
+ * @return string String with trailing slash added.
+ */
+function trailingslashit( $string ) {
+	return untrailingslashit( $string ) . '/';
+}
+
+/**
+ * Removes trailing forward slashes and backslashes if they exist.
+ *
+ * The primary use of this is for paths and thus should be used for paths.
+ * It is not restricted to paths and offers no specific path support.
+ *
+ * @since  0.9.0
+ *
+ * @param  string $string What to remove the trailing slashes from.
+ * @return  string String without the trailing slashes.
+ */
+function untrailingslashit( $string ) {
+	return rtrim( $string, '/\\' );
 }
