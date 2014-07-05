@@ -1,0 +1,76 @@
+@import "settings";
+//@import "foundation";
+@import "compass";
+@import "normalize";
+
+// Or selectively include components
+@import
+//   "foundation/components/accordion",
+	"foundation/components/alert-boxes",
+//   "foundation/components/block-grid",
+//   "foundation/components/breadcrumbs",
+//   "foundation/components/button-groups",
+	"foundation/components/buttons",
+	"foundation/components/clearing",
+//   "foundation/components/dropdown",
+//   "foundation/components/dropdown-buttons",
+//   "foundation/components/flex-video",
+	"foundation/components/forms",
+	"foundation/components/grid",
+//   "foundation/components/inline-lists",
+//   "foundation/components/joyride",
+//   "foundation/components/keystrokes",
+//   "foundation/components/labels",
+//   "foundation/components/magellan",
+//   "foundation/components/orbit",
+//   "foundation/components/pagination",
+//   "foundation/components/panels",
+//   "foundation/components/pricing-tables",
+//   "foundation/components/progress-bars",
+//   "foundation/components/reveal",
+//   "foundation/components/side-nav",
+//   "foundation/components/split-buttons",
+//   "foundation/components/sub-nav",
+//   "foundation/components/switch",
+//   "foundation/components/tables",
+//   "foundation/components/tabs",
+//   "foundation/components/thumbs",
+//   "foundation/components/tooltips",
+//   "foundation/components/top-bar",
+	"foundation/components/type";
+//   "foundation/components/offcanvas",
+//   "foundation/components/visibility";
+
+*,
+*:before,
+*:after {
+	@include box-sizing(border-box);
+}
+
+html {
+	webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+body {
+	background-color: $body-bg;
+	font-family: $body-font-family;
+	font-size: $base-font-size;
+	line-height: $base-line-height;
+	color: $body-font-color;
+}
+
+h1 {
+	border-bottom: 1px solid $gray-warm;
+	color: $gray-dark;
+	margin: rem-calc(30) 0;
+	padding: 0;
+	padding-bottom: rem-calc(7);
+}
+
+.container {
+	margin: 2rem auto;
+	padding: 1rem 2rem;
+	max-width: rem-calc(768);
+	background-color: #fff;
+	@include border-radius($global-radius);
+}
