@@ -196,4 +196,7 @@ function install_validate() {
 		$error = true;
 	}
 
+	if ( $error === false ) {
+		$result = kyss_install( $name, $admin_name, $admin_surname, $admin_email, slash( $admin_password ) );
+	}
 }

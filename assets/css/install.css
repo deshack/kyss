@@ -3642,3 +3642,8 @@ h1 {
   -o-border-radius: 4px;
   border-radius: 4px;
 }
+
+/* line 78, ../../src/scss/install.scss */
+button.postfix {
+  border: 0;
+}

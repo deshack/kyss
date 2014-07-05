@@ -111,8 +111,6 @@ function setup_config_header() {
 
 	// Load required stylesheets
 	kyss_css( 'install', true );
-	kyss_css( 'buttons', true );
-	kyss_css( 'forms', true );
 ?>
 </head>
 <body>
@@ -196,11 +194,13 @@ function setup_config_second() {
 		<input name="dbuser" id="dbuser" type="text" size="25"<?php echo $dbuser; ?> />
 
 		<label for="dbpass">Database Password</label>
-		<div class="input-group">
-			<input name="dbpass" id="dbpass" type="password" size="25" autocomplete="off" />
-			<span class="addon">
-				<button type="button" id="show-button">Mostra</button>
-			</span>
+		<div class="row collapse">
+			<div class="small-9 columns">
+				<input name="dbpass" id="dbpass" type="password" size="25" autocomplete="off" />
+			</div>
+			<div class="small-3 columns">
+				<button class="postfix" type="button" id="show-button">Mostra</button>
+			</div>
 		</div>
 
 		<label for="dbname">Nome Database</label>
