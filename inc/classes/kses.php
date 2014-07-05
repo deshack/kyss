@@ -113,7 +113,7 @@ class KSES {
 		$string = preg_replace('%&\s*\{[^}]*(\}\s*;?|$)%', '', $string);
 		$string = $this->normalize_entities($string);
 		$string = $this->filter_kses_text_hook($string);
-		$string = preg_replace('%(<' . '[^>]*' . '(>|$)' . '|>)%e', "\$this->stripTags('\\1')", $string);
+		$string = preg_replace_callback('%(<' . '[^>]*' . '(>|$)' . '|>)', $this->stripTags('\\1'), $string);
 		return $string;
 	}
 
@@ -493,9 +493,9 @@ class KSES {
 
 		#	Change numeric entities to valid 16 bit values
 
-		$string = preg_replace(
-			'/&amp;#0*([0-9]{1,5});/e',
-			'\$this->normalize_entities_16bit("\\1")',
+		$string = preg_replace_callback(
+			'/&amp;#0*([0-9]{1,5});',
+			$this->normalize_entities_16bit("\\1"),
 			$string
 		);
 
