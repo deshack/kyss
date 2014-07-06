@@ -37,9 +37,9 @@ function load_kyssdb( $create = false ) {
  * @since 0.6.0
  */
 function kyss_not_installed() {
-	if ( is_installed() || false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || defined( 'KYSS_INSTALLING' ) )
+	if ( is_installed() || false !== strpos( $_SERVER['PHP_SELF'], 'install.php' ) || defined( 'INSTALLING' ) )
 		return;
-
+	
 	$link = kyss_guess_url() . '/admin/install.php';
 	kyss_redirect( $link );
 	die();

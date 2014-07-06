@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>KYSS Reference</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">KYSS Reference</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">6</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">11</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">2</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-863272795"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-863272795" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/KSES.html">KSES</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_DB.html">KYSS_DB</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_DB.html">KYSS_DB</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_Error.html">KYSS_Error</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_Group.html">KYSS_Group</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_Groups.html">KYSS_Groups</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_Hook.html">KYSS_Hook</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_User.html">KYSS_User</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>KSES</h1>
+                    <p><em></em></p>
+                    
+
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/KSES.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/KSES.html#method_parse" class="">parse()</a><br />
+                                                                    <a href="../classes/KSES.html#method_add_protocols" class="">add_protocols()</a><br />
+                                                                    <a href="../classes/KSES.html#method_protocols" class="deprecated">protocols()</a><br />
+                                                                    <a href="../classes/KSES.html#method_add_protocol" class="">add_protocol()</a><br />
+                                                                    <a href="../classes/KSES.html#method_remove_protocol" class="">remove_protocol()</a><br />
+                                                                    <a href="../classes/KSES.html#method_remove_protocols" class="">remove_protocols()</a><br />
+                                                                    <a href="../classes/KSES.html#method_set_protocols" class="">set_protocols()</a><br />
+                                                                    <a href="../classes/KSES.html#method_dump_protocols" class="">dump_protocols()</a><br />
+                                                                    <a href="../classes/KSES.html#method_dump_elements" class="">dump_elements()</a><br />
+                                                                    <a href="../classes/KSES.html#method_add_HTML" class="">add_HTML()</a><br />
+                                                                    <a href="../classes/KSES.html#method_version" class="">version()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/KSES.html#method_remove_nulls" class="">remove_nulls()</a><br />
+                                                                    <a href="../classes/KSES.html#method_normalize_entities" class="">normalize_entities()</a><br />
+                                                                    <a href="../classes/KSES.html#method_normalize_entities_16bit" class="">normalize_entities_16bit()</a><br />
+                                                                    <a href="../classes/KSES.html#method_filter_kses_text_hook" class="">filter_kses_text_hook()</a><br />
+                                                                    <a href="../classes/KSES.html#method__hook" class="deprecated">_hook()</a><br />
+                                                                    <a href="../classes/KSES.html#method_make_array_keys_lower_case" class="">make_array_keys_lower_case()</a><br />
+                                                                    <a href="../classes/KSES.html#method_strip_tags" class="">strip_tags()</a><br />
+                                                                    <a href="../classes/KSES.html#method_strip_attributes" class="">strip_attributes()</a><br />
+                                                                    <a href="../classes/KSES.html#method_comb_attributes" class="">comb_attributes()</a><br />
+                                                                    <a href="../classes/KSES.html#method_remove_bad_protocols" class="">remove_bad_protocols()</a><br />
+                                                                    <a href="../classes/KSES.html#method_filter_protocols" class="">filter_protocols()</a><br />
+                                                                    <a href="../classes/KSES.html#method_check_attribute_value" class="">check_attribute_value()</a><br />
+                                                                    <a href="../classes/KSES.html#method_check_attribute_value_maxlen" class="">check_attribute_value_maxlen()</a><br />
+                                                                    <a href="../classes/KSES.html#method_check_attribute_value_minlen" class="">check_attribute_value_minlen()</a><br />
+                                                                    <a href="../classes/KSES.html#method_check_attribute_value_maxval" class="">check_attribute_value_maxval()</a><br />
+                                                                    <a href="../classes/KSES.html#method_check_attribute_value_minval" class="">check_attribute_value_minval()</a><br />
+                                                                    <a href="../classes/KSES.html#method_check_attribute_value_valueless" class="">check_attribute_value_valueless()</a><br />
+                                                                    <a href="../classes/KSES.html#method_decode_entities" class="">decode_entities()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/KSES.html#property_allowed_protocols" class="">$allowed_protocols</a><br />
+                                                                    <a href="../classes/KSES.html#property_allowed_html" class="">$allowed_html</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/inc.classes.kses.php.html"><div class="path-wrapper">inc/classes/kses.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper"></div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\KSES</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                todo
+                            </th>
+                            <td>
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_allowed_protocols" name="property_allowed_protocols" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$allowed_protocols</h3>
+                <pre class="signature">$allowed_protocols</pre>
+                <p><em></em></p>
+                
+
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_allowed_html" name="property_allowed_html" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$allowed_html</h3>
+                <pre class="signature">$allowed_html</pre>
+                <p><em></em></p>
+                
+
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct()</pre>
+                <p><em>Constructor for kses.</em></p>
+                <p>This sets a default collection of protocols allowed in links, and creates an
+empty set of allowed HTML tags.</p>
+
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_parse" name="method_parse" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">parse()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">parse(string <span class="argument">$string</span>) : string</pre>
+                <p><em>Basic task of kses - parses $string and strips it as required.</em></p>
+                <p>This method strips all the disallowed (X)HTML tags, attributes
+and protocols from the input $string.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$string </td>
+                                <td><p>String to be stripped of 'evil scripts'</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>The stripped string</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_add_protocols" name="method_add_protocols" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">add_protocols()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">add_protocols() : bool</pre>
+                <p><em>Allows for single/batch addition of protocols</em></p>
+                <p>This method accepts one argument that can be either a string
+or an array of strings.  Invalid data will be ignored.</p>
+<p>The argument will be processed, and each string will be added
+via add_protocol().</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>Status of adding valid protocols.</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_protocols" name="method_protocols" class="anchor"></a>
+            <article class="method">
+                <h3 class="public deprecated">protocols()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">protocols() : bool</pre>
+                <p><em>Allows for single/batch addition of protocols</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                                <aside class="alert alert-block alert-error">
+                    <h4>Deprecated</h4>
+                    Use add_protocols()
+                </aside>
+                        <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_add_protocol" name="method_add_protocol" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">add_protocol()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">add_protocol(string <span class="argument">$protocol</span>) : bool</pre>
+                <p><em>Adds a single protocol to $this-&gt;allowed_protocols.</em></p>
+                <p>This method accepts a string argument and adds it to
+the list of allowed protocols to keep when performing
+Parse().</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$protocol </td>
+                                <td><p>The name of the protocol to be added.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>Status of adding valid protocol.</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_protocol" name="method_remove_protocol" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">remove_protocol()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_protocol(string <span class="argument">$protocol</span>) : bool</pre>
+                <p><em>Removes a single protocol from $this-&gt;allowed_protocols.</em></p>
+                <p>This method accepts a string argument and removes it from
+the list of allowed protocols to keep when performing
+parse().</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$protocol </td>
+                                <td><p>The name of the protocol to be removed.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>Status of removing valid protocol.</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_protocols" name="method_remove_protocols" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">remove_protocols()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_protocols() : bool</pre>
+                <p><em>Allows for single/batch removal of protocols</em></p>
+                <p>This method accepts one argument that can be either a string
+or an array of strings.  Invalid data will be ignored.</p>
+<p>The argument will be processed, and each string will be removed
+via remove_protocol().</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>Status of removing valid protocols.</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_protocols" name="method_set_protocols" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">set_protocols()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_protocols() : bool</pre>
+                <p><em>Allows for single/batch replacement of protocols</em></p>
+                <p>This method accepts one argument that can be either a string
+or an array of strings.  Invalid data will be ignored.</p>
+<p>Existing protocols will be removed, then the argument will be
+processed, and each string will be added via add_protocol().</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>Status of replacing valid protocols.</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_dump_protocols" name="method_dump_protocols" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">dump_protocols()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">dump_protocols() : array</pre>
+                <p><em>Raw dump of allowed protocols</em></p>
+                <p>This returns an indexed array of allowed protocols for a particular KSES
+instantiation.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>The list of allowed protocols.</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.2                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_dump_elements" name="method_dump_elements" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">dump_elements()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">dump_elements() : array</pre>
+                <p><em>Raw dump of allowed (X)HTML elements</em></p>
+                <p>This returns an indexed array of allowed (X)HTML elements and attributes
+for a particular KSES instantiation.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>The list of allowed elements.</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.2                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_add_HTML" name="method_add_HTML" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">add_HTML()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">add_HTML(string <span class="argument">$tag</span>, array <span class="argument">$attribs</span>) : bool</pre>
+                <p><em>Adds valid (X)HTML with corresponding attributes that will be kept when stripping &#039;evil scripts&#039;.</em></p>
+                <p>This method accepts one argument that can be either a string
+or an array of strings.  Invalid data will be ignored.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$tag </td>
+                                <td><p>(X)HTML tag that will be allowed after stripping text.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$attribs </td>
+                                <td><p>Associative array of allowed attributes - key => attribute name - value => attribute parameter</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>Status of Adding (X)HTML and attributes.</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_version" name="method_version" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">version()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">version() : string</pre>
+                <p><em>Returns version # of kses.</em></p>
+                <p>Since this class has been refactored and documented and proven to work,
+I'm fixing the version number at 1.0.0.</p>
+<p>This version is syntax compatible with version 0.0.2.  Future
+versions may not be syntax compatible.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Version number</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_nulls" name="method_remove_nulls" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">remove_nulls()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_nulls(string <span class="argument">$string</span>) : string</pre>
+                <p><em>This method removes any NULL characters in $string.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$string </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>String without any NULL/chr(173)</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_normalize_entities" name="method_normalize_entities" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">normalize_entities()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">normalize_entities(string <span class="argument">$string</span>) : string</pre>
+                <p><em>Normalizes HTML entities</em></p>
+                <p>This function normalizes HTML entities. It will convert "AT&amp;T" to the correct
+"AT&amp;T", "&#00058;" to "&#58;", "&#XYZZY;" to "&amp;#XYZZY;" and so on.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$string </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>String with normalized entities</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_normalize_entities_16bit" name="method_normalize_entities_16bit" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">normalize_entities_16bit()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">normalize_entities_16bit(string <span class="argument">$i</span>) : string</pre>
+                <p><em>Helper method used by normalize_entites()</em></p>
+                <p>This method helps normalize_entities() to only accept 16 bit values
+and nothing more for &#number; entities.</p>
+<p>This method helps normalize_entities() during a preg_replace()
+where a &amp;#(0)<em>XXXXX; occurs.  The '(0)</em>XXXXXX' value is converted to
+a number and the result is returned as a numeric entity if the number
+is less than 65536.  Otherwise, the value is returned 'as is'.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$i </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Normalized numeric entity</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_filter_kses_text_hook" name="method_filter_kses_text_hook" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">filter_kses_text_hook()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">filter_kses_text_hook(string <span class="argument">$string</span>) : string</pre>
+                <p><em>Allows for additional user defined modifications to text.</em></p>
+                <p>This method allows for additional modifications to be performed on
+a string that's being run through parse().  Currently, it returns the
+input string 'as is'.</p>
+<p>This method is provided for users to extend the kses class for their own
+requirements.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$string </td>
+                                <td><p>String to perfrom additional modifications on.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>User modified string.</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method__hook" name="method__hook" class="anchor"></a>
+            <article class="method">
+                <h3 class="private deprecated">_hook()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">_hook(string <span class="argument">$string</span>) : string</pre>
+                <p><em>Allows for additional user defined modifications to text.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$string </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                                <aside class="alert alert-block alert-error">
+                    <h4>Deprecated</h4>
+                    use filter_kses_text_hook()
+                </aside>
+                        <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_make_array_keys_lower_case" name="method_make_array_keys_lower_case" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">make_array_keys_lower_case()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">make_array_keys_lower_case(array <span class="argument">$in_array</span>) : array</pre>
+                <p><em>This method goes through an array, and changes the keys to all lower case.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$in_array </td>
+                                <td><p>Associative array</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>Modified array</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_strip_tags" name="method_strip_tags" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">strip_tags()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">strip_tags(string <span class="argument">$string</span>) : string</pre>
+                <p><em>This method strips out disallowed and/or mangled (X)HTML tags along with assigned attributes.</em></p>
+                <p>This method does a lot of work. It rejects some very malformed things
+like &lt;:::>. It returns an empty string if the element isn't allowed (look
+ma, no strip_tags()!). Otherwise it splits the tag into an element and an
+allowed attribute list.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$string </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Modified string minus disallowed/mangled (X)HTML and attributes</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_strip_attributes" name="method_strip_attributes" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">strip_attributes()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">strip_attributes(string <span class="argument">$element</span>, string <span class="argument">$attr</span>) : string</pre>
+                <p><em>This method strips out disallowed attributes for (X)HTML tags.</em></p>
+                <p>This method removes all attributes if none are allowed for this element.
+If some are allowed it calls comb_attributes() to split them further, and then it
+builds up new HTML code from the data that comb_attributes() returns. It also
+removes "&lt;" and ">" characters, if there are any left. One more thing it
+does is to check if the tag has a closing XHTML slash, and if it does,
+it puts one in the returned code as well.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$element </td>
+                                <td><p>(X)HTML tag to check</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$attr </td>
+                                <td><p>Text containing attributes to check for validity.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Resulting valid (X)HTML or ''</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_comb_attributes" name="method_comb_attributes" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">comb_attributes()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">comb_attributes(string <span class="argument">$attr</span>) : array</pre>
+                <p><em>This method combs through an attribute list string and returns an associative array of attributes and values.</em></p>
+                <p>This method does a lot of work. It parses an attribute list into an array
+with attribute data, and tries to do the right thing even if it gets weird
+input. It will add quotes around attribute values that don't have any quotes
+or apostrophes around them, to make it easier to produce HTML code that will
+conform to W3C's HTML specification. It will also remove bad URL protocols
+from attribute values.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$attr </td>
+                                <td><p>Text containing tag attributes for parsing</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>Associative array containing data on attribute and value</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_bad_protocols" name="method_remove_bad_protocols" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">remove_bad_protocols()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_bad_protocols(string <span class="argument">$string</span>) : string</pre>
+                <p><em>This method removes disallowed protocols.</em></p>
+                <p>This method removes all non-allowed protocols from the beginning of
+$string. It ignores whitespace and the case of the letters, and it does
+understand HTML entities. It does its work in a while loop, so it won't be
+fooled by a string like "javascript:javascript:alert(57)".</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$string </td>
+                                <td><p>String to check for protocols</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>String with removed protocols</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_filter_protocols" name="method_filter_protocols" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">filter_protocols()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">filter_protocols(string <span class="argument">$string</span>) : string</pre>
+                <p><em>Helper method used by remove_bad_protocols()</em></p>
+                <p>This function processes URL protocols, checks to see if they're in the white-
+list or not, and returns different data depending on the answer.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$string </td>
+                                <td><p>String to check for protocols</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>String with removed protocols</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_check_attribute_value" name="method_check_attribute_value" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">check_attribute_value()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">check_attribute_value(string <span class="argument">$value</span>, string <span class="argument">$vless</span>, string <span class="argument">$checkname</span>, string <span class="argument">$checkvalue</span>) : bool</pre>
+                <p><em>Controller method for performing checks on attribute values.</em></p>
+                <p>This method calls the appropriate method as specified by $checkname with
+the parameters $value, $vless, and $checkvalue, and returns the result
+of the call.</p>
+<p>This method's functionality can be expanded by creating new methods
+that would match check_attribute_value[$checkname].</p>
+<p>Current checks implemented are: "maxlen", "minlen", "maxval", "minval" and "valueless"</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$value </td>
+                                <td><p>The value of the attribute to be checked.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$vless </td>
+                                <td><p>Indicates whether the the value is supposed to be valueless</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$checkname </td>
+                                <td><p>The check to be performed</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$checkvalue </td>
+                                <td><p>The value that is to be checked against</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>Indicates whether the check passed or not</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_check_attribute_value_maxlen" name="method_check_attribute_value_maxlen" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">check_attribute_value_maxlen()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">check_attribute_value_maxlen(string <span class="argument">$value</span>, int <span class="argument">$checkvalue</span>) : bool</pre>
+                <p><em>Helper method invoked by check_attribute_value().</em></p>
+                <p>The maxlen check makes sure that the attribute value has a length not
+greater than the given value. This can be used to avoid Buffer Overflows
+in WWW clients and various Internet servers.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$value </td>
+                                <td><p>The value of the attribute to be checked.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>int</td>
+                                <td>$checkvalue </td>
+                                <td><p>The maximum value allowed</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>Indicates whether the check passed or not</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_check_attribute_value_minlen" name="method_check_attribute_value_minlen" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">check_attribute_value_minlen()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">check_attribute_value_minlen(string <span class="argument">$value</span>, int <span class="argument">$checkvalue</span>) : bool</pre>
+                <p><em>Helper method invoked by check_attribute_value().</em></p>
+                <p>The minlen check makes sure that the attribute value has a length not
+smaller than the given value.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$value </td>
+                                <td><p>The value of the attribute to be checked.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>int</td>
+                                <td>$checkvalue </td>
+                                <td><p>The minimum value allowed</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>Indicates whether the check passed or not</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_check_attribute_value_maxval" name="method_check_attribute_value_maxval" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">check_attribute_value_maxval()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">check_attribute_value_maxval(int <span class="argument">$value</span>, int <span class="argument">$checkvalue</span>) : bool</pre>
+                <p><em>Helper method invoked by check_attribute_value().</em></p>
+                <p>The maxval check does two things: it checks that the attribute value is
+an integer from 0 and up, without an excessive amount of zeroes or
+whitespace (to avoid Buffer Overflows). It also checks that the attribute
+value is not greater than the given value.</p>
+<p>This check can be used to avoid Denial of Service attacks.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>int</td>
+                                <td>$value </td>
+                                <td><p>The value of the attribute to be checked.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>int</td>
+                                <td>$checkvalue </td>
+                                <td><p>The maximum numeric value allowed</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>Indicates whether the check passed or not</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_check_attribute_value_minval" name="method_check_attribute_value_minval" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">check_attribute_value_minval()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">check_attribute_value_minval(int <span class="argument">$value</span>, int <span class="argument">$checkvalue</span>) : bool</pre>
+                <p><em>Helper method invoked by check_attribute_value().</em></p>
+                <p>The minval check checks that the attribute value is a positive integer,
+and that it is not smaller than the given value.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>int</td>
+                                <td>$value </td>
+                                <td><p>The value of the attribute to be checked.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>int</td>
+                                <td>$checkvalue </td>
+                                <td><p>The minimum numeric value allowed</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>Indicates whether the check passed or not</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_check_attribute_value_valueless" name="method_check_attribute_value_valueless" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">check_attribute_value_valueless()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">check_attribute_value_valueless(int <span class="argument">$value</span>, mixed <span class="argument">$checkvalue</span>, string <span class="argument">$vless</span>) : bool</pre>
+                <p><em>Helper method invoked by check_attribute_value().</em></p>
+                <p>The valueless check checks if the attribute has a value
+(like <a href="blah">) or not (<option selected>). If the given value
+is a "y" or a "Y", the attribute must not have a value.</p>
+<p>If the given value is an "n" or an "N", the attribute must have one.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>int</td>
+                                <td>$value </td>
+                                <td><p>The value of the attribute to be checked.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$checkvalue </td>
+                                <td><p>This variable is ignored for this test</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$vless </td>
+                                <td><p>Flag indicating if this attribute is not supposed to have an attribute</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>Indicates whether the check passed or not</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_decode_entities" name="method_decode_entities" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">decode_entities()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">decode_entities( <span class="argument">$string</span>) : string</pre>
+                <p><em>Decodes numeric HTML entities</em></p>
+                <p>This method decodes numeric HTML entities (&#65; and &#x41;). It doesn't
+do anything with other entities like &auml;, but we don't need them in the
+URL protocol white listing system anyway.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$string </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Decoded entity</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.0.1                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">kses.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/inc/classes/kses.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on July 6th, 2014 at 13:47.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

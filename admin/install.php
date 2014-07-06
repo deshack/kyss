@@ -55,6 +55,11 @@ switch ( $step ) {
 		install_form();
 		install_footer();
 		break;
+	case 1:
+		install_header();
+		install_validate();
+		install_footer();
+		break;
 }
 
 /**
@@ -109,7 +114,7 @@ function install_form( $error = null ) {
 	$admin_password = isset( $_POST['admin_password'] ) ? trim( unslash( $_POST['admin_password'] ) ) : '';
 ?>
 	<section>
-		<p>Benvenuto all'installer di KYSS!</p>
+		<p>Benvenuto nell'installer di KYSS!</p>
 		<p>Abbiamo bisogno di alcune informazioni, ma ti basteranno solamente cinque minuti.</p>
 	</section>
 <?php
@@ -198,5 +203,6 @@ function install_validate() {
 
 	if ( $error === false ) {
 		$result = kyss_install( $name, $admin_name, $admin_surname, $admin_email, slash( $admin_password ) );
+		extract( $result, EXTR_SKIP );
 	}
 }

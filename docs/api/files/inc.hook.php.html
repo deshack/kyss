@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-7074204"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1256365406"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-7074204" class="accordion-body collapse in">
+            <div id="namespace-1256365406" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -168,17 +168,23 @@
                                                                     </nav>
 
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
-                    <h1><small>inc/classes</small>kyss-error.php</h1>
-                    <p><em>KYSS Error API.</em></p>
-                    <p>Contains the KYSS_Error class and the is_kyss_error() function.</p>
+                    <h1><small>inc</small>hook.php</h1>
+                    <p><em>The Hook API is located in this file, which allows for creating hooking
+functions and methods. The functions or methods will then be run when the
+hook is called.</em></p>
+                    <p>The API callback example reference functions, but can be methods of classes.
+To hook methods, you'll need to pas an array one of two ways.</p>
+<p>Any of the syntaxes explained in the PHP documentation for the
+{@link(callback, <a href="http://us2.php.net/manual/en/language.pseudo-types.php#language.types.callback">http://us2.php.net/manual/en/language.pseudo-types.php#language.types.callback</a>)}
+type are valid.</p>
 
                     
                     
                                         <h2>Classes</h2>
                     <table class="table table-hover">
                                             <tr>
-                            <td><a href="../classes/KYSS_Error.html">KYSS_Error</a></td>
-                            <td><em>KYSS Error Class.</em></td>
+                            <td><a href="../classes/KYSS_Hook.html">KYSS_Hook</a></td>
+                            <td><em>Hook Class.</em></td>
                         </tr>
                                         </table>
                                     </div>
@@ -186,87 +192,27 @@
                 <aside class="span4 detailsbar">
                     <dl>
                                                     <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">\KYSS\Errors</div></dd>
+                            <dd><div class="namespace-wrapper">\KYSS\Hook</div></dd>
                         
                         
                     </dl>
                     <h2>Tags</h2>
                     <table class="table table-condensed">
-                                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                                                    <tr>
+                                <th>
+                                    since
+                                </th>
+                                <td>
+                                                                            
+                                                                    </td>
+                            </tr>
                                             </table>
 
                 </aside>
             </div>
 
             
-                        <div class="row-fluid">
-                <section class="span8 content file">
-                    <h2>Functions</h2>
-                </section>
-                <aside class="span4 detailsbar"></aside>
-            </div>
-
-                                        <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_is_kyss_error" name="method_is_kyss_error" class="anchor"></a>
-            <article class="method">
-                <h3 class=" ">is_kyss_error()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">is_kyss_error(mixed <span class="argument">$thing</span>) : bool</pre>
-                <p><em>Check whether a variable is a KYSS Error.</em></p>
-                <p>Returns true if $thing is an object of the KYSS_Error class.</p>
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>mixed</td>
-                                <td>$thing </td>
-                                <td><p>Unknown variable to check.</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    bool
-                                            &mdash; <p>True if KYSS_Error, false if not.</p>
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                    <dt>File</dt>
-                    <dd><a href=""><div class="path-wrapper">inc/classes/kyss-error.php</div></a></dd>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            0.2.0                                
-                                                    </td>
-                    </tr>
-                                    <tr>
-                        <th>
-                            package
-                        </th>
-                        <td>
-                                                                                            <p>KYSS</p>
-                                                    </td>
-                    </tr>
-                                    <tr>
-                        <th>
-                            todo
-                        </th>
-                        <td>
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                            
+            
         </div>
     </section>
 
@@ -276,7 +222,7 @@
             <h3 id="source-view-label"></h3>
         </div>
         <div class="modal-body">
-            <pre data-src="../files/inc/classes/kyss-error.php.txt" class="language-php line-numbers"></pre>
+            <pre data-src="../files/inc/hook.php.txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 

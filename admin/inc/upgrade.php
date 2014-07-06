@@ -36,7 +36,7 @@ require_once(ABSPATH . 'admin/inc/schema.php');
  * @param  string $user_password Optional. First user's password. Defaults to a random password.
  * @return  array Array keys 'url', 'user_id', 'password', 'password_message'.
  */
-function kyss_install( $title, $user_name, $user_email, $user_password = '' ) {
+function kyss_install( $title, $user_name, $user_surname, $user_email, $user_password = '' ) {
 	// The following functions have to be defined in /admin/inc/schema.php
 	//populate_options(); // Create KYSS options and set default values.
 	//populate_roles(); // Create KYSS roles.
