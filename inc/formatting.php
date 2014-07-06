@@ -88,11 +88,12 @@ function slash( $value ) {
  * @see kses::parse()
  *
  * @global  kses
+ * @global  hook
  *
  * @param  string $url The URL to be cleaned.
  */
 function clean_url( $url ) {
-	global $kses;
+	global $kses, $hook;
 
 	$original_url = $url;
 
@@ -124,7 +125,7 @@ function clean_url( $url ) {
 	 * @param  string $clean_url The cleaned URL to be returned.
 	 * @param  string $original_url The URL prior to cleaning.
 	 */
-	//return run_hook( 'clean_url', $clean_url, $original_url );
+	return $hook->run( 'clean_url', $clean_url, $original_url );
 	return $url;
 }
 
@@ -196,10 +197,14 @@ function untrailingslashit( $string ) {
  *
  * @since  0.9.0
  *
+ * @global  hook
+ *
  * @param  string $email Email address to verify.
  * @return string|bool Either false or the valid email address.
  */
 function is_email( $email ) {
+	global $hook;
+
 	if ( strlen( $email ) < 3 ) {
 		/**
 		 * Filter whether an email address is valid.
@@ -215,12 +220,12 @@ function is_email( $email ) {
 		 * @param  string $message An explanatory message to the user.
 		 * @param  string $context Context under which the email was tested.
 		 */
-		return run_hook( 'is_email', false, $email, 'email_too_short' );
+		return $hook->run( 'is_email', false, $email, '', 'email_too_short' );
 	}
 
 	// Test for an @ character after the first position.
 	if ( strpos( $email, '@', 1 ) === false ) {
-		return run_hook( 'is_email', false, $email, 'email_no_at' );
+		return $hook->run( 'is_email', false, $email, '', 'email_no_at' );
 	}
 
 	// Split out the local and domain parts.
@@ -229,18 +234,18 @@ function is_email( $email ) {
 	// LOCAL PART
 	// Test for invalid characters.
 	if ( ! preg_match( '/^[a-zA-Z0-9!#$%&\'*+\/=?^_`{|}~\.-]+$/', $local ) ) {
-		return run_hook( 'is_email', false, $email, 'local_invalid_chars' );
+		return $hook->run( 'is_email', false, $email, '', 'local_invalid_chars' );
 	}
 
 	// DOMAIN PART
 	// Test for sequences of periods.
 	if ( preg_match( '/\.{2}/', $domain ) ) {
-		return run_hook( 'is_email', false, $email, 'domain_period_sequence' );
+		return $hook->run( 'is_email', false, $email, '', 'domain_period_sequence' );
 	}
 
 	// Test for leading and trailing periods and whitespace.
 	if ( trim( $domain, " \t\n\r\0\x0B." ) !== $domain ) {
-		return run_hook( 'is_email', false, $email, 'domain_period_limits' );
+		return $hook->run( 'is_email', false, $email, '', 'domain_period_limits' );
 	}
 
 	// Split the domain into subs.
@@ -248,22 +253,22 @@ function is_email( $email ) {
 
 	// Assume the domain will have at least two subs.
 	if ( 2 > count( $subs ) ) {
-		return run_hook( 'is_email', false, $email, 'domain_no_periods' );
+		return $hook->run( 'is_email', false, $email, '', 'domain_no_periods' );
 	}
 
 	// Loop through each sub.
 	foreach ( $subs as $sub ) {
 		// Test for leading and trailing hyphens and whitespace.
 		if ( trim( $sub, " \t\n\r\0\x0B-" ) !== $sub ) {
-			return run_hook( 'is_email', false, $email, 'sub_hyphen_limits' );
+			return $hook->run( 'is_email', false, $email, '', 'sub_hyphen_limits' );
 		}
 
 		// Test for invalid characters.
 		if ( ! preg_match( '/^[a-z0-9-]+$/i', $sub ) ) {
-			return run_hook( 'is_email', false, $email, 'sub_invalid_chars' );
+			return $hook->run( 'is_email', false, $email, '', 'sub_invalid_chars' );
 		}
 	}
 
 	// Yeah, the email made it!
-	return run_hook( 'is_email', $email, $email, null );
+	return $hook->run( 'is_email', $email, $email, '', null );
 }

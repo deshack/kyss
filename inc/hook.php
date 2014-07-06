@@ -102,7 +102,7 @@ class KYSS_Hook {
 	 * @return  mixed If $callback is omitted, returns boolean for whether the hook has anything registered.
 	 * When checking a specific function, the priority of that hook is returned, or false if the function is not attached.
 	 * When using the $callback argument, this method may return a non-boolean value that evaluates to false (e.g. 0),
-	 * so use the === operator for testing the return value.
+	 * so use the `===` operator for testing the return value.
 	 */
 	public function has( $tag, $callback = false ) {
 		$has = ! empty( $this->hooks[$tag] );

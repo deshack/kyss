@@ -618,12 +618,14 @@ class KYSS_Group {
 	 *
 	 * @since  0.8.0
 	 * @access public
-	 * @uses  run_hook()
+	 * @global  hook
 	 *
 	 * @param  string $perm Permission name.
 	 * @return  bool True if group has permission, false otherwise.
 	 */
 	public function has_permission( $perm ) {
+		global $hook;
+
 		/**
 		 * Filter which permissions a group has.
 		 *
@@ -633,7 +635,7 @@ class KYSS_Group {
 		 * @param  string $perm Permission name.
 		 * @param  string $name Group name.
 		 */
-		$permissions = run_hook( 'group_has_permission', $this->permissions, $perm, $this->name );
+		$permissions = $hook->run( 'group_has_permission', $this->permissions, $perm, $this->name );
 
 		if ( !empty( $permissions[$perm] ) )
 			return $permissions[$perm];

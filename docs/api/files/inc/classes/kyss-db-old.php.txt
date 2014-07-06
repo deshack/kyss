@@ -20,7 +20,7 @@
  * @since  0.9.0 Extend mysqli.
  * @see  http://www.php.net/manual/en/book.mysqli.php mysqli class documentation.
  */
-class KYSS_DB extends mysqli {
+class KYSS_DB_Deprecated extends mysqli {
 
 	/**
 	 * Whether to show SQL/DB errors.

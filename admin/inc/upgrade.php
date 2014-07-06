@@ -30,13 +30,18 @@ require_once(ABSPATH . 'admin/inc/schema.php');
  * @since  0.7.0
  * @todo  Create not existing functions.
  *
+ * @global  hook
+ *
  * @param  string $title Site title.
  * @param  string $user_name First user's name.
+ * @param  string $user_surname First user's surname.
  * @param  string $user_email First user's email.
  * @param  string $user_password Optional. First user's password. Defaults to a random password.
  * @return  array Array keys 'url', 'user_id', 'password', 'password_message'.
  */
 function kyss_install( $title, $user_name, $user_surname, $user_email, $user_password = '' ) {
+	global $hook;
+
 	// The following functions have to be defined in /admin/inc/schema.php
 	//populate_options(); // Create KYSS options and set default values.
 	//populate_roles(); // Create KYSS roles.
@@ -65,11 +70,11 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	/**
 	 * Fires after the application is fully installed.
 	 *
-	 * @since  x.x.x
+	 * @since  0.9.0
 	 *
 	 * @param  KYSS_User $user The site owner.
 	 */
-	//run_hook( 'kyss_install', $user );
+	$hook->run( 'kyss_install', $user );
 	
 	return array('url' => $guessurl, 'user_id' => $user_id, 'password' => $user_password, 'password_message' => $message );
 }
