@@ -85,15 +85,13 @@ function slash( $value ) {
  * The `clean_url` hook is applied to the returned cleaned URL.
  *
  * @since  0.9.0
- * @see kses::parse()
  *
- * @global  kses
  * @global  hook
  *
  * @param  string $url The URL to be cleaned.
  */
 function clean_url( $url ) {
-	global $kses, $hook;
+	global $hook;
 
 	$original_url = $url;
 
@@ -113,7 +111,7 @@ function clean_url( $url ) {
 		$url = 'http://' . $url;
 
 	// Replace ampersands and single quotes with ASCII code.
-	$url = $kses->parse( $url );
+	$url = str_replace('&', '&amp;', $string);
 	$url = str_replace( '&amp;', '&#038;', $url );
 	$url = str_replace( "'", '&#039;', $url );
 
