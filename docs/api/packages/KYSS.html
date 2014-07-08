@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>     &raquo; \KYSS
+</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+            <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+            <!--[if lt IE 9]>
+        <script src="https://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+        <![endif]-->
+        <script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script>
+        <script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
+        <script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script>
+        <script src="../js/bootstrap.js" type="text/javascript"></script>
+        <script src="../js/template.js" type="text/javascript"></script>
+        <script src="../js/prettify/prettify.min.js" type="text/javascript"></script>
+    
+            <link rel="shortcut icon" href="../img/favicon.ico"/>
+        <link rel="apple-touch-icon" href="../img/apple-touch-icon.png"/>
+        <link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png"/>
+        <link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png"/>
+    </head>
+<body>
+
+        <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span> <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> </a>
+                <a class="brand" href="../index.html">KYSS Reference</a>
+
+                <div class="nav-collapse">
+                    <ul class="nav">
+                        <li class="dropdown">
+                            <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                API Documentation <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                                                                            </ul>
+                        </li>
+                        <li class="dropdown" id="charts-menu">
+                            <a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                Charts <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="../graph_class.html">
+                                        <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown" id="reports-menu">
+                            <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                Reports <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="../errors.html">
+                                        <i class="icon-list-alt"></i>&#160;Errors
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="../markers.html">
+                                        <i class="icon-list-alt"></i>&#160;Markers
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="../deprecated.html">
+                                        <i class="icon-list-alt"></i>&#160;Deprecated
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="go_to_top">
+            <a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>
+        </div>
+    </div>
+    
+    <div id="___" class="container">
+        <noscript>
+            <div class="alert alert-warning">
+                Javascript is disabled; several features are only available if Javascript is enabled.
+            </div>
+        </noscript>
+
+        
+            
+    <div class="row">
+
+        <div class="span4">
+            <div class="btn-group view pull-right" data-toggle="buttons-radio">
+                <button class="btn details" title="Show descriptions and method names">
+                    <i class="icon-list"></i></button><button class="btn simple" title="Show only method names">
+                    <i class="icon-align-justify"></i>
+                </button>
+            </div>
+            <ul class="side-nav nav nav-list">
+                <li class="nav-header">
+                    <i class="icon-map-marker"></i> Packages
+                </li>
+                    
+        <li>
+        <a href="../packages/KYSS.kses.html" title="kses">
+            <i class="icon-th"></i> kses
+        </a>
+        <ul class="nav nav-list nav-packages">
+                
+    
+        </ul>
+    </li>
+        <li>
+        <a href="../packages/KYSS.API.html" title="API">
+            <i class="icon-th"></i> API
+        </a>
+        <ul class="nav nav-list nav-packages">
+                
+    
+        </ul>
+    </li>
+        <li>
+        <a href="../packages/KYSS.Loader.html" title="Loader">
+            <i class="icon-th"></i> Loader
+        </a>
+        <ul class="nav nav-list nav-packages">
+                
+    
+        </ul>
+    </li>
+        <li>
+        <a href="../packages/KYSS.DB.html" title="DB">
+            <i class="icon-th"></i> DB
+        </a>
+        <ul class="nav nav-list nav-packages">
+                
+    
+        </ul>
+    </li>
+        <li>
+        <a href="../packages/KYSS.Setup.html" title="Setup">
+            <i class="icon-th"></i> Setup
+        </a>
+        <ul class="nav nav-list nav-packages">
+                
+    
+        </ul>
+    </li>
+        <li>
+        <a href="../packages/KYSS.Installer.html" title="Installer">
+            <i class="icon-th"></i> Installer
+        </a>
+        <ul class="nav nav-list nav-packages">
+                
+    
+        </ul>
+    </li>
+        <li>
+        <a href="../packages/KYSS.Errors.html" title="Errors">
+            <i class="icon-th"></i> Errors
+        </a>
+        <ul class="nav nav-list nav-packages">
+                
+    
+        </ul>
+    </li>
+        <li>
+        <a href="../packages/KYSS.Hook.html" title="Hook">
+            <i class="icon-th"></i> Hook
+        </a>
+        <ul class="nav nav-list nav-packages">
+                
+    
+        </ul>
+    </li>
+        <li>
+        <a href="../packages/KYSS.User.html" title="User">
+            <i class="icon-th"></i> User
+        </a>
+        <ul class="nav nav-list nav-packages">
+                
+    
+        </ul>
+    </li>
+    
+            </ul>
+        </div>
+
+        <div class="span8 package-contents">
+                
+    <ul class="breadcrumb">
+        <li><a href="../index.html"><i class="icon-th"></i></a></li>
+            
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.html">KYSS</a>
+    </li>
+
+    </ul>
+
+    
+                    <div class="package-indent">
+                <h3><i class="icon-custom icon-function"></i> Functions</h3>
+                                        <div id="kyss_install" class="element ajax clickable function">
+        <h1>kyss_install<a href="../namespaces/.html#function_kyss_install">¶</a></h1>
+        <p class="short_description">Installs the application.</p>
+        <div class="details collapse">{@internal Missing Long Description}</div>
+        <a href="../namespaces/.html#function_kyss_install" class="more">« More »</a>
+    </div>
+
+                                        <div id="generate_password" class="element ajax clickable function">
+        <h1>generate_password<a href="../namespaces/.html#function_generate_password">¶</a></h1>
+        <p class="short_description">Generate strong password.</p>
+        <div class="details collapse">Generates a random password drawn from the defined set of characters.</div>
+        <a href="../namespaces/.html#function_generate_password" class="more">« More »</a>
+    </div>
+
+                                        <div id="randomize" class="element ajax clickable function">
+        <h1>randomize<a href="../namespaces/.html#function_randomize">¶</a></h1>
+        <p class="short_description">Generate random number.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_randomize" class="more">« More »</a>
+    </div>
+
+                                        <div id="kyss_die" class="element ajax clickable function">
+        <h1>kyss_die<a href="../namespaces/.html#function_kyss_die">¶</a></h1>
+        <p class="short_description">Kill KYSS execution and display HTML with error message.</p>
+        <div class="details collapse">This function complements the die() PHP function. The difference is that
+HTML will be displayed to the user. It is recommended to use this function
+only when the execution should nnot continue any further. It is not
+recommended to call this function very often and try to handle as may errors
+as possible silently.</div>
+        <a href="../namespaces/.html#function_kyss_die" class="more">« More »</a>
+    </div>
+
+                                        <div id="dead_db" class="element ajax clickable function">
+        <h1>dead_db<a href="../namespaces/.html#function_dead_db">¶</a></h1>
+        <p class="short_description">Display KYSS DB error.</p>
+        <div class="details collapse">The KYSS DB error sets the HTTP status header to 500 to try to prevent
+search engines from caching this message. CUstom DB messages should do the same.</div>
+        <a href="../namespaces/.html#function_dead_db" class="more">« More »</a>
+    </div>
+
+                                        <div id="kyss_parse_args" class="element ajax clickable function">
+        <h1>kyss_parse_args<a href="../namespaces/.html#function_kyss_parse_args">¶</a></h1>
+        <p class="short_description">Merge user defined arguments into defaults array.</p>
+        <div class="details collapse">This function allows an array to be merged into another array.</div>
+        <a href="../namespaces/.html#function_kyss_parse_args" class="more">« More »</a>
+    </div>
+
+                                        <div id="kyss_guess_url" class="element ajax clickable function">
+        <h1>kyss_guess_url<a href="../namespaces/.html#function_kyss_guess_url">¶</a></h1>
+        <p class="short_description">Guess the URL for the site.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_kyss_guess_url" class="more">« More »</a>
+    </div>
+
+                                        <div id="get_asset_url" class="element ajax clickable function">
+        <h1>get_asset_url<a href="../namespaces/.html#function_get_asset_url">¶</a></h1>
+        <p class="short_description">Retrieve the assets directory URL.</p>
+        <div class="details collapse">If the asset type is not recognized, it returns the main asset directory.
+E.g: `$type = &#039;css&#039; =&gt; $url = &#039;http://www.example.com/assets/css/&#039;`
+`$type = &#039;foo&#039; =&gt; $url = &#039;http://www.example.com/assets/&#039;`</div>
+        <a href="../namespaces/.html#function_get_asset_url" class="more">« More »</a>
+    </div>
+
+                                        <div id="is_ssl" class="element ajax clickable function">
+        <h1>is_ssl<a href="../namespaces/.html#function_is_ssl">¶</a></h1>
+        <p class="short_description">Determine if SSL is used.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_is_ssl" class="more">« More »</a>
+    </div>
+
+                                        <div id="status_header" class="element ajax clickable function">
+        <h1>status_header<a href="../namespaces/.html#function_status_header">¶</a></h1>
+        <p class="short_description">Set HTTP status header.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_status_header" class="more">« More »</a>
+    </div>
+
+                                        <div id="get_status_header_desc" class="element ajax clickable function">
+        <h1>get_status_header_desc<a href="../namespaces/.html#function_get_status_header_desc">¶</a></h1>
+        <p class="short_description">Retrieve the description for the HTTP status.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_get_status_header_desc" class="more">« More »</a>
+    </div>
+
+                                        <div id="nocache_headers" class="element ajax clickable function">
+        <h1>nocache_headers<a href="../namespaces/.html#function_nocache_headers">¶</a></h1>
+        <p class="short_description">Sets the headers to prevent caching for the different browsers.</p>
+        <div class="details collapse">Different browsers support different nocache headers, so several headers
+must be sent so that all of them get the point that no caching should occur.</div>
+        <a href="../namespaces/.html#function_nocache_headers" class="more">« More »</a>
+    </div>
+
+                                        <div id="get_nocache_headers" class="element ajax clickable function">
+        <h1>get_nocache_headers<a href="../namespaces/.html#function_get_nocache_headers">¶</a></h1>
+        <p class="short_description">Gets the header information to prevent caching.</p>
+        <div class="details collapse">The several different headers cover the different ways cache prevention
+is handled by different browsers.</div>
+        <a href="../namespaces/.html#function_get_nocache_headers" class="more">« More »</a>
+    </div>
+
+                                        <div id="add_magic_quotes" class="element ajax clickable function">
+        <h1>add_magic_quotes<a href="../namespaces/.html#function_add_magic_quotes">¶</a></h1>
+        <p class="short_description">Walks the array while sanitizing the contents.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_add_magic_quotes" class="more">« More »</a>
+    </div>
+
+                                        <div id="debug_backtrace_summary" class="element ajax clickable function">
+        <h1>debug_backtrace_summary<a href="../namespaces/.html#function_debug_backtrace_summary">¶</a></h1>
+        <p class="short_description">Get functions that have been called until now.</p>
+        <div class="details collapse">Returns a comma separated string of functions that have been called to get
+to the current point in the code.</div>
+        <a href="../namespaces/.html#function_debug_backtrace_summary" class="more">« More »</a>
+    </div>
+
+                                        <div id="kyss_css" class="element ajax clickable function">
+        <h1>kyss_css<a href="../namespaces/.html#function_kyss_css">¶</a></h1>
+        <p class="short_description">Get stylesheet tag.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_kyss_css" class="more">« More »</a>
+    </div>
+
+                                        <div id="kyss_redirect" class="element ajax clickable function">
+        <h1>kyss_redirect<a href="../namespaces/.html#function_kyss_redirect">¶</a></h1>
+        <p class="short_description">Redirect to another page.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_kyss_redirect" class="more">« More »</a>
+    </div>
+
+                                        <div id="stripslashes_deep" class="element ajax clickable function">
+        <h1>stripslashes_deep<a href="../namespaces/.html#function_stripslashes_deep">¶</a></h1>
+        <p class="short_description">Deep stripslashes.</p>
+        <div class="details collapse">Goes through an array and removes slashes from the values.
+
+If an array is passed, the array_map() function causes a callback to pass the
+value back to the function. The slashes from this value will be removed.</div>
+        <a href="../namespaces/.html#function_stripslashes_deep" class="more">« More »</a>
+    </div>
+
+                                        <div id="unslash" class="element ajax clickable function">
+        <h1>unslash<a href="../namespaces/.html#function_unslash">¶</a></h1>
+        <p class="short_description">Remove slashes from a string or array of strings.</p>
+        <div class="details collapse">This should be used to remove slashes from data passed to core API that
+expects data to be unslashed.</div>
+        <a href="../namespaces/.html#function_unslash" class="more">« More »</a>
+    </div>
+
+                                        <div id="slash" class="element ajax clickable function">
+        <h1>slash<a href="../namespaces/.html#function_slash">¶</a></h1>
+        <p class="short_description">Add slashes to a string or array of strings.</p>
+        <div class="details collapse">This should be used when preparing data for core API that expects slashed daata.
+This should not be used to escape data going directly into an SQL query.</div>
+        <a href="../namespaces/.html#function_slash" class="more">« More »</a>
+    </div>
+
+                                        <div id="clean_url" class="element ajax clickable function">
+        <h1>clean_url<a href="../namespaces/.html#function_clean_url">¶</a></h1>
+        <p class="short_description">Check and clean a URL.</p>
+        <div class="details collapse">Eliminates invalid and dangerous characters.
+The `clean_url` hook is applied to the returned cleaned URL.</div>
+        <a href="../namespaces/.html#function_clean_url" class="more">« More »</a>
+    </div>
+
+                                        <div id="_deep_replace" class="element ajax clickable function">
+        <h1>_deep_replace<a href="../namespaces/.html#function__deep_replace">¶</a></h1>
+        <p class="short_description">Perform a deep string replace operation to ensure the values in $search
+are no longer present.</p>
+        <div class="details collapse">Repeats the replacement operation until it no longer replaces anything
+so as to remove &quot;nested&quot; values.
+E.g. `$needle = &#039;%0%0%0DDD&#039;, $haystack = &#039;%0D&#039;, $result = &#039;&#039;` rather than
+the &#039;%0%0DD&#039; that `str_replace()` would return.</div>
+        <a href="../namespaces/.html#function__deep_replace" class="more">« More »</a>
+    </div>
+
+                                        <div id="trailingslashit" class="element ajax clickable function">
+        <h1>trailingslashit<a href="../namespaces/.html#function_trailingslashit">¶</a></h1>
+        <p class="short_description">Appends a trailing slash.</p>
+        <div class="details collapse">Will remove trailing forward and backslashes if it exists already before adding
+a trailing forward slash. This prevents double slashing a string or path.
+
+The primary use of this is for paths and thus should be used for paths. It is
+not restricted to paths and offers no specific path support.</div>
+        <a href="../namespaces/.html#function_trailingslashit" class="more">« More »</a>
+    </div>
+
+                                        <div id="untrailingslashit" class="element ajax clickable function">
+        <h1>untrailingslashit<a href="../namespaces/.html#function_untrailingslashit">¶</a></h1>
+        <p class="short_description">Removes trailing forward slashes and backslashes if they exist.</p>
+        <div class="details collapse">The primary use of this is for paths and thus should be used for paths.
+It is not restricted to paths and offers no specific path support.</div>
+        <a href="../namespaces/.html#function_untrailingslashit" class="more">« More »</a>
+    </div>
+
+                                        <div id="is_email" class="element ajax clickable function">
+        <h1>is_email<a href="../namespaces/.html#function_is_email">¶</a></h1>
+        <p class="short_description">Check if email is valid.</p>
+        <div class="details collapse">Does not grok i18n domains. Not RFC compliant.</div>
+        <a href="../namespaces/.html#function_is_email" class="more">« More »</a>
+    </div>
+
+                                        <div id="install_header" class="element ajax clickable function">
+        <h1>install_header<a href="../namespaces/.html#function_install_header">¶</a></h1>
+        <p class="short_description">Display install header.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_install_header" class="more">« More »</a>
+    </div>
+
+                                        <div id="install_footer" class="element ajax clickable function">
+        <h1>install_footer<a href="../namespaces/.html#function_install_footer">¶</a></h1>
+        <p class="short_description">Display install footer.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_install_footer" class="more">« More »</a>
+    </div>
+
+                                        <div id="install_form" class="element ajax clickable function">
+        <h1>install_form<a href="../namespaces/.html#function_install_form">¶</a></h1>
+        <p class="short_description">Display install form.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_install_form" class="more">« More »</a>
+    </div>
+
+                                        <div id="install_validate" class="element ajax clickable function">
+        <h1>install_validate<a href="../namespaces/.html#function_install_validate">¶</a></h1>
+        <p class="short_description">Validate form data.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_install_validate" class="more">« More »</a>
+    </div>
+
+                                        <div id="get_db_schema" class="element ajax clickable function">
+        <h1>get_db_schema<a href="../namespaces/.html#function_get_db_schema">¶</a></h1>
+        <p class="short_description">Retrieve the SQL for creating database tables.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_get_db_schema" class="more">« More »</a>
+    </div>
+
+                                        <div id="populate_options" class="element ajax clickable function">
+        <h1>populate_options<a href="../namespaces/.html#function_populate_options">¶</a></h1>
+        <p class="short_description">Create KYSS options and set default values.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_populate_options" class="more">« More »</a>
+    </div>
+
+                                        <div id="is_kyss_error" class="element ajax clickable function">
+        <h1>is_kyss_error<a href="../namespaces/.html#function_is_kyss_error">¶</a></h1>
+        <p class="short_description">Check whether a variable is a KYSS Error.</p>
+        <div class="details collapse">Returns true if $thing is an object of the KYSS_Error class.</div>
+        <a href="../namespaces/.html#function_is_kyss_error" class="more">« More »</a>
+    </div>
+
+                                        <div id="load_kyssdb" class="element ajax clickable function">
+        <h1>load_kyssdb<a href="../namespaces/.html#function_load_kyssdb">¶</a></h1>
+        <p class="short_description">Loads the database class.</p>
+        <div class="details collapse">This function is used to load the database class file either at runtime
+or by admin/setup-config.php. Globalize $kyssdb to ensure that it is defined
+globally by the inline code in kyss-db.php.</div>
+        <a href="../namespaces/.html#function_load_kyssdb" class="more">« More »</a>
+    </div>
+
+                                        <div id="kyss_not_installed" class="element ajax clickable function">
+        <h1>kyss_not_installed<a href="../namespaces/.html#function_kyss_not_installed">¶</a></h1>
+        <p class="short_description">Redirect to the installer if KYSS is not installed.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_kyss_not_installed" class="more">« More »</a>
+    </div>
+
+                                        <div id="is_installed" class="element ajax clickable function">
+        <h1>is_installed<a href="../namespaces/.html#function_is_installed">¶</a></h1>
+        <p class="short_description">Check if KYSS is installed.</p>
+        <div class="details collapse">Looks at the database to find if there are KYSS tables.
+If there are only some tables, this function raises an error.</div>
+        <a href="../namespaces/.html#function_is_installed" class="more">« More »</a>
+    </div>
+
+                                        <div id="set_internal_encoding" class="element ajax clickable function">
+        <h1>set_internal_encoding<a href="../namespaces/.html#function_set_internal_encoding">¶</a></h1>
+        <p class="short_description">Set internal encoding using mb_internal_encoding().</p>
+        <div class="details collapse">In most cases the default internal encoding is latin1, which is of no use,
+since we want to use the mb_ functions for utf-8 strings.</div>
+        <a href="../namespaces/.html#function_set_internal_encoding" class="more">« More »</a>
+    </div>
+
+                                        <div id="kyss_magic_quotes" class="element ajax clickable function">
+        <h1>kyss_magic_quotes<a href="../namespaces/.html#function_kyss_magic_quotes">¶</a></h1>
+        <p class="short_description">Add magic quotes to $_GET, $_POST, $_COOKIE, and $_SERVER.</p>
+        <div class="details collapse">Also forces $_REQUEST to be $_GET + $_POST. If $_SERVER, $_COOKIE,
+or $_ENV are needed, use those superglobals directly.</div>
+        <a href="../namespaces/.html#function_kyss_magic_quotes" class="more">« More »</a>
+    </div>
+
+                                        <div id="debug_mode" class="element ajax clickable function">
+        <h1>debug_mode<a href="../namespaces/.html#function_debug_mode">¶</a></h1>
+        <p class="short_description">Set PHP error handling and handle KYSS debug mode.</p>
+        <div class="details collapse">Uses `DEBUG` constant, that can be defined in config.php.</div>
+        <a href="../namespaces/.html#function_debug_mode" class="more">« More »</a>
+    </div>
+
+                                        <div id="setup_config_header" class="element ajax clickable function">
+        <h1>setup_config_header<a href="../namespaces/.html#function_setup_config_header">¶</a></h1>
+        <p class="short_description">Display setup page header.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_setup_config_header" class="more">« More »</a>
+    </div>
+
+                                        <div id="setup_config_footer" class="element ajax clickable function">
+        <h1>setup_config_footer<a href="../namespaces/.html#function_setup_config_footer">¶</a></h1>
+        <p class="short_description">Display setup page footer.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_setup_config_footer" class="more">« More »</a>
+    </div>
+
+                                        <div id="setup_config_first" class="element ajax clickable function">
+        <h1>setup_config_first<a href="../namespaces/.html#function_setup_config_first">¶</a></h1>
+        <p class="short_description">Display information needed.</p>
+        <div class="details collapse">Displays the informations needed in order to create the config.php file.</div>
+        <a href="../namespaces/.html#function_setup_config_first" class="more">« More »</a>
+    </div>
+
+                                        <div id="setup_config_second" class="element ajax clickable function">
+        <h1>setup_config_second<a href="../namespaces/.html#function_setup_config_second">¶</a></h1>
+        <p class="short_description">Database info form.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_setup_config_second" class="more">« More »</a>
+    </div>
+
+                                        <div id="setup_config_third" class="element ajax clickable function">
+        <h1>setup_config_third<a href="../namespaces/.html#function_setup_config_third">¶</a></h1>
+        <p class="short_description">Check Database Name and redirect to the correct step.</p>
+        <div class="details collapse">Stores posted values in the $_SESSION superglobal array.</div>
+        <a href="../namespaces/.html#function_setup_config_third" class="more">« More »</a>
+    </div>
+
+                                        <div id="setup_config_create_form" class="element ajax clickable function">
+        <h1>setup_config_create_form<a href="../namespaces/.html#function_setup_config_create_form">¶</a></h1>
+        <p class="short_description">Database creation form.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_setup_config_create_form" class="more">« More »</a>
+    </div>
+
+                                        <div id="setup_config_create" class="element ajax clickable function">
+        <h1>setup_config_create<a href="../namespaces/.html#function_setup_config_create">¶</a></h1>
+        <p class="short_description">Create new database.</p>
+        <div class="details collapse">Attempts to create a new database. If the user doesn&#039;t have the appropriate permissions,
+the creation fails and an error will be displayed.</div>
+        <a href="../namespaces/.html#function_setup_config_create" class="more">« More »</a>
+    </div>
+
+                                        <div id="setup_config_write" class="element ajax clickable function">
+        <h1>setup_config_write<a href="../namespaces/.html#function_setup_config_write">¶</a></h1>
+        <p class="short_description">Write configuration file.</p>
+        <div class="details collapse">If the KYSS root directory is writable creates the config.php file, otherwise
+displays the generated content and requests the user to create the file manually.</div>
+        <a href="../namespaces/.html#function_setup_config_write" class="more">« More »</a>
+    </div>
+
+                                        <div id="setup_config_session_destroy" class="element ajax clickable function">
+        <h1>setup_config_session_destroy<a href="../namespaces/.html#function_setup_config_session_destroy">¶</a></h1>
+        <p class="short_description">Destroy session.</p>
+        <div class="details collapse">Unsets session variables, deletes session cookie and destroys the session.</div>
+        <a href="../namespaces/.html#function_setup_config_session_destroy" class="more">« More »</a>
+    </div>
+
+                                        <div id="initial_constants" class="element ajax clickable function">
+        <h1>initial_constants<a href="../namespaces/.html#function_initial_constants">¶</a></h1>
+        <p class="short_description">Define initial KYSS constants.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#function_initial_constants" class="more">« More »</a>
+    </div>
+
+                            </div>
+        
+                    <div class="package-indent">
+                <h3><i class="icon-custom icon-constant"></i> Constants</h3>
+                                        <div id="KSES" class="element ajax clickable constant">
+        <h1>KSES<a href="../namespaces/.html#constant_KSES">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_KSES" class="more">« More »</a>
+    </div>
+
+                                        <div id="INC" class="element ajax clickable constant">
+        <h1>INC<a href="../namespaces/.html#constant_INC">¶</a></h1>
+        <p class="short_description">Stores the location of the KYSS directory of functions, classes, and core content.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_INC" class="more">« More »</a>
+    </div>
+
+                                        <div id="CLASSES" class="element ajax clickable constant">
+        <h1>CLASSES<a href="../namespaces/.html#constant_CLASSES">¶</a></h1>
+        <p class="short_description">Stores the location of the KYSS directory of classes.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_CLASSES" class="more">« More »</a>
+    </div>
+
+                                        <div id="DB_HOST" class="element ajax clickable constant">
+        <h1>DB_HOST<a href="../namespaces/.html#constant_DB_HOST">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_DB_HOST" class="more">« More »</a>
+    </div>
+
+                                        <div id="DB_USER" class="element ajax clickable constant">
+        <h1>DB_USER<a href="../namespaces/.html#constant_DB_USER">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_DB_USER" class="more">« More »</a>
+    </div>
+
+                                        <div id="DB_PASS" class="element ajax clickable constant">
+        <h1>DB_PASS<a href="../namespaces/.html#constant_DB_PASS">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_DB_PASS" class="more">« More »</a>
+    </div>
+
+                                        <div id="DB_NAME" class="element ajax clickable constant">
+        <h1>DB_NAME<a href="../namespaces/.html#constant_DB_NAME">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_DB_NAME" class="more">« More »</a>
+    </div>
+
+                                        <div id="ABSPATH" class="element ajax clickable constant">
+        <h1>ABSPATH<a href="../namespaces/.html#constant_ABSPATH">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_ABSPATH" class="more">« More »</a>
+    </div>
+
+                                        <div id="ABSPATH" class="element ajax clickable constant">
+        <h1>ABSPATH<a href="../namespaces/.html#constant_ABSPATH">¶</a></h1>
+        <p class="short_description">Absolute path to KYSS.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_ABSPATH" class="more">« More »</a>
+    </div>
+
+                                        <div id="INC" class="element ajax clickable constant">
+        <h1>INC<a href="../namespaces/.html#constant_INC">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_INC" class="more">« More »</a>
+    </div>
+
+                                        <div id="INSTALLING" class="element ajax clickable constant">
+        <h1>INSTALLING<a href="../namespaces/.html#constant_INSTALLING">¶</a></h1>
+        <p class="short_description">We are installing KYSS.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_INSTALLING" class="more">« More »</a>
+    </div>
+
+                                        <div id="INSTALLING" class="element ajax clickable constant">
+        <h1>INSTALLING<a href="../namespaces/.html#constant_INSTALLING">¶</a></h1>
+        <p class="short_description">We are installing.</p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_INSTALLING" class="more">« More »</a>
+    </div>
+
+                                        <div id="ABSPATH" class="element ajax clickable constant">
+        <h1>ABSPATH<a href="../namespaces/.html#constant_ABSPATH">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_ABSPATH" class="more">« More »</a>
+    </div>
+
+                                        <div id="INC" class="element ajax clickable constant">
+        <h1>INC<a href="../namespaces/.html#constant_INC">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_INC" class="more">« More »</a>
+    </div>
+
+                                        <div id="DB_HOST" class="element ajax clickable constant">
+        <h1>DB_HOST<a href="../namespaces/.html#constant_DB_HOST">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_DB_HOST" class="more">« More »</a>
+    </div>
+
+                                        <div id="DB_USER" class="element ajax clickable constant">
+        <h1>DB_USER<a href="../namespaces/.html#constant_DB_USER">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_DB_USER" class="more">« More »</a>
+    </div>
+
+                                        <div id="DB_PASS" class="element ajax clickable constant">
+        <h1>DB_PASS<a href="../namespaces/.html#constant_DB_PASS">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_DB_PASS" class="more">« More »</a>
+    </div>
+
+                                        <div id="DB_NAME" class="element ajax clickable constant">
+        <h1>DB_NAME<a href="../namespaces/.html#constant_DB_NAME">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_DB_NAME" class="more">« More »</a>
+    </div>
+
+                                        <div id="DEBUG" class="element ajax clickable constant">
+        <h1>DEBUG<a href="../namespaces/.html#constant_DEBUG">¶</a></h1>
+        <p class="short_description"></p>
+        <div class="details collapse"></div>
+        <a href="../namespaces/.html#constant_DEBUG" class="more">« More »</a>
+    </div>
+
+                            </div>
+        
+            
+                
+    <ul class="breadcrumb">
+        <li><a href="../index.html"><i class="icon-th"></i></a></li>
+            
+                
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.html">KYSS</a>
+    </li>
+
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.kses.html">kses</a>
+    </li>
+
+    </ul>
+
+    
+    
+                
+    <ul class="breadcrumb">
+        <li><a href="../index.html"><i class="icon-th"></i></a></li>
+            
+                
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.html">KYSS</a>
+    </li>
+
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.API.html">API</a>
+    </li>
+
+    </ul>
+
+    
+    
+                
+    <ul class="breadcrumb">
+        <li><a href="../index.html"><i class="icon-th"></i></a></li>
+            
+                
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.html">KYSS</a>
+    </li>
+
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.Loader.html">Loader</a>
+    </li>
+
+    </ul>
+
+    
+    
+                
+    <ul class="breadcrumb">
+        <li><a href="../index.html"><i class="icon-th"></i></a></li>
+            
+                
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.html">KYSS</a>
+    </li>
+
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.DB.html">DB</a>
+    </li>
+
+    </ul>
+
+    
+        
+        
+                    <div class="package-indent">
+                <h3><i class="icon-custom icon-class"></i> Classes, interfaces and traits</h3>
+                
+                
+                                        <div id="KYSS_DB" class="element ajax clickable class">
+        <h1>KYSS_DB<a href="../classes/KYSS_DB.html">¶</a></h1>
+        <p class="short_description">KYSS DB Class</p>
+        <div class="details collapse">Uses MySQLi PHP extension, because as of PHP5.5 the MySQL extension is deprecated.</div>
+        <a href="../classes/KYSS_DB.html" class="more">« More »</a>
+    </div>
+
+                                        <div id="KYSS_DB_Deprecated" class="element ajax clickable class">
+        <h1>KYSS_DB_Deprecated<a href="../classes/KYSS_DB_Deprecated.html">¶</a></h1>
+        <p class="short_description">KYSS DB Class</p>
+        <div class="details collapse">Uses MySQLi PHP extension, because as of PHP5.5 the MySQL extension is deprecated.</div>
+        <a href="../classes/KYSS_DB_Deprecated.html" class="more">« More »</a>
+    </div>
+
+                            </div>
+            
+    
+                
+    <ul class="breadcrumb">
+        <li><a href="../index.html"><i class="icon-th"></i></a></li>
+            
+                
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.html">KYSS</a>
+    </li>
+
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.Setup.html">Setup</a>
+    </li>
+
+    </ul>
+
+    
+    
+                
+    <ul class="breadcrumb">
+        <li><a href="../index.html"><i class="icon-th"></i></a></li>
+            
+                
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.html">KYSS</a>
+    </li>
+
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.Installer.html">Installer</a>
+    </li>
+
+    </ul>
+
+    
+    
+                
+    <ul class="breadcrumb">
+        <li><a href="../index.html"><i class="icon-th"></i></a></li>
+            
+                
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.html">KYSS</a>
+    </li>
+
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.Errors.html">Errors</a>
+    </li>
+
+    </ul>
+
+    
+        
+        
+                    <div class="package-indent">
+                <h3><i class="icon-custom icon-class"></i> Classes, interfaces and traits</h3>
+                
+                
+                                        <div id="KYSS_Error" class="element ajax clickable class">
+        <h1>KYSS_Error<a href="../classes/KYSS_Error.html">¶</a></h1>
+        <p class="short_description">KYSS Error Class.</p>
+        <div class="details collapse">Container for checking for KYSS errors and error messages.
+Return KYSS_Error and use {@link is_kyss_error()} to check if this class
+is returned. Many KYSS functions pass this class in the event of an error
+and if not handled properly will result in code errors.</div>
+        <a href="../classes/KYSS_Error.html" class="more">« More »</a>
+    </div>
+
+                            </div>
+            
+    
+                
+    <ul class="breadcrumb">
+        <li><a href="../index.html"><i class="icon-th"></i></a></li>
+            
+                
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.html">KYSS</a>
+    </li>
+
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.Hook.html">Hook</a>
+    </li>
+
+    </ul>
+
+    
+        
+        
+                    <div class="package-indent">
+                <h3><i class="icon-custom icon-class"></i> Classes, interfaces and traits</h3>
+                
+                
+                                        <div id="KYSS_Hook" class="element ajax clickable class">
+        <h1>KYSS_Hook<a href="../classes/KYSS_Hook.html">¶</a></h1>
+        <p class="short_description">Hook Class.</p>
+        <div class="details collapse">Handles the creation of hooking functions and methods, which will than be run
+when the hook is called.</div>
+        <a href="../classes/KYSS_Hook.html" class="more">« More »</a>
+    </div>
+
+                            </div>
+            
+    
+                
+    <ul class="breadcrumb">
+        <li><a href="../index.html"><i class="icon-th"></i></a></li>
+            
+                
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.html">KYSS</a>
+    </li>
+
+    
+    <li>
+        <span class="divider">\</span><a href="../packages/KYSS.User.html">User</a>
+    </li>
+
+    </ul>
+
+    
+        
+        
+                    <div class="package-indent">
+                <h3><i class="icon-custom icon-class"></i> Classes, interfaces and traits</h3>
+                
+                
+                                        <div id="KYSS_User" class="element ajax clickable class">
+        <h1>KYSS_User<a href="../classes/KYSS_User.html">¶</a></h1>
+        <p class="short_description">KYSS User class.</p>
+        <div class="details collapse"></div>
+        <a href="../classes/KYSS_User.html" class="more">« More »</a>
+    </div>
+
+                                        <div id="KYSS_Groups" class="element ajax clickable class">
+        <h1>KYSS_Groups<a href="../classes/KYSS_Groups.html">¶</a></h1>
+        <p class="short_description">KYSS Groups class.</p>
+        <div class="details collapse"></div>
+        <a href="../classes/KYSS_Groups.html" class="more">« More »</a>
+    </div>
+
+                                        <div id="KYSS_Group" class="element ajax clickable class">
+        <h1>KYSS_Group<a href="../classes/KYSS_Group.html">¶</a></h1>
+        <p class="short_description">KYSS Group class.</p>
+        <div class="details collapse"></div>
+        <a href="../classes/KYSS_Group.html" class="more">« More »</a>
+    </div>
+
+                            </div>
+            
+    
+    
+        </div>
+    </div>
+    </div>
+
+        <footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
+            <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
+            generated on Sun, 06 Jul 2014 15:02:58 +0200.<br/>
+    </footer>
+    </body>
+</html>
