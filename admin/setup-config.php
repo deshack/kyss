@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Create the config.php file.
  *
@@ -11,8 +10,12 @@
  * @subpackage  Setup
  */
 
+namespace admin\setup_config;
+
 /**
  * We are installing.
+ *
+ * define() defines constants in the global namespace. This is fine for us.
  *
  * @since  0.3.0
  * @var  bool
@@ -48,29 +51,30 @@ $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : 0;
 
 switch($step) {
 	case 0:
-		setup_config_header();
-		setup_config_first();
-		setup_config_footer();
+		display_header();
+		first();
+		footer();
 		break;
 	case 1:
-		setup_config_header();
-		setup_config_second();
-		setup_config_footer();
+		display_header();
+		second();
+		footer();
 		break;
 	case 2:
-		setup_config_third();
+		third();
 		break;
 	case 3:
-		setup_config_header();
-		setup_config_create_form();
-		setup_config_footer();
+		display_header();
+		form();
+		footer();
 		break;
 	case 4:
-		setup_config_create();
+		create();
 		break;
 	case 5:
-		setup_config_write();
-		setup_config_session_destroy();
+		write();
+		// Note: this references the namespaced session_destroy() function, not the global one.
+		session_destroy();
 		break;
 }
 
@@ -82,9 +86,10 @@ switch($step) {
  *
  * @return  null
  */
-function setup_config_header() {
+function display_header() {
 	global $kyss_version;
 
+	// Use the global header() function.
 	header( 'Content-Type: text/html; charset=utf-8');
 ?>
 <!DOCTYPE html>
@@ -118,7 +123,7 @@ function setup_config_header() {
 <div class="container">
 	<h1 id="logo">KYSS</h1>
 <?php
-} // End setup_config_header()
+} // End display_header()
 
 /**
  * Display setup page footer.
@@ -126,7 +131,7 @@ function setup_config_header() {
  * @since  0.3.0
  * @global  step
  */
-function setup_config_footer() {
+function footer() {
 	global $step;
 
 	if ( $step == 1 ) :
@@ -150,7 +155,7 @@ button.onclick = function() {
 </html>
 <?php
 	endif;
-} // End setup_config_footer()
+} // End footer()
 
 /**
  * Display information needed.
@@ -159,7 +164,7 @@ button.onclick = function() {
  *
  * @since  0.3.0
  */
-function setup_config_first() {
+function first() {
 ?>
 	<p>Benvenuto su KYSS. Per continuare abbiamo bisogno delle seguenti informazioni sul database:</p>
 	<ol>
@@ -171,14 +176,14 @@ function setup_config_first() {
 	<p>Se non hai gi&agrave; un database ma l'utente ha i permessi necessari, lo creeremo successivamente.</p>
 	<p><a href="setup-config.php?step=1" class="button primary">Comincia</a></p>
 <?php
-} // End setup_config_first()
+} // End first()
 
 /**
  * Database info form.
  *
  * @since  0.3.0
  */
-function setup_config_second() {
+function second() {
 	$dbhost = isset($_SESSION['dbhost']) ? $_SESSION['dbhost'] : 'localhost';
 	$dbuser = isset($_SESSION['dbuser']) ? ' value="' . $_SESSION['dbuser'] . '"' : '';
 	$dbname = isset($_SESSION['dbname']) ? ' value="' . $_SESSION['dbname'] . '"' : '';
@@ -212,7 +217,7 @@ function setup_config_second() {
 	</fieldset>
 </form>
 <?php
-} // End setup_config_second()
+} // End second()
 
 /**
  * Check Database Name and redirect to the correct step.
@@ -221,7 +226,7 @@ function setup_config_second() {
  *
  * @since  0.9.0
  */
-function setup_config_third() {
+function third() {
 	if ( ! isset( $_POST['dbname'] ) || empty( $_POST['dbname'] ) )
 		$_POST['dbname'] = '';
 
@@ -235,14 +240,14 @@ function setup_config_third() {
 		header("location:setup-config.php?step=5");
 		exit;
 	}
-}
+} // End third()
 
 /**
  * Database creation form.
  *
  * @since  0.9.0
  */
-function setup_config_create_form() {
+function form() {
 ?>
 <form method="post" action="setup-config.php?step=4">
 	<fieldset>
@@ -256,7 +261,7 @@ function setup_config_create_form() {
 	</fieldset>
 </form>
 <?php
-} // End setup_config_create_form()
+} // End form()
 
 /**
  * Create new database.
@@ -267,7 +272,7 @@ function setup_config_create_form() {
  * @since  0.9.0
  * @global  kyssdb
  */
-function setup_config_create() {
+function create() {
 	global $kyssdb;
 
 	$tryagain = '</p><p><a href="setup-config.php?step=2" onclick="javascript:history.go(-2);return false;" class="button primary">Riprova</a>';
@@ -275,6 +280,8 @@ function setup_config_create() {
 	$_SESSION['dbname'] = trim( stripslashes_deep( $_POST['dbname'] ) );
 
 	// Test database connection.
+	// Again, the use of define() allows us to define constants in the global namespace.
+	// This is fine here.
 	define('DB_HOST', $_SESSION['dbhost']);
 	define('DB_USER', $_SESSION['dbuser']);
 	define('DB_PASS', $_SESSION['dbpass']);
@@ -306,7 +313,7 @@ function setup_config_create() {
  *
  * @since  0.9.0
  */
-function setup_config_write() {
+function write() {
 	$config_file = ABSPATH . 'config.php';
 
 	define('DB_HOST', $_SESSION['dbhost']);
@@ -346,7 +353,7 @@ if ( !defined('ABSPATH') )
 require_once(ABSPATH . 'settings.php');";
 
 	if ( ! is_writable(ABSPATH) ) :
-		setup_config_header();
+		display_header();
 ?>
 	<p>Spiacente, non posso creare il file <code>config.php</code></p>
 	<p>Puoi crearlo manualmente ed incollare il testo seguente al suo interno.</p>
@@ -363,19 +370,19 @@ require_once(ABSPATH . 'settings.php');";
 })();
 	</script>
 <?php
-		setup_config_footer();
+		footer();
 	else :
 		// We can write into the ABSPATH directory!
 		$handle = fopen( $config_file, 'w' );
-	fwrite( $handle, $content );
-	// Change file permissions for security reasons.
-	chmod( $config_file, 0666 );
-	setup_config_header();
+		fwrite( $handle, $content );
+		// Change file permissions for security reasons.
+		chmod( $config_file, 0666 );
+		display_header();
 ?>
 	<p>Perfetto! Hai superato la parte pi&ugrave; difficile dell'installazione. KYSS ora pu&ograve; comunicare con il tuo database. Se sei pronto&hellip;</p>
 	<p><a href="install.php" class="button primary">Installa</a></p>
 <?php
-		setup_config_footer();
+		footer();
 	endif; // !is_writable(ABSPATH)
 }
 
@@ -388,7 +395,7 @@ require_once(ABSPATH . 'settings.php');";
  * 
  * @return null
  */
-function setup_config_session_destroy() {
+function session_destroy() {
 	// Unset session variables.
 	$_SESSION = array();
 	// Delete session cookie
@@ -398,5 +405,6 @@ function setup_config_session_destroy() {
 		setcookie($sname, '', time() - 42000, $par['path'], $par['domain'], $par['secure'], $par['httponly']);
 	}
 	// Destroy session.
-	session_destroy();
+	// Use global session_destroy().
+	\session_destroy();
 }

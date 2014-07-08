@@ -62,6 +62,7 @@ kyss_not_installed();
 // ToDo: Require all needed files.
 require(INC . 'formatting.php');
 require(CLASSES . 'kses.php');
+require(CLASSES . 'hook.php');
 
 // Load pluggable functions.
 require(INC . 'pluggable.php');
