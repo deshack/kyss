@@ -37,7 +37,6 @@ require_once(INC . 'functions.php');
 require_once(INC . 'load.php');
 require_once(INC . 'formatting.php');
 require_once(INC . 'classes/kyss-error.php');
-require_once(INC . 'classes/kses.php');
 require_once(INC . 'classes/hook.php');
 
 // Check if config.php has been created.

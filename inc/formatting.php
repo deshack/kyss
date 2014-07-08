@@ -111,7 +111,7 @@ function clean_url( $url ) {
 		$url = 'http://' . $url;
 
 	// Replace ampersands and single quotes with ASCII code.
-	$url = str_replace('&', '&amp;', $string);
+	$url = str_replace('&', '&amp;', $url);
 	$url = str_replace( '&amp;', '&#038;', $url );
 	$url = str_replace( "'", '&#039;', $url );
 
