@@ -42,6 +42,8 @@ require_once(ABSPATH . 'admin/inc/schema.php');
 function kyss_install( $title, $user_name, $user_surname, $user_email, $user_password = '' ) {
 	global $hook;
 
+	populate_db();
+
 	// The following functions have to be defined in /admin/inc/schema.php
 	//populate_options(); // Create KYSS options and set default values.
 	//populate_roles(); // Create KYSS roles.

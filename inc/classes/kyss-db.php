@@ -103,6 +103,17 @@ class KYSS_DB extends mysqli {
 	public $last_error;
 
 	/**
+	 * List of KYSS tables.
+	 *
+	 * @since  0.9.0
+	 * @access private
+	 * @var  array
+	 */
+	private $tables = array( 'utenti', 'cariche', 'pratiche', 'eventi', 'talk',
+		'riunioni', 'corsi', 'iscritti', 'verbali', 'bilanci', 'movimenti',
+		'presenti' );
+
+	/**
 	 * Connect to the database server.
 	 *
 	 * Does the actual setting up of the class properties and
@@ -114,6 +125,9 @@ class KYSS_DB extends mysqli {
 	 * @since  0.1.0
 	 * @access public
 	 *
+	 * @see  KYSS_DB::setup_table_names()
+	 * @see  KYSS_DB::get_port_or_socket()
+	 *
 	 * @param  string $dbhost MySQL database host.
 	 * @param  string $dbuser MySQL database user.
 	 * @param  string $dbpass MySQL database password.
@@ -121,8 +135,7 @@ class KYSS_DB extends mysqli {
 	 * @return  Returns an object which represents the connection to a MySQL server.
 	 */
 	public function __construct( $dbhost, $dbuser, $dbpass, $dbname = '' ) {
-		// Initialize charset
-		//$this->init_charset()
+		$this->setup_table_names();
 		
 		$this->dbhost = $dbhost;
 		$this->dbuser = $dbuser;
@@ -137,6 +150,18 @@ class KYSS_DB extends mysqli {
 			$title = '<h1>Error establishing a database connection</h1>';
 			$message = $title . '<p>' . $this->connect_error . '</p>';
 			$this->raise_error( $message, $this->connect_errno );
+		}
+	}
+
+	/**
+	 * Save each table name in its own property.
+	 *
+	 * @since  0.9.0
+	 * @access private
+	 */
+	private function setup_table_names() {
+		foreach ( $this->tables as $name ) {
+			$this->{$name} = $name;
 		}
 	}
 
@@ -237,6 +262,6 @@ class KYSS_DB extends mysqli {
 			$this->last_error = new KYSS_Error( $code, $message );
 		else
 			return false;
-		kyss_die( $message );
+		kyss_die( $this->last_error );
 	}
 }
