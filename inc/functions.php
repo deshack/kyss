@@ -11,7 +11,7 @@
  *
  * This function complements the die() PHP function. The difference is that
  * HTML will be displayed to the user. It is recommended to use this function
- * only when the execution should nnot continue any further. It is not
+ * only when the execution should not continue any further. It is not
  * recommended to call this function very often and try to handle as may errors
  * as possible silently.
  *
@@ -67,7 +67,6 @@ function kyss_die( $message = '', $title = '', $args = array() ) {
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?php echo $title; ?></title>
 	<link rel="stylesheet" type="text/css" href="/assets/css/install.css" />
-	<link rel="stylesheet" type="text/css" href="/assets/css/buttons.css" />
 </head>
 <body id="error-page">
 <div class="container">
