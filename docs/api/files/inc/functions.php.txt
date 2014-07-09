@@ -11,7 +11,7 @@
  *
  * This function complements the die() PHP function. The difference is that
  * HTML will be displayed to the user. It is recommended to use this function
- * only when the execution should nnot continue any further. It is not
+ * only when the execution should not continue any further. It is not
  * recommended to call this function very often and try to handle as may errors
  * as possible silently.
  *
@@ -67,7 +67,6 @@ function kyss_die( $message = '', $title = '', $args = array() ) {
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?php echo $title; ?></title>
 	<link rel="stylesheet" type="text/css" href="/assets/css/install.css" />
-	<link rel="stylesheet" type="text/css" href="/assets/css/buttons.css" />
 </head>
 <body id="error-page">
 <div class="container">
@@ -468,4 +467,40 @@ function kyss_redirect($location, $status = 302) {
 	header("Location: $location", true, $status);
 
 	return true;
+}
+
+/**
+ * Serialize data, if needed.
+ *
+ * @since  0.9.0
+ *
+ * @param  mixed $data Data that might be serialized.
+ * @return mixed A scalar data.
+ */
+function kyss_serialize( $data ) {
+	if ( is_array( $data ) || is_object( $data ) )
+		return serialize( $data );
+
+	return $data;
+}
+
+/**
+ * Unserialize value only if it was serialized.
+ *
+ * If `$data` is not serialized, `unserialize()` returns false
+ * and issues an E_NOTICE. To prevent this to be triggered, we
+ * suppress it with the
+ * {@link(@ operator, http://www.php.net/manual/en/language.operators.errorcontrol.php)}.
+ *
+ * @since  0.9.0
+ *
+ * @param  string $data Maybe unserialized original data.
+ * @return mixed Unserialized data can be any type.
+ */
+function kyss_unserialize( $data ) {
+	$unserialized = @unserialize( $data );
+
+	if ( false === $unserialized )
+		return $data;
+	return $unserialized;
 }

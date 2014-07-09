@@ -148,9 +148,9 @@ class KYSS_User {
 				return $user;
 		}
 
-		if ( !$user = $kyssdb->get_row( $kyssdb->prepare(
-			"SELECT * FROM $kyssdb->users WHERE $db_field = %s", $value
-		) ) )
+		if ( !$user = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->users} WHERE {$db_field} = {$value}"
+		) )
 			return false;
 
 		return $user;
@@ -360,37 +360,26 @@ class KYSS_Groups {
 	/**
 	 * Constructor.
 	 *
-	 * Calls the KYSS_Groups::_init() method.
+	 * Sets up the object properties.
+	 *
+	 * The `$groups` array must be defined this way:
+	 * ```
+	 * $groups = array( [slug] => array( 'name' => [display_name], 'permissions' => array( [permissions] ) ) );
+	 * ```
 	 *
 	 * @since  0.8.0
 	 * @access public
+	 *
+	 * @param  array $groups List of groups.
 	 */
 	function __construct() {
-		$this->_init();
-	}
-
-	/**
-	 * Set up the object properties.
-	 *
-	 * @since  0.8.0
-	 * @access protected
-	 * @global array user_groups Used to set the 'groups' property value.
-	 *
-	 * @return  null
-	 */
-	protected function _init() {
-		global $user_groups;
-
-		if ( ! empty( $user_groups ) )
-			$this->groups = $user_groups;
-
-		if ( empty( $this->groups ) )
-			return;
+		// Populate default groups.
+		$this->_defaults();
 
 		$this->group_obj = array();
 		$this->group_names = array();
 		foreach ( array_keys( $this->groups ) as $group ) {
-			$this->group_obj[$group] = new KYSS_Group( $group, $this->groups[$groups]['permissions'] );
+			$this->group_obj[$group] = new KYSS_Group( $group, $this->groups[$group]['permissions'] );
 			$this->group_names[$group] = $this->groups[$group]['name'];
 		}
 	}
@@ -495,6 +484,18 @@ class KYSS_Groups {
 	}
 
 	/**
+	 * Retrieve list of group slugs.
+	 *
+	 * @since  0.9.0
+	 * @access public
+	 *
+	 * @return  array List of group slugs.
+	 */
+	public function get_slugs() {
+		return array_keys( $this->groups );
+	}
+
+	/**
 	 * Retrieve list of group names.
 	 *
 	 * @since  0.8.0
@@ -517,6 +518,42 @@ class KYSS_Groups {
 	 */
 	public function is_group( $group ) {
 		return isset( $this->group_names[$group] );
+	}
+
+	/**
+	 * Default groups.
+	 *
+	 * Populates default groups when an object is instantiated.
+	 *
+	 * @since  0.9.0
+	 * @access private
+	 *
+	 * @return  none
+	 */
+	private function _defaults() {
+		$this->groups = array(
+			'collaboratori' => array(
+				'name' => 'Collaboratori',
+				'permissions' => '' ),
+			'ordinari' => array(
+				'name' => 'Soci Ordinari',
+				'permissions' => '' ),
+			'fondatori' => array(
+				'name' => 'Soci Fondatori',
+				'permissions' => '' ),
+			'benemeriti' => array(
+				'name' => 'Soci Benemeriti',
+				'permissions' => '' ),
+			'cd' => array(
+				'name' => 'Consiglio Direttivo',
+				'permissions' => '' ),
+			'rc' => array(
+				'name' => 'Revisori dei Conti',
+				'permissions' => '' ),
+			'admin' => array(
+				'name' => 'Amministratori',
+				'permissions' => '' )
+		);
 	}
 }
 

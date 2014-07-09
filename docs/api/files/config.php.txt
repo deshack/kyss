@@ -14,6 +14,7 @@ define('DB_USER', 'kyss');
 define('DB_PASS', 'Vappatodne.31');
 define('DB_NAME', 'kyss');
 
+define('DEBUG', true);
 
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');

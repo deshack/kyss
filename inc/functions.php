@@ -468,3 +468,39 @@ function kyss_redirect($location, $status = 302) {
 
 	return true;
 }
+
+/**
+ * Serialize data, if needed.
+ *
+ * @since  0.9.0
+ *
+ * @param  mixed $data Data that might be serialized.
+ * @return mixed A scalar data.
+ */
+function kyss_serialize( $data ) {
+	if ( is_array( $data ) || is_object( $data ) )
+		return serialize( $data );
+
+	return $data;
+}
+
+/**
+ * Unserialize value only if it was serialized.
+ *
+ * If `$data` is not serialized, `unserialize()` returns false
+ * and issues an E_NOTICE. To prevent this to be triggered, we
+ * suppress it with the
+ * {@link(@ operator, http://www.php.net/manual/en/language.operators.errorcontrol.php)}.
+ *
+ * @since  0.9.0
+ *
+ * @param  string $data Maybe unserialized original data.
+ * @return mixed Unserialized data can be any type.
+ */
+function kyss_unserialize( $data ) {
+	$unserialized = @unserialize( $data );
+
+	if ( false === $unserialized )
+		return $data;
+	return $unserialized;
+}

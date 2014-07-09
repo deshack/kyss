@@ -14,11 +14,17 @@
  * @since  0.9.0
  *
  * @global  kyssdb
+ * @global  kyss_groups
  *
  * @return string The SQL needed to create the KYSS database tables.
  */
 function get_db_schema() {
-	global $kyssdb;
+	global $kyssdb, $kyss_groups;
+
+	if ( isset( $kyss_groups ) )
+		$groups = "set('" . join("','", $kyss_groups->get_slugs() ) . "')";
+	else
+		trigger_error( sprintf( "%s expects <em>\$kyssdb</em> to be set", __FUNCTION__ ), E_USER_ERROR );
 
 	return "CREATE TABLE {$kyssdb->utenti} (
 		`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -27,7 +33,7 @@ function get_db_schema() {
 		`anagrafica`	text,
 		`email`			varchar(30),
 		`telefono`		varchar(15),
-		`gruppo`		set('collaboratori','ordinari','fondatori','benemeriti','cd','rc','admin') DEFAULT 'ordinari',
+		`gruppo`		{$groups} DEFAULT 'ordinari',
 		PRIMARY KEY (`ID`)
 	) ENGINE = InnoDB;
 
@@ -40,7 +46,7 @@ function get_db_schema() {
 		FOREIGN KEY (`utente`) REFERENCES {$kyssdb->utenti}(`ID`)
 			ON UPDATE RESTRICT
 			ON DELETE RESTRICT,
-		UNIQUE(`utente`,`inizio`)
+		UNIQUE (`utente`,`inizio`)
 	) ENGINE = InnoDB;
 
 	CREATE TABLE {$kyssdb->pratiche} (
@@ -169,19 +175,37 @@ function get_db_schema() {
 			ON UPDATE CASCADE
 			ON DELETE CASCADE,
 		FOREIGN KEY (`riunione`) REFERENCES {$kyssdb->riunioni}(`ID`)
-	) ENGINE = InnoDB;"
-	
+	) ENGINE = InnoDB;
+
+	CREATE TABLE {$kyssdb->options} (
+		`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
+		`name`			varchar(64) NOT NULL DEFAULT '',
+		`value`			longtext NOT NULL,
+		PRIMARY KEY (`ID`),
+		UNIQUE (`name`)
+	) ENGINE = InnoDB;";
 }
 
 /**
  * Create KYSS database tables.
  *
  * @since  0.9.0
+ * @see  get_db_schema()
  *
  * @global  kyssdb
+ * @global  hook
  */
 function populate_db() {
-	global $kyssdb;
+	global $kyssdb, $hook;
+
+	/**
+	 * Fires before creating KYSS tables.
+	 *
+	 * @since  0.9.0
+	 */
+	$hook->run( 'populate_db' );
+
+	$kyssdb->query( $kyssdb->real_escape_string( get_db_schema() ) );
 }
 
 /**
@@ -216,10 +240,10 @@ function populate_options() {
 			$value = serialize($value);
 		if ( ! empty($insert) )
 			$insert .= ', ';
-		$insert .= $kyssdb->prepare( "(%s, %s, %s)", $option, $value);
+		$insert .= sprintf( "(%s, %s)", $option, $value);
 	}
 
 	if ( !empty($insert) )
 		// $kyssdb->options is a table name!
-		$kyssdb->query("INSERT INTO $kyssdb->options (option_name, option_value) VALUES " . $insert );
+		$kyssdb->query("INSERT INTO {$kyssdb->options} (name, value) VALUES " . $insert );
 }

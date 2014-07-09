@@ -158,3 +158,19 @@ function debug_mode() {
 		error_reporting( E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR );
 	}
 }
+
+/**
+ * Create KYSS groups.
+ *
+ * @since  0.9.0
+ *
+ * @global  kyss_groups
+ */
+function populate_groups() {
+	global $kyss_groups;
+
+	if ( isset( $kyss_groups ) )
+		return;
+	
+	$kyss_groups = new KYSS_Groups();
+}

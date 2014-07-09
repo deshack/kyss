@@ -103,6 +103,17 @@ class KYSS_DB extends mysqli {
 	public $last_error;
 
 	/**
+	 * List of KYSS tables.
+	 *
+	 * @since  0.9.0
+	 * @access private
+	 * @var  array
+	 */
+	private $tables = array( 'utenti', 'cariche', 'pratiche', 'eventi', 'talk',
+		'riunioni', 'corsi', 'iscritti', 'verbali', 'bilanci', 'movimenti',
+		'presenti', 'options' );
+
+	/**
 	 * Connect to the database server.
 	 *
 	 * Does the actual setting up of the class properties and
@@ -114,6 +125,9 @@ class KYSS_DB extends mysqli {
 	 * @since  0.1.0
 	 * @access public
 	 *
+	 * @see  KYSS_DB::setup_table_names()
+	 * @see  KYSS_DB::get_port_or_socket()
+	 *
 	 * @param  string $dbhost MySQL database host.
 	 * @param  string $dbuser MySQL database user.
 	 * @param  string $dbpass MySQL database password.
@@ -121,8 +135,7 @@ class KYSS_DB extends mysqli {
 	 * @return  Returns an object which represents the connection to a MySQL server.
 	 */
 	public function __construct( $dbhost, $dbuser, $dbpass, $dbname = '' ) {
-		// Initialize charset
-		//$this->init_charset()
+		$this->setup_table_names();
 		
 		$this->dbhost = $dbhost;
 		$this->dbuser = $dbuser;
@@ -137,6 +150,20 @@ class KYSS_DB extends mysqli {
 			$title = '<h1>Error establishing a database connection</h1>';
 			$message = $title . '<p>' . $this->connect_error . '</p>';
 			$this->raise_error( $message, $this->connect_errno );
+		}
+
+		$this->set_charset("utf8");
+	}
+
+	/**
+	 * Save each table name in its own property.
+	 *
+	 * @since  0.9.0
+	 * @access private
+	 */
+	private function setup_table_names() {
+		foreach ( $this->tables as $name ) {
+			$this->{$name} = $name;
 		}
 	}
 
@@ -205,6 +232,45 @@ class KYSS_DB extends mysqli {
 	}
 
 	/**
+	 * Update a row in the table.
+	 *
+	 * @example 
+	 * ```
+	 * kyssdb::update( 'table', array( 'column' => 'foo', 'field' => 'bar' ), array( 'ID' => 1 ) );
+	 * ```
+	 *
+	 * @since  0.9.0
+	 * @access public
+	 *
+	 * @param  string $table Table name.
+	 * @param  array $data Data to update in column => value pairs.
+	 * @param  array $where An associative array of WHERE clauses in column => value pairs.
+	 * @return  int|false The number of rows updated, or false on error.
+	 */
+	public function update( $table, $data, $where ) {
+		if ( ! is_array( $data ) ) {
+			trigger_error( sprintf( "%1$s expects \$data parameter to be an array, %2$s given", __METHOD__, gettype( $data ) ), E_USER_WARNING );
+			return false;
+		} elseif ( ! is_array( $where ) ) {
+			trigger_error( sprintf( "%1$s expects \$where parameter to be an array, $2$s given", __METHOD__, gettype( $where ) ), E_USER_WARNING );
+			return false;
+		}
+
+		$query = array();
+		foreach ( $data as $field => $value ) {
+			$query[] = "`$field` = {$value}";
+		}
+		$wheres = array();
+		foreach ( $where as $field => $value ) {
+			$wheres[] = "`$field` = {$value}";
+		}
+
+		$sql = "UPDATE `$table` SET " . implode( ', ', $query ) . " WHERE " . implode( ' AND ', $wheres );
+
+		return $this->query( $sql );
+	}
+
+	/**
 	 * Look for errors.
 	 *
 	 * Checks if the last execution caused an error.
@@ -237,6 +303,6 @@ class KYSS_DB extends mysqli {
 			$this->last_error = new KYSS_Error( $code, $message );
 		else
 			return false;
-		kyss_die( $message );
+		kyss_die( $this->last_error );
 	}
 }

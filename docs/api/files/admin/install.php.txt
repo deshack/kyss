@@ -6,6 +6,8 @@
  * @subpackage  Installer
  */
 
+namespace admin\install;
+
 // Sanity check.
 if ( false ) :
 ?>
@@ -26,6 +28,8 @@ endif;
 
 /**
  * We are installing KYSS.
+ *
+ * This constant is defined in the global namespace.
  *
  * @since  0.6.0
  * @var  bool
@@ -51,14 +55,14 @@ $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : 0;
 
 switch ( $step ) {
 	case 0:
-		install_header();
-		install_form();
-		install_footer();
+		display_header();
+		form();
+		footer();
 		break;
 	case 1:
-		install_header();
-		install_validate();
-		install_footer();
+		display_header();
+		validate();
+		footer();
 		break;
 }
 
@@ -67,7 +71,7 @@ switch ( $step ) {
  *
  * @since  0.6.0
  */
-function install_header() {
+function display_header() {
 	header( 'Content-Type: text/html; charset=utf-8' );
 ?>
 <!DOCTYPE html>
@@ -82,20 +86,20 @@ function install_header() {
 <div class="container">
 	<h1 id="logo">KYSS</h1>
 <?php
-} // End install_header()
+} // End display_header()
 
 /**
  * Display install footer.
  *
  * @since  0.6.0
  */
-function install_footer() {
+function footer() {
 ?>
 </div>
 </body>
 </html>
 <?php
-} // End install_footer()
+} // End footer()
 
 /**
  * Display install form.
@@ -104,7 +108,7 @@ function install_footer() {
  *
  * @param  string|null $error Error message (if any).
  */
-function install_form( $error = null ) {
+function form( $error = null ) {
 	global $kyssdb;
 
 	$name = isset( $_POST['name'] ) ? trim( unslash( $_POST['name'] ) ) : '';
@@ -159,22 +163,22 @@ function install_form( $error = null ) {
 					<input name="admin_password_check" id="admin_password_check" type="password">
 				</div>
 			</div>
-			<div class="row">
-				<div class="small-4 columns">
-					<input type="submit" name="submit" value="Installa KYSS" class="button">
-				</div>
-			</div>
 		</fieldset>
+		<div class="row">
+			<div class="small-4 columns">
+				<input type="submit" name="submit" value="Installa KYSS" class="button">
+			</div>
+		</div>
 	</form>
 <?php
-}
+} // End form()
 
 /**
  * Validate form data.
  *
  * @since  0.9.0
  */
-function install_validate() {
+function validate() {
 	$name = isset( $_POST['name'] ) ? trim( unslash( $_POST['name'] ) ) : '';
 	$admin_name = isset( $_POST['admin_name'] ) ? trim( unslash( $_POST['admin_name'] ) ) : '';
 	$admin_surname = isset( $_POST['admin_surname'] ) ? trim( unslash( $_POST['admin_surname'] ) ) : '';
@@ -184,20 +188,20 @@ function install_validate() {
 
 	$error = false;
 	if ( empty( $admin_name ) ) {
-		install_form( "Devi inserire il nome dell'amministratore." );
+		form( "Devi inserire il nome dell'amministratore." );
 		$error = true;
 	} elseif ( empty( $admin_surname ) ) {
-		install_form( "Devi inserire il cognome dell'amministratore." );
+		form( "Devi inserire il cognome dell'amministratore." );
 		$error = true;
 	} elseif ( $admin_password != $admin_password_check ) {
 		// TODO: perform this check at runtime and disable submit if they don't match.
-		install_form( "Le password non coincidono. Riprovare." );
+		form( "Le password non coincidono. Riprovare." );
 		$error = true;
 	} elseif ( empty( $admin_email ) ) {
-		install_form( "Devi inserire l'email dell'amministratore." );
+		form( "Devi inserire l'email dell'amministratore." );
 		$error = true;
 	} elseif ( ! is_email( $admin_email ) ) {
-		install_form( "L'indirizzo email inserito non &egrave; valido." );
+		form( "L'indirizzo email inserito non &egrave; valido." );
 		$error = true;
 	}
 
@@ -205,4 +209,4 @@ function install_validate() {
 		$result = kyss_install( $name, $admin_name, $admin_surname, $admin_email, slash( $admin_password ) );
 		extract( $result, EXTR_SKIP );
 	}
-}
+} // End validate()

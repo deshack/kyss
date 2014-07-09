@@ -1,1 +1,146 @@
+<?php
+/**
+ * KYSS Options API
+ *
+ * @package  KYSS
+ * @subpackage  Options
+ */
+
+/**
+ * Update option value.
+ *
+ * If the option does not exist, it will be added along with the value.
+ * However, you should not use this function to add new options. Use `add_option()` instead.
+ *
+ * @since  0.9.0
+ *
+ * @global  kyssdb
+ * @global  hook
+ *
+ * @param  string $option Option name. Expected to not be SQL-escaped.
+ * @param  mixed $value Option value. Expected to not be SQL-escaped.
+ * @return  bool Whether the value was updated or not.
+ */
+function update_option( $option, $value ) {
+	global $kyssdb, $hook;
+
+	$option = trim($option);
+	if ( empty( $option ) )
+		return false;
+
+	// If the value is an object, clone it to avoid undesired behaviors.
+	if ( is_object( $value ) )
+		$value = clone $value;
+
+	$old_value = get_option( $option );
+
+	/**
+	 * Filter a specific option before its value is (maybe) serialized and updated.
+	 *
+	 * The dynamic portion of the hook name, `$option`, refers to the option name.
+	 *
+	 * @since  0.9.0
+	 *
+	 * @param  mixed $value The new, unserialized option value.
+	 * @param  mixed $old_value The old option value.
+	 * @return mixed The new option value, filtered.
+	 */
+	$value = $hook->run( "pre_update_option_{$option}", $value, $old_value );
+
+	/**
+	 * Filter a generic option before its value is (maybe) serialized and updated.
+	 *
+	 * @since  0.9.0
+	 *
+	 * @param  mixed $value The new, unserialized option value.
+	 * @param  string $option Option name.
+	 * @param  mixed $old_value The old option value.
+	 * @return mixed The new option value, filtered.
+	 */
+	$value = $hook->run( 'pre_update_option', $value, $option, $old_value );
+
+	// New and old values are the same, we don't need to update.
+	if ( $value === $old_value )
+		return false;
+
+	// Maybe serialize value, but keep the unserialized value.
+	$serialized_value = kyss_serialize( $value );
+
+	/**
+	 * Fires immediately before an option value is updated.
+	 *
+	 * @since  0.9.0
+	 *
+	 * @param  string $option Option name.
+	 * @param  mixed $old_value The old option value.
+	 * @param  mixed $value The new option value.
+	 */
+	$hook->run( 'update_option', $option, $old_value, $value );
+
+	$result = $kyssdb->update( $kyssdb->options, array( 'value' => $serialized_value ), array( 'name' => $option ) );
+
+	// $kyssdb->update returns false on error.
+	if ( ! $result )
+		return false;
+
+	/**
+	 * Fires after the value of a specific option has been successfully updated.
+	 *
+	 * The dynamic portion of the hook name, `$option`, refers to the option name.
+	 *
+	 * @since  0.9.0
+	 *
+	 * @param  mixed $old_value The old option value.
+	 * @param  mixed $value The new option value.
+	 */
+	$hook->run( "update_option_{$option}", $old_value, $value );
+
+	/**
+	 * Fires after the value of a generic option has been successfully updated.
+	 *
+	 * @since  0.9.0
+	 *
+	 * @param  string $option The option name.
+	 * @param  mixed $old_value The old option value.
+	 * @param  mixed $value The new option value.
+	 */
+	$hook->run( 'update_option', null, $option, $old_value, $value );
+
+	return true;
+}
+
+/**
+ * Get value of existing option.
+ *
+ * @todo  Add other useful hooks.
+ *
+ * @since  0.9.0
+ *
+ * @global  kyssdb
+ * @global  hook
+ *
+ * @param  string $option Option name.
+ * @return mixed|false Option value, or false on failure.
+ */
+function get_option( $option ) {
+	global $kyssdb, $hook;
+
+	$option = trim($option);
+	if ( empty( $option ) )
+		return false;
+
+	$value = $kyssdb->query( "SELECT value FROM {$kyssdb->options} WHERE name = {$option} LIMIT 1" );
+
+	/**
+	 * Filter the value of an existing option.
+	 *
+	 * The dynamic portion of the hook name, `$option`, refers to the option name.
+	 *
+	 * @since  0.9.0
+	 *
+	 * @param  mixed $value Option value. If stored serialized, it will be unserialized
+	 * prior to being returned.
+	 */
+	return $hook->run( "option_{$option}", kyss_unserialize( $value ) );
+}
 

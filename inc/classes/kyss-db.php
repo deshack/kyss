@@ -111,7 +111,7 @@ class KYSS_DB extends mysqli {
 	 */
 	private $tables = array( 'utenti', 'cariche', 'pratiche', 'eventi', 'talk',
 		'riunioni', 'corsi', 'iscritti', 'verbali', 'bilanci', 'movimenti',
-		'presenti' );
+		'presenti', 'options' );
 
 	/**
 	 * Connect to the database server.
@@ -151,6 +151,8 @@ class KYSS_DB extends mysqli {
 			$message = $title . '<p>' . $this->connect_error . '</p>';
 			$this->raise_error( $message, $this->connect_errno );
 		}
+
+		$this->set_charset("utf8");
 	}
 
 	/**
@@ -227,6 +229,45 @@ class KYSS_DB extends mysqli {
 		$message = $title . '<p>' . $this->error . '</p>';
 		$this->raise_error( $message, $this->errno );
 		return false;
+	}
+
+	/**
+	 * Update a row in the table.
+	 *
+	 * @example 
+	 * ```
+	 * kyssdb::update( 'table', array( 'column' => 'foo', 'field' => 'bar' ), array( 'ID' => 1 ) );
+	 * ```
+	 *
+	 * @since  0.9.0
+	 * @access public
+	 *
+	 * @param  string $table Table name.
+	 * @param  array $data Data to update in column => value pairs.
+	 * @param  array $where An associative array of WHERE clauses in column => value pairs.
+	 * @return  int|false The number of rows updated, or false on error.
+	 */
+	public function update( $table, $data, $where ) {
+		if ( ! is_array( $data ) ) {
+			trigger_error( sprintf( "%1$s expects \$data parameter to be an array, %2$s given", __METHOD__, gettype( $data ) ), E_USER_WARNING );
+			return false;
+		} elseif ( ! is_array( $where ) ) {
+			trigger_error( sprintf( "%1$s expects \$where parameter to be an array, $2$s given", __METHOD__, gettype( $where ) ), E_USER_WARNING );
+			return false;
+		}
+
+		$query = array();
+		foreach ( $data as $field => $value ) {
+			$query[] = "`$field` = {$value}";
+		}
+		$wheres = array();
+		foreach ( $where as $field => $value ) {
+			$wheres[] = "`$field` = {$value}";
+		}
+
+		$sql = "UPDATE `$table` SET " . implode( ', ', $query ) . " WHERE " . implode( ' AND ', $wheres );
+
+		return $this->query( $sql );
 	}
 
 	/**

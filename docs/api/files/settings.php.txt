@@ -51,9 +51,14 @@ debug_mode();
 // Load early KYSS files.
 require( INC . 'functions.php' );
 require( CLASSES . 'kyss-error.php' );
+require( CLASSES . 'user.php' );
 
 // Include the kyssdb class.
 load_kyssdb();
+
+// Populate groups.
+// We need to do it here, so groups are available in the install process.
+populate_groups();
 
 // Run the installer if KYSS is not installed.
 kyss_not_installed();
@@ -61,7 +66,7 @@ kyss_not_installed();
 // Load most of KYSS.
 // ToDo: Require all needed files.
 require(INC . 'formatting.php');
-require(CLASSES . 'kses.php');
+require(CLASSES . 'hook.php');
 
 // Load pluggable functions.
 require(INC . 'pluggable.php');

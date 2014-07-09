@@ -20,7 +20,7 @@
  */
 define( 'ABSPATH', dirname(__FILE__) . '/' );
 
-// Set which error levels are reported.
+// Set which error levels are reported. Suppress notices.
 error_reporting( E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR );
 
 if ( file_exists( ABSPATH . 'config.php' ) ) {
