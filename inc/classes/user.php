@@ -269,10 +269,14 @@ class KYSS_User {
 	 *
 	 * @since  x.x.x
 	 * @access public
+	 * 
+	 * @global  hook
 	 *
 	 * @param  string $group Group name.
 	 */
 	public function set_group( $group ) {
+		global $hook;
+
 		if ( 1 == count( $this->groups ) && $group == current( $this->groups ) )
 			return;
 
@@ -285,13 +289,13 @@ class KYSS_User {
 		/**
 		 * Fires after the user's group has changed.
 		 *
-		 * @since  x.x.x
+		 * @since  0.9.0
 		 *
 		 * @param  int $user_id The user ID.
 		 * @param  string $group The new group.
 		 * @param  array $old_groups An array of the user's previous groups.
 		 */
-		run_hook( 'set_user_group', $this->ID, $group, $old_groups );
+		$hook->run( 'set_user_group', $this->ID, $group, $old_groups );
 	}
 
 	/**
@@ -321,239 +325,171 @@ class KYSS_User {
 	}
 }
 
-
 /**
- * KYSS Groups class.
+ * KYSS Groups collection class.
+ *
+ * This is a mostly static method used to handle KYSS_Group objects.
  *
  * @since  0.8.0
- * @package  KYSS
+ * @package KYSS
  * @subpackage  User
  */
 class KYSS_Groups {
 	/**
-	 * List of groups.
+	 * List of group objects.
 	 *
-	 * @since  0.8.0
+	 * @since 0.8.0
 	 * @access private
+	 * @static
 	 * @var  array
 	 */
-	private $groups;
+	private static $groups = array();
 
 	/**
-	 * List of the group objects.
+	 * List of default groups.
 	 *
-	 * @since  0.8.0
+	 * @since  0.9.0
 	 * @access private
+	 * @static
 	 * @var  array
 	 */
-	private $group_obj = array();
+	private static $defaults = array(
+		'collaboratori' => array(
+			'name' => 'Collaboratori',
+			'permissions' => array() ),
+		'ordinari' => array(
+			'name' => 'Soci Ordinari',
+			'permissions' => array() ),
+		'fondatori' => array(
+			'name' => 'Soci Fondatori',
+			'permissions' => array() ),
+		'benemeriti' => array(
+			'name' => 'Soci Benemeriti',
+			'permissions' => array() ),
+		'cd' => array(
+			'name' => 'Consiglio Direttivo',
+			'permissions' => array() ),
+		'rc' => array(
+			'name' => 'Revisori dei Conti',
+			'permissions' => array() ),
+		'admin' => array(
+			'name' => 'Amministratori',
+			'permissions' => array() )
+	);
 
 	/**
-	 * List of group names.
+	 * List of valid permissions.
 	 *
-	 * @since  0.8.0
+	 * @since  0.9.0
 	 * @access private
+	 * @static
 	 * @var  array
 	 */
-	private $group_names = array();
+	private static $permissions = array();
 
 	/**
-	 * Constructor.
+	 * Instantiate default groups.
 	 *
-	 * Sets up the object properties.
+	 * Triggers E_USER_NOTICE if called more than once.
 	 *
-	 * The `$groups` array must be defined this way:
-	 * ```
-	 * $groups = array( [slug] => array( 'name' => [display_name], 'permissions' => array( [permissions] ) ) );
-	 * ```
-	 *
-	 * @since  0.8.0
+	 * @since  0.9.0
 	 * @access public
-	 *
-	 * @param  array $groups List of groups.
+	 * @static
 	 */
-	function __construct() {
-		// Populate default groups.
-		$this->_defaults();
+	public static function populate_defaults() {
+		if ( isset( $this->groups ) )
+			trigger_error( 'You already instantiated default KYSS_Groups' );
 
-		$this->group_obj = array();
-		$this->group_names = array();
-		foreach ( array_keys( $this->groups ) as $group ) {
-			$this->group_obj[$group] = new KYSS_Group( $group, $this->groups[$group]['permissions'] );
-			$this->group_names[$group] = $this->groups[$group]['name'];
+		foreach ( self::$defaults as $slug => $data ) {
+			$this->groups[$slug] = new KYSS_Group( $data['name'], $data['permissions'] );
 		}
 	}
 
 	/**
-	 * Add group name with permissions to list.
-	 *
-	 * Updates the list of groups, if the group doesn't already exist.
-	 *
-	 * The permissions are defined in the following format `array( 'read' => true );`
-	 * To explicitly deny a group a permission, set the value for that permission to false.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @param string $group Group name.
-	 * @param string $display_name Group display name.
-	 * @param array $permissions List of group permissions in the above format.
-	 * @return  KYSS_Group|null KYSS_Group object if group is added, null if already exists.
-	 */
-	public function add_group( $group, $display_name, $permissions = array() ) {
-		if ( isset( $this->groups[$group] ) )
-			return;
-
-		$this->groups[$group] = array(
-			'name' => $display_name,
-			'permissions' => $permissions
-		);
-		$this->group_obj[$group] = new KYSS_Group( $group, $permissions );
-		$this->group_names[$group] = $display_name;
-		return $this->group_obj[$group];
-	}
-
-	/**
-	 * Remove group by name.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @param string $group Group name.
-	 */
-	public function remove_group( $group ) {
-		if ( ! isset( $this->group_obj[$group] ) )
-			return;
-
-		unset( $this->group_obj[$group] );
-		unset( $this->group_names[$group] );
-		unset( $this->groups[$group] );
-	}
-
-	/**
-	 * Add permission to group.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @param  string $group Group name.
-	 * @param  string $permission Permission name.
-	 * @param  bool $grant Optional. Whether group is capable of performing
-	 * capability. Default <true>.
-	 * @return  null
-	 */
-	public function add_permission( $group, $permission, $grant = true ) {
-		if ( ! isset( $this->groups[$group] ) )
-			return;
-
-		$this->groups[$group]['permissions'][$permission] = $grant;
-	}
-
-	/**
-	 * Remove permission from group.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @param  string $group Group name.
-	 * @param  string $permission Permission name.
-	 * @return  null
-	 */
-	public function remove_permission( $group, $permission ) {
-		if ( ! isset( $this->groups[$group] ) )
-			return;
-
-		unset( $this->groups[$group]['permissions'][$permission] );
-	}
-
-	/**
-	 * Retrieve group object by name.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @param  string $group Group name.
-	 * @return  KYSS_Group|null KYSS_Group object if found, null if the group
-	 * does not exist.
-	 */
-	public function get_group( $group ) {
-		if ( isset( $this->group_obj[$group] ) )
-			return $this->group_obj[$group];
-		else
-			return null;
-	}
-
-	/**
-	 * Retrieve list of group slugs.
+	 * Retrieve group object by slug.
 	 *
 	 * @since  0.9.0
 	 * @access public
+	 * @static
 	 *
-	 * @return  array List of group slugs.
+	 * @param  string $slug Slug of the group to retrieve.
+	 * @return KYSS_Group|null Group object. Null if not found.
 	 */
-	public function get_slugs() {
+	public static function get_group( $slug ) {
+		if ( isset( $this->groups[$slug] ) )
+			return $this->groups[$slug];
+	}
+
+	/**
+	 * Retrieve all group slugs.
+	 *
+	 * @since  0.9.0
+	 * @access public
+	 * @static
+	 *
+	 * @return  array List of all group slugs.
+	 */
+	public static function get_slugs() {
 		return array_keys( $this->groups );
 	}
 
 	/**
-	 * Retrieve list of group names.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @return  array List of group names.
-	 */
-	public function get_names() {
-		return $this->group_names;
-	}
-
-	/**
-	 * Whether group name is currently in the list of available groups.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @param  string $group Group name to look up.
-	 * @return  bool
-	 */
-	public function is_group( $group ) {
-		return isset( $this->group_names[$group] );
-	}
-
-	/**
-	 * Default groups.
-	 *
-	 * Populates default groups when an object is instantiated.
+	 * Check if group exists.
 	 *
 	 * @since  0.9.0
-	 * @access private
+	 * @access public
+	 * @static
 	 *
-	 * @return  none
+	 * @param  string $slug Slug of the group to check.
+	 * @return bool True if exists, false otherwise.
 	 */
-	private function _defaults() {
-		$this->groups = array(
-			'collaboratori' => array(
-				'name' => 'Collaboratori',
-				'permissions' => '' ),
-			'ordinari' => array(
-				'name' => 'Soci Ordinari',
-				'permissions' => '' ),
-			'fondatori' => array(
-				'name' => 'Soci Fondatori',
-				'permissions' => '' ),
-			'benemeriti' => array(
-				'name' => 'Soci Benemeriti',
-				'permissions' => '' ),
-			'cd' => array(
-				'name' => 'Consiglio Direttivo',
-				'permissions' => '' ),
-			'rc' => array(
-				'name' => 'Revisori dei Conti',
-				'permissions' => '' ),
-			'admin' => array(
-				'name' => 'Amministratori',
-				'permissions' => '' )
-		);
+	public static function group_exists( $slug ) {
+		return isset( $this->groups[$slug] );
+	}
+
+	/**
+	 * Check if given object is a KYSS_Group.
+	 *
+	 * @since  0.9.0
+	 * @access public
+	 * @static
+	 *
+	 * @param  object|string $obj Object to check or slug.
+	 * @return bool True if given object is a KYSS_Group, false otherwise.
+	 */
+	public static function is_group( $obj ) {
+		if ( is_object( $obj ) && is_a( $obj, 'KYSS_Group' ) )
+			return true;
+		if ( is_string( $obj ) && self::group_exists( $obj ) )
+			return true;
+		return false;
+	}
+
+	/**
+	 * Check if given permission exists.
+	 *
+	 * @since  0.9.0
+	 * @access public
+	 * @static
+	 *
+	 * @param  string $perm Permission to check.
+	 * @return bool Whether the given string is a valid permission.
+	 */
+	public static function permission_exists( $perm ) {
+		return in_array( $perm, self::$permissions );
+	}
+
+	/**
+	 * Get list of valid permissions.
+	 *
+	 * @since  0.9.0
+	 * @access public
+	 * @static
+	 *
+	 * @return  array List of valid group permissions.
+	 */
+	public static function get_permissions() {
+		return self::$permissions;
 	}
 }
 
@@ -575,7 +511,7 @@ class KYSS_Group {
 	public $name;
 
 	/**
-	 * List of permissions the group contains.
+	 * List of permissions the group has.
 	 *
 	 * @since  0.8.0
 	 * @access public
@@ -586,16 +522,13 @@ class KYSS_Group {
 	/**
 	 * Constructor - Set up object properties.
 	 *
-	 * The list of permission must have the key as the name of the permission
-	 * and the value a boolean of whether it is granted to the group.
-	 *
 	 * @since  0.8.0
 	 * @access public
 	 *
 	 * @param  string $group Group name.
 	 * @param  array $perms List of permissions.
 	 */
-	function __construct( $group, $perms ) {
+	function __construct( $name, $perms ) {
 		$this->name = $group;
 		$this->permissions = $perms;
 	}
@@ -603,55 +536,45 @@ class KYSS_Group {
 	/**
 	 * Assign group a permission.
 	 *
+	 * Triggers E_USER_ERROR if `$perm` is not a valid permission.
+	 *
 	 * @since 0.8.0
 	 * @access public
-	 * @see  KYSS_Groups::add_permission() Method uses implementation for group.
-	 * @global  user_groups
 	 *
 	 * @param  string $perm Permission name.
-	 * @param  bool $grant Whether group has permission privilege.
 	 */
-	public function add_permission( $perm, $grant = true ) {
-		global $user_groups;
+	public function add_permission( $perm ) {
+		if ( ! KYSS_Groups::permission_exists( $perm ) ) {
+			trigger_error( sprintf("%s is not a valid permission", $perm), E_USER_ERROR );
+			return;
+		}
 
-		if ( ! isset( $user_groups ) )
-			$user_groups = new KYSS_Groups;
-
-		$this->permissions[$perm] = $grant;
-		$user_groups->add_permission( $this->name, $perm, $grant );
+		array_push( $this->permissions, $perm );
 	}
 
 	/**
 	 * Remove permission from group.
 	 *
-	 * This is a container for {@link KYSSGroups::remove_permission()} to remove
-	 * the permission from the group. That is to say that {@link
-	 * KYSS_Groups::remove_permission()} implements the functionality, but it also
-	 * makes sense to use this class, because you don't need to enter the group name.
+	 * This method will not do nothing if the group was not granted the permission
+	 * before.
 	 *
 	 * @since  0.8.0
 	 * @access public
-	 * @global  user_groups
 	 *
 	 * @param  string $perm Permission name.
 	 */
 	public function remove_permission( $perm ) {
-		global $user_groups;
-
-		if ( ! isset( $user_groups ) )
-			$user_groups = new KYSS_Groups;
-
-		unset( $this->permissions[$perm] );
-		$user_groups->remove_permission( $this->name, $perm );
+		if ( ($key = array_search( $perm, $this->permissions ) ) !== false )
+			unset( $this->permissions[$key] );
 	}
 
 	/**
 	 * Whether group has permission.
 	 *
 	 * The permission is passed through the 'group_has_permission' hook.
-	 * The first parameter for the hook is the list of permissions the class
-	 * has assigned. The second parameter is the capability name to look.
-	 * The third and final parameter for the hook is the group name.
+	 * The first parameter for the hook is the list of permissions the group
+	 * has granted. The second parameter is the permission name to look.
+	 * The third and final parameter for the hook is the group slug.
 	 *
 	 * @since  0.8.0
 	 * @access public
@@ -670,12 +593,12 @@ class KYSS_Group {
 		 *
 		 * @param  array $permissions Array of group permissions.
 		 * @param  string $perm Permission name.
-		 * @param  string $name Group name.
+		 * @param  string $name Group slug.
 		 */
-		$permissions = $hook->run( 'group_has_permission', $this->permissions, $perm, $this->name );
+		$permissions = $hook->run( 'group_has_permission', $this->permissions, $perm, array_search( $this, KYSS_Groups::$groups ) );
 
-		if ( !empty( $permissions[$perm] ) )
-			return $permissions[$perm];
+		if ( false !== array_search( $perm, $this->permissions ) )
+			return true;
 		else
 			return false;
 	}

@@ -14,17 +14,20 @@
  * @since  0.9.0
  *
  * @global  kyssdb
- * @global  kyss_groups
  *
  * @return string The SQL needed to create the KYSS database tables.
  */
 function get_db_schema() {
-	global $kyssdb, $kyss_groups;
+	global $kyssdb;
 
-	if ( isset( $kyss_groups ) )
-		$groups = "set('" . join("','", $kyss_groups->get_slugs() ) . "')";
+	if ( class_exists('KYSS_Groups') )
+		$groups = "set('" . join("','", KYSS_Groups::get_slugs() ) . "')";
 	else
-		trigger_error( sprintf( "%s expects <em>\$kyssdb</em> to be set", __FUNCTION__ ), E_USER_ERROR );
+		trigger_error( sprintf( "%s expects <em>\$kyss_groups</em> to be set", __FUNCTION__ ), E_USER_ERROR );
+
+	if ( ! isset( $kyssdb ) )
+		kyss_die( sprintf('Something is wrong with your application. KYSS could not find a database connection while installing. Please report to %s',
+			'deshack@ubuntu.com') );
 
 	return "CREATE TABLE {$kyssdb->utenti} (
 		`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -34,7 +37,8 @@ function get_db_schema() {
 		`email`			varchar(30),
 		`telefono`		varchar(15),
 		`gruppo`		{$groups} DEFAULT 'ordinari',
-		PRIMARY KEY (`ID`)
+		PRIMARY KEY (`ID`),
+		UNIQUE (`email`)
 	) ENGINE = InnoDB;
 
 	CREATE TABLE {$kyssdb->cariche} (
