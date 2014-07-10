@@ -271,6 +271,18 @@ class KYSS_DB extends mysqli {
 	}
 
 	/**
+	 * Retrive the list of KYSS database tables
+	 *
+	 * @since  0.9.0
+	 * @access public
+	 *
+	 * @return  array $tables An array of the database's tables
+	 */
+	public function get_tables() {
+		return $this->tables;
+	}
+
+	/**
 	 * Look for errors.
 	 *
 	 * Checks if the last execution caused an error.
