@@ -504,3 +504,23 @@ function kyss_unserialize( $data ) {
 		return $data;
 	return $unserialized;
 }
+
+/**
+ * Chech server's PHP version.
+ *
+ * @since  0.9.0
+ */
+function check_php_version() {
+	global $php_required_version;
+	
+	if( version_compare( PHP_VERSION, $php_required_version, '>=') ) {
+		return;
+	} else {
+		// Server's PHP version is lower than the required one
+		$die = '<h1>Failed Dependency</h1>';
+		$die .= '<p>KYSS requires PHP <b>' . $php_required_version . "</b> to works, while server's PHP version is <b>" . PHP_VERSION . "</b></p>";
+		$die .= '<p>Upgrade PHP and refresh this page to continue.</p>';
+
+		kyss_die( $die, 'KYSS Error' );
+	}
+}

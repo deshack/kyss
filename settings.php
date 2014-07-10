@@ -42,6 +42,9 @@ require( INC . 'version.php' );
 // Set initial default constants including DEBUG.
 initial_constants();
 
+// Check PHP version
+check_php_version();
+
 // Start loading timer.
 //timer_start();
 
