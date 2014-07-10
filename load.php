@@ -30,7 +30,12 @@ if ( file_exists( ABSPATH . 'config.php' ) ) {
 	define( 'INC', ABSPATH . 'inc/' );
 	require_once( INC . 'load.php' );
 	require_once( INC . 'functions.php' );
+	require_once( INC . 'version.php' );
 
+	check_php_version();
+
+	// PHP version is equal or higher than the required one
+	
 	$path = kyss_guess_url() . '/admin/setup-config.php';
 
 	// Die with an error message
