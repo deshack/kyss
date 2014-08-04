@@ -45,11 +45,11 @@ function get_db_schema() {
 	) ENGINE = InnoDB;
 
 	CREATE TABLE {$kyssdb->cariche} (
-		`utente`		bigint(20) UNSIGNED NOT NULL,
-		`tipo`			enum('presidente','vicepresidente','segretario','tesoriere','consigliere') NOT NULL,
+		`carica`		ENUM('presidente','vicepresidente','segretario','tesoriere','consigliere') NOT NULL,
 		`inizio`		date NOT NULL,
+		`utente`		bigint(20) UNSIGNED NOT NULL,
 		`fine`			date,
-		CONSTRAINT ID PRIMARY KEY (`tipo`,`inizio`),
+		CONSTRAINT ID PRIMARY KEY (`carica`,`inizio`),
 		FOREIGN KEY (`utente`) REFERENCES {$kyssdb->utenti}(`ID`)
 			ON UPDATE RESTRICT
 			ON DELETE RESTRICT,
@@ -57,13 +57,13 @@ function get_db_schema() {
 	) ENGINE = InnoDB;
 
 	CREATE TABLE {$kyssdb->pratiche} (
-		`protocollo`	int(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-		`utente`		bigint(20) UNSIGNED NOT NULL,
-		`tipo`			enum('adesione','liberatoria') NOT NULL,
-		`data`			date NOT NULL,
-		`ricezione`		date NOT NULL,
-		`approvata`		boolean DEFAULT NULL,
-		`note`			varchar(255),
+		`protocollo`		int(6) UNSIGNED AUTO_INCREMENT NOT NULL,
+		`utente`			bigint(20) UNSIGNED NOT NULL,
+		`tipo`				enum('adesione','liberatoria') NOT NULL,
+		`data`				date NOT NULL,
+		`data_ricezione`	date NOT NULL,
+		`approvata`			boolean DEFAULT NULL,
+		`note`				varchar(255),
 		PRIMARY KEY (`protocollo`),
 		FOREIGN KEY (`utente`) REFERENCES {$kyssdb->utenti}(`ID`)
 			ON UPDATE CASCADE
@@ -212,7 +212,10 @@ function populate_db() {
 	 */
 	$hook->run( 'populate_db' );
 
-	$kyssdb->query( $kyssdb->real_escape_string( get_db_schema() ) );
+	$result = $kyssdb->multi_query( get_db_schema() );
+
+	if ( ! $result )
+		trigger_error( $kyssdb->error, E_USER_ERROR );
 }
 
 /**
