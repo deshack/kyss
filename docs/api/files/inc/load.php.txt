@@ -159,18 +159,3 @@ function debug_mode() {
 	}
 }
 
-/**
- * Create KYSS groups.
- *
- * @since  0.9.0
- *
- * @global  kyss_groups
- */
-function populate_groups() {
-	global $kyss_groups;
-
-	if ( isset( $kyss_groups ) )
-		return;
-	
-	$kyss_groups = new KYSS_Groups();
-}

@@ -54,6 +54,8 @@ class KYSS_User {
 	 * Constructor.
 	 *
 	 * Retrieves the userdata and passes it to {@link KYSS_User::init()}.
+	 * If $id is an expression that evaluates to false, the user data will be retrieved
+	 * by email.
 	 *
 	 * @since  0.7.0
 	 * @access public
@@ -78,9 +80,9 @@ class KYSS_User {
 		}
 
 		if ( $id )
-			$data = self::get_data_by( 'id', $id );
+			$data = self::get_user_by( 'id', $id );
 		else
-			$data = self::get_data_by( 'email', $email );
+			$data = self::get_user_by( 'email', $email );
 
 		if ( $data )
 			$this->init( $data );
@@ -92,15 +94,16 @@ class KYSS_User {
 	 * @since  0.7.0
 	 * @access private
 	 *
-	 * @param  object $data User DB row object?
+	 * @param  object $data User DB row object.
 	 */
 	private function init( $data ) {
+		$data = $data->fetch_array( MYSQLI_ASSOC );
 		$this->data = $data;
-		$this->ID = (int) $data->ID;
+		$this->ID = (int) $data['ID'];
 	}
 
 	/**
-	 * Get only main user fields.
+	 * Get user by id or email.
 	 *
 	 * @todo  Raise KYSS_Error on failure.
 	 *
@@ -110,46 +113,34 @@ class KYSS_User {
 	 *
 	 * @param string $field The field to query against. Accepts <id>, <email>.
 	 * @param  string|int $value The field value.
-	 * @return  object|bool Raw user object. False on failure.
+	 * @return  object|bool Raw user data. False on failure.
 	 */
-	public static function get_data_by( $field, $value ) {
+	public static function get_user_by( $field, $value ) {
 		global $kyssdb;
-
-		if ( 'id' == $field ) {
-			// Make sure the value is numeric to avoid casting objects,
-			// for example to int 1.
-			if ( ! is_numeric( $value ) )
-				return false;
-			$value = intval( $value );
-			if ( $value < 1 )
-				return false;
-		} else {
-			$value = trim( $value );
-		}
-
-		if ( ! $value )
-			return false;
 
 		switch ( $field ) {
 			case 'id':
-				$user_id = $value;
 				$db_field = 'ID';
+				// Make sure the value is numeric to avoid casting objects,
+				// for example to int 1.
+				if ( ! is_numeric( $value ) )
+					return false;
+				$value = intval( $value );
+				if ( $value < 1 )
+					return false;
 				break;
 			case 'email':
-				$user_id = get_id_by( 'email', $value );
-				$db_field = 'user_email';
+				$db_field = 'email';
+				$value = trim( $value );
+				if ( ! $value )
+					return false;
 				break;
 			default:
 				return false;
 		}
 
-		if ( false !== $user_id ) {
-			if ( $user = get_user( $user_id ) )
-				return $user;
-		}
-
 		if ( !$user = $kyssdb->query(
-			"SELECT * FROM {$kyssdb->users} WHERE {$db_field} = {$value}"
+			"SELECT * FROM {$kyssdb->utenti} WHERE {$db_field} = {$value}"
 		) )
 			return false;
 
@@ -157,49 +148,92 @@ class KYSS_User {
 	}
 
 	/**
-	 * Magic method for checking the existence of a certain custom field.
+	 * Insert new user into the database.
 	 *
-	 * @since  0.7.0
+	 * The `$data` array can contain the following fields:
+	 * - 'email' - A string containing the user's email address.
+	 * - 'telefono' - A string containing the user's phone number.
+	 * - 'gruppo' - An array of strings containing the user's group slugs.
+	 * - 'anagrafica' - An associative array of the user's anagraphic data.
+	 * It can contain the following fields:
+	 * - 'CF' - The user's tax code.
+	 * - 'nato_a' - The user's birthplace.
+	 * - 'nato_il' - The user's birthday.
+	 * - 'cittadinanza' - The user's nationality.
+	 * - 'residenza' => array(
+	 * 	'via' => A string with the user's street,
+	 * 	'city' => A string with the user's city,
+	 * 	'provincia' => A two-letters string with the user's district,
+	 * 	'CAP' => A five-digits string with the user's ZIP code );
+	 *
+	 * @since  0.9.0
 	 * @access public
+	 * @static
 	 *
-	 * @param  string $key Field to check.
-	 * @return  bool True if exists, false otherwise.
+	 * @global  kyssdb
+	 *
+	 * @param string $name User's name.
+	 * @param string $surname User's surname.
+	 * @param string $pass User's password in plain text.
+	 * @param array $data Optional. User's data. See above.
+	 * @return int|KYSS_Error The newly created user's ID or a KYSS_Error object
+	 * if the user could not be created.
 	 */
-	function __isset( $key ) {
-		if ( isset( $this->data->$key ) )
-			return true;
-		return false;
-	}
-	
-	/**
-	 * Magic method for accessing custom fields.
-	 *
-	 * @since  0.7.0
-	 * @access public
-	 *
-	 * @param  string $key The field to access.
-	 * @return  mixed|bool Field value. False on failure.
-	 */
-	function __get( $key ) {
-		if ( isset( $this->data->$key ) )
-			$value = $this->data->$key;
-		if ( !isset( $value ) )
-			return false;
-		return $value;
+	public static function create( $name, $surname, $pass, $data = array() ) {
+		global $kyssdb;
+
+		// Hash the password.
+		$pass = KYSS_Pass::hash( $pass );
+
+		// If email is given, check that it is unique.
+		if ( isset( $data['email'] ) && self::email_exists( $data['email'] ) )
+			return new KYSS_Error( 'existing_user_email', "Mi dispiace, questa email &egrave; gi&agrave; in uso!" );
+
+		if ( empty( $data ) )
+			$result = $kyssdb->query( "INSERT INTO {$kyssdb->users} (nome,cognome,password) VALUES ({$name},{$surname},{$pass});" );
+		else {
+			$columns = join( ',', array_keys( $data ) );
+			$values = array();
+			foreach ( $data as $key => $value ) {
+				switch( $key ) {
+					case 'email':
+						$values[] = "'{$value}'";
+						break;
+					case 'telefono':
+						$values[] = "'{$value}'";
+						break;
+					case 'gruppo':
+						$values[] = "'{$value}'";
+						break;
+					case 'anagrafica':
+						$values[] = serialize($value);
+						break;
+				}
+			}
+			$values = join( ',', $values );
+			$result = $kyssdb->query( "INSERT INTO {$kyssdb->utenti} (nome,cognome,password,{$columns}) VALUES ({$name},{$surname},{$pass},{$values});" );
+		}
+
+		if ( $result )
+			return $kyssdb->insert_id;
+		//else
+			// TODO: Handle failure when inserting new user into db.
 	}
 
 	/**
-	 * Magic method for setting custom fields.
+	 * Check if the provided email already exists in the database. Use KYSS_Error object.
 	 *
-	 * @since  0.7.0
-	 * @access public
+	 * @since  0.9.0
+	 * @access private
+	 * @static
 	 *
-	 * @param  string $key The field to set.
-	 * @param  mixed $value The value to set.
-	 * @return  null.
+	 * @param  string $email The email to check.
+	 * @return bool True if email exists, false otherwise.
 	 */
-	function __set( $key, $value ) {
-		$this->data->$key = $value;
+	private static function email_exists( $email ) {
+		if ( false !== self::get_user_by( 'email', $email ) )
+			return true;
+		return false;
 	}
 
 	/**
@@ -269,10 +303,14 @@ class KYSS_User {
 	 *
 	 * @since  x.x.x
 	 * @access public
+	 * 
+	 * @global  hook
 	 *
 	 * @param  string $group Group name.
 	 */
 	public function set_group( $group ) {
+		global $hook;
+
 		if ( 1 == count( $this->groups ) && $group == current( $this->groups ) )
 			return;
 
@@ -285,13 +323,13 @@ class KYSS_User {
 		/**
 		 * Fires after the user's group has changed.
 		 *
-		 * @since  x.x.x
+		 * @since  0.9.0
 		 *
 		 * @param  int $user_id The user ID.
 		 * @param  string $group The new group.
 		 * @param  array $old_groups An array of the user's previous groups.
 		 */
-		run_hook( 'set_user_group', $this->ID, $group, $old_groups );
+		$hook->run( 'set_user_group', $this->ID, $group, $old_groups );
 	}
 
 	/**
@@ -319,241 +357,188 @@ class KYSS_User {
 			return true;
 		return false;
 	}
+
+	/**
+	 * Set the user role.
+	 *
+	 * @todo  Write method KYSS_User::set_role()
+	 *
+	 * @since  x.x.x
+	 * @access public
+	 *
+	 * @param  string $slug The role slug.
+	 * @return  null
+	 */
+	public function set_role( $slug ) {
+		$this->role = $slug;
+	}
 }
 
-
 /**
- * KYSS Groups class.
+ * KYSS Groups collection class.
+ *
+ * This is a mostly static method used to handle KYSS_Group objects.
  *
  * @since  0.8.0
- * @package  KYSS
+ * @package KYSS
  * @subpackage  User
  */
 class KYSS_Groups {
 	/**
-	 * List of groups.
+	 * List of group objects.
 	 *
-	 * @since  0.8.0
+	 * @since 0.8.0
 	 * @access private
+	 * @static
 	 * @var  array
 	 */
-	private $groups;
+	private static $groups;
 
 	/**
-	 * List of the group objects.
+	 * List of default groups.
 	 *
-	 * @since  0.8.0
+	 * @since  0.9.0
 	 * @access private
+	 * @static
 	 * @var  array
 	 */
-	private $group_obj = array();
+	private static $defaults = array(
+		'collaboratori' => array(
+			'name' => 'Collaboratori',
+			'permissions' => array() ),
+		'ordinari' => array(
+			'name' => 'Soci Ordinari',
+			'permissions' => array() ),
+		'fondatori' => array(
+			'name' => 'Soci Fondatori',
+			'permissions' => array() ),
+		'benemeriti' => array(
+			'name' => 'Soci Benemeriti',
+			'permissions' => array() ),
+		'cd' => array(
+			'name' => 'Consiglio Direttivo',
+			'permissions' => array() ),
+		'rc' => array(
+			'name' => 'Revisori dei Conti',
+			'permissions' => array() ),
+		'admin' => array(
+			'name' => 'Amministratori',
+			'permissions' => array() )
+	);
 
 	/**
-	 * List of group names.
+	 * List of valid permissions.
 	 *
-	 * @since  0.8.0
+	 * @since  0.9.0
 	 * @access private
+	 * @static
 	 * @var  array
 	 */
-	private $group_names = array();
+	private static $permissions = array();
 
 	/**
-	 * Constructor.
+	 * Instantiate default groups.
 	 *
-	 * Sets up the object properties.
+	 * Triggers E_USER_NOTICE if called more than once.
 	 *
-	 * The `$groups` array must be defined this way:
-	 * ```
-	 * $groups = array( [slug] => array( 'name' => [display_name], 'permissions' => array( [permissions] ) ) );
-	 * ```
-	 *
-	 * @since  0.8.0
+	 * @since  0.9.0
 	 * @access public
-	 *
-	 * @param  array $groups List of groups.
+	 * @static
 	 */
-	function __construct() {
-		// Populate default groups.
-		$this->_defaults();
+	public static function populate_defaults() {
+		if ( isset( self::$groups ) )
+			trigger_error( 'You already instantiated default KYSS_Groups' );
 
-		$this->group_obj = array();
-		$this->group_names = array();
-		foreach ( array_keys( $this->groups ) as $group ) {
-			$this->group_obj[$group] = new KYSS_Group( $group, $this->groups[$group]['permissions'] );
-			$this->group_names[$group] = $this->groups[$group]['name'];
+		foreach ( self::$defaults as $slug => $data ) {
+			self::$groups[$slug] = new KYSS_Group( $data['name'], $data['permissions'] );
 		}
 	}
 
 	/**
-	 * Add group name with permissions to list.
-	 *
-	 * Updates the list of groups, if the group doesn't already exist.
-	 *
-	 * The permissions are defined in the following format `array( 'read' => true );`
-	 * To explicitly deny a group a permission, set the value for that permission to false.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @param string $group Group name.
-	 * @param string $display_name Group display name.
-	 * @param array $permissions List of group permissions in the above format.
-	 * @return  KYSS_Group|null KYSS_Group object if group is added, null if already exists.
-	 */
-	public function add_group( $group, $display_name, $permissions = array() ) {
-		if ( isset( $this->groups[$group] ) )
-			return;
-
-		$this->groups[$group] = array(
-			'name' => $display_name,
-			'permissions' => $permissions
-		);
-		$this->group_obj[$group] = new KYSS_Group( $group, $permissions );
-		$this->group_names[$group] = $display_name;
-		return $this->group_obj[$group];
-	}
-
-	/**
-	 * Remove group by name.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @param string $group Group name.
-	 */
-	public function remove_group( $group ) {
-		if ( ! isset( $this->group_obj[$group] ) )
-			return;
-
-		unset( $this->group_obj[$group] );
-		unset( $this->group_names[$group] );
-		unset( $this->groups[$group] );
-	}
-
-	/**
-	 * Add permission to group.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @param  string $group Group name.
-	 * @param  string $permission Permission name.
-	 * @param  bool $grant Optional. Whether group is capable of performing
-	 * capability. Default <true>.
-	 * @return  null
-	 */
-	public function add_permission( $group, $permission, $grant = true ) {
-		if ( ! isset( $this->groups[$group] ) )
-			return;
-
-		$this->groups[$group]['permissions'][$permission] = $grant;
-	}
-
-	/**
-	 * Remove permission from group.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @param  string $group Group name.
-	 * @param  string $permission Permission name.
-	 * @return  null
-	 */
-	public function remove_permission( $group, $permission ) {
-		if ( ! isset( $this->groups[$group] ) )
-			return;
-
-		unset( $this->groups[$group]['permissions'][$permission] );
-	}
-
-	/**
-	 * Retrieve group object by name.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @param  string $group Group name.
-	 * @return  KYSS_Group|null KYSS_Group object if found, null if the group
-	 * does not exist.
-	 */
-	public function get_group( $group ) {
-		if ( isset( $this->group_obj[$group] ) )
-			return $this->group_obj[$group];
-		else
-			return null;
-	}
-
-	/**
-	 * Retrieve list of group slugs.
+	 * Retrieve group object by slug.
 	 *
 	 * @since  0.9.0
 	 * @access public
+	 * @static
 	 *
-	 * @return  array List of group slugs.
+	 * @param  string $slug Slug of the group to retrieve.
+	 * @return KYSS_Group|null Group object. Null if not found.
 	 */
-	public function get_slugs() {
-		return array_keys( $this->groups );
+	public static function get_group( $slug ) {
+		if ( isset( $this->groups[$slug] ) )
+			return $this->groups[$slug];
 	}
 
 	/**
-	 * Retrieve list of group names.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @return  array List of group names.
-	 */
-	public function get_names() {
-		return $this->group_names;
-	}
-
-	/**
-	 * Whether group name is currently in the list of available groups.
-	 *
-	 * @since  0.8.0
-	 * @access public
-	 *
-	 * @param  string $group Group name to look up.
-	 * @return  bool
-	 */
-	public function is_group( $group ) {
-		return isset( $this->group_names[$group] );
-	}
-
-	/**
-	 * Default groups.
-	 *
-	 * Populates default groups when an object is instantiated.
+	 * Retrieve all group slugs.
 	 *
 	 * @since  0.9.0
-	 * @access private
+	 * @access public
+	 * @static
 	 *
-	 * @return  none
+	 * @return  array List of all group slugs.
 	 */
-	private function _defaults() {
-		$this->groups = array(
-			'collaboratori' => array(
-				'name' => 'Collaboratori',
-				'permissions' => '' ),
-			'ordinari' => array(
-				'name' => 'Soci Ordinari',
-				'permissions' => '' ),
-			'fondatori' => array(
-				'name' => 'Soci Fondatori',
-				'permissions' => '' ),
-			'benemeriti' => array(
-				'name' => 'Soci Benemeriti',
-				'permissions' => '' ),
-			'cd' => array(
-				'name' => 'Consiglio Direttivo',
-				'permissions' => '' ),
-			'rc' => array(
-				'name' => 'Revisori dei Conti',
-				'permissions' => '' ),
-			'admin' => array(
-				'name' => 'Amministratori',
-				'permissions' => '' )
-		);
+	public static function get_slugs() {
+		return array_keys( self::$groups );
+	}
+
+	/**
+	 * Check if group exists.
+	 *
+	 * @since  0.9.0
+	 * @access public
+	 * @static
+	 *
+	 * @param  string $slug Slug of the group to check.
+	 * @return bool True if exists, false otherwise.
+	 */
+	public static function group_exists( $slug ) {
+		return isset( $this->groups[$slug] );
+	}
+
+	/**
+	 * Check if given object is a KYSS_Group.
+	 *
+	 * @since  0.9.0
+	 * @access public
+	 * @static
+	 *
+	 * @param  object|string $obj Object to check or slug.
+	 * @return bool True if given object is a KYSS_Group, false otherwise.
+	 */
+	public static function is_group( $obj ) {
+		if ( is_object( $obj ) && is_a( $obj, 'KYSS_Group' ) )
+			return true;
+		if ( is_string( $obj ) && self::group_exists( $obj ) )
+			return true;
+		return false;
+	}
+
+	/**
+	 * Check if given permission exists.
+	 *
+	 * @since  0.9.0
+	 * @access public
+	 * @static
+	 *
+	 * @param  string $perm Permission to check.
+	 * @return bool Whether the given string is a valid permission.
+	 */
+	public static function permission_exists( $perm ) {
+		return in_array( $perm, self::$permissions );
+	}
+
+	/**
+	 * Get list of valid permissions.
+	 *
+	 * @since  0.9.0
+	 * @access public
+	 * @static
+	 *
+	 * @return  array List of valid group permissions.
+	 */
+	public static function get_permissions() {
+		return self::$permissions;
 	}
 }
 
@@ -575,7 +560,7 @@ class KYSS_Group {
 	public $name;
 
 	/**
-	 * List of permissions the group contains.
+	 * List of permissions the group has.
 	 *
 	 * @since  0.8.0
 	 * @access public
@@ -586,72 +571,59 @@ class KYSS_Group {
 	/**
 	 * Constructor - Set up object properties.
 	 *
-	 * The list of permission must have the key as the name of the permission
-	 * and the value a boolean of whether it is granted to the group.
-	 *
 	 * @since  0.8.0
 	 * @access public
 	 *
 	 * @param  string $group Group name.
 	 * @param  array $perms List of permissions.
 	 */
-	function __construct( $group, $perms ) {
-		$this->name = $group;
+	function __construct( $name, $perms ) {
+		$this->name = $name;
 		$this->permissions = $perms;
 	}
 
 	/**
 	 * Assign group a permission.
 	 *
+	 * Triggers E_USER_ERROR if `$perm` is not a valid permission.
+	 *
 	 * @since 0.8.0
 	 * @access public
-	 * @see  KYSS_Groups::add_permission() Method uses implementation for group.
-	 * @global  user_groups
 	 *
 	 * @param  string $perm Permission name.
-	 * @param  bool $grant Whether group has permission privilege.
 	 */
-	public function add_permission( $perm, $grant = true ) {
-		global $user_groups;
+	public function add_permission( $perm ) {
+		if ( ! KYSS_Groups::permission_exists( $perm ) ) {
+			trigger_error( sprintf("%s is not a valid permission", $perm), E_USER_ERROR );
+			return;
+		}
 
-		if ( ! isset( $user_groups ) )
-			$user_groups = new KYSS_Groups;
-
-		$this->permissions[$perm] = $grant;
-		$user_groups->add_permission( $this->name, $perm, $grant );
+		array_push( $this->permissions, $perm );
 	}
 
 	/**
 	 * Remove permission from group.
 	 *
-	 * This is a container for {@link KYSSGroups::remove_permission()} to remove
-	 * the permission from the group. That is to say that {@link
-	 * KYSS_Groups::remove_permission()} implements the functionality, but it also
-	 * makes sense to use this class, because you don't need to enter the group name.
+	 * This method will not do nothing if the group was not granted the permission
+	 * before.
 	 *
 	 * @since  0.8.0
 	 * @access public
-	 * @global  user_groups
 	 *
 	 * @param  string $perm Permission name.
 	 */
 	public function remove_permission( $perm ) {
-		global $user_groups;
-
-		if ( ! isset( $user_groups ) )
-			$user_groups = new KYSS_Groups;
-
-		unset( $this->permissions[$perm] );
-		$user_groups->remove_permission( $this->name, $perm );
+		if ( ($key = array_search( $perm, $this->permissions ) ) !== false )
+			unset( $this->permissions[$key] );
 	}
 
 	/**
 	 * Whether group has permission.
 	 *
 	 * The permission is passed through the 'group_has_permission' hook.
-	 * The first parameter for the hook is the list of permissions the class
-	 * has assigned. The second parameter is the capability name to look.
-	 * The third and final parameter for the hook is the group name.
+	 * The first parameter for the hook is the list of permissions the group
+	 * has granted. The second parameter is the permission name to look.
+	 * The third and final parameter for the hook is the group slug.
 	 *
 	 * @since  0.8.0
 	 * @access public
@@ -670,12 +642,12 @@ class KYSS_Group {
 		 *
 		 * @param  array $permissions Array of group permissions.
 		 * @param  string $perm Permission name.
-		 * @param  string $name Group name.
+		 * @param  string $name Group slug.
 		 */
-		$permissions = $hook->run( 'group_has_permission', $this->permissions, $perm, $this->name );
+		$permissions = $hook->run( 'group_has_permission', $this->permissions, $perm, array_search( $this, KYSS_Groups::$groups ) );
 
-		if ( !empty( $permissions[$perm] ) )
-			return $permissions[$perm];
+		if ( false !== array_search( $perm, $this->permissions ) )
+			return true;
 		else
 			return false;
 	}

@@ -47,9 +47,19 @@ require_once( dirname(dirname(__FILE__)) . '/load.php' );
 require_once( ABSPATH . 'admin/inc/upgrade.php');
 
 /**
+ * Load KYSS Options API.
+ */
+require_once( ABSPATH . 'inc/options.php' );
+
+/**
  * Load kyssdb.
  */
 require_once( CLASSES . 'kyss-db.php' );
+
+/**
+ * Load KYSS_Pass
+ */
+require_once( CLASSES . 'kyss-pass.php' );
 
 $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : 0;
 

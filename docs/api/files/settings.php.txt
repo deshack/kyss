@@ -42,9 +42,6 @@ require( INC . 'version.php' );
 // Set initial default constants including DEBUG.
 initial_constants();
 
-// Start loading timer.
-//timer_start();
-
 // Check if we're in debug mode.
 debug_mode();
 
@@ -53,12 +50,15 @@ require( INC . 'functions.php' );
 require( CLASSES . 'kyss-error.php' );
 require( CLASSES . 'user.php' );
 
+// Check PHP version
+check_php_version();
+
 // Include the kyssdb class.
 load_kyssdb();
 
 // Populate groups.
 // We need to do it here, so groups are available in the install process.
-populate_groups();
+KYSS_Groups::populate_defaults();
 
 // Run the installer if KYSS is not installed.
 kyss_not_installed();

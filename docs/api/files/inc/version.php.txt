@@ -14,4 +14,4 @@ $kyss_version = '0.9.0';
  *
  * @global  string $php_required_version
  */
-$php_required_version = '5.3.0';
+$php_required_version = '5.3.7';

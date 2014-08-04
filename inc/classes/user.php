@@ -54,6 +54,8 @@ class KYSS_User {
 	 * Constructor.
 	 *
 	 * Retrieves the userdata and passes it to {@link KYSS_User::init()}.
+	 * If $id is an expression that evaluates to false, the user data will be retrieved
+	 * by email.
 	 *
 	 * @since  0.7.0
 	 * @access public
@@ -78,9 +80,9 @@ class KYSS_User {
 		}
 
 		if ( $id )
-			$data = self::get_data_by( 'id', $id );
+			$data = self::get_user_by( 'id', $id );
 		else
-			$data = self::get_data_by( 'email', $email );
+			$data = self::get_user_by( 'email', $email );
 
 		if ( $data )
 			$this->init( $data );
@@ -92,15 +94,16 @@ class KYSS_User {
 	 * @since  0.7.0
 	 * @access private
 	 *
-	 * @param  object $data User DB row object?
+	 * @param  object $data User DB row object.
 	 */
 	private function init( $data ) {
+		$data = $data->fetch_array( MYSQLI_ASSOC );
 		$this->data = $data;
-		$this->ID = (int) $data->ID;
+		$this->ID = (int) $data['ID'];
 	}
 
 	/**
-	 * Get only main user fields.
+	 * Get user by id or email.
 	 *
 	 * @todo  Raise KYSS_Error on failure.
 	 *
@@ -110,46 +113,34 @@ class KYSS_User {
 	 *
 	 * @param string $field The field to query against. Accepts <id>, <email>.
 	 * @param  string|int $value The field value.
-	 * @return  object|bool Raw user object. False on failure.
+	 * @return  object|bool Raw user data. False on failure.
 	 */
-	public static function get_data_by( $field, $value ) {
+	public static function get_user_by( $field, $value ) {
 		global $kyssdb;
-
-		if ( 'id' == $field ) {
-			// Make sure the value is numeric to avoid casting objects,
-			// for example to int 1.
-			if ( ! is_numeric( $value ) )
-				return false;
-			$value = intval( $value );
-			if ( $value < 1 )
-				return false;
-		} else {
-			$value = trim( $value );
-		}
-
-		if ( ! $value )
-			return false;
 
 		switch ( $field ) {
 			case 'id':
-				$user_id = $value;
 				$db_field = 'ID';
+				// Make sure the value is numeric to avoid casting objects,
+				// for example to int 1.
+				if ( ! is_numeric( $value ) )
+					return false;
+				$value = intval( $value );
+				if ( $value < 1 )
+					return false;
 				break;
 			case 'email':
-				$user_id = get_id_by( 'email', $value );
-				$db_field = 'user_email';
+				$db_field = 'email';
+				$value = trim( $value );
+				if ( ! $value )
+					return false;
 				break;
 			default:
 				return false;
 		}
 
-		if ( false !== $user_id ) {
-			if ( $user = get_user( $user_id ) )
-				return $user;
-		}
-
 		if ( !$user = $kyssdb->query(
-			"SELECT * FROM {$kyssdb->users} WHERE {$db_field} = {$value}"
+			"SELECT * FROM {$kyssdb->utenti} WHERE {$db_field} = {$value}"
 		) )
 			return false;
 
@@ -157,49 +148,92 @@ class KYSS_User {
 	}
 
 	/**
-	 * Magic method for checking the existence of a certain custom field.
+	 * Insert new user into the database.
 	 *
-	 * @since  0.7.0
+	 * The `$data` array can contain the following fields:
+	 * - 'email' - A string containing the user's email address.
+	 * - 'telefono' - A string containing the user's phone number.
+	 * - 'gruppo' - An array of strings containing the user's group slugs.
+	 * - 'anagrafica' - An associative array of the user's anagraphic data.
+	 * It can contain the following fields:
+	 * - 'CF' - The user's tax code.
+	 * - 'nato_a' - The user's birthplace.
+	 * - 'nato_il' - The user's birthday.
+	 * - 'cittadinanza' - The user's nationality.
+	 * - 'residenza' => array(
+	 * 	'via' => A string with the user's street,
+	 * 	'city' => A string with the user's city,
+	 * 	'provincia' => A two-letters string with the user's district,
+	 * 	'CAP' => A five-digits string with the user's ZIP code );
+	 *
+	 * @since  0.9.0
 	 * @access public
+	 * @static
 	 *
-	 * @param  string $key Field to check.
-	 * @return  bool True if exists, false otherwise.
+	 * @global  kyssdb
+	 *
+	 * @param string $name User's name.
+	 * @param string $surname User's surname.
+	 * @param string $pass User's password in plain text.
+	 * @param array $data Optional. User's data. See above.
+	 * @return int|KYSS_Error The newly created user's ID or a KYSS_Error object
+	 * if the user could not be created.
 	 */
-	function __isset( $key ) {
-		if ( isset( $this->data->$key ) )
-			return true;
-		return false;
-	}
-	
-	/**
-	 * Magic method for accessing custom fields.
-	 *
-	 * @since  0.7.0
-	 * @access public
-	 *
-	 * @param  string $key The field to access.
-	 * @return  mixed|bool Field value. False on failure.
-	 */
-	function __get( $key ) {
-		if ( isset( $this->data->$key ) )
-			$value = $this->data->$key;
-		if ( !isset( $value ) )
-			return false;
-		return $value;
+	public static function create( $name, $surname, $pass, $data = array() ) {
+		global $kyssdb;
+
+		// Hash the password.
+		$pass = KYSS_Pass::hash( $pass );
+
+		// If email is given, check that it is unique.
+		if ( isset( $data['email'] ) && self::email_exists( $data['email'] ) )
+			return new KYSS_Error( 'existing_user_email', "Mi dispiace, questa email &egrave; gi&agrave; in uso!" );
+
+		if ( empty( $data ) )
+			$result = $kyssdb->query( "INSERT INTO {$kyssdb->users} (nome,cognome,password) VALUES ({$name},{$surname},{$pass});" );
+		else {
+			$columns = join( ',', array_keys( $data ) );
+			$values = array();
+			foreach ( $data as $key => $value ) {
+				switch( $key ) {
+					case 'email':
+						$values[] = "'{$value}'";
+						break;
+					case 'telefono':
+						$values[] = "'{$value}'";
+						break;
+					case 'gruppo':
+						$values[] = "'{$value}'";
+						break;
+					case 'anagrafica':
+						$values[] = serialize($value);
+						break;
+				}
+			}
+			$values = join( ',', $values );
+			$result = $kyssdb->query( "INSERT INTO {$kyssdb->utenti} (nome,cognome,password,{$columns}) VALUES ({$name},{$surname},{$pass},{$values});" );
+		}
+
+		if ( $result )
+			return $kyssdb->insert_id;
+		//else
+			// TODO: Handle failure when inserting new user into db.
 	}
 
 	/**
-	 * Magic method for setting custom fields.
+	 * Check if the provided email already exists in the database. Use KYSS_Error object.
 	 *
-	 * @since  0.7.0
-	 * @access public
+	 * @since  0.9.0
+	 * @access private
+	 * @static
 	 *
-	 * @param  string $key The field to set.
-	 * @param  mixed $value The value to set.
-	 * @return  null.
+	 * @param  string $email The email to check.
+	 * @return bool True if email exists, false otherwise.
 	 */
-	function __set( $key, $value ) {
-		$this->data->$key = $value;
+	private static function email_exists( $email ) {
+		if ( false !== self::get_user_by( 'email', $email ) )
+			return true;
+		return false;
 	}
 
 	/**
@@ -323,6 +357,21 @@ class KYSS_User {
 			return true;
 		return false;
 	}
+
+	/**
+	 * Set the user role.
+	 *
+	 * @todo  Write method KYSS_User::set_role()
+	 *
+	 * @since  x.x.x
+	 * @access public
+	 *
+	 * @param  string $slug The role slug.
+	 * @return  null
+	 */
+	public function set_role( $slug ) {
+		$this->role = $slug;
+	}
 }
 
 /**
@@ -343,7 +392,7 @@ class KYSS_Groups {
 	 * @static
 	 * @var  array
 	 */
-	private static $groups = array();
+	private static $groups;
 
 	/**
 	 * List of default groups.
@@ -397,11 +446,11 @@ class KYSS_Groups {
 	 * @static
 	 */
 	public static function populate_defaults() {
-		if ( isset( $this->groups ) )
+		if ( isset( self::$groups ) )
 			trigger_error( 'You already instantiated default KYSS_Groups' );
 
 		foreach ( self::$defaults as $slug => $data ) {
-			$this->groups[$slug] = new KYSS_Group( $data['name'], $data['permissions'] );
+			self::$groups[$slug] = new KYSS_Group( $data['name'], $data['permissions'] );
 		}
 	}
 
@@ -430,7 +479,7 @@ class KYSS_Groups {
 	 * @return  array List of all group slugs.
 	 */
 	public static function get_slugs() {
-		return array_keys( $this->groups );
+		return array_keys( self::$groups );
 	}
 
 	/**
@@ -529,7 +578,7 @@ class KYSS_Group {
 	 * @param  array $perms List of permissions.
 	 */
 	function __construct( $name, $perms ) {
-		$this->name = $group;
+		$this->name = $name;
 		$this->permissions = $perms;
 	}
 

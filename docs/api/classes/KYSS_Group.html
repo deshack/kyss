@@ -114,12 +114,12 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">0</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">1</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="../reports/markers.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">14</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">12</span>
                                 </a>
                             </li>
                             <li>
@@ -144,19 +144,19 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1358308897"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-586784959"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1358308897" class="accordion-body collapse in">
+            <div id="namespace-586784959" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1974294072"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2132331754"></a>
                                 <a href="../namespaces/admin.html" style="margin-left: 30px; padding-left: 0">admin</a>
             </div>
-            <div id="namespace-1974294072" class="accordion-body collapse ">
+            <div id="namespace-2132331754" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
@@ -164,7 +164,7 @@
             <div class="accordion-heading">
                                 <a href="../namespaces/admin.install.html" style="margin-left: 30px; padding-left: 0">install</a>
             </div>
-            <div id="namespace-644935772" class="accordion-body collapse ">
+            <div id="namespace-162340043" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -180,7 +180,7 @@
             <div class="accordion-heading">
                                 <a href="../namespaces/admin.setup_config.html" style="margin-left: 30px; padding-left: 0">setup_config</a>
             </div>
-            <div id="namespace-504673292" class="accordion-body collapse ">
+            <div id="namespace-1041872362" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -202,11 +202,11 @@
                     
                     <ul>
                                                                                                     <li class="class"><a href="../classes/KYSS_DB.html">KYSS_DB</a></li>
-                                                    <li class="class"><a href="../classes/KYSS_DB_Deprecated.html">KYSS_DB_Deprecated</a></li>
                                                     <li class="class"><a href="../classes/KYSS_Error.html">KYSS_Error</a></li>
                                                     <li class="class"><a href="../classes/KYSS_Group.html">KYSS_Group</a></li>
                                                     <li class="class"><a href="../classes/KYSS_Groups.html">KYSS_Groups</a></li>
                                                     <li class="class"><a href="../classes/KYSS_Hook.html">KYSS_Hook</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_Pass.html">KYSS_Pass</a></li>
                                                     <li class="class"><a href="../classes/KYSS_User.html">KYSS_User</a></li>
                                             </ul>
                 </div>
@@ -373,7 +373,7 @@
             <article class="property">
                 <h3 class="public ">$permissions</h3>
                 <pre class="signature">$permissions : array</pre>
-                <p><em>List of permissions the group contains.</em></p>
+                <p><em>List of permissions the group has.</em></p>
                 
 
                                 <h4>Type</h4>
@@ -418,17 +418,16 @@
             <article class="method">
                 <h3 class="public ">__construct()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">__construct(string <span class="argument">$group</span>, array <span class="argument">$perms</span>)</pre>
+                <pre class="signature" style="margin-right: 54px;">__construct( <span class="argument">$name</span>, array <span class="argument">$perms</span>)</pre>
                 <p><em>Constructor - Set up object properties.</em></p>
-                <p>The list of permission must have the key as the name of the permission
-and the value a boolean of whether it is granted to the group.</p>
+                
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td>string</td>
-                                <td>$group </td>
-                                <td><p>Group name.</p></td>
+                                <td></td>
+                                <td>$name </td>
+                                <td></td>
                             </tr>
                                                     <tr>
                                 <td>array</td>
@@ -471,74 +470,9 @@ and the value a boolean of whether it is granted to the group.</p>
             <article class="method">
                 <h3 class="public ">add_permission()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">add_permission(string <span class="argument">$perm</span>, bool <span class="argument">$grant</span>)</pre>
+                <pre class="signature" style="margin-right: 54px;">add_permission(string <span class="argument">$perm</span>)</pre>
                 <p><em>Assign group a permission.</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$perm </td>
-                                <td><p>Permission name.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>bool</td>
-                                <td>$grant </td>
-                                <td><p>Whether group has permission privilege.</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                                            <dt>See also</dt>
-                                                                <dd><a href="../classes/KYSS_Groups.html#method_add_permission"><span class="namespace-wrapper">Method uses implementation for group.</span></a></dd>
-                                                                </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            0.8.0                                
-                                                    </td>
-                    </tr>
-                                    <tr>
-                        <th>
-                            global
-                        </th>
-                        <td>
-                                                                                            <p>user_groups</p>
-                                                    </td>
-                    </tr>
-                                    <tr>
-                        <th>
-                            todo
-                        </th>
-                        <td>
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_remove_permission" name="method_remove_permission" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">remove_permission()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">remove_permission(string <span class="argument">$perm</span>)</pre>
-                <p><em>Remove permission from group.</em></p>
-                <p>This is a container for {@link KYSSGroups::remove_permission()} to remove
-the permission from the group. That is to say that {@link
-KYSS_Groups::remove_permission()} implements the functionality, but it also
-makes sense to use this class, because you don't need to enter the group name.</p>
+                <p>Triggers E_USER_ERROR if <code>$perm</code> is not a valid permission.</p>
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
@@ -568,10 +502,50 @@ makes sense to use this class, because you don't need to enter the group name.</
                     </tr>
                                     <tr>
                         <th>
-                            global
+                            todo
                         </th>
                         <td>
-                                                                                            <p>user_groups</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_permission" name="method_remove_permission" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">remove_permission()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_permission(string <span class="argument">$perm</span>)</pre>
+                <p><em>Remove permission from group.</em></p>
+                <p>This method will not do nothing if the group was not granted the permission
+before.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$perm </td>
+                                <td><p>Permission name.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.8.0                                
                                                     </td>
                     </tr>
                                     <tr>
@@ -594,9 +568,9 @@ makes sense to use this class, because you don't need to enter the group name.</
                 <pre class="signature" style="margin-right: 54px;">has_permission(string <span class="argument">$perm</span>) : bool</pre>
                 <p><em>Whether group has permission.</em></p>
                 <p>The permission is passed through the 'group_has_permission' hook.
-The first parameter for the hook is the list of permissions the class
-has assigned. The second parameter is the capability name to look.
-The third and final parameter for the hook is the group name.</p>
+The first parameter for the hook is the list of permissions the group
+has granted. The second parameter is the permission name to look.
+The third and final parameter for the hook is the group slug.</p>
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
@@ -696,7 +670,7 @@ The third and final parameter for the hook is the group name.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on July 9th, 2014 at 11:58.
+                    on August 4th, 2014 at 12:38.
                 </section>
             </section>
         </section>

@@ -46,8 +46,6 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	populate_db();
 	// Populate first options.
 	populate_options();
-	// Create KYSS groups.
-	populate_groups();
 	
 	// Update options based on user input.
 	update_option('sitename', trim($title));
@@ -62,13 +60,11 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	if ( empty( $user_password ) ) {
 		$user_password = generate_password(); // Defaults to 10 char long, with special chars.
 		$message = '<strong><em>Note that password</em></strong> carefully! It is a <em>random</em> password that was generated just for you.';
-		//$user_id = create_user($user_name, $user_password, $user_email);
 	}
+	$user_id = KYSS_User::create($user_name, $user_surname, $user_password, array( 'email' => $user_email ) );
 
 	$user = new KYSS_User($user_id);
 	$user->set_role('owner');
-
-	//install_defaults($user_id);
 	
 	/**
 	 * Fires after the application is fully installed.
@@ -77,7 +73,9 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	 *
 	 * @param  KYSS_User $user The site owner.
 	 */
-	$hook->run( 'kyss_install', $user );
+	$hook->run( 'kyss_installed', $user );
+
+	$message = '';
 	
 	return array('url' => $guessurl, 'user_id' => $user_id, 'password' => $user_password, 'password_message' => $message );
 }

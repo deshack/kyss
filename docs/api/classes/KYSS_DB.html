@@ -114,12 +114,12 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">0</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">1</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="../reports/markers.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">14</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">12</span>
                                 </a>
                             </li>
                             <li>
@@ -144,19 +144,19 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-682384642"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1061564088"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-682384642" class="accordion-body collapse in">
+            <div id="namespace-1061564088" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-617735883"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1762413082"></a>
                                 <a href="../namespaces/admin.html" style="margin-left: 30px; padding-left: 0">admin</a>
             </div>
-            <div id="namespace-617735883" class="accordion-body collapse ">
+            <div id="namespace-1762413082" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
@@ -164,7 +164,7 @@
             <div class="accordion-heading">
                                 <a href="../namespaces/admin.install.html" style="margin-left: 30px; padding-left: 0">install</a>
             </div>
-            <div id="namespace-359247554" class="accordion-body collapse ">
+            <div id="namespace-1419990677" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -180,7 +180,7 @@
             <div class="accordion-heading">
                                 <a href="../namespaces/admin.setup_config.html" style="margin-left: 30px; padding-left: 0">setup_config</a>
             </div>
-            <div id="namespace-1951796506" class="accordion-body collapse ">
+            <div id="namespace-633132365" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -202,11 +202,11 @@
                     
                     <ul>
                                                                                                     <li class="class"><a href="../classes/KYSS_DB.html">KYSS_DB</a></li>
-                                                    <li class="class"><a href="../classes/KYSS_DB_Deprecated.html">KYSS_DB_Deprecated</a></li>
                                                     <li class="class"><a href="../classes/KYSS_Error.html">KYSS_Error</a></li>
                                                     <li class="class"><a href="../classes/KYSS_Group.html">KYSS_Group</a></li>
                                                     <li class="class"><a href="../classes/KYSS_Groups.html">KYSS_Groups</a></li>
                                                     <li class="class"><a href="../classes/KYSS_Hook.html">KYSS_Hook</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_Pass.html">KYSS_Pass</a></li>
                                                     <li class="class"><a href="../classes/KYSS_User.html">KYSS_User</a></li>
                                             </ul>
                 </div>
@@ -247,6 +247,7 @@
                                                                     <a href="../classes/KYSS_DB.html#method___construct" class="">__construct()</a><br />
                                                                     <a href="../classes/KYSS_DB.html#method_create" class="">create()</a><br />
                                                                     <a href="../classes/KYSS_DB.html#method_update" class="">update()</a><br />
+                                                                    <a href="../classes/KYSS_DB.html#method_get_tables" class="">get_tables()</a><br />
                                                                     <a href="../classes/KYSS_DB.html#method_has_error" class="">has_error()</a><br />
                                                             </section>
                             <section class="span4">
@@ -920,6 +921,48 @@ connection to the database.</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method_get_tables" name="method_get_tables" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_tables()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_tables() : array</pre>
+                <p><em>Retrive the list of KYSS database tables</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$tables An array of the database's tables</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            0.9.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method_has_error" name="method_has_error" class="anchor"></a>
             <article class="method">
                 <h3 class="public ">has_error()</h3>
@@ -1144,7 +1187,7 @@ connection to the database.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on July 9th, 2014 at 11:58.
+                    on August 4th, 2014 at 12:38.
                 </section>
             </section>
         </section>

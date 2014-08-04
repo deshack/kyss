@@ -1,0 +1,52 @@
+<?php
+/**
+ * KYSS password hashing API.
+ *
+ * @package  KYSS
+ * @subpackage  Pass
+ * @since  0.9.0
+ */
+
+/**
+ * KYSS password hashing class.
+ *
+ * Use this class to strongly encrypt passwords.
+ *
+ * @package KYSS
+ * @subpackage  Pass
+ * @version  1.0.0
+ * @since  0.9.0
+ */
+class KYSS_Pass {
+	/**
+	 * Generate BCrypt hash of the given password.
+	 *
+	 * @since  KYSS_Pass 1.0.0
+	 * @access public
+	 * @static
+	 *
+	 * @param  string $password Password in plain text.
+	 * @return string Hashed password.
+	 */
+	public static function hash( $password ) {
+		if ( defined( 'CRYPT_BLOWFISH' ) && CRYPT_BLOWFISH ) {
+			$salt = '$2y$11$' . substr( md5( uniqid( rand(), true ) ), 0, 22 );
+			return crypt( $password, $salt );
+		}
+	}
+
+	/**
+	 * Verify plain text password against hashed one.
+	 *
+	 * @since  KYSS_Pass 1.0.0
+	 * @access public
+	 * @static
+	 *
+	 * @param  string $password Password in plain text.
+	 * @param  string $hashed Hashed password.
+	 * @return  bool True if the passwords correspond, false otherwise.
+	 */
+	public static function verify( $password, $hashed ) {
+		return crypt( $password, $hashed ) == $hashed;
+	}
+}

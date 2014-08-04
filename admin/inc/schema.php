@@ -22,8 +22,10 @@ function get_db_schema() {
 
 	if ( class_exists('KYSS_Groups') )
 		$groups = "set('" . join("','", KYSS_Groups::get_slugs() ) . "')";
-	else
-		trigger_error( sprintf( "%s expects <em>\$kyss_groups</em> to be set", __FUNCTION__ ), E_USER_ERROR );
+	else {
+		trigger_error( sprintf( "%s needs the KYSS_Groups class", __FUNCTION__ ), E_USER_ERROR );
+		die();
+	}
 
 	if ( ! isset( $kyssdb ) )
 		kyss_die( sprintf('Something is wrong with your application. KYSS could not find a database connection while installing. Please report to %s',
@@ -33,10 +35,11 @@ function get_db_schema() {
 		`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
 		`nome`			varchar(20) NOT NULL,
 		`cognome`		varchar(20) NOT NULL,
-		`anagrafica`	text,
+		`anagrafica`	blob,
 		`email`			varchar(30),
 		`telefono`		varchar(15),
 		`gruppo`		{$groups} DEFAULT 'ordinari',
+		`password`		char(128) NOT NULL,
 		PRIMARY KEY (`ID`),
 		UNIQUE (`email`)
 	) ENGINE = InnoDB;
