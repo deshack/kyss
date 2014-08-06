@@ -85,7 +85,7 @@ class KYSS_Hook {
 	 * priority are executed in the order in which they were added to the hook. Default <10>.
 	 * @return  boolean true.
 	 */
-	public function add( $tag, $callback, $priority ) {
+	public function add( $tag, $callback, $priority = 10 ) {
 		$this->hooks[$tag][$priority][] = $callback;
 		unset( $this->merged[ $tag ] );
 		return true;

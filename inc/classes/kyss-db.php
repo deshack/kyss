@@ -258,14 +258,14 @@ class KYSS_DB extends mysqli {
 
 		$query = array();
 		foreach ( $data as $field => $value ) {
-			$query[] = "`$field` = {$value}";
+			$query[] = "`$field` = '{$value}'";
 		}
 		$wheres = array();
 		foreach ( $where as $field => $value ) {
-			$wheres[] = "`$field` = {$value}";
+			$wheres[] = "`$field` = '{$value}'";
 		}
 
-		$sql = "UPDATE `$table` SET " . implode( ', ', $query ) . " WHERE " . implode( ' AND ', $wheres );
+		$sql = "UPDATE $table SET " . implode( ', ', $query ) . " WHERE " . implode( ' AND ', $wheres );
 
 		return $this->query( $sql );
 	}

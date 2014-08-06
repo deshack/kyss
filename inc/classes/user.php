@@ -189,35 +189,38 @@ class KYSS_User {
 		if ( isset( $data['email'] ) && self::email_exists( $data['email'] ) )
 			return new KYSS_Error( 'existing_user_email', "Mi dispiace, questa email &egrave; gi&agrave; in uso!" );
 
-		if ( empty( $data ) )
-			$result = $kyssdb->query( "INSERT INTO {$kyssdb->users} (nome,cognome,password) VALUES ({$name},{$surname},{$pass});" );
-		else {
-			$columns = join( ',', array_keys( $data ) );
-			$values = array();
+		$columns = array( 'nome', 'cognome', 'password' );
+		$values = array( "'{$name}'", "'{$surname}'", "'{$pass}'" );
+		if ( ! empty( $data ) ) {
 			foreach ( $data as $key => $value ) {
 				switch( $key ) {
 					case 'email':
+						$columns[] = $key;
 						$values[] = "'{$value}'";
 						break;
 					case 'telefono':
+						$columns[] = $key;
 						$values[] = "'{$value}'";
 						break;
 					case 'gruppo':
+						$columns[] = $key;
 						$values[] = "'{$value}'";
 						break;
 					case 'anagrafica':
+						$columns[] = $key;
 						$values[] = serialize($value);
 						break;
 				}
 			}
+			$columns = join( ',', $columns );
 			$values = join( ',', $values );
-			$result = $kyssdb->query( "INSERT INTO {$kyssdb->utenti} (nome,cognome,password,{$columns}) VALUES ({$name},{$surname},{$pass},{$values});" );
+			$result = $kyssdb->query( "INSERT INTO {$kyssdb->utenti} ({$columns}) VALUES ({$values})" );
 		}
 
 		if ( $result )
 			return $kyssdb->insert_id;
-		//else
-			// TODO: Handle failure when inserting new user into db.
+		else
+			trigger_error( $kyssdb->error, E_USER_WARNING ); // TODO: Return KYSS_Error instead.
 	}
 
 	/**
