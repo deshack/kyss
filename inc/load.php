@@ -82,7 +82,7 @@ function is_installed() {
 			}
 		}
 	}
-	
+
 	if ( $count == 0 )
 		return false;
 	elseif ( $count == count( $tables ) )

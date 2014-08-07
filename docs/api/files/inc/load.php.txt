@@ -65,17 +65,24 @@ function is_installed() {
 	if ( 0 == $present->num_rows )
 		return false;
 
+	$found = array();
+	while ( $row = $present->fetch_row() ) {
+		$found[] = $row[0];
+	}
+	unset( $present );
+
 	// Database not empty, check against KYSS table names.
 	$tables = $kyssdb->get_tables();
 	$count = 0;
 	foreach ( $tables as $table ) {
-		while ( $row = $present->fetch_row() ) {
-			if ( $row[0] == $table ) {
+		foreach ( $found as $tbl ) {
+			if ( $tbl == $table ) {
 				$count++;
 				break;
 			}
 		}
 	}
+
 	if ( $count == 0 )
 		return false;
 	elseif ( $count == count( $tables ) )

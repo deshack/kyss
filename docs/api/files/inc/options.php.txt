@@ -131,7 +131,13 @@ function get_option( $option ) {
 	if ( empty( $option ) )
 		return false;
 
-	$value = $kyssdb->query( "SELECT value FROM {$kyssdb->options} WHERE name = {$option} LIMIT 1" );
+	if ( ! $value = $kyssdb->query( "SELECT value FROM {$kyssdb->options} WHERE name = '{$option}' LIMIT 1" ) )
+		trigger_error( $kyssdb->error, E_USER_WARNING );
+
+	if ( is_object( $value ) ) {
+		$value = $value->fetch_object();
+		$value = $value->value;
+	}
 
 	/**
 	 * Filter the value of an existing option.

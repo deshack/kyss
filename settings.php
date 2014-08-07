@@ -67,6 +67,9 @@ kyss_not_installed();
 // ToDo: Require all needed files.
 require(INC . 'formatting.php');
 require(CLASSES . 'hook.php');
+require(CLASSES . 'kyss-pass.php');
+require(INC . 'options.php');
+require(INC . 'template.php');
 
 // Load pluggable functions.
 require(INC . 'pluggable.php');
