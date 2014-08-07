@@ -21,6 +21,13 @@ class KYSS_Pass {
 	/**
 	 * Generate BCrypt hash of the given password.
 	 *
+	 * Note: `bin2hex()` called with a parameter of 11 characters
+	 * generates a string 22 characters long.
+	 *
+	 * The BCrypt algorithm requires a salt as follows: "$2a$", "$2x$", or
+	 * "$2y$", a two digit cost parameter, "$", and 22 characters from the
+	 * alphabet "./0-9A-Za-z".
+	 *
 	 * @since  KYSS_Pass 1.0.0
 	 * @access public
 	 * @static
@@ -30,7 +37,7 @@ class KYSS_Pass {
 	 */
 	public static function hash( $password ) {
 		if ( defined( 'CRYPT_BLOWFISH' ) && CRYPT_BLOWFISH ) {
-			$salt = '$2y$11$' . substr( md5( uniqid( rand(), true ) ), 0, 22 );
+			$salt = '$2y$11$' . bin2hex( openssl_random_pseudo_bytes(11) );
 			return crypt( $password, $salt );
 		}
 	}

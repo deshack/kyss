@@ -524,3 +524,49 @@ function check_php_version() {
 		kyss_die( $die, 'KYSS Error' );
 	}
 }
+
+/**
+ * Retrieve the site url.
+ *
+ * Returns the `siteurl` option with the appropriate protocol, 'https' if
+ * `is_ssl()` and 'http' otherwise. If `$scheme` is 'http' or 'https', `is_ssl()`
+ * is overridden.
+ *
+ * @since  0.11.0
+ *
+ * @global  hook
+ *
+ * @param  string $path Optional. Path relative to the site url.
+ * @param  string $scheme Optional. Scheme to give the site url context.
+ * Accepts <'http'>, <'https'>.
+ * @return  string Site url link with optional path appended.
+ */
+function get_site_url( $path = '', $scheme = null ) {
+	global $hook;
+
+	if ( ! is_null( $scheme ) && is_string( $scheme ) )
+		$url = trim( $scheme );
+	else
+		$scheme = ( is_ssl() ? 'https' : 'http' );
+
+	$url = get_option( 'siteurl' );
+
+	// Here we choose the # delimiter because of the slashes in the pattern.
+	// We search for any word character (\w) more than once at the beginning
+	// of the subject (^), followed by '://'.
+	$url = preg_replace( '#^\w+://#', $scheme . '://', $url );
+
+	if ( $path && is_string( $path ) )
+		$url .= '/' . ltrim( $path, '/' );
+
+	/**
+	 * Filter the site URL.
+	 *
+	 * @since  0.11.0
+	 *
+	 * @param string $url The complete site URL including scheme and path.
+	 * @param  string $path Path relative to the site URL. Blank string if no path is specified.
+	 * @param  string|null $scheme Scheme to give the site URL context. Accepts <'http'>, <'https'>, <null>
+	 */
+	return $hook->run( 'get_site_url', $url, $path, $scheme );
+}

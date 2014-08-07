@@ -93,6 +93,7 @@
                         </a>
                         <ul class="dropdown-menu">
                                                         <li><a href="../namespaces/admin.html">\admin</a></li>
+                                                        <li><a href="../namespaces/login.html">\login</a></li>
                                                     </ul>
                     </li>
                                         <li class="dropdown" id="charts-menu">
@@ -114,12 +115,12 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">1</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">2</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="../reports/markers.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">12</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">13</span>
                                 </a>
                             </li>
                             <li>
@@ -144,19 +145,19 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-196645528"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1256000459"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-196645528" class="accordion-body collapse in">
+            <div id="namespace-1256000459" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-163954584"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-468509797"></a>
                                 <a href="../namespaces/admin.html" style="margin-left: 30px; padding-left: 0">admin</a>
             </div>
-            <div id="namespace-163954584" class="accordion-body collapse ">
+            <div id="namespace-468509797" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
@@ -164,7 +165,7 @@
             <div class="accordion-heading">
                                 <a href="../namespaces/admin.install.html" style="margin-left: 30px; padding-left: 0">install</a>
             </div>
-            <div id="namespace-412912168" class="accordion-body collapse ">
+            <div id="namespace-840014317" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -180,7 +181,7 @@
             <div class="accordion-heading">
                                 <a href="../namespaces/admin.setup_config.html" style="margin-left: 30px; padding-left: 0">setup_config</a>
             </div>
-            <div id="namespace-1151260732" class="accordion-body collapse ">
+            <div id="namespace-566161667" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -190,6 +191,22 @@
             </div>
         </div>
     </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                <a href="../namespaces/login.html" style="margin-left: 30px; padding-left: 0">login</a>
+            </div>
+            <div id="namespace-1697072488" class="accordion-body collapse ">
+                <div class="accordion-inner">
 
                     
                     <ul>
@@ -341,7 +358,11 @@
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">hash(string <span class="argument">$password</span>) : string</pre>
                 <p><em>Generate BCrypt hash of the given password.</em></p>
-                
+                <p>Note: <code>bin2hex()</code> called with a parameter of 11 characters
+generates a string 22 characters long.</p>
+<p>The BCrypt algorithm requires a salt as follows: "$2a$", "$2x$", or
+"$2y$", a two digit cost parameter, "$", and 22 characters from the
+alphabet "./0-9A-Za-z".</p>
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
@@ -479,6 +500,7 @@
                             <div>
                                 <ul>
                                                                             <li><a href="../namespaces/admin.html">\admin</a></li>
+                                                                            <li><a href="../namespaces/login.html">\login</a></li>
                                                                     </ul>
                             </div>
                         </section>
@@ -506,7 +528,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on August 4th, 2014 at 12:38.
+                    on August 7th, 2014 at 09:52.
                 </section>
             </section>
         </section>

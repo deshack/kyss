@@ -112,6 +112,7 @@ function display_header() {
 	 */
 	
 	// Passing the version parameter allows a proper caching of the resource.
+	// TODO: Remove the unused `$version` variable.
 	$version = preg_replace( '/[^0-9a-z\.-]/i', '', $kyss_version );
 
 	// Load required stylesheets

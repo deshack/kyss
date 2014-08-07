@@ -48,11 +48,10 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	populate_options();
 	
 	// Update options based on user input.
-	update_option('sitename', trim($title));
-	update_option('admin_email', trim($user_email));
+	$sitename = update_option('sitename', trim($title));
+	$admin_email = update_option('admin_email', trim($user_email));
 	
 	$guessurl = kyss_guess_url();
-
 	update_option('siteurl', trim($guessurl));
 	
 	// Create default user.
@@ -74,8 +73,6 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	 * @param  KYSS_User $user The site owner.
 	 */
 	$hook->run( 'kyss_installed', $user );
-
-	$message = '';
 	
-	return array('url' => $guessurl, 'user_id' => $user_id, 'password' => $user_password, 'password_message' => $message );
+	return array('url' => $guessurl, 'user_id' => $user_id, 'password' => $user_password, 'password_message' => (isset($message) ? $message : '') );
 }

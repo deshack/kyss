@@ -80,8 +80,10 @@ function update_option( $option, $value ) {
 	$result = $kyssdb->update( $kyssdb->options, array( 'value' => $serialized_value ), array( 'name' => $option ) );
 
 	// $kyssdb->update returns false on error.
-	if ( ! $result )
+	if ( ! $result ) {
+		trigger_error( 'KYSS_DB::update raised error: ' . $kyssdb->error, E_USER_WARNING );
 		return false;
+	}
 
 	/**
 	 * Fires after the value of a specific option has been successfully updated.

@@ -215,8 +215,33 @@ function validate() {
 		$error = true;
 	}
 
-	if ( $error === false ) {
+	if ( $error === false ) :
 		$result = kyss_install( $name, $admin_name, $admin_surname, $admin_email, slash( $admin_password ) );
 		extract( $result, EXTR_SKIP );
-	}
+?>
+
+<h2>Fatto!</h2>
+
+<p>KYSS &egrave; stato installato. &Egrave; stato facile, vero?</p>
+
+<table>
+	<tr>
+		<th>Email</th>
+		<td><?php echo $admin_email; ?></td>
+	</tr>
+	<tr>
+		<th>Password</th>
+		<td><?php
+		if ( ! empty( $password ) && empty( $admin_password_check ) )
+			echo '<code>' . $password . '</code><br>';
+		echo "<p>$password_message</p>"; ?>
+		</td>
+	</tr>
+</table>
+
+<p class="step"><a href="../login.php" class="button primary">Login</a></p>
+
+<?php
+	endif; // $error === false
 } // End validate()
+

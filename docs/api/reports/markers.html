@@ -46,6 +46,7 @@
                         </a>
                         <ul class="dropdown-menu">
                                                         <li><a href="../namespaces/admin.html">\admin</a></li>
+                                                        <li><a href="../namespaces/login.html">\login</a></li>
                                                     </ul>
                     </li>
                                         <li class="dropdown" id="charts-menu">
@@ -67,12 +68,12 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">1</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">2</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="../reports/markers.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">12</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">13</span>
                                 </a>
                             </li>
                             <li>
@@ -99,9 +100,10 @@
                                                                         <li><a href="#admin/inc/upgrade.php"><i class="icon-file"></i> admin/inc/upgrade.php</a></li>
                                                                                                                                                         <li><a href="#inc/options.php"><i class="icon-file"></i> inc/options.php</a></li>
                                                                                                                                                                                                                 <li><a href="#inc/classes/kyss-db.php"><i class="icon-file"></i> inc/classes/kyss-db.php</a></li>
-                                                                                                                                                                                                                                                                        <li><a href="#admin/install.php"><i class="icon-file"></i> admin/install.php</a></li>
+                                                                                                                                                                                                                                                                                                                                <li><a href="#admin/install.php"><i class="icon-file"></i> admin/install.php</a></li>
                                                                                                                                                                                                                                                                                                                                                                                         <li><a href="#inc/classes/user.php"><i class="icon-file"></i> inc/classes/user.php</a></li>
                                                                                                 <li><a href="#inc/load.php"><i class="icon-file"></i> inc/load.php</a></li>
+                                                                                                <li><a href="#admin/setup-config.php"><i class="icon-file"></i> admin/setup-config.php</a></li>
                                                                                                                                                                                                                                             </ul>
         </div>
 
@@ -152,7 +154,7 @@
                                     </tr>
                                                                             <tr>
                                             <td>TODO</td>
-                                            <td>125</td>
+                                            <td>127</td>
                                             <td>Add other useful hooks.</td>
                                         </tr>
                                                                     </table>
@@ -185,7 +187,7 @@
                                                                     </table>
                             </div>
                         </div>
-                                                                                                                                                                                            <div class="package-contents">
+                                                                                                                                                                                                                                <div class="package-contents">
                             <a name="admin/install.php" id="admin/install.php"></a>
                             <h3>
                             <i class="icon-file"></i>
@@ -223,8 +225,8 @@
                                     </tr>
                                                                             <tr>
                                             <td>TODO</td>
-                                            <td>220</td>
-                                            <td>Handle failure when inserting new user into db.</td>
+                                            <td>223</td>
+                                            <td>Return KYSS_Error instead.</td>
                                         </tr>
                                                                             <tr>
                                             <td>TODO</td>
@@ -233,22 +235,22 @@
                                         </tr>
                                                                             <tr>
                                             <td>TODO</td>
-                                            <td>275</td>
+                                            <td>278</td>
                                             <td>Write function code.</td>
                                         </tr>
                                                                             <tr>
                                             <td>TODO</td>
-                                            <td>289</td>
+                                            <td>292</td>
                                             <td>Complete function code.</td>
                                         </tr>
                                                                             <tr>
                                             <td>TODO</td>
-                                            <td>311</td>
+                                            <td>314</td>
                                             <td>Complete function code.</td>
                                         </tr>
                                                                             <tr>
                                             <td>TODO</td>
-                                            <td>372</td>
+                                            <td>375</td>
                                             <td>Write method KYSS_User::set_role()</td>
                                         </tr>
                                                                     </table>
@@ -276,6 +278,28 @@
                                                                     </table>
                             </div>
                         </div>
+                                                                                <div class="package-contents">
+                            <a name="admin/setup-config.php" id="admin/setup-config.php"></a>
+                            <h3>
+                            <i class="icon-file"></i>
+                                admin/setup-config.php
+                                <small style="float: right;padding-right: 10px;">1</small>
+                            </h3>
+                            <div>
+                                <table class="table markers table-bordered">
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Line</th>
+                                        <th>Description</th>
+                                    </tr>
+                                                                            <tr>
+                                            <td>TODO</td>
+                                            <td>115</td>
+                                            <td>Remove the unused `$version` variable.</td>
+                                        </tr>
+                                                                    </table>
+                            </div>
+                        </div>
                                                                                                                                                             </div>
         </div>
     </section>
@@ -290,6 +314,7 @@
                             <div>
                                 <ul>
                                                                             <li><a href="../namespaces/admin.html">\admin</a></li>
+                                                                            <li><a href="../namespaces/login.html">\login</a></li>
                                                                     </ul>
                             </div>
                         </section>
@@ -317,7 +342,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on August 4th, 2014 at 12:38.
+                    on August 7th, 2014 at 09:52.
                 </section>
             </section>
         </section>

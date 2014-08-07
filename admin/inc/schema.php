@@ -40,7 +40,7 @@ function get_db_schema() {
 			`email`			varchar(30),
 			`telefono`		varchar(15),
 			`gruppo`		{$groups} DEFAULT 'ordinari',
-			`password`		char(128) NOT NULL,
+			`password`		char(128),
 			PRIMARY KEY (`ID`),
 			UNIQUE (`email`)
 		) ENGINE = InnoDB",
