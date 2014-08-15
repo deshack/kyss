@@ -218,9 +218,10 @@ function form() {
  */
 function validate() {
 	global $kyssdb;
-	
+
 	$user_email = isset( $_POST['user_email'] ) ? trim( unslash( $_POST['user_email'] ) ) : '';
 	$user_pass = isset( $_POST['user_pass'] ) ? trim( unslash( $_POST['user_pass'] ) ) : '';
+	$remember = isset( $_POST['rememberme'] ) ? $_POST['rememberme'] : false;
 
 	$errors = new \KYSS_Error();
 	if ( empty( $user_email ) )
@@ -231,7 +232,6 @@ function validate() {
 	// Email is not empty. Use it to try to retrieve a user from the database.
 	$user = $kyssdb->query( "SELECT * FROM {$kyssdb->utenti} WHERE email='{$user_email}'" );
 
-
 	if ( false === $user )
 		trigger_error( $kyssdb->error, E_USER_ERROR );
 	else if ( 0 === $user->num_rows )
@@ -240,9 +240,18 @@ function validate() {
 	// We found a user.
 	$user = $user->fetch_object();
 
-	if ( ! \KYSS_Pass::verify( $user_pass, $user->password ) )
-		$errors->add( 'invalid_password', 'Password errata. Riprovare.' );
+	if ( ! is_null( $user ) ) {
+		if ( ! \KYSS_Pass::verify( $user_pass, $user->password ) )
+			$errors->add( 'invalid_password', 'Password errata. Riprovare.' );
+	}
 
-	if ( empty( $errors->get_error_code() ) )
+	if ( ! empty( $errors->get_error_code() ) ) {
+		// TODO: handle some errors
+		echo "Failure!";
+	} else {
+		if ( $remember ) {
+			setcookie( 'kyss_login', KYSS_Pass::hash_auth_cookie( $user->ID ), time() + (15 * 86400) );
+		}
 		echo "Success!";
+	}
 }

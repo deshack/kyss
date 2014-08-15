@@ -56,4 +56,33 @@ class KYSS_Pass {
 	public static function verify( $password, $hashed ) {
 		return crypt( $password, $hashed ) == $hashed;
 	}
+
+	/**
+	 * Hash authentication cookie.
+	 * 
+	 * @param  string $user User ID.
+	 * @return string       Hashed authentication cookie.
+	 */
+	public static function hash_auth_cookie( $user ) {
+		if ( ! $user )
+			trigger_error( '$user cannot be empty.', E_USER_ERROR );
+		$user = (string) $user;
+		$hash = sha1( $user . 'abcd' );
+
+		return $user . ',' . $hash;
+	}
+
+	/**
+	 * Verify authentication cookie.
+	 * 
+	 * @param  string $cookie The cookie to verify.
+	 * @return bool True if ok, false otherwise.
+	 */
+	public static function verify_auth_cookie( $cookie ) {
+		list( $user, $hash ) = split( ',', $cookie );
+
+		if ( sha1( $user, KYSS_SECRET ) == $hash )
+			return true;
+		return false;
+	}
 }
