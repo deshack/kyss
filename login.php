@@ -250,7 +250,7 @@ function validate() {
 		echo "Failure!";
 	} else {
 		if ( $remember ) {
-			setcookie( 'kyss_login', KYSS_Pass::hash_auth_cookie( $user->ID ), time() + (15 * 86400) );
+			setcookie( 'kyss_login', \KYSS_Pass::hash_auth_cookie( $user->ID ), time() + 15*86400 );
 		}
 		echo "Success!";
 	}
