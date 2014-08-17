@@ -170,6 +170,7 @@ function get_db_schema() {
 			`utente`		bigint(20) UNSIGNED NOT NULL,
 			`causale`		varchar(255) NOT NULL,
 			`importo`		varchar(10) NOT NULL,
+			`data`			date NOT NULL,
 			`bilancio`		bigint(20) UNSIGNED,
 			`evento`		bigint(20) UNSIGNED,
 			PRIMARY KEY (`ID`),

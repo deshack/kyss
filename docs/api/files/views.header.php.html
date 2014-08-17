@@ -3,8 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta charset="utf-8"/>
-    <title>     &raquo; Compilation errors
-</title>
+    <title>KYSS Reference</title>
     <meta name="author" content=""/>
     <meta name="description" content=""/>
 
@@ -22,7 +21,55 @@
     <script src="../js/jquery.smooth-scroll.js"></script>
     <script src="../js/prism.min.js"></script>
     <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
-    
+        <script type="text/javascript">
+        function loadExternalCodeSnippets() {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+                var src = pre.getAttribute('data-src');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
+
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
+
+                pre.textContent = '';
+
+                code.textContent = 'Loading…';
+
+                pre.appendChild(code);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', src, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist or is empty';
+                        }
+                    }
+                };
+
+                xhr.send(null);
+            });
+        }
+
+        $(document).ready(function(){
+            loadExternalCodeSnippets();
+        });
+        $('#source-view').on('shown', function () {
+            loadExternalCodeSnippets();
+        })
+    </script>
+
     <link rel="shortcut icon" href="../images/favicon.ico"/>
     <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
     <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
@@ -95,142 +142,142 @@
 <div id="___" class="container-fluid">
         <section class="row-fluid">
         <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-486738128"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-486738128" class="accordion-body collapse in">
+                <div class="accordion-inner">
 
-            <ul class="side-nav nav nav-list">
-                <li class="nav-header">Navigation</li>
-                                                                                                                                                                                            <li><a href="#login.php"><i class="icon-file"></i> login.php</a></li>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <li><a href="#inc/classes/user.php"><i class="icon-file"></i> inc/classes/user.php</a></li>
-                                                                                                                                                                                                                                                                            <li><a href="#views/header.php"><i class="icon-file"></i> views/header.php</a></li>
-                                                                    </ul>
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1259137024"></a>
+                                <a href="../namespaces/admin.html" style="margin-left: 30px; padding-left: 0">admin</a>
+            </div>
+            <div id="namespace-1259137024" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                <a href="../namespaces/admin.install.html" style="margin-left: 30px; padding-left: 0">install</a>
+            </div>
+            <div id="namespace-664496693" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
         </div>
+    </div>
 
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                <a href="../namespaces/admin.setup_config.html" style="margin-left: 30px; padding-left: 0">setup_config</a>
+            </div>
+            <div id="namespace-471141731" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                <a href="../namespaces/login.html" style="margin-left: 30px; padding-left: 0">login</a>
+            </div>
+            <div id="namespace-1976785801" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/KYSS_DB.html">KYSS_DB</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_Error.html">KYSS_Error</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_Group.html">KYSS_Group</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_Groups.html">KYSS_Groups</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_Hook.html">KYSS_Hook</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_Pass.html">KYSS_Pass</a></li>
+                                                    <li class="class"><a href="../classes/KYSS_User.html">KYSS_User</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
         <div class="span10 offset2">
-            <ul class="breadcrumb">
-                <li><a href="../"><i class="icon-remove-sign"></i></a><span class="divider">\</span></li>
-                <li>Compilation Errors</li>
-            </ul>
+            <div class="row-fluid">
+                <div class="span8 content file">
+                    <nav>
+                                                                    </nav>
+
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+                    <h1><small>views</small>header.php</h1>
+                    <p><em></em></p>
+                    
+
+                    
+                    
+                                    </div>
+
+                <aside class="span4 detailsbar">
+                    <dl>
+                                                    <dt>Package</dt>
+                            <dd><div class="namespace-wrapper"></div></dd>
+                        
+                        
+                    </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                                            </table>
+
+                </aside>
+            </div>
 
             
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                            <a name="login.php" id="login.php"></a>
-                        <h3>
-                            <i class="icon-file"></i>
-                            login.php
-                            <small style="float: right;padding-right: 10px;">1</small>
-                        </h3>
-                        <div>
-                            <table class="table markers table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>Type</th>
-                                    <th>Line</th>
-                                    <th>Description</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                                                    <tr>
-                                        <td>error</td>
-                                        <td>155</td>
-                                        <td>Argument $login_id is missing from the Docblock of \login\display_footer()</td>
-                                    </tr>
-                                                            </tbody>
-                            </table>
-                        </div>
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                            <a name="inc/classes/user.php" id="inc/classes/user.php"></a>
-                        <h3>
-                            <i class="icon-file"></i>
-                            inc/classes/user.php
-                            <small style="float: right;padding-right: 10px;">1</small>
-                        </h3>
-                        <div>
-                            <table class="table markers table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>Type</th>
-                                    <th>Line</th>
-                                    <th>Description</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                                                    <tr>
-                                        <td>error</td>
-                                        <td>583</td>
-                                        <td>Argument $name is missing from the Docblock of __construct()</td>
-                                    </tr>
-                                                            </tbody>
-                            </table>
-                        </div>
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                    </div>
-                            <div class="package-contents">
-                                            <a name="views/header.php" id="views/header.php"></a>
-                        <h3>
-                            <i class="icon-file"></i>
-                            views/header.php
-                            <small style="float: right;padding-right: 10px;">1</small>
-                        </h3>
-                        <div>
-                            <table class="table markers table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>Type</th>
-                                    <th>Line</th>
-                                    <th>Description</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                                                    <tr>
-                                        <td>error</td>
-                                        <td>0</td>
-                                        <td>No summary was found for this file</td>
-                                    </tr>
-                                                            </tbody>
-                            </table>
-                        </div>
-                                    </div>
-                    </div>
+            
+        </div>
     </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label"></h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/views/header.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
 
     <footer class="row-fluid">
         <section class="span10 offset2">
