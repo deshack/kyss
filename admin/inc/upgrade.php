@@ -74,5 +74,6 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	 */
 	$hook->run( 'kyss_installed', $user );
 	
-	return array('url' => $guessurl, 'user_id' => $user_id, 'password' => $user_password, 'password_message' => (isset($message) ? $message : '') );
+	// TODO: remove 'empty message' string.
+	return array('url' => $guessurl, 'user_id' => $user_id, 'password' => $user_password, 'password_message' => (isset($message) ? $message : 'empty message') );
 }

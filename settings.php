@@ -76,3 +76,23 @@ require(INC . 'pluggable.php');
 
 // Set internal encoding.
 set_internal_encoding();
+
+// Execute the following code only if we are not installing.
+if ( false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || ! defined( 'INSTALLING' ) ) {
+	session_name( 'kyss_logged_in' );
+	session_start();
+
+	// Check for already logged in user.
+	$login = isset( $_SESSION['login'] ) ? $_SESSION['login'] : '';
+
+	if ( empty( $login ) && false === strpos( $_SERVER['PHP_SELF'], 'login.php' ) ) {
+		trigger_error( (string) strpos( $_SERVER['PHP_SELF'], 'login.php' ) );
+		$link = get_option( 'siteurl' ) . '/login.php';
+		kyss_redirect( $link );
+		die();
+	}
+
+	if ( ! empty( $login ) ) {
+		$GLOBALS['user'] = new KYSS_User( $login );
+	}
+}

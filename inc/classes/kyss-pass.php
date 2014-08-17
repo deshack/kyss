@@ -76,13 +76,13 @@ class KYSS_Pass {
 	 * Verify authentication cookie.
 	 * 
 	 * @param  string $cookie The cookie to verify.
-	 * @return bool True if ok, false otherwise.
+	 * @return int|bool User ID if ok, false otherwise.
 	 */
 	public static function verify_auth_cookie( $cookie ) {
-		list( $user, $hash ) = split( ',', $cookie );
+		list( $user, $hash ) = explode( ',', $cookie );
 
-		if ( sha1( $user, KYSS_SECRET ) == $hash )
-			return true;
+		if ( sha1( $user, 'abcd' ) == $hash )
+			return intval( $user );
 		return false;
 	}
 }
