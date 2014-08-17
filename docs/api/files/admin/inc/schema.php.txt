@@ -36,7 +36,7 @@ function get_db_schema() {
 			`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
 			`nome`			varchar(20) NOT NULL,
 			`cognome`		varchar(20) NOT NULL,
-			`anagrafica`	blob,
+			`anagrafica`	text,
 			`email`			varchar(30),
 			`telefono`		varchar(15),
 			`gruppo`		{$groups} DEFAULT 'ordinari',
@@ -52,8 +52,7 @@ function get_db_schema() {
 			`fine`			date,
 			CONSTRAINT ID PRIMARY KEY (`carica`,`inizio`),
 			FOREIGN KEY (`utente`) REFERENCES {$kyssdb->utenti}(`ID`)
-				ON UPDATE RESTRICT
-				ON DELETE RESTRICT,
+				ON UPDATE RESTRICT ON DELETE RESTRICT,
 			UNIQUE (`utente`,`inizio`)
 		) ENGINE = InnoDB",
 
@@ -62,13 +61,12 @@ function get_db_schema() {
 			`utente`			bigint(20) UNSIGNED NOT NULL,
 			`tipo`				enum('adesione','liberatoria') NOT NULL,
 			`data`				date NOT NULL,
-			`data_ricezione`	date NOT NULL,
+			`ricezione`			date NOT NULL,
 			`approvata`			boolean DEFAULT NULL,
 			`note`				varchar(255),
 			PRIMARY KEY (`protocollo`),
 			FOREIGN KEY (`utente`) REFERENCES {$kyssdb->utenti}(`ID`)
-				ON UPDATE CASCADE
-				ON DELETE RESTRICT
+				ON UPDATE CASCADE ON DELETE RESTRICT
 			) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->eventi} (
@@ -85,15 +83,13 @@ function get_db_schema() {
 			`data`			datetime,
 			`luogo`			varchar(20),
 			`argomenti`		text,
-			`evento`		bigint(20) UNSIGNED,
 			`relatore`		bigint(20) UNSIGNED,
+			`evento`		bigint(20) UNSIGNED,
 			PRIMARY KEY (`ID`),
-			FOREIGN KEY (`evento`) REFERENCES {$kyssdb->eventi}(`ID`)
-				ON UPDATE CASCADE
-				ON DELETE CASCADE,
 			FOREIGN KEY (`relatore`) REFERENCES {$kyssdb->utenti}(`ID`)
-				ON UPDATE CASCADE
-				ON DELETE RESTRICT
+				ON UPDATE CASCADE ON DELETE RESTRICT,
+			FOREIGN KEY (`evento`) REFERENCES {$kyssdb->eventi}(`ID`)
+				ON UPDATE CASCADE ON DELETE CASCADE
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->riunioni} (
@@ -105,35 +101,46 @@ function get_db_schema() {
 			`luogo`			varchar(20),
 			`presidente`	bigint(20) UNSIGNED,
 			`segretario`	bigint(20) UNSIGNED,
+			`evento`		bigint(20) UNSIGNED,
 			PRIMARY KEY (`ID`),
 			FOREIGN KEY (`presidente`) REFERENCES {$kyssdb->utenti}(`ID`)
-				ON UPDATE CASCADE
-				ON DELETE RESTRICT,
+				ON UPDATE CASCADE ON DELETE RESTRICT,
 			FOREIGN KEY (`segretario`) REFERENCES {$kyssdb->utenti}(`ID`)
-				ON UPDATE CASCADE
-				ON DELETE RESTRICT
+				ON UPDATE CASCADE ON DELETE RESTRICT,
+			FOREIGN KEY (`evento`) REFERENCES {$kyssdb->eventi}(`ID`)
+				ON UPDATE CASCADE ON DELETE CASCADE
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->corsi} (
 			`ID`			bigint(20) UNSIGNED NOT NULL,
 			`titolo`		varchar(255) NOT NULL,
-			`livello`		enum('B','M','A') NOT NULL,
-			`inizio`		date,
-			`fine`			date,
+			`livello`		enum('base','medio','avanzato') NOT NULL,
 			`luogo`			varchar(20),
-			PRIMARY KEY (`ID`)
+			`lezioni`		int,
+			`evento`		bigint(20) UNSIGNED,
+			PRIMARY KEY (`ID`),
+			FOREIGN KEY (`evento`) REFERENCES {$kyssdb->eventi}(`ID`)
+				ON UPDATE CASCADE ON DELETE CASCADE,
+			CHECK(`lezioni` > 0)
 		) ENGINE = InnoDB",
 
-		"CREATE TABLE IF NOT EXISTS {$kyssdb->iscritti} (
+		"CREATE TABLE IF NOT EXISTS {$kyssdb->lezioni} (
+			`data`				datetime NOT NULL,
+			`argomento`			text,
+			`corso`				bigint(20) UNSIGNED NOT NULL,
+			PRIMARY KEY (`data`),
+			FOREIGN KEY (`corso`) REFERENCES {$kyssdb->corsi}(`ID`)
+				ON UPDATE CASCADE ON DELETE CASCADE
+		) ENGINE = InnoDB",
+
+		"CREATE TABLE IF NOT EXISTS {$kyssdb->iscritto} (
 			`utente`		bigint(20) UNSIGNED NOT NULL,
 			`corso`			bigint(20) UNSIGNED NOT NULL,
 			PRIMARY KEY (`utente`,`corso`),
 			FOREIGN KEY (`utente`) REFERENCES {$kyssdb->utenti}(`ID`)
-				ON UPDATE CASCADE
-				ON DELETE CASCADE,
+				ON UPDATE CASCADE ON DELETE CASCADE,
 			FOREIGN KEY (`corso`) REFERENCES {$kyssdb->corsi}(`ID`)
-				ON UPDATE CASCADE
-				ON DELETE CASCADE
+				ON UPDATE CASCADE ON DELETE CASCADE
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->verbali} (
@@ -141,8 +148,7 @@ function get_db_schema() {
 			`riunione`		bigint(20) UNSIGNED NOT NULL,
 			PRIMARY KEY (`protocollo`),
 			FOREIGN KEY (`riunione`) REFERENCES {$kyssdb->riunioni}(`ID`)
-				ON UPDATE CASCADE
-				ON DELETE RESTRICT
+				ON UPDATE CASCADE ON DELETE RESTRICT
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->bilanci} (
@@ -152,37 +158,27 @@ function get_db_schema() {
 			`anno`			year NOT NULL,
 			`cassa`			varchar(10) NOT NULL DEFAULT 0,
 			`banca`			varchar(10) NOT NULL,
-			`approvato`		boolean DEFAULT FALSE,
+			`approvato`		boolean,
 			`verbale`		int(6) UNSIGNED,
 			PRIMARY KEY (`ID`),
 			FOREIGN KEY (`verbale`) REFERENCES {$kyssdb->verbali}(`protocollo`)
-				ON UPDATE CASCADE
-				ON DELETE RESTRICT
+				ON UPDATE CASCADE ON DELETE RESTRICT
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->movimenti} (
 			`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
+			`utente`		bigint(20) UNSIGNED NOT NULL,
 			`causale`		varchar(255) NOT NULL,
 			`importo`		varchar(10) NOT NULL,
-			`utente`		bigint(20) UNSIGNED NOT NULL,
 			`bilancio`		bigint(20) UNSIGNED,
+			`evento`		bigint(20) UNSIGNED,
 			PRIMARY KEY (`ID`),
 			FOREIGN KEY (`utente`) REFERENCES {$kyssdb->utenti}(`ID`)
-				ON UPDATE CASCADE
-				ON DELETE RESTRICT,
+				ON UPDATE CASCADE ON DELETE RESTRICT,
 			FOREIGN KEY (`bilancio`) REFERENCES {$kyssdb->bilanci}(`ID`)
-				ON UPDATE CASCADE
-				ON DELETE RESTRICT
-		) ENGINE = InnoDB",
-
-		"CREATE TABLE IF NOT EXISTS {$kyssdb->presenti} (
-			`utente`		bigint(20) UNSIGNED NOT NULL,
-			`riunione`		bigint(20) UNSIGNED NOT NULL,
-			PRIMARY KEY (`utente`,`riunione`),
-			FOREIGN KEY (`utente`) REFERENCES {$kyssdb->utenti}(`ID`)
-				ON UPDATE CASCADE
-				ON DELETE CASCADE,
-			FOREIGN KEY (`riunione`) REFERENCES {$kyssdb->riunioni}(`ID`)
+				ON UPDATE CASCADE ON DELETE RESTRICT,
+			FOREIGN KEY (`evento`) REFERENCES {$kyssdb->eventi}(`ID`)
+				ON UPDATE CASCADE ON DELETE RESTRICT
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->options} (
