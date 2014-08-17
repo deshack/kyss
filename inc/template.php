@@ -9,6 +9,16 @@
  * @since  0.11.0
  */
 
+// Add general-purpose meta tags to KYSS head.
+global $hook;
+$metas = array(
+	'viewport_meta',
+	'charset_meta'
+);
+foreach ( $metas as $meta )
+	$hook->add( 'kyss_head', $meta );
+unset( $metas );
+
 /**
  * Display a noindex meta tag.
  *
@@ -43,4 +53,31 @@ function viewport_meta() {
  */
 function charset_meta() {
 	echo '<meta charset="utf-8">' . "\n";
+}
+
+/**
+ * Display page header.
+ *
+ * @since  0.11.0
+ */
+function get_header() {
+	require( VIEWS . 'header.php' );
+}
+
+/**
+ * Display sidebar.
+ *
+ * @since  0.11.0
+ */
+function get_sidebar() {
+	require( VIEWS . 'sidebar.php' );
+}
+
+/**
+ * Display page footer.
+ *
+ * @since 0.11.0
+ */
+function get_footer() {
+	require( VIEWS . 'footer.php' );
 }

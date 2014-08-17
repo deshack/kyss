@@ -270,12 +270,3 @@ function is_email( $email ) {
 	// Yeah, the email made it!
 	return $hook->run( 'is_email', $email, $email, '', null );
 }
-
-/**
- * Display page header.
- *
- * @since  0.10.0
- */
-function get_header() {
-	require( VIEWS . 'header.php' );
-}
