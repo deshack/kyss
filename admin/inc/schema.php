@@ -266,7 +266,6 @@ function populate_options() {
 	$query = "INSERT INTO {$kyssdb->options} (name, value) VALUES " . $insert;
 
 	if ( ! $kyssdb->query( $query ) ) {
-		trigger_error( 'MySQL query: ' . $query, E_USER_NOTICE );
 		trigger_error( $kyssdb->error, E_USER_ERROR );
 	}
 }

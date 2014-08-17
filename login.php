@@ -249,7 +249,7 @@ function validate() {
 		echo "Failure!";
 	} else {
 		$_SESSION['login'] = $user->ID;
-		setcookie('kyss_login', \KYSS_Pass::hash_auth_cookie($user->ID), time()+3600*24+15);
+		setcookie('kyss_login', \KYSS_Pass::hash_auth_cookie($user->ID), time()+3600*24*15);
 		kyss_redirect( get_option( 'siteurl' ) . '/' );
 	}
 }
