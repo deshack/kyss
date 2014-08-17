@@ -23,6 +23,13 @@ define( 'INC', ABSPATH . 'inc/' );
  */
 define( 'CLASSES', INC . 'classes/' );
 
+/**
+ * Stores the location of the KYSS directory of views.
+ *
+ * @since  0.10.0
+ */
+define( 'VIEWS', ABSPATH . 'views/' );
+
 // Include files required for initialization.
 require( INC . 'load.php' );
 require( INC . 'default-constants.php' );
