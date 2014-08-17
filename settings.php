@@ -85,6 +85,10 @@ if ( false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || ! defined( 'INST
 	// Check for already logged in user.
 	$login = isset( $_SESSION['login'] ) ? $_SESSION['login'] : '';
 
+	if ( empty( $login ) ) {
+		$login = isset( $_COOKIE['kyss_login'] ) ? $_COOKIE['kyss_login'] : '';
+	}
+
 	if ( empty( $login ) && false === strpos( $_SERVER['PHP_SELF'], 'login.php' ) ) {
 		trigger_error( (string) strpos( $_SERVER['PHP_SELF'], 'login.php' ) );
 		$link = get_option( 'siteurl' ) . '/login.php';
