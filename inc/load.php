@@ -107,32 +107,6 @@ function set_internal_encoding() {
 }
 
 /**
- * Add magic quotes to $_GET, $_POST, $_COOKIE, and $_SERVER.
- *
- * Also forces $_REQUEST to be $_GET + $_POST. If $_SERVER, $_COOKIE,
- * or $_ENV are needed, use those superglobals directly.
- *
- * @since  0.6.0
- */
-function kyss_magic_quotes() {
-	// If already slashed, strip.
-	if ( get_magic_quotes_gpc() ) {
-		$_GET = stripslashes_deep( $_GET );
-		$_POST = stripslashes_deep( $_POST );
-		$_COOKIE = stripslashes_deep( $_COOKIE );
-	}
-
-	// Escape with kyssdb.
-	$_GET = add_magic_quotes( $_GET );
-	$_POST = add_magic_quotes( $_POST );
-	$_COOKIE = add_magic_quotes( $_COOKIE );
-	$_SERVER = add_magic_quotes( $_SERVER );
-
-	// Forse REQUEST to be GET + POST.
-	$_REQUEST = array_merge( $_GET, $_POST );
-}
-
-/**
  * Set PHP error handling and handle KYSS debug mode.
  *
  * Uses `DEBUG` constant, that can be defined in config.php.

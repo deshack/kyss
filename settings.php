@@ -76,18 +76,3 @@ require(INC . 'pluggable.php');
 
 // Set internal encoding.
 set_internal_encoding();
-
-// Add magic quotes and set up $_REQUEST ( $_GET + $_POST ).
-kyss_magic_quotes();
-
-// Check authentication cookie.
-$auth = false;
-if ( isset( $_COOKIE['kyss_login'] ) )
-	$auth = $_COOKIE['kyss_login'];
-
-if ( $_SERVER['PHP_SELF'] != '/login.php' && ( ! $auth || ! KYSS_Pass::verify_auth_cookie( $auth ) ) ) {
-	kyss_redirect( get_option( 'siteurl' ) . '/login.php' );
-	die();
-} else {
-	// TODO: Load KYSS Dashboard.
-}
