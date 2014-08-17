@@ -14,7 +14,7 @@
  *
  * @package KYSS
  * @subpackage  Pass
- * @version  1.0.0
+ * @version  1.1.0
  * @since  0.9.0
  */
 class KYSS_Pass {
@@ -59,6 +59,8 @@ class KYSS_Pass {
 
 	/**
 	 * Hash authentication cookie.
+	 *
+	 * @since  KYSS_Pass 1.1.0
 	 * 
 	 * @param  string $user User ID.
 	 * @return string       Hashed authentication cookie.
@@ -74,6 +76,8 @@ class KYSS_Pass {
 
 	/**
 	 * Verify authentication cookie.
+	 *
+	 * @since  KYSS_Pass 1.1.0
 	 * 
 	 * @param  string $cookie The cookie to verify.
 	 * @return int|bool User ID if ok, false otherwise.

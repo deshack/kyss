@@ -23,6 +23,13 @@ define( 'INC', ABSPATH . 'inc/' );
  */
 define( 'CLASSES', INC . 'classes/' );
 
+/**
+ * Stores the location of the KYSS directory of views.
+ *
+ * @since  0.10.0
+ */
+define( 'VIEWS', ABSPATH . 'views/' );
+
 // Include files required for initialization.
 require( INC . 'load.php' );
 require( INC . 'default-constants.php' );
@@ -77,15 +84,26 @@ require(INC . 'pluggable.php');
 // Set internal encoding.
 set_internal_encoding();
 
-// Add magic quotes and set up $_REQUEST ( $_GET + $_POST ).
-kyss_magic_quotes();
+// Execute the following code only if we are not installing.
+if ( false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || ! defined( 'INSTALLING' ) ) {
+	session_name( 'kyss_logged_in' );
+	session_start();
 
-/**
- * KYSS Object
- *
- * @since  x.x.x
- */
-//$GLOBALS['kyss'] = new KYSS();
+	// Check for already logged in user.
+	$login = isset( $_SESSION['login'] ) ? $_SESSION['login'] : '';
 
-// Set up current user.
-//$GLOBALS['kyss']->init();
+	if ( empty( $login ) ) {
+		$login = isset( $_COOKIE['kyss_login'] ) ? KYSS_Pass::verify_auth_cookie( $_COOKIE['kyss_login'] ) : '';
+	}
+
+	if ( empty( $login ) && false === strpos( $_SERVER['PHP_SELF'], 'login.php' ) ) {
+		trigger_error( (string) strpos( $_SERVER['PHP_SELF'], 'login.php' ) );
+		$link = get_option( 'siteurl' ) . '/login.php';
+		kyss_redirect( $link );
+		die();
+	}
+
+	if ( ! empty( $login ) ) {
+		$GLOBALS['user'] = new KYSS_User( $login );
+	}
+}

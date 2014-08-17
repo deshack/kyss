@@ -16,4 +16,12 @@ function initial_constants() {
 	// Add `define( 'DEBUG', true);` to config.php to enable display of notices during development.
 	if ( !defined('DEBUG') )
 		define( 'DEBUG', false );
+
+	if ( !defined('DAY_IN_SECONDS') )
+		/**
+		 * One day in seconds.
+		 *
+		 * @since  0.10.0
+		 */
+		define( 'DAY_IN_SECONDS', 86400 );
 }

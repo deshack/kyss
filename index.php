@@ -8,4 +8,10 @@
 
 require_once( dirname(__FILE__) . '/load.php' );
 
+get_header();
+
+get_sidebar();
+
 echo "index.php";
+
+get_footer();

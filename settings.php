@@ -23,6 +23,13 @@ define( 'INC', ABSPATH . 'inc/' );
  */
 define( 'CLASSES', INC . 'classes/' );
 
+/**
+ * Stores the location of the KYSS directory of views.
+ *
+ * @since  0.10.0
+ */
+define( 'VIEWS', ABSPATH . 'views/' );
+
 // Include files required for initialization.
 require( INC . 'load.php' );
 require( INC . 'default-constants.php' );
@@ -86,7 +93,7 @@ if ( false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || ! defined( 'INST
 	$login = isset( $_SESSION['login'] ) ? $_SESSION['login'] : '';
 
 	if ( empty( $login ) ) {
-		$login = isset( $_COOKIE['kyss_login'] ) ? $_COOKIE['kyss_login'] : '';
+		$login = isset( $_COOKIE['kyss_login'] ) ? KYSS_Pass::verify_auth_cookie( $_COOKIE['kyss_login'] ) : '';
 	}
 
 	if ( empty( $login ) && false === strpos( $_SERVER['PHP_SELF'], 'login.php' ) ) {

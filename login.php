@@ -221,6 +221,7 @@ function validate() {
 
 	$user_email = isset( $_POST['user_email'] ) ? trim( unslash( $_POST['user_email'] ) ) : '';
 	$user_pass = isset( $_POST['user_pass'] ) ? trim( unslash( $_POST['user_pass'] ) ) : '';
+	$remember = isset( $_POST['rememberme'] ) ? $_POST['rememberme'] : false;
 
 	$errors = new \KYSS_Error();
 	if ( empty( $user_email ) )
@@ -249,7 +250,8 @@ function validate() {
 		echo "Failure!";
 	} else {
 		$_SESSION['login'] = $user->ID;
-		setcookie('kyss_login', \KYSS_Pass::hash_auth_cookie($user->ID), time()+3600*24*15);
+		if ( $remember )
+			setcookie('kyss_login', \KYSS_Pass::hash_auth_cookie($user->ID), time() + 15 * DAY_IN_SECONDS );
 		kyss_redirect( get_option( 'siteurl' ) . '/' );
 	}
 }
