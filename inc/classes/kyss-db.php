@@ -109,9 +109,7 @@ class KYSS_DB extends mysqli {
 	 * @access private
 	 * @var  array
 	 */
-	private $tables = array( 'utenti', 'cariche', 'pratiche', 'eventi', 'talk',
-		'riunioni', 'corsi', 'iscritti', 'verbali', 'bilanci', 'movimenti',
-		'presenti', 'options' );
+	private $tables = array( 'utenti', 'cariche', 'pratiche', 'eventi', 'talk', 'riunioni', 'corsi', 'lezioni', 'iscritto', 'verbali', 'bilanci', 'movimenti', 'options' );
 
 	/**
 	 * Connect to the database server.
