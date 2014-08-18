@@ -94,6 +94,10 @@ if ( false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || ! defined( 'INST
 
 	if ( empty( $login ) ) {
 		$login = isset( $_COOKIE['kyss_login'] ) ? KYSS_Pass::verify_auth_cookie( $_COOKIE['kyss_login'] ) : '';
+		// Set session variable.
+		$_SESSION['login'] = $login;
+		// Renew cookie lifetime.
+		setcookie('kyss_login', $_COOKIE['kyss_login'], time() + 15 * DAY_IN_SECONDS );
 	}
 
 	if ( empty( $login ) && false === strpos( $_SERVER['PHP_SELF'], 'login.php' ) ) {

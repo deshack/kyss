@@ -1,12 +1,17 @@
 <?php
 /**
- * Front to the KYSS application. This file doesn't do anything, but loads
- * load.php which actually loads the application.
+ * Front to the KYSS application.
  *
  * @package  KYSS
+ * @subpackage  Views
+ * @since  0.1.0
  */
 
-require_once( dirname(__FILE__) . '/load.php' );
+require_once( 'load.php' );
+
+$hook->add( 'kyss_title', function( $title ) {
+	return $title . ' &rsaquo; ' . get_option( 'sitename' );
+});
 
 get_header();
 

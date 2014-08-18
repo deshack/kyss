@@ -111,6 +111,8 @@ class KYSS_User {
 	 * @access public
 	 * @static
 	 *
+	 * @global  kyssdb
+	 *
 	 * @param string $field The field to query against. Accepts <id>, <email>.
 	 * @param  string|int $value The field value.
 	 * @return  object|bool Raw user data. False on failure.
@@ -145,6 +147,34 @@ class KYSS_User {
 			return false;
 
 		return $user;
+	}
+
+	/**
+	 * Retrieve users list.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 * 
+	 * @return  array|false Array of user objects. False on failure.
+	 */
+	public static function get_users_list() {
+		global $kyssdb;
+
+		if ( !$user = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->utenti}"
+		) )
+			return false;
+
+		$users = array();
+
+		for ( $i = 0; $i < $user->num_rows; $i++ ) {
+			$users[] = $user->fetch_object();
+		}
+
+		return $users;
 	}
 
 	/**

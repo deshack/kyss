@@ -10,9 +10,10 @@
 
 <section id="sidebar" class="medium-3 columns">
 	<ul class="side-nav">
-		<li><a href="#">Link 1</a></li>
-		<li class="active"><a href="#">Link active</a></li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>">Home</a></li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/users.php">Utenti</a></li>
 		<li class="divider"></li>
+		<li class="active"><a href="#">Link active</a></li>
 	</ul>
 </section><!-- #sidebar -->
 

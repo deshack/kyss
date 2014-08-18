@@ -14,7 +14,7 @@ global $hook;
 </div><!-- .row -->
 
 <footer class="top-bar">
-
+Something
 </footer>
 
 <?php $hook->run( 'kyss_footer' ); ?>

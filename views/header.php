@@ -9,6 +9,19 @@
 
 global $hook;
 
+$title = 'KYSS';
+
+/**
+ * Filter page title.
+ *
+ * @since  0.11.0
+ *
+ * @param  string $title The default title.
+ * @param  string $page The script currently being run.
+ * @return  string The maybe filtered title.
+ */
+$title = $hook->run( 'kyss_title', $title, $_SERVER['PHP_SELF'] );
+
 header( 'Content-Type: text/html; charset=utf-8' );
 ?>
 
@@ -19,7 +32,7 @@ header( 'Content-Type: text/html; charset=utf-8' );
 <!--[if !(IE 8) ]><!-->
 <html lang="it">
 <head>
-	<title>KYSS &rsaquo; <?php echo get_option( 'sitename' ); ?></title>
+	<title><?php echo $title; ?></title>
 	<?php kyss_css( 'kyss', true ); ?>
 
 	<?php
