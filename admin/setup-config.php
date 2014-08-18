@@ -379,7 +379,7 @@ require_once(ABSPATH . 'settings.php');";
 		chmod( $config_file, 0666 );
 		display_header();
 ?>
-	<p>Perfetto! Hai superato la parte pi&ugrave; difficile dell'installazione. KYSS ora pu&ograve; comunicare con il tuo database. Se sei pronto&hellip;</p>
+	<p>KYSS ora pu&ograve; comunicare con il tuo database.<br>Ora puoi procedere con l'installazione.</p>
 	<p><a href="install.php" class="button primary">Installa</a></p>
 <?php
 		footer();

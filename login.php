@@ -250,10 +250,8 @@ function validate() {
 		echo "Failure!";
 	} else {
 		$_SESSION['login'] = $user->ID;
-		
 		if ( $remember )
 			setcookie('kyss_login', \KYSS_Pass::hash_auth_cookie($user->ID), time() + 15 * DAY_IN_SECONDS );
-
 		kyss_redirect( get_option( 'siteurl' ) . '/' );
 	}
 }

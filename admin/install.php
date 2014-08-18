@@ -220,9 +220,7 @@ function validate() {
 		extract( $result, EXTR_SKIP );
 ?>
 
-<h2>Fatto!</h2>
-
-<p>KYSS &egrave; stato installato. &Egrave; stato facile, vero?</p>
+<h2>Installazione avvenuta con successo!</h2>
 
 <table>
 	<tr>
