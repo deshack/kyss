@@ -92,8 +92,8 @@ if ( false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || ! defined( 'INST
 	// Check for already logged in user.
 	$login = isset( $_SESSION['login'] ) ? $_SESSION['login'] : '';
 
-	if ( empty( $login ) ) {
-		$login = isset( $_COOKIE['kyss_login'] ) ? KYSS_Pass::verify_auth_cookie( $_COOKIE['kyss_login'] ) : '';
+	if ( empty( $login ) && isset( $_COOKIE['kyss_login'] ) ) {
+		$login = KYSS_Pass::verify_auth_cookie( $_COOKIE['kyss_login'] );
 		// Set session variable.
 		$_SESSION['login'] = $login;
 		// Renew cookie lifetime.
