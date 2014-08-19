@@ -211,7 +211,7 @@ function second() {
 
 		<label for="dbname">Nome Database</label>
 		<input name="dbname" id="dbname" type="text" size="25"<?php echo $dbname; ?> />
-		<p class="help">Lascia <strong>vuoto</strong> questo campo per creare un nuovo database.</p>
+		<p class="help">Lasciare <strong>vuoto</strong> questo campo per creare un nuovo database.</p>
 
 		<p><input name="submit" type="submit" value="Conferma" class="button primary" /></p>
 	</fieldset>
@@ -360,7 +360,7 @@ require_once(ABSPATH . 'settings.php');";
 	<textarea id="config" cols="98" rows="15" class="code" readonly="readonly"><?php
 		echo htmlentities($content, ENT_COMPAT, 'UTF-8');
 	?></textarea>
-	<p>Fatto questo, clicca &#8221;Installa&#8221;.</p>
+	<p>Fatto questo puoi procedere con l'installazione.</p>
 	<p><a href="install.php" class="button primary">Installa</a></p>
 	<script>
 (function(){

@@ -129,7 +129,7 @@ function form( $error = null ) {
 ?>
 	<section>
 		<p>Benvenuto nell'installer di KYSS!</p>
-		<p>Abbiamo bisogno di alcune informazioni, ma ti basteranno solamente cinque minuti.</p>
+		<p>Sono necessarie le seguenti informazioni:</p>
 	</section>
 <?php
 	if ( ! is_null( $error ) ) :
@@ -172,6 +172,7 @@ function form( $error = null ) {
 					<label for="admin_password_check">Conferma password</label>
 					<input name="admin_password_check" id="admin_password_check" type="password">
 				</div>
+				<p class="help">Lasciare <strong>vuoto</strong> il campo <em>Password</em> per generare automaticamente una password.</p>
 			</div>
 		</fieldset>
 		<div class="row">
@@ -232,7 +233,8 @@ function validate() {
 		<td><?php
 		if ( ! empty( $password ) && empty( $admin_password_check ) )
 			echo '<code>' . $password . '</code><br>';
-		echo "<p>$password_message</p>"; ?>
+		if ( ! empty ( $password_message ) )
+			echo $password_message; ?>
 		</td>
 	</tr>
 </table>

@@ -123,7 +123,7 @@ function clean_url( $url ) {
 	 * @param  string $clean_url The cleaned URL to be returned.
 	 * @param  string $original_url The URL prior to cleaning.
 	 */
-	return $hook->run( 'clean_url', $url, $original_url );
+	$url = $hook->run( 'clean_url', $url, $original_url );
 	return $url;
 }
 

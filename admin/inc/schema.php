@@ -188,7 +188,7 @@ function get_db_schema() {
 			`value`			longtext NOT NULL,
 			PRIMARY KEY (`ID`),
 			UNIQUE (`name`)
-		) ENGINE = InnoDB;"
+		) ENGINE = InnoDB"
 	);
 
 	return $schema;
