@@ -11,9 +11,11 @@ $users = KYSS_User::get_users_list();
 
 // Small workaround to remove array elements that evaluate to false.
 // Useful if `KYSS_User::get_users_list()` adds a NULL element.
-$users = array_filter( $users );
+$users = array_filter( $users ); ?>
 
-if ( ! empty( $users ) ) : ?>
+<h1 class="page-title">Utenti</h1>
+
+<?php if ( ! empty( $users ) ) : ?>
 
 <table>
 	<thead>
@@ -22,6 +24,7 @@ if ( ! empty( $users ) ) : ?>
 			<th>Email</th>
 			<th>Telefono</th>
 			<th>Gruppo</th>
+			<th>Azioni</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -32,6 +35,7 @@ if ( ! empty( $users ) ) : ?>
 			<td><?php echo isset( $user->email ) ? $user->email : ''; ?></td>
 			<td><?php echo isset( $user->telefono ) ? $user->telefono : ''; ?></td>
 			<td><?php echo isset( $user->gruppo ) ? $user->gruppo : ''; ?></td>
+			<td><a href="<?php echo get_site_url( 'users.php?action=edit&id=' . $user->ID ); ?>">Modifica</a></td>
 		</tr>
 	<?php endforeach; ?>
 	</tbody>

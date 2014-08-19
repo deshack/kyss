@@ -11,9 +11,30 @@ require_once( 'load.php' );
 
 global $hook;
 
+$action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
+$id = isset( $_GET['id'] ) ? $_GET['id'] : '';
+
 // Add filter to the title.
 $hook->add( 'kyss_title', function( $title ) {
-	return $title . ' &rsaquo; Utenti';
+	global $action, $id;
+	if ( ! empty( $id ) ) {
+		$user = KYSS_User::get_user_by( 'id', $id );
+		if ( $user && $user->num_rows != 0 )
+			$user = $user->fetch_object();
+	}
+
+	$title .= ' &rsaquo; ';
+	switch ( $action ) {
+		case 'edit':
+			$title .= 'Modifica ';
+			$title .= (isset($user)) ? $user->nome . ' ' . $user->cognome : 'utente';
+			break;
+		case 'list':
+		default:
+			$title .= 'Utenti';
+			break;
+	}
+	return $title;
 });
 
 get_header();
@@ -22,10 +43,15 @@ get_sidebar();
 
 ?>
 
-<h1 class="page-title">Utenti</h1>
-
 <?php
-
-require( VIEWS . '/partials/_users_table.php' );
+switch( $action ) {
+	case 'edit':
+		require( VIEWS . '/partials/_user_form.php' );
+		break;
+	case 'list':
+	default:
+		require( VIEWS . '/partials/_users_table.php' );
+		break;
+}
 
 get_footer();
