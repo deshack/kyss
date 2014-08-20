@@ -52,6 +52,11 @@ header( 'Content-Type: text/html; charset=utf-8' );
 			<h1><a href="<?php echo get_option( 'siteurl' ); ?>"><?php echo get_option( 'sitename' ); ?></a></h1>
 		</li>
 	</ul>
+	<section class="top-bar-section">
+		<ul class="right">
+			<li><a href="<?php echo get_option( 'siteurl' ); ?>/logout.php">Logout</a></li>
+		</ul>
+	</section>
 </nav>
 
 <div class="row">
