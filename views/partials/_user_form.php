@@ -43,21 +43,21 @@ switch( $action ) {
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="nome">Nome</label>
-			<input name="nome" type="text">
+			<input name="nome" type="text"<?php echo isset( $user->nome ) ? get_value_html( $user->nome ) : '' ?>>
 		</div>
 		<div class="medium-6 columns">
 			<label for="cognome">Cognome</label>
-			<input name="cognome" type="text">
+			<input name="cognome" type="text"<?php echo isset( $user->cognome ) ? get_value_html( $user->cognome ) : '' ?>>
 		</div>
 	</div>
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="email">Email</label>
-			<input name="email" type="email">
+			<input name="email" type="email"<?php echo isset( $user->email ) ? get_value_html( $user->email ) : '' ?>>
 		</div>
 		<div class="medium-6 columns">
 			<label for="tel">Telefono</label>
-			<input name="tel" type="tel">
+			<input name="tel" type="tel"<?php echo isset( $user->telefono ) ? get_value_html( $user->telefono ) : '' ?>>
 		</div>
 	</div>
 	<div class="row">
