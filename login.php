@@ -83,7 +83,7 @@ function display_header( $title = 'Login', $message = '', $error = '' ) {
 <head>
 	<title><?php echo get_option( 'sitename' ); ?> &rsaquo; <?php echo $title; ?></title>
 	<?php
-	kyss_css( 'login', true );
+	kyss_css( 'kyss', true );
 	
 	/**
 	 * Fires in the login page header.
