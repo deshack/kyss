@@ -81,3 +81,17 @@ function get_sidebar() {
 function get_footer() {
 	require( VIEWS . 'footer.php' );
 }
+
+/**
+ * Return HTML for the `value` attribute.
+ *
+ * Note: the output starts with a space.
+ *
+ * @since  0.11.0
+ *
+ * @param  string $value The `value` attribute content.
+ * @return  string HTML code for the `value` attribute.
+ */
+function get_value_html( $value ) {
+	return ' value="' . $value . '"';
+}
