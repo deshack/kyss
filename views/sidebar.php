@@ -12,6 +12,10 @@
 	<ul class="side-nav">
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>">Home</a></li>
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/users.php">Utenti</a></li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/events.php">Eventi</a></li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/documents.php">Documenti</a></li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/movements.php">Movimenti</a></li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/offices.php">Cariche</a></li>
 		<li class="divider"></li>
 		<li class="active"><a href="#">Link active</a></li>
 	</ul>
