@@ -14,60 +14,167 @@ if ( $action == 'edit' && empty( $id ) )
 	trigger_error( 'Trying to edit unspecified user', E_USER_ERROR );
 
 if ( $action == 'edit' ) {
+	if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
+		validate_user_data();
+	}
+
 	$user = KYSS_User::get_user_by('id', $id);
-	//if ( ! $user )
-		// Handle error in some way
-	if ( $user->num_rows == 0 ) {
-		trigger_error( 'Unknown user id ' . $id, E_USER_WARNING );
-		// TODO: Maybe redirect to users list.
-	} else {
-		$user = $user->fetch_object();
+
+	$anagrafica = isset( $user->anagrafica ) ? unserialize( $user->anagrafica ) : '';
+	if ( ! empty( $anagrafica ) ) {
+		extract( $anagrafica );
 	}
 }
 ?>
 
-<h1 class="page-title">Modifica utente <small><?php echo $user->nome . ' ' . $user->cognome; ?></small></h1>
+<?php if ( $action == 'edit' ) : ?>
+	<h1 class="page-title">Modifica utente <small><?php echo $user->nome . ' ' . $user->cognome; ?></small></h1>
+<?php endif; ?>
 
 <?php
 $form_action = '';
 switch( $action ) {
 	case 'edit':
-		$form_action = 'action=edit&id=' . $id . '&save=true';
+		$form_action = 'action=edit&id=' . $id . '&save=true';		
 		break;
 	case 'add':
 		$form_action = 'action=add&save=true';
 		break;
 }
 ?>
-<form id="edit-user" method="post" action="users.php?<?php echo $form_action; ?>">
+<form id="<?php echo $action; ?>-user" method="post" action="users.php?<?php echo $form_action; ?>">
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="nome">Nome</label>
-			<input name="nome" type="text"<?php echo isset( $user->nome ) ? get_value_html( $user->nome ) : '' ?>>
+			<input id="nome" name="nome" type="text"<?php echo isset( $user->nome ) ? get_value_html( $user->nome ) : '' ?> required>
 		</div>
 		<div class="medium-6 columns">
 			<label for="cognome">Cognome</label>
-			<input name="cognome" type="text"<?php echo isset( $user->cognome ) ? get_value_html( $user->cognome ) : '' ?>>
+			<input id="cognome" name="cognome" type="text"<?php echo isset( $user->cognome ) ? get_value_html( $user->cognome ) : '' ?> required>
+		</div>
+	</div>
+	<div class="row">
+		<div class="medium-12 columns">
+			<label for="anagrafica[CF]">Codice Fiscale</label>
+			<input id="anagrafica[CF]" name="anagrafica[CF]" type="text"<?php echo isset( $CF ) ? get_value_html( $CF ) : ''; ?>>
 		</div>
 	</div>
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="email">Email</label>
-			<input name="email" type="email"<?php echo isset( $user->email ) ? get_value_html( $user->email ) : '' ?>>
+			<input id="email" name="email" type="email"<?php echo isset( $user->email ) ? get_value_html( $user->email ) : '' ?>>
 		</div>
 		<div class="medium-6 columns">
-			<label for="tel">Telefono</label>
-			<input name="tel" type="tel"<?php echo isset( $user->telefono ) ? get_value_html( $user->telefono ) : '' ?>>
+			<label for="telefono">Telefono</label>
+			<input id="telefono" name="telefono" type="tel"<?php echo isset( $user->telefono ) ? get_value_html( $user->telefono ) : '' ?>>
+		</div>
+	</div>
+	<?php // Add group ?>
+	<div class="row">
+		<div class="medium-6 columns">
+			<label for="password">Password</label>
+			<input id="password" name="password" type="password">
+		</div>
+		<div class="medium-6 columns">
+			<label for="pass-confirm">Conferma password</label>
+			<input id="pass-confirm" name="pass-confirm" type="password">
 		</div>
 	</div>
 	<div class="row">
-		<div class="medium-6 columns">
-			<label for="pass">Password</label>
-			<input name="pass" type="password">
+		<div class="medium-4 columns">
+			<label for="anagrafica[nato_a]">Nato a</label>
+			<input id="anagrafica[nato_a]" name="anagrafica[nato_a]" type="text"<?php echo isset( $nato_a ) ? get_value_html( $nato_a ) : ''; ?>>
 		</div>
-		<div class="medium-6 columns">
-			<label for="pass_confirm">Conferma password</label>
-			<input name="pass_confirm" type="password">
+		<div class="medium-4 columns">
+			<label for="anagrafica[nato_il]">Nato il</label>
+			<input id="anagrafica[nato_il]" name="anagrafica[nato_il]" type="date"<?php echo isset( $nato_il ) ? get_value_html( $nato_il ) : ''; ?>>
+		</div>
+		<div class="medium-4 columns">
+			<label for="anagrafica[cittadinanza]">Cittadinanza</label>
+			<input id="anagrafica[cittadinanza]" name="anagrafica[cittadinanza]" type="text"<?php echo isset( $cittadinanza ) ? get_value_html( $cittadinanza ) : ''; ?>>
+		</div>
+	</div>
+	<fieldset>
+		<legend>Residenza</legend>
+		<div class="row">
+			<div class="medium-6 columns">
+				<label for="anagrafica[residenza][via]">Via</label>
+				<input id="anagrafica[residenza][via]" name="anagrafica[residenza][via]" type="text"<?php echo isset( $residenza['via'] ) ? get_value_html( $residenza['via'] ) : ''; ?>>
+			</div>
+			<div class="medium-6 columns">
+				<label for="anagrafica[residenza][city]">Citt&agrave;</label>
+				<input id="anagrafica[residenza][city]" name="anagrafica[residenza][city]" type="text"<?php echo isset( $residenza['city'] ) ? get_value_html( $residenza['city'] ) : ''; ?>>
+			</div>
+		</div>
+		<div class="row">
+			<div class="medium-6 columns">
+				<label for="anagrafica[residenza][provincia]">Provincia</label>
+				<input id="anagrafica[residenza][provincia]" name="anagrafica[residenza][provincia]" type="text"<?php echo isset( $residenza['provincia'] ) ? get_value_html( $residenza['provincia'] ) : ''; ?>>
+			</div>
+			<div class="medium-6 columns">
+				<label for="anagrafica[residenza][CAP]">CAP</label>
+				<input id="anagrafica[residenza][CAP]" name="anagrafica[residenza][CAP]" type="text"<?php echo isset( $residenza['CAP'] ) ? get_value_html( $residenza['CAP'] ) : ''; ?>>
+			</div>
+		</div>
+	</fieldset>
+	<div class="row action-buttons text-center">
+		<div class="small-6 columns">
+			<input type="submit" class="button" name="submit" value="Salva">
+		</div>
+		<div class="small-6 columns">
+			<a href="<?php echo get_site_url( 'users.php' ); ?>" class="button">Annulla</a>
 		</div>
 	</div>
 </form>
+
+<?php
+/**
+ * Validate user input data.
+ *
+ * @since  0.11.0
+ *
+ * @global  id
+ *
+ * @return array Associative array of user data ready to be saved.
+ */
+function validate_user_data() {
+	global $id;
+
+	if ( isset( $_POST['submit'] ) )
+		unset( $_POST['submit'] );
+	if ( isset( $_POST['password'] ) ) {
+		if ( ! isset( $_POST['pass-confirm'] ) ) {
+			unset( $_POST['password'] );
+			// TODO: raise error.
+		} elseif ( $_POST['password'] != $_POST['pass-confirm'] ) {
+			unset( $_POST['password'], $_POST['pass-confirm'] );
+			// Raise error.
+		} else {
+			unset( $_POST['pass-confirm'] );
+		}
+	}
+	$valid = array();
+	foreach ( $_POST as $key => $value ) {
+		if ( $key == 'anagrafica' ) {
+			$valid[$key] = serialize( $value );
+		} elseif ( ( isset( $user->{$key} ) && $user->{$key} == $value ) || empty( $value ) ) {
+			unset( $valid[$key] );
+		} else {
+			$valid[$key] = trim( $value );
+		}
+	}
+
+	//debug_array( $valid );
+
+	KYSS_User::update( $id, $valid );
+}
+
+function debug_array( $array, $debug = '' ) {
+	foreach ( $array as $key => $value ) {
+		if ( is_array( $value ) )
+			debug_array( $value, "[{key}]" . $debug );
+		else
+			$debug .= "[{$key}] => {$value}\n";
+	}
+	trigger_error( $debug );
+}

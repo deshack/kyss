@@ -19,8 +19,6 @@ $hook->add( 'kyss_title', function( $title ) {
 	global $action, $id;
 	if ( ! empty( $id ) ) {
 		$user = KYSS_User::get_user_by( 'id', $id );
-		if ( $user && $user->num_rows != 0 )
-			$user = $user->fetch_object();
 	}
 
 	$title .= ' &rsaquo; ';

@@ -24,15 +24,6 @@ class KYSS_User {
 	private $data;
 
 	/**
-	 * The user's ID.
-	 *
-	 * @since  0.7.0
-	 * @access public
-	 * @var  int
-	 */
-	public $ID = 0;
-
-	/**
 	 * The user's group(s).
 	 *
 	 * @since  0.7.0
@@ -84,8 +75,8 @@ class KYSS_User {
 		else
 			$data = self::get_user_by( 'email', $email );
 
-		if ( $data )
-			$this->init( $data );
+		//if ( $data )
+		//	$this->init( $data );
 	}
 
 	/**
@@ -146,6 +137,13 @@ class KYSS_User {
 		) )
 			return false;
 
+		if ( $user->num_rows == 0 ) {
+			trigger_error( "Unknown user {$field}: {$value}", E_USER_WARNING );
+			return false; // Maybe better to return a KYSS_Error object.
+		} else {
+			$user = $user->fetch_object( 'KYSS_User' );
+		}
+
 		return $user;
 	}
 
@@ -171,7 +169,7 @@ class KYSS_User {
 		$users = array();
 
 		for ( $i = 0; $i < $user->num_rows; $i++ ) {
-			$users[] = $user->fetch_object();
+			$users[] = $user->fetch_object( 'KYSS_User' );
 		}
 
 		return $users;
@@ -217,7 +215,7 @@ class KYSS_User {
 
 		// If email is given, check that it is unique.
 		if ( isset( $data['email'] ) && self::email_exists( $data['email'] ) )
-			return new KYSS_Error( 'existing_user_email', "Mi dispiace, questa email &egrave; gi&agrave; in uso!" );
+			return new KYSS_Error( 'existing_user_email', "Spiacenti, questo indirizzo email &egrave; gi&agrave; in uso." );
 
 		$columns = array( 'nome', 'cognome', 'password' );
 		$values = array( "'{$name}'", "'{$surname}'", "'{$pass}'" );
@@ -251,6 +249,59 @@ class KYSS_User {
 			return $kyssdb->insert_id;
 		else
 			trigger_error( $kyssdb->error, E_USER_WARNING ); // TODO: Return KYSS_Error instead.
+	}
+
+	/**
+	 * Update user in the db.
+	 *
+	 * The `$data` array can contain the following fields:
+	 * - 'nome' - The user's first name.
+	 * - 'cognome' - The user's surname.
+	 * - 'password' - The user's password.
+	 * - 'email' - A string containing the user's email address.
+	 * - 'telefono' - A string containing the user's phone number.
+	 * - 'gruppo' - An array of strings containing the user's group slugs.
+	 * - 'anagrafica' - An associative array of the user's anagraphic data.
+	 * It can contain the following fields:
+	 * - 'CF' - The user's tax code.
+	 * - 'nato_a' - The user's birthplace.
+	 * - 'nato_il' - The user's birthday.
+	 * - 'cittadinanza' - The user's nationality.
+	 * - 'residenza' => array(
+	 * 	'via' => A string with the user's street,
+	 * 	'city' => A string with the user's city,
+	 * 	'provincia' => A two-letters string with the user's district,
+	 * 	'CAP' => A five-digits string with the user's ZIP code );
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global kyssdb
+	 *
+	 * @param  int $id User's ID.
+	 * @param  array $data User's data.
+	 * @return  bool True if successful, false otherwise.
+	 */
+	public static function update( $id, $data ) {
+		global $kyssdb;
+
+		// Hash the password, if given.
+		if ( isset( $data['password'] ) && ! empty( $data['password'] ) )
+			$data['password'] = KYSS_Pass::hash( $data['password'] );
+
+		// If email is given, check that it is unique.
+		if ( isset( $data['email'] ) && self::email_exists( $data['email'] ) )
+			return new KYSS_Error( 'existing_user_email', "Spiacenti, questo indirizzo email &egrave; gi&agrave; in uso." );
+
+		if ( empty( $data ) )
+			return false;
+		
+		$result = $kyssdb->update( $kyssdb->utenti, $data, array( 'ID' => $id ) );
+
+		if ( $result )
+			return true;
+		return false;
 	}
 
 	/**
