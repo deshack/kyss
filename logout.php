@@ -37,6 +37,6 @@ function logout() {
 	<h1><?php
 		logout();
 	?></h1>
-	<a href="<?php echo get_site_url( 'login.php' ); ?>" class="button rimary">Login</a>
+	<a href="<?php echo get_site_url( 'login.php' ); ?>" class="button primary">Login</a>
 	</body>
 </html>
