@@ -27,6 +27,9 @@ $hook->add( 'kyss_title', function( $title ) {
 			$title .= 'Modifica ';
 			$title .= (isset($user)) ? $user->nome . ' ' . $user->cognome : 'utente';
 			break;
+		case 'add':
+			$title .= 'Nuovo utente';
+			break;
 		case 'list':
 		default:
 			$title .= 'Utenti';
@@ -44,6 +47,9 @@ get_sidebar();
 <?php
 switch( $action ) {
 	case 'edit':
+		require( VIEWS . '/partials/_user_form.php' );
+		break;
+	case 'add':
 		require( VIEWS . '/partials/_user_form.php' );
 		break;
 	case 'list':
