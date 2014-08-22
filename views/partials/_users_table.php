@@ -13,7 +13,7 @@ $users = KYSS_User::get_users_list();
 // Useful if `KYSS_User::get_users_list()` adds a NULL element.
 $users = array_filter( $users ); ?>
 
-<h1 class="page-title">Utenti</h1>
+<h1 class="page-title">Utenti <small><a href="<?php echo get_site_url( 'users.php?action=add'); ?>">Aggiungi</a></small></h1>
 
 <?php if ( ! empty( $users ) ) : ?>
 
