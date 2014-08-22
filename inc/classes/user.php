@@ -54,7 +54,6 @@ class KYSS_User {
 	 * @param  int|string|stdClass|KYSS_User $id User's ID, a KYSS_User object, or a user
 	 * object from the DB.
 	 * @param  string $email Optional. User's email.
-	 * @return KYSS_User
 	 */
 	function __construct( $id = 0, $email = '' ) {
 		if ( is_a( $id, 'KYSS_User' ) ) {
@@ -66,7 +65,7 @@ class KYSS_User {
 		}
 
 		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
-			$name = $id;
+			$name = $id; // TODO: what?? We don't use $name
 			$id = 0;
 		}
 
@@ -139,7 +138,7 @@ class KYSS_User {
 
 		if ( $user->num_rows == 0 ) {
 			trigger_error( "Unknown user {$field}: {$value}", E_USER_WARNING );
-			return false; // Maybe better to return a KYSS_Error object.
+			return false; // TODO: Return KYSS_Error instead
 		} else {
 			$user = $user->fetch_object( 'KYSS_User' );
 		}
@@ -169,7 +168,7 @@ class KYSS_User {
 		$users = array();
 
 		for ( $i = 0; $i < $user->num_rows; $i++ ) {
-			$users[] = $user->fetch_object( 'KYSS_User' );
+			array_push( $users, $user->fetch_object( 'KYSS_User' ) );
 		}
 
 		return $users;

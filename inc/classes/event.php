@@ -6,6 +6,8 @@
  * @subpackage  Event
  */
 
+interface 
+
 /**
  * KYSS Event class
  *
@@ -30,10 +32,10 @@ class KYSS_Event {
 	 * @access public
 	 * @var  string
 	 */
-	public $nome = '';
+	public $nome;
 
 	/**
-	 * The event' start date.
+	 * The event start date.
 	 *
 	 * @since  
 	 * @access public
@@ -56,13 +58,126 @@ class KYSS_Event {
 	 * @since  
 	 * @access public
 	 *
-	 * @param  
-	 * @return KYSS_Event
+	 * @param  int|string|stdClass|KYSS_Event $id Event ID, ora a KYSS_Event object, or
+	 * a user object from the DB.
 	 */
-	function __construct() {
+	function __construct( $id ) {
+		if ( is_a( $id, 'KYSS_User' ) || is_object( $id ) )
+			return;
 
+		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
+			trigger_error( 'Bad type for $id parameter', E_USER_WARNING );
+			return;
+		}
+
+		if ( $id )
+			$this = self::get_event_by( 'id', $id );
 	}
 	
+	/**
+	 * Retrieve event by ID.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $field The field to query against. Accepts <id>.
+	 * @param  int $value The field value.
+	 * @return  object|bool KYSS_Event object. False on failure.
+	 */
+	public static function get_event_by( $field, $value ) {
+		global $kyssdb;
+
+		switch ( $field ) {
+			case 'id':
+				$db_field = 'ID';
+				// Make sure the value is numeric to avoid casting objects,
+				// for example to int 1.
+				if ( ! is_numeric( $value ) )
+					return false;
+				$value = intval( $value );
+				if ( $value < 1 )
+					return false;
+				break;
+			default:
+				return false;
+		}
+
+		if ( ! $event = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->eventi} WHERE {$db_field} = '{$value}'"
+		) )
+			return false;
+
+		if ( $event->num_rows == 0 )
+			return new KYSS_Error( 'event_not_found', 'Event not found.', array( $field => $value ) );
+
+		$event = $event->fetch_object( 'KYSS_Event' );
+
+		return $event;
+	}
+
+	/**
+	 * Retrieve events list.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @return  array|false Array of KYSS_Event objects. False on failure.
+	 */
+	public static function get_events_list() {
+		global $kyssdb;
+
+		if ( ! $event = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->eventi}"
+		) );
+			return false;
+
+		$events = array();
+
+		for ( $i = 0; $i < $event->num_rows; $i++ )
+			array_push( $events, $event->fetch_object( 'KYSS_Event' ) );
+
+		return $events;
+	}
+
+	/**
+	 * Insert new event into the database.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $name Optional. Event's name. Default empty.
+	 * @param  string $start Optional. Start date string. Default today.
+	 * @param  string $end Optional. End date string. Default <null>.
+	 * @return KYSS_Event|KYSS_Error The newly created event's object or a KYSS_Error
+	 * object if the event could not be created.
+	 */
+	public static function create( $name = '', $start = null, $end = null ) {
+		global $kyssdb;
+
+		if ( is_null( $start ) )
+			$start = date( 'Y-m-d' );
+
+		$columns = array( 'nome', 'inizio', 'fine' );
+		$values = array( "'{$name}'", "'{$start}'", "'{$end}'" );
+
+		$columns = join( ',', $columns );
+		$values = join( ',', $values );
+
+		$query = sprintf( "INSERT INTO %1$s (%2$s) VALUES (%3$s)", $kyssdb->eventi, $columns, $values );
+		if ( !$event = $kyssdb->query( $query ) )
+			trigger_error( sprintf( "Query %1$s returned an error: %2$s", $query, $event->error ), E_USER_WARNING );
+
+		return $event;
+	}
 }
 
 /**

@@ -134,12 +134,12 @@ switch( $action ) {
  * @since  0.11.0
  *
  * @global  id
+ * @global  kyssdb
  *
  * @return array Associative array of user data ready to be saved.
  */
 function validate_user_data() {
-	global $id;
-	global $kyssdb;
+	global $id, $kyssdb;
 
 	if ( isset( $_POST['submit'] ) )
 		unset( $_POST['submit'] );
