@@ -6,8 +6,6 @@
  * @subpackage  Event
  */
 
-interface 
-
 /**
  * KYSS Event class
  *
@@ -19,7 +17,7 @@ class KYSS_Event {
 	/**
 	 * The event's ID.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  int
 	 */
@@ -28,7 +26,7 @@ class KYSS_Event {
 	/**
 	 * The event's name.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  string
 	 */
@@ -37,7 +35,7 @@ class KYSS_Event {
 	/**
 	 * The event start date.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  date
 	 */
@@ -46,7 +44,7 @@ class KYSS_Event {
 	/**
 	 * The event's end date.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  date
 	 */
@@ -55,14 +53,14 @@ class KYSS_Event {
 	/**
 	 * Constructor.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 *
-	 * @param  int|string|stdClass|KYSS_Event $id Event ID, ora a KYSS_Event object, or
-	 * a user object from the DB.
+	 * @param  int|string|stdClass|KYSS_Event $id Event ID, or a KYSS_Event object, or
+	 * an event object from the DB.
 	 */
-	function __construct( $id ) {
-		if ( is_a( $id, 'KYSS_User' ) || is_object( $id ) )
+	public function __construct( $id ) {
+		if ( is_a( $id, 'KYSS_Event' ) || is_object( $id ) )
 			return;
 
 		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
@@ -171,13 +169,49 @@ class KYSS_Event {
 		$columns = join( ',', $columns );
 		$values = join( ',', $values );
 
-		$query = sprintf( "INSERT INTO %1$s (%2$s) VALUES (%3$s)", $kyssdb->eventi, $columns, $values );
+		$query = "INSERT INTO {$kyssdb->eventi} ({$columns}) VALUES ({$values})";
 		if ( !$result = $kyssdb->query( $query ) ) {
-			trigger_error( sprintf( "Query %1$s returned an error: %2$s", $query, $kyssdb->error ), E_USER_WARNING );
+			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
 			return false;
 		}
 
 		return $kyssdb->insert_id;
+	}
+
+	/**
+	 * Update event in the db.
+	 *
+	 * @since 0.11.0
+	 * @access public
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $name Optional. Event's name. Default empty.
+	 * @param  string $start Optional. Start date string. Default today.
+	 * @param  string $end Optional. End date string. Default <null>.
+	 * @return int|bool The newly created event's ID or false on failure.
+	 */
+	public function update( $name = '', $start = null, $end = null ) {
+		global $kyssdb;
+
+		if ( empty( $name ) )
+			$name = $this->nome;
+		if ( is_null( $start ) )
+			$start = $this->inizio;
+		if ( is_null( $end ) )
+			$end = $this->fine;
+
+		$data = array(
+			'nome'		=> $name,
+			'inizio'	=> $start,
+			'fine'		=> $end
+		);
+
+		$result = $kyssdb->update( $kyssdb->utenti, $data, array( 'ID' => $this->ID ) );
+
+		if ( $result )
+			return true;
+		return false;
 	}
 }
 
@@ -192,7 +226,7 @@ class KYSS_Course {
 	/**
 	 * The course's ID.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  int
 	 */
@@ -201,7 +235,7 @@ class KYSS_Course {
 	/**
 	 * The course's title.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  string
 	 */
@@ -210,7 +244,7 @@ class KYSS_Course {
 	/**
 	 * The course's level
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  string
 	 */
@@ -219,7 +253,7 @@ class KYSS_Course {
 	/**
 	 * The course's place.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  string
 	 */
@@ -228,7 +262,7 @@ class KYSS_Course {
 	/**
 	 * The course's lessons number.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  int
 	 */
@@ -237,7 +271,7 @@ class KYSS_Course {
 	/**
 	 * The course's event ID.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  int
 	 */
@@ -246,16 +280,130 @@ class KYSS_Course {
 	/**
 	 * Constructor.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 *
-	 * @param  
-	 * @return KYSS_Talk
+	 * @param int|string|stdClass|KYSS_Course $id Course ID, or a KYSS_Course object,
+	 * or a course object from the DB.
 	 */
-	function __construct() {
-		
+	public function __construct( $id ) {
+		if ( is_a( $id, 'KYSS_Course' ) || is_object( $id ) )
+			return;
+
+		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
+			trigger_error( 'Bad type for $id parameter', E_USER_WARNING );
+			return;
+		}
+
+		if ( $id )
+			$this = self::get_course_by( 'id', $id );
+	}
+
+	/**
+	 * Retrieve course by ID.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  int $id The event id.
+	 * @return  KYSS_Course|bool KYSS_Course object. False on failure.
+	 */
+	public static function get_course_by_id( $id ) {
+		global $kyssdb;
+
+		if ( ! is_numeric( $id ) )
+			return false;
+		$id = intval( $id );
+
+		if ( $id < 1 )
+			return false;
+
+		if ( ! $course = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->corsi} WHERE ID = '{$value}'"
+		) );
+			return false;
+
+		if ( $course->num_rows == 0 )
+			return new KYSS_Error( 'course_not_found', 'Course not found.', array( 'ID' => $value ) );
+
+		$course = $course->fetch_object( 'KYSS_Event' );
+
+		return $course;
 	}
 	
+	/**
+	 * Retrieve course list.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @return  array|false Array of KYSS_Course object. False on failure.
+	 */
+	public static function get_courses_list() {
+		global $kyssdb;
+
+		if ( ! $course = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->corsi}"
+		) );
+			return false;
+
+		$courses = array();
+
+		for ( $i = 0; $i < $course->num_rows; $i++ )
+			array_push( $courses, $course->fetch_object( 'KYSS_Course' ) );
+
+		return $courses;
+	}
+
+	/**
+	 * Insert new course into the database.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  array $data Course data.
+	 * @return int|bool|KYSS_Error The newly created course's ID, KYSS_Error
+	 * or false on failure.
+	 */
+	public static function create( $data ) {
+		global $kyssdb;
+
+		if ( ! isset( $data['titolo'] ) )
+			return new KYSS_Error( 'course_title_missing', 'Per creare un nuovo corso &egrave; necessario un titolo.' );
+		if ( ! isset( $data['livello'] ) )
+			$data['livello'] = 'base';
+
+		$columns = array();
+		$values = array();
+
+		foreach ( $data as $key => $value ) {
+			array_push( $columns, $key );
+			if ( gettype( $value ) == 'int' )
+				array_push( $values, $value );
+			else
+				array_push( $values, "'{$value}'" );
+		}
+
+		$columns = join( ',', $columns );
+		$values = join( ',', $values );
+
+		$query = "INSERT INTO {$kyssdb->corsi} ({$columns}) VALUES ({$values})";
+		if ( !$result = $kyssdb->query( $query ) ) {
+			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
+			return false;
+		}
+
+		return $kyssdb->insert_id;
+	}
 }
 
 /**

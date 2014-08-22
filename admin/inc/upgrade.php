@@ -60,8 +60,9 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 		$user_password = generate_password(); // Defaults to 10 char long, with special chars.
 		$message = '<strong><em>Note that password</em></strong> carefully! It is a <em>random</em> password that was generated just for you.';
 	}
-	$user = KYSS_User::create($user_name, $user_surname, $user_password, array( 'email' => $user_email ) );
+	$user_id = KYSS_User::create($user_name, $user_surname, $user_password, array( 'email' => $user_email ) );
 
+	$user = KYSS_User::get_user_by( 'id', $user_id );
 	$user->set_role('owner');
 	
 	/**
