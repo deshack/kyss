@@ -3,7 +3,7 @@
  * KYSS Event API
  *
  * @package  KYSS
- * @subpackage  Event
+ * @subpackage  Events
  */
 
 /**
@@ -11,7 +11,7 @@
  *
  * @since
  * @package  KYSS
- * @subpackage  Event
+ * @subpackage  Events
  */
 class KYSS_Event {
 	/**
@@ -189,7 +189,7 @@ class KYSS_Event {
 	 * @param  string $name Optional. Event's name. Default empty.
 	 * @param  string $start Optional. Start date string. Default today.
 	 * @param  string $end Optional. End date string. Default <null>.
-	 * @return int|bool The newly created event's ID or false on failure.
+	 * @return bool Whether the update succeeded or not.
 	 */
 	public function update( $name = '', $start = null, $end = null ) {
 		global $kyssdb;
@@ -218,9 +218,9 @@ class KYSS_Event {
 /**
  * KYSS Course class
  *
- * @since
+ * @since 0.11.0
  * @package  KYSS
- * @subpackage  Course  
+ * @subpackage Events
  */
 class KYSS_Course {
 	/**
@@ -296,7 +296,7 @@ class KYSS_Course {
 		}
 
 		if ( $id )
-			$this = self::get_course_by( 'id', $id );
+			$this = self::get_course_by_id( $id );
 	}
 
 	/**
@@ -322,12 +322,12 @@ class KYSS_Course {
 			return false;
 
 		if ( ! $course = $kyssdb->query(
-			"SELECT * FROM {$kyssdb->corsi} WHERE ID = '{$value}'"
-		) );
+			"SELECT * FROM {$kyssdb->corsi} WHERE ID = {$id}"
+		) )
 			return false;
 
 		if ( $course->num_rows == 0 )
-			return new KYSS_Error( 'course_not_found', 'Course not found.', array( 'ID' => $value ) );
+			return new KYSS_Error( 'course_not_found', 'Course not found.', array( 'ID' => $id ) );
 
 		$course = $course->fetch_object( 'KYSS_Event' );
 
@@ -350,7 +350,7 @@ class KYSS_Course {
 
 		if ( ! $course = $kyssdb->query(
 			"SELECT * FROM {$kyssdb->corsi}"
-		) );
+		) )
 			return false;
 
 		$courses = array();
@@ -387,7 +387,7 @@ class KYSS_Course {
 
 		foreach ( $data as $key => $value ) {
 			array_push( $columns, $key );
-			if ( gettype( $value ) == 'int' )
+			if ( is_int( $value ) )
 				array_push( $values, $value );
 			else
 				array_push( $values, "'{$value}'" );
@@ -404,20 +404,47 @@ class KYSS_Course {
 
 		return $kyssdb->insert_id;
 	}
+
+	/**
+	 * Update course in the db.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  array $data Course data.
+	 * @return bool Whether the update succeeded or not.
+	 */
+	public function update( $data ) {
+		global $kyssdb;
+
+		foreach ( $data as $key => $value ) {
+			if ( is_int( $value ) )
+				continue;
+			$data[$key] = "'{$value}'";
+		}
+
+		$result = $kyssdb->update( $kyssdb->corsi, $data, array( 'ID' => $this->ID ) );
+
+		if ( $result )
+			return true;
+		return false;
+	}
 }
 
 /**
  * KYSS Talk class
  *
- * @since
+ * @since 0.11.0
  * @package  KYSS
- * @subpackage  Talk  
+ * @subpackage  Events
  */
 class KYSS_Talk {
 	/**
 	 * The Talk's ID.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  int
 	 */
@@ -426,7 +453,7 @@ class KYSS_Talk {
 	/**
 	 * The Talk's title.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  string
 	 */
@@ -435,7 +462,7 @@ class KYSS_Talk {
 	/**
 	 * The Talk's date.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  date
 	 */
@@ -444,7 +471,7 @@ class KYSS_Talk {
 	/**
 	 * The Talk's date time.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  string
 	 */
@@ -453,7 +480,7 @@ class KYSS_Talk {
 	/**
 	 * The Talk's place.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  string
 	 */
@@ -462,7 +489,7 @@ class KYSS_Talk {
 	/**
 	 * The Talk's arguments
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  string
 	 */
@@ -471,7 +498,7 @@ class KYSS_Talk {
 	/**
 	 * The Talk's rapporteur ID.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  int
 	 */
@@ -480,7 +507,7 @@ class KYSS_Talk {
 	/**
 	 * The Talk's event ID.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 * @var  int
 	 */
@@ -489,30 +516,168 @@ class KYSS_Talk {
 	/**
 	 * Constructor.
 	 *
-	 * @since  
+	 * @since  0.11.0
 	 * @access public
 	 *
-	 * @param  
-	 * @return KYSS_Talk
+	 * @param  int|string|stdClass|KYSS_Talk $id Talk ID, or a KYSS_Talk object, or
+	 * a talk object from the DB.
 	 */
-	function __construct() {
-		
+	public function __construct( $id ) {
+		if ( is_a( $id, 'KYSS_Talk' ) || is_object( $id ) )
+			return;
+
+		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
+			trigger_error( 'Bad type for $id parameter', E_USER_WARNING );
+			return;
+		}
+
+		if ( $id )
+			$this = self::get_talk_by_id( $id );
 	}
 	
+	/**
+	 * Retrieve talk by ID.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  int $id The talk id.
+	 * @return KYSS_Talk|bool KYSS_Course object. False on failure.
+	 */
+	public static function get_talk_by_id( $id ) {
+		global $kyssdb;
+
+		if ( ! is_numeric( $id ) )
+			return false;
+		$id = intval( $id );
+
+		if ( $id < 1 )
+			return false;
+
+		if ( ! $course = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->talk} WHERE ID = {$id}"
+		) )
+			return false;
+
+		if ( $course->num_rows == 0 )
+			return new KYSS_Error( 'talk_not_found', 'Talk not found.', array( 'ID' => $id ) );
+
+		$course = $course->fetch_object( 'KYSS_Talk' );
+
+		return $course;
+	}
+
+	/**
+	 * Retrieve talks list.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @return  array|false Array of KYSS_Talk objects. False on failure.
+	 */
+	public static function get_list() {
+		global $kyssdb;
+
+		if ( ! $talk = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->talk}"
+		) )
+			return false;
+
+		$talks = array();
+
+		for ( $i = 0; $i < $talk->num_rows; $i++ )
+			array_push( $talks, $talk->fetch_object( 'KYSS_Talk' ) );
+
+		return $talks;
+	}
+
+	/**
+	 * Insert new talk into the database.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  array $data Talk data.
+	 * @return int|bool|KYSS_Error
+	 */
+	public static function create( $data ) {
+		global $kyssdb;
+
+		if ( ! isset( $data['titolo'] ) )
+			return new KYSS_Error( 'talk_title_missing', 'Per creare un nuovo talk &egrave; necessario un titolo.' );
+
+		$columns = array();
+		$values = array();
+
+		foreach ( $data as $key => $value ) {
+			array_push( $columns, $key );
+			if ( is_int( $value ) )
+				array_push( $values, $value );
+			else
+				array_push( $values, "'{$value}'" );
+		}
+
+		$columns = join( ',', $columns );
+		$values = join( ',', $values );
+
+		$query = "INSERT INTO {$kyssdb->talk} ({$columns}) VALUES ({$values})";
+		if ( ! $result = $kyssdb->query( $query ) ) {
+			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
+			return false;
+		}
+
+		return $kyssdb->insert_id;
+	}
+
+	/**
+	 * Update talk in the db.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  array $data Talk data.
+	 * @return  bool Whether the update succeeded or not.
+	 */
+	public function update( $data ) {
+		global $kyssdb;
+
+		foreach ( $data as $key => $value ) {
+			if ( is_int( $value ) )
+				continue;
+			$data[$key] = "'{$value}'";
+		}
+
+		$result = $kyssdb->update( $kyssdb->corsi, $data, array( 'ID', $this->ID ) );
+
+		if ( $result )
+			return true;
+		return false;
+	}
 }
 
 /**
  * KYSS Meeting class
  *
- * @since
+ * @since 0.11.0
  * @package  KYSS
- * @subpackage  Meeting 
+ * @subpackage  Events 
  */
 class KYSS_Meeting {
 	/**
 	 * The Meeting's ID.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 * @var  int
 	 */
@@ -521,7 +686,7 @@ class KYSS_Meeting {
 	/**
 	 * The Meeting's type.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 * @var  string 
 	 */
@@ -530,7 +695,7 @@ class KYSS_Meeting {
 	/**
 	 * The Meeting's start date time.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 * @var  string
 	 */
@@ -539,7 +704,7 @@ class KYSS_Meeting {
 	/**
 	 * The Meeting's end date time.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 * @var  string
 	 */
@@ -548,7 +713,7 @@ class KYSS_Meeting {
 	/**
 	 * The Meeting's place.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 * @var  string
 	 */
@@ -557,7 +722,7 @@ class KYSS_Meeting {
 	/**
 	 * The Meeting's president ID.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 * @var  int
 	 */
@@ -566,7 +731,7 @@ class KYSS_Meeting {
 	/**
 	 * The Meeting's secretary ID.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 * @var  int
 	 */
@@ -575,7 +740,7 @@ class KYSS_Meeting {
 	/**
 	 * The Meeting's event ID.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 * @var  int
 	 */
@@ -584,30 +749,168 @@ class KYSS_Meeting {
 	/**
 	 * Constructor.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 *
-	 * @param  
-	 * @return KYSS_Meeting
+	 * @param  int|string|stdClass|KYSS_Meeting $id Meeting ID, or a KYSS_Meeting object,
+	 * or a meeting object from the DB.
 	 */
-	function __construct() {
-		
+	function __construct( $id ) {
+		if ( is_a( $id, 'KYSS_Meeting' ) || is_object( $id ) )
+			return;
+
+		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
+			trigger_error( 'Bad type for `id` parameter', E_USER_WARNING );
+			return;
+		}
+
+		if ( $id )
+			$this = self::get_meeting_by_id( $id );
+	}
+
+	/**
+	 * Retrieve meeting by ID.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  int $id The meeting ID.
+	 * @return  KYSS_Meeting|bool KYSS_Meeting object. False on failure.
+	 */
+	public static function get_meeting_by_id( $id ) {
+		global $kyssdb;
+
+		if ( ! is_numeric( $id ) )
+			return false;
+		$id = intval( $id );
+
+		if ( $id < 1 )
+			return false;
+
+		if ( ! $meeting = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->riunioni} WHERE ID = {$id}"
+		) )
+			return false;
+
+		if ( $meeting->num_rows == 0 )
+			return new KYSS_Error( 'meeting_not_found', 'Meeting not found', array( 'ID' => $id ) );
+
+		$meeting = $meeting->fetch_object( 'KYSS_Meeting' );
+
+		return $meeting;
 	}
 	
+	/**
+	 * Retrieve meetings list.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @return  array|false Array of KYSS_Meeting objects. False on failure.
+	 */
+	public static function get_list() {
+		global $kyssdb;
+
+		if ( ! $meeting = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->riunioni}"
+		) )
+			return false;
+
+		$meetings = array();
+
+		for ( $i = 0; $i < $meeting->num_rows; $i++ )
+			array_push( $meetings, $meeting->fetch_object( 'KYSS_Meeting' ) );
+
+		return $meetings;
+	}
+
+	/**
+	 * Insert new meeting into the database.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  array $data Meeting data.
+	 * @return  int|bool|KYSS_Error
+	 */
+	public static function create( $data ) {
+		global $kyssdb;
+
+		if ( ! isset( $data['titolo'] ) )
+			return new KYSS_Error( 'meeting_title_missing', 'Per creare una nuova riunione &egrave; necessario un titolo.' );
+
+		$columns = array();
+		$values = array();
+
+		foreach ( $data as $key => $value ) {
+			array_push( $columns, $key );
+			if ( is_int( $value ) )
+				array_push( $values, $value );
+			else
+				array_push( $values, "'{$value}'" );
+		}
+
+		$columns = join( ',', $columns );
+		$values = join( ',', $values );
+
+		$query = "INSERT INTO {$kyssdb->riunioni} ({$columns}) VALUES ({$values})";
+		if ( ! $result = $kyssdb->query( $query ) ) {
+			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
+			return false;
+		}
+
+		return $kyssdb->insert_id;
+	}
+
+	/**
+	 * Update meeting in the db.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  array $data Meeting data.
+	 * @return  bool Whether the update succeeded or not.
+	 */
+	public function update( $data ) {
+		global $kyssdb;
+
+		foreach ( $data as $key => $value ) {
+			if ( is_int( $value ) )
+				continue;
+			$data[$key] = "'{$value}'";
+		}
+
+		$result = $kyssdb->update( $kyssdb->riunioni, $data, array( 'ID', $this->ID ) );
+
+		if ( $result )
+			return true;
+		return false;
+	}
 }
 
 /**
  * KYSS Lesson class
  *
- * @since
+ * @since 0.11.0
  * @package  KYSS
- * @subpackage  Lesson
+ * @subpackage  Events
  */
 class KYSS_Lesson {
 	/**
 	 * The Lesson's date.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 * @var  date
 	 */
@@ -616,7 +919,7 @@ class KYSS_Lesson {
 	/**
 	 * The Lesson's start date time.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 * @var  string
 	 */
@@ -625,7 +928,7 @@ class KYSS_Lesson {
 	/**
 	 * The Lesson's arguments.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 * @var  string
 	 */
@@ -634,7 +937,7 @@ class KYSS_Lesson {
 	/**
 	 * The Lesson's course ID.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 * @var  int
 	 */
@@ -643,12 +946,148 @@ class KYSS_Lesson {
 	/**
 	 * Constructor.
 	 *
-	 * @since  
+	 * @since 0.11.0 
 	 * @access public
 	 *
-	 * @param  
-	 * @return KYSS_Course
+	 * @param  int|string|stdClass|KYSS_Lesson $id Lesson ID, or a KYSS_Lesson object,
+	 * or a lesson object from the DB.
 	 */
-	function __construct() {
-		
+	public function __construct( $id ) {
+		if ( is_a( $id, 'KYSS_Lesson') || is_object( $id ) )
+			return;
+
+		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
+			trigger_error( "Bad type for `id` parameter", E_USER_WARNING );
+			return;
+		}
+
+		if ( $id )
+			$this = self::get_lesson_by_id( $id );
 	}
+
+	/**
+	 * Retrieve lesson by ID.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  int $id The lesson ID.
+	 * @return  KYSS_Lesson|bool False on failure.
+	 */
+	public static function get_lesson_by_id( $id ) {
+		global $kyssdb;
+
+		if ( ! is_numeric( $id ) )
+			return false;
+		$id = intval( $id );
+
+		if ( $id < 1 )
+			return false;
+
+		if ( ! $lesson = $kyssdb->query (
+			"SELECT * FROM {$kyssdb->lezioni} WHERE ID = {$id}"
+		) )
+			return false;
+
+		if ( $lesson->num_rows == 0 )
+			return new KYSS_Error( 'lesson_not_found', 'Lesson not found.', array( 'ID' => $id ) );
+
+		$lesson = $lesson->fetch_object( 'KYSS_Lesson' );
+
+		return $lesson;
+	}
+
+	/**
+	 * Retrieve lessons list.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @return  array|false Array of KYSS_Lesson objects. False on failure.
+	 */
+	public static function get_list() {
+		global $kyssdb;
+
+		if ( ! $lesson = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->lezioni}"
+		) )
+			return false;
+
+		$lessons = array();
+
+		for ( $i = 0; $i < $lesson->num_rows; $i++ )
+			array_push( $lessons, $lesson->fetch_object( 'KYSS_Lesson' ) );
+
+		return $lessons;
+	}
+
+	/**
+	 * Insert new lesson into the database.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  array $data Lesson data.
+	 * @return  int|bool|KYSS_Error
+	 */
+	public static function create( $data ) {
+		global $kyssdb;
+
+		if ( ! isset( $data['corso'] ) )
+			return new KYSS_Error( 'lesson_without_course', 'La lezione deve essere associata ad un corso.' );
+
+		$columns = array();
+		$values = array();
+
+		foreach ( $data as $key => $value ) {
+			array_push( $columns, $key );
+			if ( is_int( $value ) )
+				array_push( $values, $value );
+			else
+				array_push( $values, "'{$value}'" );
+		}
+
+		$query = "INSERT INTO {$kyssdb->lezioni} ({$columns}) VALUES ({$values})";
+		if ( !$result = $kyssdb->query( $query ) ) {
+			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
+			return false;
+		}
+		return $kyssdb->insert_id;
+	}
+
+	/**
+	 * Update lesson in the db.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  array $data Lesson data.
+	 * @return  bool Whether the update succeeded or not.
+	 */
+	public function update( $data ) {
+		global $kyssdb;
+
+		foreach ( $data as $key => $value ) {
+			if ( is_int( $value ) )
+				continue;
+			$data[$key] = "'{$value}'";
+		}
+
+		$result = $kyssdb->update( $kyssdb->lezioni, $data, array( 'ID' => $this->ID ) );
+
+		if ( $result )
+			return true;
+		return false;
+	}
+}
