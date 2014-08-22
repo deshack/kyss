@@ -139,6 +139,7 @@ switch( $action ) {
  */
 function validate_user_data() {
 	global $id;
+	global $kyssdb;
 
 	if ( isset( $_POST['submit'] ) )
 		unset( $_POST['submit'] );
@@ -160,7 +161,7 @@ function validate_user_data() {
 		} elseif ( ( isset( $user->{$key} ) && $user->{$key} == $value ) || empty( $value ) ) {
 			unset( $valid[$key] );
 		} else {
-			$valid[$key] = trim( $value );
+			$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
 		}
 	}
 
