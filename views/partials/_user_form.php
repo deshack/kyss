@@ -54,7 +54,9 @@ $anagrafica = isset( $user->anagrafica ) ? $user->anagrafica : '';
 // $anagrafica is a two-dimensions array, if not empty.
 // Unserialize it twice (but suppress error output)!
 if ( ! empty( $anagrafica ) )
-	$anagrafica = @unserialize( unserialize( $anagrafica ) );
+	$anagrafica = unserialize( $anagrafica );
+if ( ! is_array( $anagrafica ) )
+	$anagrafica = unserialize( $anagrafica );
 ?>
 
 <?php if ( $action == 'edit' ) : ?>
