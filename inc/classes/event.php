@@ -157,8 +157,7 @@ class KYSS_Event {
 	 * @param  string $name Optional. Event's name. Default empty.
 	 * @param  string $start Optional. Start date string. Default today.
 	 * @param  string $end Optional. End date string. Default <null>.
-	 * @return KYSS_Event|KYSS_Error The newly created event's object or a KYSS_Error
-	 * object if the event could not be created.
+	 * @return int|bool The newly created event's ID or false on failure.
 	 */
 	public static function create( $name = '', $start = null, $end = null ) {
 		global $kyssdb;
@@ -173,10 +172,12 @@ class KYSS_Event {
 		$values = join( ',', $values );
 
 		$query = sprintf( "INSERT INTO %1$s (%2$s) VALUES (%3$s)", $kyssdb->eventi, $columns, $values );
-		if ( !$event = $kyssdb->query( $query ) )
-			trigger_error( sprintf( "Query %1$s returned an error: %2$s", $query, $event->error ), E_USER_WARNING );
+		if ( !$result = $kyssdb->query( $query ) ) {
+			trigger_error( sprintf( "Query %1$s returned an error: %2$s", $query, $kyssdb->error ), E_USER_WARNING );
+			return false;
+		}
 
-		return $event;
+		return $kyssdb->insert_id;
 	}
 }
 

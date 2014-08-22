@@ -210,7 +210,8 @@ class KYSS_User {
 		global $kyssdb;
 
 		// Hash the password.
-		$pass = KYSS_Pass::hash( $pass );
+		if ( ! empty( $pass ) )
+			$pass = KYSS_Pass::hash( $pass );
 
 		// If email is given, check that it is unique.
 		if ( isset( $data['email'] ) && self::email_exists( $data['email'] ) )
@@ -220,34 +221,22 @@ class KYSS_User {
 		$values = array( "'{$name}'", "'{$surname}'", "'{$pass}'" );
 		if ( ! empty( $data ) ) {
 			foreach ( $data as $key => $value ) {
-				switch( $key ) {
-					case 'email':
-						$columns[] = $key;
-						$values[] = "'{$value}'";
-						break;
-					case 'telefono':
-						$columns[] = $key;
-						$values[] = "'{$value}'";
-						break;
-					case 'gruppo':
-						$columns[] = $key;
-						$values[] = "'{$value}'";
-						break;
-					case 'anagrafica':
-						$columns[] = $key;
-						$values[] = serialize($value);
-						break;
-				}
+				if ( $key == 'anagrafica' )
+					$value = serialize( $value );
+				array_push( $columns, $key );
+				array_push( $values, "'{$value}'" );
 			}
 			$columns = join( ',', $columns );
 			$values = join( ',', $values );
-			$result = $kyssdb->query( "INSERT INTO {$kyssdb->utenti} ({$columns}) VALUES ({$values})" );
 		}
 
-		if ( $result )
-			return $kyssdb->insert_id;
-		else
-			trigger_error( $kyssdb->error, E_USER_WARNING ); // TODO: Return KYSS_Error instead.
+		$query = "INSERT INTO {$kyssdb->utenti} ({$columns}) VALUES ({$values})";
+		if ( !$result = $kyssdb->query( $query ) ) {
+			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
+			return false;
+		}
+
+		return $kyssdb->insert_id;
 	}
 
 	/**

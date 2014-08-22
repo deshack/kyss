@@ -18,18 +18,9 @@ switch( $action ) {
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
 			validate_user_data();
 		}
-
-		$user = KYSS_User::get_user_by('id', $id);
-
-		$anagrafica = isset( $user->anagrafica ) ? unserialize( $user->anagrafica ) : '';
-		if ( ! empty( $anagrafica ) ) {
-			extract( $anagrafica );
-		}
 		break;
 	case 'add' :
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
-			global $user;
-
 			$name = $_POST['nome'];
 			$surname = $_POST['cognome'];
 			$password = $_POST['password'];
@@ -51,12 +42,19 @@ switch( $action ) {
 				}
 			}
 			
-			$user->create( $name, $surname, $pass, $data );
-		} else {
-			$user = new KYSS_User();
+			$id = KYSS_User::create( $name, $surname, $password, $data );
 		}
 		break;
 }
+
+$user = KYSS_User::get_user_by('id', $id);
+
+$anagrafica = isset( $user->anagrafica ) ? $user->anagrafica : '';
+
+// $anagrafica is a two-dimensions array, if not empty.
+// Unserialize it twice (but suppress error output)!
+if ( ! empty( $anagrafica ) )
+	$anagrafica = @unserialize( unserialize( $anagrafica ) );
 ?>
 
 <?php if ( $action == 'edit' ) : ?>
@@ -90,7 +88,7 @@ switch( $action ) {
 	<div class="row">
 		<div class="medium-12 columns">
 			<label for="anagrafica[CF]">Codice Fiscale</label>
-			<input id="anagrafica[CF]" name="anagrafica[CF]" type="text"<?php echo isset( $CF ) ? get_value_html( $CF ) : ''; ?>>
+			<input id="anagrafica[CF]" name="anagrafica[CF]" type="text"<?php echo isset( $anagrafica['CF'] ) ? get_value_html( $anagrafica['CF'] ) : ''; ?>>
 		</div>
 	</div>
 	<div class="row">
