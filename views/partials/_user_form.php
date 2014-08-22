@@ -199,17 +199,7 @@ function validate_user_data() {
 		}
 	}
 
-	//debug_array( $valid );
+	//var_dump( $valid );
 
 	KYSS_User::update( $id, $valid );
-}
-
-function debug_array( $array, $debug = '' ) {
-	foreach ( $array as $key => $value ) {
-		if ( is_array( $value ) )
-			debug_array( $value, "[{key}]" . $debug );
-		else
-			$debug .= "[{$key}] => {$value}\n";
-	}
-	trigger_error( $debug );
 }
