@@ -217,15 +217,26 @@ class KYSS_User {
 		if ( isset( $data['email'] ) && self::email_exists( $data['email'] ) )
 			return new KYSS_Error( 'existing_user_email', "Spiacenti, questo indirizzo email &egrave; gi&agrave; in uso." );
 
-		$columns = array( 'nome', 'cognome', 'password' );
-		$values = array( "'{$name}'", "'{$surname}'", "'{$pass}'" );
+		$columns = array( 'nome', 'cognome' );
+		$values = array( "'{$name}'", "'{$surname}'" );
+
+		if ( ! empty( $pass ) && ! is_null( $pass ) ) {
+			array_push( $columns, 'password' );
+			array_push( $values, "'{$pass}'" );
+		}
 		if ( ! empty( $data ) ) {
 			foreach ( $data as $key => $value ) {
 				if ( $key == 'anagrafica' )
 					$value = serialize( $value );
+				if ( empty( $value ) )
+					continue;
+				else
+					$value = "'{$value}'";
 				array_push( $columns, $key );
-				array_push( $values, "'{$value}'" );
+				array_push( $values, $value );
 			}
+			var_dump( $columns );
+			var_dump( $values );
 			$columns = join( ',', $columns );
 			$values = join( ',', $values );
 		}

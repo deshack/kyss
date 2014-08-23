@@ -59,7 +59,7 @@ if ( ! is_array( $anagrafica ) )
 	$anagrafica = unserialize( $anagrafica );
 ?>
 
-<?php if ( $action == 'edit' ) : ?>
+<?php if ( $action == 'edit' || ( $action == 'add' && isset( $_GET['save'] ) && $_GET['save'] == 'true' ) ) : ?>
 	<h1 class="page-title">Modifica utente <small><?php echo $user->nome . ' ' . $user->cognome; ?></small></h1>
 <?php elseif ( $action == 'add' ) : ?>
 	<h1 class="page-title">Nuovo utente</h1>
@@ -178,7 +178,7 @@ function validate_user_data() {
 	if ( isset( $_POST['submit'] ) )
 		unset( $_POST['submit'] );
 	if ( isset( $_POST['password'] ) ) {
-		if ( ! isset( $_POST['pass-confirm'] ) ) {
+		if ( empty( $_POST['password'] ) || ! isset( $_POST['pass-confirm'] ) ) {
 			unset( $_POST['password'] );
 			// TODO: raise error.
 		} elseif ( $_POST['password'] != $_POST['pass-confirm'] ) {

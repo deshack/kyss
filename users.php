@@ -22,19 +22,13 @@ $hook->add( 'kyss_title', function( $title ) {
 	}
 
 	$title .= ' &rsaquo; ';
-	switch ( $action ) {
-		case 'edit':
-			$title .= 'Modifica ';
-			$title .= (isset($user)) ? $user->nome . ' ' . $user->cognome : 'utente';
-			break;
-		case 'add':
-			$title .= 'Nuovo utente';
-			break;
-		case 'list':
-		default:
-			$title .= 'Utenti';
-			break;
-	}
+	if ( $action == 'edit' || ( $action == 'add' && isset( $_GET['save']) && $_GET['save'] == 'true' ) )
+		$title .= 'Modifica utente';
+	elseif ( $action == 'add' )
+		$title .= 'Nuovo utente';
+	else
+		$title .= 'Utenti';
+	
 	return $title;
 });
 
