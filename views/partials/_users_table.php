@@ -35,7 +35,10 @@ $users = array_filter( $users ); ?>
 			<td><?php echo isset( $user->email ) ? $user->email : ''; ?></td>
 			<td><?php echo isset( $user->telefono ) ? $user->telefono : ''; ?></td>
 			<td><?php echo isset( $user->gruppo ) ? $user->gruppo : ''; ?></td>
-			<td><a href="<?php echo get_site_url( 'users.php?action=edit&id=' . $user->ID ); ?>">Modifica</a></td>
+			<td>
+				<a href="<?php echo get_site_url( 'users.php?action=view&id=' . $user->ID ); ?>">Dettagli</a>
+				<a href="<?php echo get_site_url( 'users.php?action=edit&id=' . $user->ID ); ?>">Modifica</a>
+			</td>
 		</tr>
 	<?php endforeach; ?>
 	</tbody>

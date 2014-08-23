@@ -10,8 +10,11 @@
 // Handle some errors in a dev-friendly way.
 if ( ! in_array( $action, array( 'edit', 'add' ) ) )
 	trigger_error( 'Unrecognized action ' . $action, E_USER_ERROR );
-if ( $action == 'edit' && empty( $id ) )
-	trigger_error( 'Trying to edit unspecified user', E_USER_ERROR );
+
+if ( $action == 'edit' && empty( $id ) ) {
+	$message = 'Stai tentando di modificare un utente, ma non hai specificato quale.';
+	kyss_die( $message, '', array( 'back_link' => true ) );
+}
 
 switch( $action ) {
 	case 'edit' :
@@ -52,7 +55,7 @@ $user = KYSS_User::get_user_by('id', $id);
 $anagrafica = isset( $user->anagrafica ) ? $user->anagrafica : '';
 
 // $anagrafica is a two-dimensions array, if not empty.
-// Unserialize it twice (but suppress error output)!
+// It may be necessary to unserialize it twice.
 if ( ! empty( $anagrafica ) )
 	$anagrafica = unserialize( $anagrafica );
 if ( ! is_array( $anagrafica ) )

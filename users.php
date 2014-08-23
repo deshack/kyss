@@ -17,15 +17,14 @@ $id = isset( $_GET['id'] ) ? $_GET['id'] : '';
 // Add filter to the title.
 $hook->add( 'kyss_title', function( $title ) {
 	global $action, $id;
-	if ( ! empty( $id ) ) {
-		$user = KYSS_User::get_user_by( 'id', $id );
-	}
 
 	$title .= ' &rsaquo; ';
 	if ( $action == 'edit' || ( $action == 'add' && isset( $_GET['save']) && $_GET['save'] == 'true' ) )
 		$title .= 'Modifica utente';
 	elseif ( $action == 'add' )
 		$title .= 'Nuovo utente';
+	elseif ( $action == 'view' )
+		$title .= 'Dettagli utente';
 	else
 		$title .= 'Utenti';
 	
@@ -40,6 +39,9 @@ get_sidebar();
 
 <?php
 switch( $action ) {
+	case 'view':
+		require( VIEWS . '/partials/_user_details.php' );
+		break;
 	case 'edit':
 		require( VIEWS . '/partials/_user_form.php' );
 		break;
