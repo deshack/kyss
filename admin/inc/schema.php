@@ -46,7 +46,7 @@ function get_db_schema() {
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->cariche} (
-			`carica`		ENUM('presidente','vicepresidente','segretario','tesoriere','consigliere') NOT NULL,
+			`carica`		ENUM('presidente', 'vicepresidente', 'segretario', 'tesoriere', 'consigliere') NOT NULL,
 			`inizio`		date NOT NULL,
 			`utente`		bigint(20) UNSIGNED NOT NULL,
 			`fine`			date,
@@ -59,7 +59,7 @@ function get_db_schema() {
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->pratiche} (
 			`protocollo`		int(6) UNSIGNED AUTO_INCREMENT NOT NULL,
 			`utente`			bigint(20) UNSIGNED NOT NULL,
-			`tipo`				enum('adesione','liberatoria') NOT NULL,
+			`tipo`				enum('adesione', 'liberatoria') NOT NULL,
 			`data`				date NOT NULL,
 			`ricezione`			date NOT NULL,
 			`approvata`			boolean DEFAULT NULL,
@@ -72,6 +72,7 @@ function get_db_schema() {
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->eventi} (
 			`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
 			`nome`			varchar(20),
+			`tipo`			enum('riunione', 'corso', 'altro'),
 			`inizio`		date NOT NULL,
 			`fine`			date,
 			PRIMARY KEY (`ID`)
@@ -94,7 +95,7 @@ function get_db_schema() {
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->riunioni} (
 			`ID`			bigint(20) UNSIGNED NOT NULL,
-			`tipo`			enum('CD','AdA') NOT NULL,
+			`tipo`			enum('CD', 'AdA') NOT NULL,
 			`data`			date NOT NULL,
 			`inizio`		time,
 			`fine`			time,
@@ -114,7 +115,7 @@ function get_db_schema() {
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->corsi} (
 			`ID`			bigint(20) UNSIGNED NOT NULL,
 			`titolo`		varchar(255) NOT NULL,
-			`livello`		enum('base','medio','avanzato') NOT NULL,
+			`livello`		enum('base', 'medio', 'avanzato') NOT NULL,
 			`luogo`			varchar(20),
 			`lezioni`		int,
 			`evento`		bigint(20) UNSIGNED,
@@ -145,6 +146,7 @@ function get_db_schema() {
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->verbali} (
 			`protocollo`	int(6) UNSIGNED AUTO_INCREMENT NOT NULL,
+			`contenuto`		text,
 			`riunione`		bigint(20) UNSIGNED NOT NULL,
 			PRIMARY KEY (`protocollo`),
 			FOREIGN KEY (`riunione`) REFERENCES {$kyssdb->riunioni}(`ID`)
@@ -153,10 +155,10 @@ function get_db_schema() {
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->bilanci} (
 			`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
-			`tipo`			enum('mensile','consuntivo','preventivo') NOT NULL,
-			`mese`			enum('Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'),
+			`tipo`			enum('mensile', 'consuntivo', 'preventivo') NOT NULL,
+			`mese`			enum('Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'),
 			`anno`			year NOT NULL,
-			`cassa`			varchar(10) NOT NULL DEFAULT 0,
+			`cassa`			varchar(10) NOT NULL,
 			`banca`			varchar(10) NOT NULL,
 			`approvato`		boolean,
 			`verbale`		int(6) UNSIGNED,

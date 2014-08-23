@@ -19,7 +19,7 @@ $hook->add( 'kyss_title', function( $title ) {
 	global $action, $id;
 
 	$title .= ' &rsaquo; ';
-	if ( $action == 'edit' || ( $action == 'add' && isset( $_GET['save']) && $_GET['save'] == 'true' ) )
+	if ( $action == 'edit' || ( $action == 'add' && isset( $_GET['save'] ) && $_GET['save'] == 'true' ) )
 		$title .= 'Modifica utente';
 	elseif ( $action == 'add' )
 		$title .= 'Nuovo utente';

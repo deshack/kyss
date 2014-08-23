@@ -12,8 +12,17 @@
 	<ul class="side-nav">
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>">Home</a></li>
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/users.php">Utenti</a></li>
-		<li><a href="<?php echo get_option( 'siteurl' ); ?>/events.php">Eventi</a></li>
-		<li><a href="<?php echo get_option( 'siteurl' ); ?>/documents.php">Documenti</a></li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/events.php">Eventi</a>
+			<ul><a href="<?php echo get_option( 'siteurl' ); ?>/meetings.php">Riunioni</a></ul>
+			<ul><a href="<?php echo get_option( 'siteurl' ); ?>/courses.php">Corsi</a></ul>
+			<ul><a href="#">Altri</a></ul>
+		</li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/talks.php">Documenti</a></li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/documents.php">Documenti</a>
+			<ul><a href="<?php echo get_option( 'siteurl' ); ?>/practices.php">Pratiche</a></ul>
+			<ul><a href="<?php echo get_option( 'siteurl' ); ?>/reports.php">Verbali</a></ul>
+			<ul><a href="<?php echo get_option( 'siteurl' ); ?>/budgets.php">Bilanci</a></ul>
+		</li>
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/movements.php">Movimenti</a></li>
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/offices.php">Cariche</a></li>
 		<li class="divider"></li>

@@ -59,17 +59,8 @@ class KYSS_Event {
 	 * @param  int|string|stdClass|KYSS_Event $id Event ID, or a KYSS_Event object, or
 	 * an event object from the DB.
 	 */
-	public function __construct( $id ) {
-		if ( is_a( $id, 'KYSS_Event' ) || is_object( $id ) )
-			return;
+	public function __construct() {
 
-		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
-			trigger_error( 'Bad type for $id parameter', E_USER_WARNING );
-			return;
-		}
-
-		if ( $id )
-			$this = self::get_event_by( 'id', $id );
 	}
 	
 	/**
@@ -132,7 +123,7 @@ class KYSS_Event {
 
 		if ( ! $event = $kyssdb->query(
 			"SELECT * FROM {$kyssdb->eventi}"
-		) );
+		) )
 			return false;
 
 		$events = array();
@@ -170,7 +161,7 @@ class KYSS_Event {
 		$values = join( ',', $values );
 
 		$query = "INSERT INTO {$kyssdb->eventi} ({$columns}) VALUES ({$values})";
-		if ( !$result = $kyssdb->query( $query ) ) {
+		if ( ! $result = $kyssdb->query( $query ) ) {
 			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
 			return false;
 		}
@@ -286,17 +277,8 @@ class KYSS_Course {
 	 * @param int|string|stdClass|KYSS_Course $id Course ID, or a KYSS_Course object,
 	 * or a course object from the DB.
 	 */
-	public function __construct( $id ) {
-		if ( is_a( $id, 'KYSS_Course' ) || is_object( $id ) )
-			return;
+	public function __construct() {
 
-		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
-			trigger_error( 'Bad type for $id parameter', E_USER_WARNING );
-			return;
-		}
-
-		if ( $id )
-			$this = self::get_course_by_id( $id );
 	}
 
 	/**
@@ -522,17 +504,8 @@ class KYSS_Talk {
 	 * @param  int|string|stdClass|KYSS_Talk $id Talk ID, or a KYSS_Talk object, or
 	 * a talk object from the DB.
 	 */
-	public function __construct( $id ) {
-		if ( is_a( $id, 'KYSS_Talk' ) || is_object( $id ) )
-			return;
-
-		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
-			trigger_error( 'Bad type for $id parameter', E_USER_WARNING );
-			return;
-		}
-
-		if ( $id )
-			$this = self::get_talk_by_id( $id );
+	public function __construct() {
+	
 	}
 	
 	/**
@@ -756,16 +729,7 @@ class KYSS_Meeting {
 	 * or a meeting object from the DB.
 	 */
 	function __construct( $id ) {
-		if ( is_a( $id, 'KYSS_Meeting' ) || is_object( $id ) )
-			return;
-
-		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
-			trigger_error( 'Bad type for `id` parameter', E_USER_WARNING );
-			return;
-		}
-
-		if ( $id )
-			$this = self::get_meeting_by_id( $id );
+	
 	}
 
 	/**
@@ -953,16 +917,7 @@ class KYSS_Lesson {
 	 * or a lesson object from the DB.
 	 */
 	public function __construct( $id ) {
-		if ( is_a( $id, 'KYSS_Lesson') || is_object( $id ) )
-			return;
-
-		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
-			trigger_error( "Bad type for `id` parameter", E_USER_WARNING );
-			return;
-		}
-
-		if ( $id )
-			$this = self::get_lesson_by_id( $id );
+	
 	}
 
 	/**

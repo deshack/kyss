@@ -46,6 +46,7 @@ switch( $action ) {
 			}
 			
 			$id = KYSS_User::create( $name, $surname, $password, $data );
+			kyss_redirect( get_site_url( '/users.php' ) );
 		}
 		break;
 }
