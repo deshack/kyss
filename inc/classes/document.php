@@ -3,13 +3,13 @@
  * KYSS Document API
  *
  * @package  KYSS
- * @subpackage  Document
+ * @subpackage  Documents
  */
 
 /**
  * KYSS Practice class
  *
- * @since
+ * @since 
  * @package  KYSS
  * @subpackage  Practice
  */
