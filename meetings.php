@@ -16,7 +16,7 @@ $event_id = isset( $_GET['id'] ) ? $_GET['id'] : '';
 
 // Add filter to the title.
 $hook->add( 'kyss_title', function( $title ) {
-	global $action, $id;
+	global $action, $event_id;
 	
 	$title .= ' &rsaquo; ';
 	if ( $action == 'edit' || ( $action == 'add' && isset( $_GET['save'] ) && $_GET['save'] == 'true' ) )

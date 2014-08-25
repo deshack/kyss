@@ -24,25 +24,35 @@ switch( $action ) {
 		break;
 	case 'add' :
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
-			$nome = isset( $_POST['nome'] ) ? $_POST['nome'] : '';
-			$data_inizio = $_POST['data_inizio'];
-			$data_fine = isset( $_POST['data_fine'] ) ? $_POST['data_fine'] : '';
-			$tipo = $_POST['tipo'];
-			$ora_inizio = isset( $_POST['ora_inizio'] ) ? $_POST['ora_inizio'] : '';
-			$ora_fine = isset( $_POST['ora_fine'] ) ? $_POST['ora_fine'] : '';
-			$luogo = isset( $_POST['luogo'] ) ? $_POST['luogo'] : '';
-			$presidente = isset( $_POST['presidente'] ) ? $_POST['presidente'] : '';
-			$segretario = isset( $_POST['segretario'] ) ? $_POST['segretario'] : '';
+			$data = array();
+			foreach ($_POST as $key => $value) {
+				if ( $key == 'nome' || $key == 'data_inizio' || $key == 'data_fine' ) {
+					switch ( $key ) {
+						case 'nome':
+							$nome = $value;
+							break;
+						case 'data_inizio':
+							$data_inizio = $value;
+							break;
+						case 'data_fine':
+							$data_fine = $value;
+							break;
+					}
+				} elseif ( $key == 'data_inizio' || $key == 'tipo' )
+					$data[$key] = $value;
+				else
+					$data[$key] = isset( $value ) ? $value : '';
+			}
 
 			$event_id = KYSS_Event::create( $nome, $data_inizio, $data_fine );
-			$meeting_id = KYSS_Meeting::create ( $event_id, $tipo, $ora_inizio, $ora_fine, $luogo, $presidente, $segretario );
-			kyss_redirect( get_site_url( '/meetings.php' ) );
+			$meeting_id = KYSS_Meeting::create( $data );
+			//kyss_redirect( get_site_url( '/meetings.php' ) );
 		}
 		break;
 }
 
 $meeting = KYSS_Meeting::get_meeting_by_id( $event_id );
-$event = KYSS_Event::get_event_by( 'id', $meeting );
+$event = KYSS_Event::get_event_by( 'id', $event_id );
 ?>
 
 <?php if ( $action == 'edit' ) : ?>
@@ -140,19 +150,19 @@ switch( $action ) {
  * @return array Associative array of event data ready to be saved.
  */
 function validate_meeting_data() {
-	global $id, $kyssdb;
+	global $event_id, $kyssdb;
 
 	if ( isset( $_POST['submit'] ) )
 		unset( $_POST['submit'] );
 	$valid_event = array();
 	$valid_meeting = array();
 	foreach ($_POST as $key => $value) {
-		if( $key == 'nome' || $key == 'data_inizio' || $key == 'data_fine' )
+		if( $key == 'nome' || $key == 'data_inizio' || $key == 'data_fine' ) 
 			$valid_event[$key] = $kyssdb->real_escape_string( trim( $value ) );
 		else
 			$valid_meeting[$key] = $kyssdb->real_escape_string( trim( $value ) );
 	}
 
-	KYSS_Event::update( $id, $valid_event );
-	KYSS_Meeting::update( $id, $valid_meeting );
+	KYSS_Event::update( $event_id, $valid_event );
+	KYSS_Meeting::update( $event_id, $valid_meeting );
 }

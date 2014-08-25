@@ -191,33 +191,22 @@ class KYSS_Event {
 	/**
 	 * Update event in the db.
 	 *
-	 * @since 0.11.0
+	 * @since  0.11.0
 	 * @access public
+	 * @static
 	 *
-	 * @global  kyssdb
+	 * @global kyssdb
 	 *
-	 * @param  string $name Optional. Event's name. Default empty.
-	 * @param  string $start Optional. Start date string. Default today.
-	 * @param  string $end Optional. End date string. Default <null>.
+	 * @param  array $data Event's data.
 	 * @return bool Whether the update succeeded or not.
 	 */
-	public function update( $name = '', $start = null, $end = null ) {
+	public static function update( $id, $data ) {
 		global $kyssdb;
 
-		if ( empty( $name ) )
-			$name = $this->nome;
-		if ( is_null( $start ) )
-			$start = $this->data_inizio;
-		if ( is_null( $end ) )
-			$end = $this->data_fine;
+		if ( empty( $data) )
+			return false;
 
-		$data = array(
-			'nome'			=> $name,
-			'data_inizio'	=> $start,
-			'data_fine'		=> $end
-		);
-
-		$result = $kyssdb->update( $kyssdb->utenti, $data, array( 'ID' => $this->ID ) );
+		$result = $kyssdb->update( $kyssdb->eventi, $data, array( 'ID' => $id ) );
 
 		if ( $result )
 			return true;
@@ -332,7 +321,9 @@ class KYSS_Meeting {
 			return false;
 
 		if ( ! $meeting = $kyssdb->query(
-			"SELECT * FROM {$kyssdb->riunioni} WHERE ID = {$id}"
+			"SELECT * 
+			FROM {$kyssdb->riunioni} JOIN {$kyssdb->eventi} ON {$kyssdb->riunioni}.ID = {$kyssdb->eventi}.ID
+			WHERE {$kyssdb->eventi}.ID = {$id}"
 		) )
 			return false;
 
@@ -426,16 +417,13 @@ class KYSS_Meeting {
 	 * @param  array $data Meeting data.
 	 * @return  bool Whether the update succeeded or not.
 	 */
-	public function update( $data ) {
+	public static function update( $id, $data ) {
 		global $kyssdb;
 
-		foreach ( $data as $key => $value ) {
-			if ( is_int( $value ) )
-				continue;
-			$data[$key] = "'{$value}'";
-		}
+		if ( empty( $data ) )
+			return false;
 
-		$result = $kyssdb->update( $kyssdb->riunioni, $data, array( 'ID', $this->ID ) );
+		$result = $kyssdb->update( $kyssdb->riunioni, $data, array( 'ID' => $id ) );
 
 		if ( $result )
 			return true;
