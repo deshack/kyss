@@ -17,10 +17,7 @@ $id = isset( $_GET['id'] ) ? $_GET['id'] : '';
 // Add filter to the title.
 $hook->add( 'kyss_title', function( $title ) {
 	global $action, $id;
-	if ( ! empty( $id ) ) {
-		$event = KYSS_Event::get_event_by( 'id', $id );
-	}
-
+	
 	$title .= ' &rsaquo; ';
 	if ( $action == 'edit' || ( $action == 'add' && isset( $_GET['save'] ) && $_GET['save'] == 'true' ) )
 		$title .= 'Modifica evento';
@@ -29,7 +26,7 @@ $hook->add( 'kyss_title', function( $title ) {
 	elseif ( $action == 'view' )
 		$title .= 'Dettagli evento';
 	else
-		$title .= 'Utenti';
+		$title .= 'Eventi';
 		
 	return $title;
 });

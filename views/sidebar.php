@@ -15,7 +15,7 @@
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/events.php">Eventi</a>
 			<ul><a href="<?php echo get_option( 'siteurl' ); ?>/meetings.php">Riunioni</a></ul>
 			<ul><a href="<?php echo get_option( 'siteurl' ); ?>/courses.php">Corsi</a></ul>
-			<ul><a href="#">Altri</a></ul>
+			<ul><a href="<?php echo get_option( 'siteurl' ); ?>/other-events.php">Altri</a></ul>
 		</li>
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/talks.php">Documenti</a></li>
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/documents.php">Documenti</a>

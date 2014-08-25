@@ -1,0 +1,154 @@
+<?php
+/**
+ * Render KYSS Meetings (event) add and edit form.
+ *
+ * @package  KYSS
+ * @subpackage  Partials
+ * @since  0.12.0
+ */
+
+// Handle some errors in a dev-friendly way.
+if ( ! in_array( $action, array( 'edit', 'add' ) ) )
+	trigger_error( 'Unrecognised action' . $action, E_USER_ERROR );
+
+if ( $action == 'edit' && empty( $event_id ) ) {
+	$message = 'Evento da modificare non specificato!';
+	kyss_die( $message, '', array( 'back_link' => true ) );
+}
+
+switch( $action ) {
+	case 'edit' :
+		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
+			validate_meeting_data();
+		}
+		break;
+	case 'add' :
+		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
+			$nome = isset( $_POST['nome'] ) ? $_POST['nome'] : '';
+			$data_inizio = $_POST['data_inizio'];
+			$data_fine = isset( $_POST['data_fine'] ) ? $_POST['data_fine'] : '';
+			$tipo = $_POST['tipo'];
+			$ora_inizio = isset( $_POST['ora_inizio'] ) ? $_POST['ora_inizio'] : '';
+			$ora_fine = isset( $_POST['ora_fine'] ) ? $_POST['ora_fine'] : '';
+			$luogo = isset( $_POST['luogo'] ) ? $_POST['luogo'] : '';
+			$presidente = isset( $_POST['presidente'] ) ? $_POST['presidente'] : '';
+			$segretario = isset( $_POST['segretario'] ) ? $_POST['segretario'] : '';
+
+			$event_id = KYSS_Event::create( $nome, $data_inizio, $data_fine );
+			$meeting_id = KYSS_Meeting::create ( $event_id, $tipo, $ora_inizio, $ora_fine, $luogo, $presidente, $segretario );
+			kyss_redirect( get_site_url( '/meetings.php' ) );
+		}
+		break;
+}
+
+$meeting = KYSS_Meeting::get_meeting_by_id( $event_id );
+$event = KYSS_Event::get_event_by( 'id', $meeting );
+?>
+
+<?php if ( $action == 'edit' ) : ?>
+	<h1 class="page-title">Modifica riunione <?php if ( isset( $event->nome ) ) : ?><small><?php echo $event->nome; ?></small><?php endif; ?></h1>
+<?php elseif ( $action == 'add' ) : ?>
+	<h1 class="page-title">Nuova riunione</h1>
+<?php endif; ?>
+
+<?php
+$form_action = '';
+switch( $action ) {
+	case 'edit':
+		$form_action = 'action=edit&id=' . $event_id . '&save=true';		
+		break;
+	case 'add':
+		$form_action = 'action=add&save=true';
+		break;
+}
+?>
+
+<form id="<?php echo $action; ?>-meeting" method="post" action="meetings.php?<?php echo $form_action; ?>">
+	<div class="row">
+		<div class="medium-12 columns">
+			<label for="nome">Nome</label>
+			<input id="nome" name="nome" type="text"<?php echo isset( $event->nome ) ? get_value_html( $event->nome ) : '' ?>>
+		</div>
+	</div>
+	<div class="row">
+		<div class="medium-6 columns">
+			<label for="data_inizio">Inizio</label>
+			<input id="data_inizio" name="data_inizio" type="date"<?php echo isset( $event->data_inizio ) ? get_value_html( $event->data_inizio ) : '' ?> required>
+		</div>
+		<div class="medium-6 columns">
+			<label for="data_fine">Fine</label>
+			<input id="data_fine" name="data_fine" type="date"<?php echo isset( $event->data_fine ) ? get_value_html( $event->data_fine ) : '' ?>>
+		</div>
+	</div>
+	<div class="row">
+		<div class="medium-4 columns">
+			<label for="tipo">Tipo</label>
+			<select name="tipo">
+				<option value="CD">Consiglio Direttivo</option>
+				<option value="AdA">Assemblea degli Associati</option>
+			</select>
+		</div>
+		<div class="medium-4 columns">
+			<label for="ora_inizio">Ora inizio</label>
+			<input id="ora_inizio" name="ora_fine" type="time"<?php echo isset( $meeting->ora_inizio ) ? get_value_html( $meeting->ora_inizio ) : '' ?>>
+		</div>
+		<div class="medium-4 columns">
+			<label for="ora_fine">Ora fine</label>
+			<input id="ora_fine" name="ora_fine" type="time"<?php echo isset( $meeting->ora_fine ) ? get_value_html( $meeting->ora_fine ) : '' ?>>
+		</div>
+	</div>
+	<div class="row">
+		<div class="medium-12 columns">
+			<label for="luogo">Luogo</label>
+			<input id="luogo" name="luogo" type="text"<?php echo isset( $meeting->luogo ) ? get_value_html( $meeting->luogo ) : '' ?>>
+		</div>
+	</div>
+	<div class="row">
+		<div class="medium-6 columns">
+			<label for="presidente">Presidente</label>
+			<input id="presidente" name="presidente" type="text"<?php echo isset( $meeting->presidente ) ? get_value_html( $meeting->presidente ) : '' ?>>
+		</div>
+		<div class="medium-6 columns">
+			<label for="segretario">Segretario</label>
+			<input id="segretario" name="segretario" type="text"<?php echo isset( $meeting->segretario ) ? get_value_html( $meeting->segretario ) : '' ?>>
+		</div>
+	</div>
+	<div class="row action-buttons text-center">
+		<div class="small-6 columns">
+			<input type="submit" class="button" name="submit" value="Salva">
+		</div>
+		<div class="small-6 columns">
+			<a href="<?php echo get_site_url( 'meetings.php' ); ?>" class="button">Annulla</a>
+		</div>
+	</div>
+</form>
+
+<?php
+/**
+ *
+ * Validate Meeting (event) input data.
+ *
+ * @since  0.12.0
+ *
+ * @global id
+ * @global kyssdb
+ *
+ * @return array Associative array of event data ready to be saved.
+ */
+function validate_meeting_data() {
+	global $id, $kyssdb;
+
+	if ( isset( $_POST['submit'] ) )
+		unset( $_POST['submit'] );
+	$valid_event = array();
+	$valid_meeting = array();
+	foreach ($_POST as $key => $value) {
+		if( $key == 'nome' || $key == 'data_inizio' || $key == 'data_fine' )
+			$valid_event[$key] = $kyssdb->real_escape_string( trim( $value ) );
+		else
+			$valid_meeting[$key] = $kyssdb->real_escape_string( trim( $value ) );
+	}
+
+	KYSS_Event::update( $id, $valid_event );
+	KYSS_Meeting::update( $id, $valid_meeting );
+}

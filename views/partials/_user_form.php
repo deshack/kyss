@@ -63,7 +63,7 @@ if ( ! is_array( $anagrafica ) )
 	$anagrafica = unserialize( $anagrafica );
 ?>
 
-<?php if ( $action == 'edit' || ( $action == 'add' && isset( $_GET['save'] ) && $_GET['save'] == 'true' ) ) : ?>
+<?php if ( $action == 'edit' ) : ?>
 	<h1 class="page-title">Modifica utente <small><?php echo $user->nome . ' ' . $user->cognome; ?></small></h1>
 <?php elseif ( $action == 'add' ) : ?>
 	<h1 class="page-title">Nuovo utente</h1>

@@ -235,8 +235,7 @@ class KYSS_User {
 				array_push( $columns, $key );
 				array_push( $values, $value );
 			}
-			var_dump( $columns );
-			var_dump( $values );
+			
 			$columns = join( ',', $columns );
 			$values = join( ',', $values );
 		}

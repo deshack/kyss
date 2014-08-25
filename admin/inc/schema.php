@@ -72,9 +72,8 @@ function get_db_schema() {
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->eventi} (
 			`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
 			`nome`			varchar(20),
-			`tipo`			enum('riunione', 'corso', 'altro'),
-			`inizio`		date NOT NULL,
-			`fine`			date,
+			`data_inizio`	date NOT NULL,
+			`data_fine`		date,
 			PRIMARY KEY (`ID`)
 		) ENGINE = InnoDB",
 
@@ -96,20 +95,18 @@ function get_db_schema() {
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->riunioni} (
 			`ID`			bigint(20) UNSIGNED NOT NULL,
 			`tipo`			enum('CD', 'AdA') NOT NULL,
-			`data`			date NOT NULL,
-			`inizio`		time,
-			`fine`			time,
+			`ora_inizio`	time,
+			`ora_fine`		time,
 			`luogo`			varchar(20),
 			`presidente`	bigint(20) UNSIGNED,
 			`segretario`	bigint(20) UNSIGNED,
-			`evento`		bigint(20) UNSIGNED,
 			PRIMARY KEY (`ID`),
+			FOREIGN KEY (`ID`) REFERENCES {$kyssdb->eventi}(`ID`)
+				ON UPDATE CASCADE ON DELETE CASCADE,
 			FOREIGN KEY (`presidente`) REFERENCES {$kyssdb->utenti}(`ID`)
 				ON UPDATE CASCADE ON DELETE RESTRICT,
 			FOREIGN KEY (`segretario`) REFERENCES {$kyssdb->utenti}(`ID`)
-				ON UPDATE CASCADE ON DELETE RESTRICT,
-			FOREIGN KEY (`evento`) REFERENCES {$kyssdb->eventi}(`ID`)
-				ON UPDATE CASCADE ON DELETE CASCADE
+				ON UPDATE CASCADE ON DELETE RESTRICT
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->corsi} (
@@ -118,9 +115,8 @@ function get_db_schema() {
 			`livello`		enum('base', 'medio', 'avanzato') NOT NULL,
 			`luogo`			varchar(20),
 			`lezioni`		int,
-			`evento`		bigint(20) UNSIGNED,
 			PRIMARY KEY (`ID`),
-			FOREIGN KEY (`evento`) REFERENCES {$kyssdb->eventi}(`ID`)
+			FOREIGN KEY (`ID`) REFERENCES {$kyssdb->eventi}(`ID`)
 				ON UPDATE CASCADE ON DELETE CASCADE,
 			CHECK(`lezioni` > 0)
 		) ENGINE = InnoDB",

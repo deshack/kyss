@@ -1,6 +1,6 @@
 <?php
 /**
- * Render KYSS Meetings (event) view.
+ * Render KYSS Courses view.
  *
  * @package  KYSS
  * @subpackage  Views
@@ -12,7 +12,7 @@ require_once( 'load.php' );
 global $hook;
 
 $action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
-$event_id = isset( $_GET['id'] ) ? $_GET['id'] : '';
+$id = isset( $_GET['id'] ) ? $_GET['id'] : '';
 
 // Add filter to the title.
 $hook->add( 'kyss_title', function( $title ) {
@@ -20,13 +20,13 @@ $hook->add( 'kyss_title', function( $title ) {
 	
 	$title .= ' &rsaquo; ';
 	if ( $action == 'edit' || ( $action == 'add' && isset( $_GET['save'] ) && $_GET['save'] == 'true' ) )
-		$title .= 'Modifica riunione';
+		$title .= 'Modifica evento';
 	elseif ( $action == 'add' )
-		$title .= 'Nuova riunione';
+		$title .= 'Nuovo evento';
 	elseif ( $action == 'veiw' )
-		$title .= 'Dettagli riunione';
+		$title .= 'Dettagli evento';
 	else 
-		$title .= 'Riunioni';
+		$title .= 'Altri eventi';
 
 	return $title;
 });
@@ -39,17 +39,17 @@ get_sidebar();
 <?php
 switch ( $action ) {
 	case 'view':
-		require( VIEWS . '/partials/_meeting_details.php' );
+		require( VIEWS . '/partials/_other_event_details.php' );
 		break;
 	case 'edit':
-		require( VIEWS . '/partials/_meeting_form.php' );
+		require( VIEWS . '/partials/_other_event_form.php' );
 		break;
 	case 'add':
-		require( VIEWS . '/partials/_meeting_form.php' );
+		require( VIEWS . '/partials/_other_event_form.php' );
 		break;
 	case 'list':	
 	default:
-		require( VIEWS . '/partials/_meeting_table.php' );
+		require( VIEWS . '/partials/_other_event_table.php' );
 		break;
 }
 get_footer();

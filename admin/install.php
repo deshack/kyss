@@ -121,7 +121,7 @@ function footer() {
 function form( $error = null ) {
 	global $kyssdb;
 
-	$name = isset( $_POST['name'] ) ? trim( unslash( $_POST['name'] ) ) : '';
+	$assoc_name = isset( $_POST['assoc_name'] ) ? trim( unslash( $_POST['assoc_name'] ) ) : '';
 	$admin_name = isset( $_POST['admin_name'] ) ? trim( unslash( $_POST['admin_name'] ) ) : '';
 	$admin_surname = isset( $_POST['admin_surname'] ) ? trim( unslash( $_POST['admin_surname'] ) ) : '';
 	$admin_email = isset( $_POST['admin_email'] ) ? trim( unslash( $_POST['admin_email'] ) ) : '';
@@ -141,8 +141,8 @@ function form( $error = null ) {
 	<form id="setup" method="post" action="install.php?step=1">
 		<div class="row">
 			<div class="medium-12 columns">
-				<label for="name">Nome dell'associazione</label>
-				<input name="name" id="name" type="text" autofocus>
+				<label for="assoc_name">Nome dell'associazione</label>
+				<input name="assoc_name" id="assoc_name" type="text" autofocus>
 			</div>
 		</div>
 		<fieldset>
@@ -190,7 +190,7 @@ function form( $error = null ) {
  * @since  0.9.0
  */
 function validate() {
-	$name = isset( $_POST['name'] ) ? trim( unslash( $_POST['name'] ) ) : '';
+	$assoc_name = isset( $_POST['assoc_name'] ) ? trim( unslash( $_POST['assoc_name'] ) ) : '';
 	$admin_name = isset( $_POST['admin_name'] ) ? trim( unslash( $_POST['admin_name'] ) ) : '';
 	$admin_surname = isset( $_POST['admin_surname'] ) ? trim( unslash( $_POST['admin_surname'] ) ) : '';
 	$admin_email = isset( $_POST['admin_email'] ) ? trim( unslash( $_POST['admin_email'] ) ) : '';
@@ -217,7 +217,7 @@ function validate() {
 	}
 
 	if ( $error === false ) :
-		$result = kyss_install( $name, $admin_name, $admin_surname, $admin_email, slash( $admin_password ) );
+		$result = kyss_install( $assoc_name, $admin_name, $admin_surname, $admin_email, slash( $admin_password ) );
 		extract( $result, EXTR_SKIP );
 ?>
 
