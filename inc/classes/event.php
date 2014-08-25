@@ -15,64 +15,6 @@
  */
 class KYSS_Event {
 	/**
-	 * The event's ID.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  int
-	 */
-	public $ID;
-
-	/**
-	 * The event's name.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  string
-	 */
-	public $nome;
-
-	/**
-	 * The event's type.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  string
-	 */
-	public $tipo;
-
-	/**
-	 * The event start date.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  date
-	 */
-	public $inizio;
-
-	/**
-	 * The event's end date.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  date
-	 */
-	public $fine;
-
-	/**
-	 * Constructor.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 *
-	 * @param  int|string|stdClass|KYSS_Event $id Event ID, or a KYSS_Event object, or
-	 * an event object from the DB.
-	 */
-	public function __construct() {
-
-	}
-	
-	/**
 	 * Retrieve event by ID.
 	 *
 	 * @since  0.11.0
@@ -162,19 +104,25 @@ class KYSS_Event {
 	 *
 	 * @global  kyssdb
 	 *
-	 * @param  string $name Optional. Event's name. Default empty.
-	 * @param  string $start Optional. Start date string. Default today.
-	 * @param  string $end Optional. End date string. Default <null>.
+	 * @param  array $data Associative array of column names and values.
 	 * @return int|bool The newly created event's ID or false on failure.
 	 */
-	public static function create( $name = '', $start = null, $end = null ) {
+	public static function create( $data ) {
 		global $kyssdb;
 
-		if ( is_null( $start ) )
-			$start = date( 'Y-m-d' );
+		if ( empty( $data ) )
+			return new KYSS_Error( 'empty_meeting_data', 'Meeting data cannot be empty!' );
 
-		$columns = array( 'nome', 'data_inizio', 'data_fine' );
-		$values = array( "'{$name}'", "'{$start}'", "'{$end}'" );
+		if ( ! isset( $data['data_inizio'] ) )
+			$data['data_inizio'] = date( 'Y-m-d' );
+
+		$columns = array();
+		$values = array();
+
+		foreach ( $data as $key => $value ) {
+			array_push( $columns, $key );
+			array_push( $values, "'{$value}'" );
+		}
 
 		$columns = join( ',', $columns );
 		$values = join( ',', $values );
@@ -221,82 +169,20 @@ class KYSS_Event {
  * @package  KYSS
  * @subpackage  Events 
  */
-class KYSS_Meeting {
+class KYSS_Meeting extends KYSS_Event {
 	/**
-	 * The Meeting's ID.
+	 * Holds the list of KYSS_Event column names.
 	 *
-	 * @since 0.11.0 
-	 * @access public
-	 * @var  int
+	 * @since  0.12.0
+	 * @access private
+	 * @static
+	 * @var  array
 	 */
-	public $ID;
-
-	/**
-	 * The Meeting's type.
-	 *
-	 * @since 0.11.0 
-	 * @access public
-	 * @var  string 
-	 */
-	public $tipo;
-
-	/**
-	 * The Meeting's start date time.
-	 *
-	 * @since 0.11.0 
-	 * @access public
-	 * @var  string
-	 */
-	public $ora_inizio;
-
-	/**
-	 * The Meeting's end date time.
-	 *
-	 * @since 0.11.0 
-	 * @access public
-	 * @var  string
-	 */
-	public $ora_fine;
-
-	/**
-	 * The Meeting's place.
-	 *
-	 * @since 0.11.0 
-	 * @access public
-	 * @var  string
-	 */
-	public $luogo;
-
-	/**
-	 * The Meeting's president ID.
-	 *
-	 * @since 0.11.0 
-	 * @access public
-	 * @var  int
-	 */
-	public $presidente;
-
-	/**
-	 * The Meeting's secretary ID.
-	 *
-	 * @since 0.11.0 
-	 * @access public
-	 * @var  int
-	 */
-	public $segretario;
-
-	/**
-	 * Constructor.
-	 *
-	 * @since 0.11.0 
-	 * @access public
-	 *
-	 * @param  int|string|stdClass|KYSS_Meeting $id Meeting ID, or a KYSS_Meeting object,
-	 * or a meeting object from the DB.
-	 */
-	public function __construct() {
-	
-	}
+	private static $event_data = array(
+		'nome',
+		'data_inizio',
+		'data_fine'
+	);
 
 	/**
 	 * Retrieve meeting by ID.
@@ -322,7 +208,8 @@ class KYSS_Meeting {
 
 		if ( ! $meeting = $kyssdb->query(
 			"SELECT * 
-			FROM {$kyssdb->riunioni} JOIN {$kyssdb->eventi} ON {$kyssdb->riunioni}.ID = {$kyssdb->eventi}.ID
+			FROM {$kyssdb->riunioni}
+			INNER JOIN {$kyssdb->eventi} ON {$kyssdb->riunioni}.ID = {$kyssdb->eventi}.ID
 			WHERE {$kyssdb->eventi}.ID = {$id}"
 		) )
 			return false;
@@ -348,7 +235,7 @@ class KYSS_Meeting {
 	 * else only the fields of Meetings. Default true.
 	 * @return array|false Array of KYSS_Meeting objects. False on failure.
 	 */
-	public static function get_meetings_list( $event = true ) {
+	public static function get_list( $event = true ) {
 		global $kyssdb;
 
 		$query = "SELECT * FROM {$kyssdb->riunioni}";
@@ -380,8 +267,17 @@ class KYSS_Meeting {
 	public static function create( $data ) {
 		global $kyssdb;
 
-		if ( ! isset( $data['titolo'] ) )
-			return new KYSS_Error( 'meeting_title_missing', 'Per creare una nuova riunione &egrave; necessario un titolo.' );
+		// Put all $data items representing $kyssdb->eventi columns
+		// into the $event array.
+		$event = array();
+		foreach ( array_keys( $data ) as $key ) {
+			if ( in_array( $key, self::$event_data ) ) {
+				$event[$key] = $data[$key];
+				unset( $data[$key] );
+			}
+		}
+
+		$data['ID'] = parent::create( $event );
 
 		$columns = array();
 		$values = array();
@@ -422,6 +318,18 @@ class KYSS_Meeting {
 
 		if ( empty( $data ) )
 			return false;
+
+		// Put all $data items representing $kyssdb->eventi columns
+		// into the $event array.
+		$event = array();
+		foreach ( array_keys( $data ) as $key ) {
+			if ( in_array( $key, self::$event_data ) ) {
+				$event[$key] = $data[$key];
+				unset( $data[$key] );
+			}
+		}
+
+		parent::update( $id, $event );
 
 		$result = $kyssdb->update( $kyssdb->riunioni, $data, array( 'ID' => $id ) );
 
@@ -1010,6 +918,9 @@ class KYSS_Lesson {
 			else
 				array_push( $values, "'{$value}'" );
 		}
+
+		$columns = join( ',', $columns );
+		$values = join( ',', $values );
 
 		$query = "INSERT INTO {$kyssdb->lezioni} ({$columns}) VALUES ({$values})";
 		if ( !$result = $kyssdb->query( $query ) ) {

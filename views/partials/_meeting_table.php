@@ -7,7 +7,7 @@
  * @since  
  */
 
-$meetings = KYSS_Meeting::get_meetings_list();
+$meetings = KYSS_Meeting::get_list();
 
 // Small workaround to remove array elements that evaluate to false.
 // Useful if `KYSS_Event::get_meetings_list()` adds a NULL element.

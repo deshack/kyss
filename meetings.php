@@ -12,11 +12,11 @@ require_once( 'load.php' );
 global $hook;
 
 $action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
-$event_id = isset( $_GET['id'] ) ? $_GET['id'] : '';
+$id = isset( $_GET['id'] ) ? $_GET['id'] : '';
 
 // Add filter to the title.
 $hook->add( 'kyss_title', function( $title ) {
-	global $action, $event_id;
+	global $action, $id;
 	
 	$title .= ' &rsaquo; ';
 	if ( $action == 'edit' || ( $action == 'add' && isset( $_GET['save'] ) && $_GET['save'] == 'true' ) )

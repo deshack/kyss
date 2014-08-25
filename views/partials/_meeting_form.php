@@ -11,7 +11,7 @@
 if ( ! in_array( $action, array( 'edit', 'add' ) ) )
 	trigger_error( 'Unrecognised action' . $action, E_USER_ERROR );
 
-if ( $action == 'edit' && empty( $event_id ) ) {
+if ( $action == 'edit' && empty( $id ) ) {
 	$message = 'Evento da modificare non specificato!';
 	kyss_die( $message, '', array( 'back_link' => true ) );
 }
@@ -26,33 +26,20 @@ switch( $action ) {
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
 			$data = array();
 			foreach ($_POST as $key => $value) {
-				if ( $key == 'nome' || $key == 'data_inizio' || $key == 'data_fine' ) {
-					switch ( $key ) {
-						case 'nome':
-							$nome = $value;
-							break;
-						case 'data_inizio':
-							$data_inizio = $value;
-							break;
-						case 'data_fine':
-							$data_fine = $value;
-							break;
-					}
-				} elseif ( $key == 'data_inizio' || $key == 'tipo' )
-					$data[$key] = $value;
-				else
-					$data[$key] = isset( $value ) ? $value : '';
+				if ( $key == 'submit' || empty( $value ) )
+					continue;
+				$data[$key] = $value;
 			}
 
-			$event_id = KYSS_Event::create( $nome, $data_inizio, $data_fine );
-			$meeting_id = KYSS_Meeting::create( $data );
+			//$event_id = KYSS_Event::create( $nome, $data_inizio, $data_fine );
+			$id = KYSS_Meeting::create( $data );
 			//kyss_redirect( get_site_url( '/meetings.php' ) );
 		}
 		break;
 }
 
-$meeting = KYSS_Meeting::get_meeting_by_id( $event_id );
-$event = KYSS_Event::get_event_by( 'id', $event_id );
+$meeting = KYSS_Meeting::get_meeting_by_id( $id );
+//$event = KYSS_Event::get_event_by( 'id', $event_id );
 ?>
 
 <?php if ( $action == 'edit' ) : ?>
@@ -65,7 +52,7 @@ $event = KYSS_Event::get_event_by( 'id', $event_id );
 $form_action = '';
 switch( $action ) {
 	case 'edit':
-		$form_action = 'action=edit&id=' . $event_id . '&save=true';		
+		$form_action = 'action=edit&id=' . $id . '&save=true';		
 		break;
 	case 'add':
 		$form_action = 'action=add&save=true';
@@ -77,17 +64,17 @@ switch( $action ) {
 	<div class="row">
 		<div class="medium-12 columns">
 			<label for="nome">Nome</label>
-			<input id="nome" name="nome" type="text"<?php echo isset( $event->nome ) ? get_value_html( $event->nome ) : '' ?>>
+			<input id="nome" name="nome" type="text"<?php echo isset( $meeting->nome ) ? get_value_html( $meeting->nome ) : '' ?>>
 		</div>
 	</div>
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="data_inizio">Inizio</label>
-			<input id="data_inizio" name="data_inizio" type="date"<?php echo isset( $event->data_inizio ) ? get_value_html( $event->data_inizio ) : '' ?> required>
+			<input type="date" id="data_inizio" name="data_inizio"<?php echo isset( $meeting->data_inizio ) ? get_value_html( $meeting->data_inizio ) : '' ?> required>
 		</div>
 		<div class="medium-6 columns">
 			<label for="data_fine">Fine</label>
-			<input id="data_fine" name="data_fine" type="date"<?php echo isset( $event->data_fine ) ? get_value_html( $event->data_fine ) : '' ?>>
+			<input id="data_fine" name="data_fine" type="date"<?php echo isset( $meeting->data_fine ) ? get_value_html( $meeting->data_fine ) : '' ?>>
 		</div>
 	</div>
 	<div class="row">
@@ -98,13 +85,15 @@ switch( $action ) {
 				'CD' => 'Consiglio Direttivo',
 				'AdA' => 'Assemblea degli Associati'
 			) as $type => $name ) : ?>
-				<option value="<?php echo $type; ?>"<?php selected( $meeting->tipo, $type ); ?>><?php echo $name; ?></option>
+				<option value="<?php echo $type; ?>"<?php echo isset( $meeting->tipo ) ? selected( $meeting->tipo, $type, false ) : ''; ?>>
+					<?php echo $name; ?>
+				</option>
 			<?php endforeach; ?>
 			</select>
 		</div>
 		<div class="medium-4 columns">
 			<label for="ora_inizio">Ora inizio</label>
-			<input id="ora_inizio" name="ora_fine" type="time"<?php echo isset( $meeting->ora_inizio ) ? get_value_html( $meeting->ora_inizio ) : '' ?>>
+			<input id="ora_inizio" name="ora_inizio" type="time"<?php echo isset( $meeting->ora_inizio ) ? get_value_html( $meeting->ora_inizio ) : '' ?>>
 		</div>
 		<div class="medium-4 columns">
 			<label for="ora_fine">Ora fine</label>
@@ -150,19 +139,18 @@ switch( $action ) {
  * @return array Associative array of event data ready to be saved.
  */
 function validate_meeting_data() {
-	global $event_id, $kyssdb;
+	global $id, $kyssdb;
 
 	if ( isset( $_POST['submit'] ) )
 		unset( $_POST['submit'] );
-	$valid_event = array();
-	$valid_meeting = array();
+
+	$valid = array();
 	foreach ($_POST as $key => $value) {
-		if( $key == 'nome' || $key == 'data_inizio' || $key == 'data_fine' ) 
-			$valid_event[$key] = $kyssdb->real_escape_string( trim( $value ) );
-		else
-			$valid_meeting[$key] = $kyssdb->real_escape_string( trim( $value ) );
+		if ( empty( $value ) )
+			continue;
+		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
 	}
 
-	KYSS_Event::update( $event_id, $valid_event );
-	KYSS_Meeting::update( $event_id, $valid_meeting );
+	//KYSS_Event::update( $event_id, $valid_event );
+	KYSS_Meeting::update( $id, $valid );
 }

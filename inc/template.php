@@ -129,7 +129,7 @@ function checked( $checked, $current = true, $echo = true ) {
  * @return  string HTML select attribute or empty string.
  */
 function selected( $selected, $current = true, $echo = true ) {
-	return __checked_helper( $selected, $current, $echo, 'selected' );
+	return _checked_helper( $selected, $current, $echo, 'selected' );
 }
 
 /**
