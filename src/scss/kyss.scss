@@ -39,7 +39,41 @@
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
 
+// Fix dashicons size inside h1.
+h1 .dashicons {
+	width: ($h1-font-size / 1.5 );
+	height: ( $h1-font-size / 1.5 );
+	font-size: ( $h1-font-size / 1.5 );
+	line-height: ( $h1-font-size / 1.5 );
+	vertical-align: middle;
+}
+
 // Support submenus.
-.side-nav ul {
-	list-style-type: none;
+.side-nav {
+	background: $secondary-color;
+	padding-top: 0;
+
+	li {
+		> a {
+			padding: 1rem 0.5rem;
+			&:hover,
+			&:focus {
+				background: $gray-warm;
+				color: lighten($secondary-color, 15%) !important;
+			}
+		}
+	}
+
+	ul {
+		list-style-type: none;
+		margin-left: 0;
+
+		li {
+			padding-left: 1.25rem;
+			&:hover,
+			&:focus {
+				background: $gray-warm;
+			}
+		}
+	}
 }

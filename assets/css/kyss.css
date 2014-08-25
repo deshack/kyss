@@ -1527,8 +1527,8 @@ select {
   position: relative;
   padding: 0.875rem 1.5rem 0.875rem 0.875rem;
   font-size: 0.8125rem;
-  background-color: #008cba;
-  border-color: #0078a0;
+  background-color: #dd4814;
+  border-color: #be3e11;
   color: white;
 }
 /* line 105, ../../lib/foundation/scss/foundation/components/_alert-boxes.scss */
@@ -2148,7 +2148,7 @@ select {
 .breadcrumbs > * a,
 .breadcrumbs > * span {
   text-transform: uppercase;
-  color: #008cba;
+  color: #dd4814;
 }
 /* line 71, ../../lib/foundation/scss/foundation/components/_breadcrumbs.scss */
 .breadcrumbs > *.current {
@@ -2212,8 +2212,8 @@ button, .button {
   padding-left: 2rem;
   font-size: 1rem;
   /*     @else                            { font-size: $padding - rem-calc(2); } */
-  background-color: #008cba;
-  border-color: #007095;
+  background-color: #dd4814;
+  border-color: #b13a10;
   color: white;
   -webkit-transition: background-color 300ms ease-out;
   -moz-transition: background-color 300ms ease-out;
@@ -2226,7 +2226,7 @@ button, .button {
 }
 /* line 144, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button:hover, button:focus, .button:hover, .button:focus {
-  background-color: #007095;
+  background-color: #b13a10;
 }
 /* line 155, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button:hover, button:focus, .button:hover, .button:focus {
@@ -2329,8 +2329,8 @@ button.round, .button.round {
 }
 /* line 222, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled, button[disabled], .button.disabled, .button[disabled] {
-  background-color: #008cba;
-  border-color: #007095;
+  background-color: #dd4814;
+  border-color: #b13a10;
   color: white;
   cursor: default;
   opacity: 0.7;
@@ -2339,7 +2339,7 @@ button.disabled, button[disabled], .button.disabled, .button[disabled] {
 }
 /* line 144, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
-  background-color: #007095;
+  background-color: #b13a10;
 }
 /* line 155, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
@@ -2347,7 +2347,7 @@ button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[dis
 }
 /* line 168, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
-  background-color: #008cba;
+  background-color: #dd4814;
 }
 /* line 223, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled.secondary, button[disabled].secondary, .button.disabled.secondary, .button[disabled].secondary {
@@ -3861,7 +3861,7 @@ kbd {
   margin-bottom: inherit;
   padding: 0.25rem 0.5rem 0.375rem;
   font-size: 0.6875rem;
-  background-color: #008cba;
+  background-color: #dd4814;
   color: white;
 }
 /* line 92, ../../lib/foundation/scss/foundation/components/_labels.scss */
@@ -4299,14 +4299,14 @@ ul.pagination li.unavailable:hover a, ul.pagination li.unavailable a:focus {
 }
 /* line 60, ../../lib/foundation/scss/foundation/components/_pagination.scss */
 ul.pagination li.current a {
-  background: #008cba;
+  background: #dd4814;
   color: white;
   font-weight: bold;
   cursor: default;
 }
 /* line 67, ../../lib/foundation/scss/foundation/components/_pagination.scss */
 ul.pagination li.current a:hover, ul.pagination li.current a:focus {
-  background: #008cba;
+  background: #dd4814;
 }
 /* line 119, ../../lib/foundation/scss/foundation/components/_pagination.scss */
 ul.pagination li {
@@ -4360,10 +4360,10 @@ ul.pagination li {
 .panel.callout {
   border-style: solid;
   border-width: 1px;
-  border-color: #b6edff;
+  border-color: #f9cebe;
   margin-bottom: 1.25rem;
   padding: 1.25rem;
-  background: #ecfaff;
+  background: #fef4f0;
 }
 /* line 48, ../../lib/foundation/scss/foundation/components/_panels.scss */
 .panel.callout > :first-child {
@@ -4388,7 +4388,7 @@ ul.pagination li {
 }
 /* line 74, ../../lib/foundation/scss/foundation/components/_panels.scss */
 .panel.callout a {
-  color: #008cba;
+  color: #dd4814;
 }
 /* line 79, ../../lib/foundation/scss/foundation/components/_panels.scss */
 .panel.radius {
@@ -4467,7 +4467,7 @@ ul.pagination li {
 }
 /* line 57, ../../lib/foundation/scss/foundation/components/_progress-bars.scss */
 .progress .meter {
-  background: #008cba;
+  background: #dd4814;
   height: 100%;
   display: block;
 }
@@ -4627,15 +4627,15 @@ dialog[open] {
 /* line 61, ../../lib/foundation/scss/foundation/components/_side-nav.scss */
 .side-nav li a:not(.button) {
   display: block;
-  color: #008cba;
+  color: #dd4814;
 }
 /* line 65, ../../lib/foundation/scss/foundation/components/_side-nav.scss */
 .side-nav li a:not(.button):hover, .side-nav li a:not(.button):focus {
-  color: #1cc7ff;
+  color: #ef7b52;
 }
 /* line 68, ../../lib/foundation/scss/foundation/components/_side-nav.scss */
 .side-nav li.active > a:first-child:not(.button) {
-  color: #1cc7ff;
+  color: #ef7b52;
   font-weight: normal;
   font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 }
@@ -4832,7 +4832,7 @@ dialog[open] {
   -webkit-border-radius: 4px;
   border-radius: 4px;
   font-weight: normal;
-  background: #008cba;
+  background: #dd4814;
   padding: 0.1875rem 1rem;
   cursor: default;
   color: white;
@@ -4841,7 +4841,7 @@ dialog[open] {
 .sub-nav dt.active a:hover,
 .sub-nav dd.active a:hover,
 .sub-nav li.active a:hover {
-  background: #0078a0;
+  background: #be3e11;
 }
 
 /* line 289, ../../lib/foundation/scss/foundation/components/_switch.scss */
@@ -5258,8 +5258,8 @@ table tfoot tr td {
 }
 /* line 50, ../../lib/foundation/scss/foundation/components/_thumbs.scss */
 .th:hover, .th:focus {
-  -webkit-box-shadow: 0 0 6px 1px rgba(0, 140, 186, 0.5);
-  box-shadow: 0 0 6px 1px rgba(0, 140, 186, 0.5);
+  -webkit-box-shadow: 0 0 6px 1px rgba(221, 72, 20, 0.5);
+  box-shadow: 0 0 6px 1px rgba(221, 72, 20, 0.5);
 }
 /* line 67, ../../lib/foundation/scss/foundation/components/_thumbs.scss */
 .th.radius {
@@ -5277,8 +5277,8 @@ table tfoot tr td {
 }
 /* line 40, ../../lib/foundation/scss/foundation/components/_tooltips.scss */
 .has-tip:hover, .has-tip:focus {
-  border-bottom: dotted 1px #003f54;
-  color: #008cba;
+  border-bottom: dotted 1px #632009;
+  color: #dd4814;
 }
 /* line 46, ../../lib/foundation/scss/foundation/components/_tooltips.scss */
 .has-tip.tip-left, .has-tip.tip-right {
@@ -5327,8 +5327,8 @@ table tfoot tr td {
 }
 /* line 84, ../../lib/foundation/scss/foundation/components/_tooltips.scss */
 .tooltip.opened {
-  color: #008cba !important;
-  border-bottom: dotted 1px #003f54 !important;
+  color: #dd4814 !important;
+  border-bottom: dotted 1px #632009 !important;
 }
 
 /* line 90, ../../lib/foundation/scss/foundation/components/_tooltips.scss */
@@ -5583,14 +5583,14 @@ meta.foundation-mq-topbar {
 }
 /* line 300, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
 .top-bar-section ul li > a.button {
-  background: #008cba;
+  background: #dd4814;
   font-size: 0.8125rem;
   padding-right: 15px;
   padding-left: 15px;
 }
 /* line 305, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
 .top-bar-section ul li > a.button:hover {
-  background: #006688;
+  background: #a1350f;
 }
 /* line 309, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
 .top-bar-section ul li > a.button.secondary {
@@ -5623,12 +5623,12 @@ meta.foundation-mq-topbar {
 }
 /* line 338, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
 .top-bar-section ul li.active > a {
-  background: #008cba;
+  background: #dd4814;
   color: white;
 }
 /* line 341, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
 .top-bar-section ul li.active > a:hover {
-  background: #0078a0;
+  background: #be3e11;
   color: white;
 }
 /* line 349, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
@@ -5805,11 +5805,11 @@ meta.foundation-mq-topbar {
     padding: 0 15px;
     line-height: 45px;
     color: white;
-    background: #008cba;
+    background: #dd4814;
   }
   /* line 484, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
   .top-bar-section li.active:not(.has-form) a:not(.button):hover {
-    background: #0078a0;
+    background: #be3e11;
   }
   /* line 493, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
   .top-bar-section .has-dropdown > a {
@@ -5914,7 +5914,7 @@ meta.foundation-mq-topbar {
   }
   /* line 603, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
   .no-js .top-bar-section ul li:active > a {
-    background: #008cba;
+    background: #dd4814;
     color: white;
   }
   /* line 611, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
@@ -6180,13 +6180,13 @@ td {
 /* Default Link Styles */
 /* line 230, ../../lib/foundation/scss/foundation/components/_type.scss */
 a {
-  color: #008cba;
+  color: #dd4814;
   text-decoration: none;
   line-height: inherit;
 }
 /* line 236, ../../lib/foundation/scss/foundation/components/_type.scss */
 a:hover, a:focus {
-  color: #0078a0;
+  color: #be3e11;
 }
 /* line 238, ../../lib/foundation/scss/foundation/components/_type.scss */
 a img {
@@ -7727,6 +7727,38 @@ th.hide-for-touch {
 }
 
 /* line 43, ../../src/scss/kyss.scss */
+h1 .dashicons {
+  width: 1.83333rem;
+  height: 1.83333rem;
+  font-size: 1.83333rem;
+  line-height: 1.83333rem;
+  vertical-align: middle;
+}
+
+/* line 52, ../../src/scss/kyss.scss */
+.side-nav {
+  background: #e7e7e7;
+  padding-top: 0;
+}
+/* line 57, ../../src/scss/kyss.scss */
+.side-nav li > a {
+  padding: 1rem 0.5rem;
+}
+/* line 60, ../../src/scss/kyss.scss */
+.side-nav li > a:hover, .side-nav li > a:focus {
+  background: #aea79f;
+  color: white !important;
+}
+/* line 67, ../../src/scss/kyss.scss */
 .side-nav ul {
   list-style-type: none;
+  margin-left: 0;
+}
+/* line 71, ../../src/scss/kyss.scss */
+.side-nav ul li {
+  padding-left: 1.25rem;
+}
+/* line 74, ../../src/scss/kyss.scss */
+.side-nav ul li:hover, .side-nav ul li:focus {
+  background: #aea79f;
 }

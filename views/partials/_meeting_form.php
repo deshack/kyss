@@ -40,6 +40,7 @@ switch( $action ) {
 
 $meeting = KYSS_Meeting::get_meeting_by_id( $id );
 //$event = KYSS_Event::get_event_by( 'id', $event_id );
+$users = KYSS_User::get_users_list();
 ?>
 
 <?php if ( $action == 'edit' ) : ?>
@@ -109,11 +110,23 @@ switch( $action ) {
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="presidente">Presidente</label>
-			<input id="presidente" name="presidente" type="text"<?php echo isset( $meeting->presidente ) ? get_value_html( $meeting->presidente ) : '' ?>>
+			<select name="presidente">
+			<?php foreach ( $users as $user ) : ?>
+				<option value="<?php echo $user->ID; ?>"<?php echo isset( $meeting->presidente ) ? selected( $meeting->presidente, $user->ID, false ) : ''; ?>>
+					<?php echo $user->nome . ' ' . $user->cognome; ?>
+				</option>
+			<?php endforeach; ?>
+			</select>
 		</div>
 		<div class="medium-6 columns">
 			<label for="segretario">Segretario</label>
-			<input id="segretario" name="segretario" type="text"<?php echo isset( $meeting->segretario ) ? get_value_html( $meeting->segretario ) : '' ?>>
+			<select name="segretario">
+			<?php foreach ( $users as $user ) : ?>
+				<option value="<?php echo $user->ID; ?>"<?php echo isset( $meeting->segretario ) ? selected( $meeting->segretario, $user->ID, false ) : ''; ?>>
+					<?php echo $user->nome . ' ' . $user->cognome; ?>
+				</option>
+			<?php endforeach; ?>
+			</select>
 		</div>
 	</div>
 	<div class="row action-buttons text-center">

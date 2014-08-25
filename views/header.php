@@ -33,7 +33,14 @@ header( 'Content-Type: text/html; charset=utf-8' );
 <html lang="it">
 <head>
 	<title><?php echo $title; ?></title>
+	<link rel="stylesheet" type="text/css" id="dashicons" href="<?php echo get_site_url( 'lib/dashicons/css/dashicons.min.css' ); ?>" media="all" />
 	<?php kyss_css( 'kyss', true ); ?>
+	<script type="text/javascript" src="<?php echo get_site_url( 'lib/jquery/dist/jquery.min.js' ); ?>"></script>
+	<script type="text/javascript" src="<?php echo get_site_url( 'lib/jquery-placeholder/jquery.placeholder.js' ); ?>"></script>
+	<script type="text/javascript" src="<?php echo get_site_url( 'lib/jquery.cookie/jquery.cookie.js' ); ?>"></script>
+	<script type="text/javascript" src="<?php echo get_site_url( 'lib/fastclick/lib/fastclick.js' ); ?>"></script>
+	<script type="text/javascript" src="<?php echo get_site_url( 'lib/modernizr/modernizr.js' ); ?>"></script>
+	<script type="text/javascript" src="<?php echo get_site_url( 'lib/foundation/js/foundation.min.js' ); ?>"></script>
 
 	<?php
 	/**
@@ -54,7 +61,9 @@ header( 'Content-Type: text/html; charset=utf-8' );
 	</ul>
 	<section class="top-bar-section">
 		<ul class="right">
-			<li><a href="<?php echo get_option( 'siteurl' ); ?>/logout.php">Logout</a></li>
+			<li class="has-form">
+				<a href="<?php echo get_site_url( 'logout.php' ); ?>" class="button secondary">Logout</a>
+			</li>
 		</ul>
 	</section>
 </nav>

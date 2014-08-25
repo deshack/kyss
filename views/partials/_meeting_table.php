@@ -24,14 +24,9 @@ if ( ! empty( $meetings ) ) : ?>
 	<thead>
 		<tr>
 			<th>Nome</th>
-			<th>Data inizio</th>
-			<th>Data fine</th>
+			<th>Inizio</th>
+			<th>Fine</th>
 			<th>Tipo</th>
-			<th>Ora inizio</th>
-			<th>Ora fine</th>
-			<th>Luogo</th>
-			<th>Presidente</th>
-			<th>Segretario</th>
 			<th>Azioni</th>
 		</tr>
 	</thead>
@@ -40,17 +35,22 @@ if ( ! empty( $meetings ) ) : ?>
 	foreach ( $meetings as $meeting ) : ?>
 		<tr>
 			<td><?php echo isset( $meeting->nome ) ? $meeting->nome : ''; ?></td>
-			<td><?php echo isset( $meeting->data_inizio ) ? $meeting->data_inizio : ''; ?></td>
-			<td><?php echo isset( $meeting->data_fine ) ? $meeting->data_fine : ''; ?></td>
-			<td><?php echo isset( $meeting->tipo ) ? $meeting->tipo : ''; ?></td>
-			<td><?php echo isset( $meeting->ora_inizio ) ? $meeting->ora_inizio : ''; ?></td>
-			<td><?php echo isset( $meeting->ora_fine ) ? $meeting->ora_fine : ''; ?></td>
-			<td><?php echo isset( $meeting->luogo ) ? $meeting->luogo : ''; ?></td>
-			<td><?php echo isset( $meeting->presidente ) ? $meeting->presidente : ''; ?></td>
-			<td><?php echo isset( $meeting->segretario ) ? $meeting->segretario : ''; ?></td>
 			<td>
-				<a href="<?php echo get_site_url( 'meetings.php?action=view&id=' . $meeting->ID ); ?>">Dettagli</a>
-				<a href="<?php echo get_site_url( 'meetings.php?action=edit&id=' . $meeting->ID ); ?>">Modifica</a>
+				<?php echo isset( $meeting->data_inizio ) ? date( 'd/m/Y', strtotime( $meeting->data_inizio ) ) : ''; ?>
+				<?php echo isset( $meeting->ora_inizio ) ? date( 'H:i', strtotime( $meeting->ora_inizio ) ) : ''; ?>
+			</td>
+			<td>
+				<?php echo isset( $meeting->data_fine ) ? date( 'd/m/Y', strtotime( $meeting->data_fine ) ) : ''; ?>
+				<?php echo isset( $meeting->ora_fine ) ? date( 'H:i', strtotime( $meeting->ora_fine ) ) : ''; ?>
+			</td>
+			<td><?php echo isset( $meeting->tipo ) ? $meeting->tipo : ''; ?></td>
+			<td>
+				<a href="<?php echo get_site_url( 'meetings.php?action=view&id=' . $meeting->ID ); ?>" title="Dettagli">
+					<span class="dashicons dashicons-visibility"></span>
+				</a>
+				<a href="<?php echo get_site_url( 'meetings.php?action=edit&id=' . $meeting->ID ); ?>" title="Modifica">
+					<span class="dashicons dashicons-edit"></span>
+				</a>
 			</td>
 		</tr>
 	<?php endforeach; ?>

@@ -81,3 +81,18 @@ if ( ! is_array( $anagrafica ) )
 		</dl>
 	</div>
 </div>
+
+<footer class="entry-meta text-center">
+	<div class="row">
+		<div class="medium-6 columns">
+			<a href="<?php echo get_site_url( 'users.php?action=edit&id=' . $id ); ?>" class="button">
+				<span class="dashicons dashicons-edit"></span>
+			</a>
+		</div>
+		<div class="medium-6 columns">
+			<a href="<?php echo get_site_url( 'users.php' ); ?>" class="button">
+				<span class="dashicons dashicons-undo"></span>
+			</a>
+		</div>
+	</div>
+</footer>
