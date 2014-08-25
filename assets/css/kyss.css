@@ -7725,3 +7725,8 @@ th.hide-for-touch {
 .touch th.show-for-touch {
   display: table-cell !important;
 }
+
+/* line 43, ../../src/scss/kyss.scss */
+.side-nav > li > ul {
+  list-style-type: none;
+}
