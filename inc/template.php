@@ -95,3 +95,84 @@ function get_footer() {
 function get_value_html( $value ) {
 	return ' value="' . $value . '"';
 }
+
+/**
+ * Output the HTML checked attribute.
+ *
+ * Compares the first two arguments. If identical, marks as checked.
+ *
+ * @since  0.12.0
+ *
+ * @param  mixed $checked One of the values to compare.
+ * @param  mixed $current Optional. The other value to compare, if not just true.
+ * Default <true>.
+ * @param  bool $echo Optional. Whether to echo or just return the string. Default
+ * <true>.
+ * @return  string HTML checked attribute or empty string.
+ */
+function checked( $checked, $current = true, $echo = true ) {
+	return _checked_helper( $checked, $current, $echo, 'checked' );
+}
+
+/**
+ * Output the HTML selected attribute.
+ * 
+ * Compares the first two arguments. If identical, marks as selected.
+ *
+ * @since  0.12.0
+ *
+ * @param  mixed $selected One of the values to compare.
+ * @param  mixed $current Optional. The other value to compare, if not just true.
+ * Default <true>.
+ * @param  bool $echo Optional. Whether to echo or just return the string. Default
+ * <true>.
+ * @return  string HTML select attribute or empty string.
+ */
+function selected( $selected, $current = true, $echo = true ) {
+	return __checked_helper( $selected, $current, $echo, 'selected' );
+}
+
+/**
+ * Output the HTML disabled attribute.
+ *
+ * Compares the first two arguments. If identical, marks as disabled.
+ *
+ * @since  0.12.0
+ *
+ * @param  mixed $disabled One of the values to compare.
+ * @param  mixed $current Optional. The other value to compare, if not just
+ * true. Default <true>.
+ * @param  bool $echo Optional. Whether to echo or just return the string. Default
+ * <true>.
+ * @return  string HTML disabled attribute or empty string.
+ */
+function disabled( $disabled, $current = true, $echo = true ) {
+	return _checked_helper( $disabled, $current, $echo, 'disabled' );
+}
+
+/**
+ * Private helper function for checked, selected, and disabled.
+ *
+ * Compares the first two arguments and if identical marks as $type.
+ *
+ * @since  0.12.0
+ * @access private
+ *
+ * @param  mixed $helper One of the values to compare.
+ * @param  mixed $current The other value to compare, if not just true.
+ * @param  bool $echo Whether to echo or just return the string.
+ * @param  string $type The type of check we are doing. Accepts <checked>,
+ * <selected>, <disabled>.
+ * @return  string HTML attribute or empty string.
+ */
+function _checked_helper( $helper, $current, $echo, $type ) {
+	if ( (string) $helper === (string) $current )
+		$result = " $type='$type'";
+	else
+		$result = '';
+
+	if ( $echo )
+		echo $result;
+
+	return $result;
+}

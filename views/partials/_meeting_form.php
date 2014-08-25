@@ -84,8 +84,12 @@ switch( $action ) {
 		<div class="medium-4 columns">
 			<label for="tipo">Tipo</label>
 			<select name="tipo">
-				<option value="CD">Consiglio Direttivo</option>
-				<option value="AdA">Assemblea degli Associati</option>
+			<?php foreach ( array(
+				'CD' => 'Consiglio Direttivo',
+				'AdA' => 'Assemblea degli Associati'
+			) as $type => $name ) : ?>
+				<option value="<?php echo $type; ?>"<?php selected( $meeting->tipo, $type ); ?>><?php echo $name; ?></option>
+			<?php endforeach; ?>
 			</select>
 		</div>
 		<div class="medium-4 columns">
