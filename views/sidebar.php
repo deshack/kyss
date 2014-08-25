@@ -8,7 +8,7 @@
  */
 ?>
 
-<section id="sidebar" class="medium-3 columns">
+<section id="sidebar" class="medium-2 columns">
 	<ul class="side-nav">
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>">Home</a></li>
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/users.php">Utenti</a></li>
@@ -29,9 +29,7 @@
 		</li>
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/movements.php">Movimenti</a></li>
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/offices.php">Cariche</a></li>
-		<li class="divider"></li>
-		<li class="active"><a href="#">Link active</a></li>
 	</ul>
 </section><!-- #sidebar -->
 
-<main id="content" class="medium-9 columns" role="main">
+<main id="content" class="medium-10 columns" role="main">

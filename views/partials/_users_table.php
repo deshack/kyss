@@ -14,7 +14,8 @@ $users = KYSS_User::get_users_list();
 if( is_array( $users ) )
 	$users = array_filter( $users ); ?>
 
-<h1 class="page-title">Utenti <small><a href="<?php echo get_site_url( 'users.php?action=add'); ?>">Aggiungi</a></small></h1>
+<h1 class="page-title">Utenti</h1>
+<a href="<?php echo get_site_url( 'users.php?action=add'); ?>" class="button tiny">+ Nuovo</a>
 
 <?php if ( ! empty( $users ) ) : ?>
 

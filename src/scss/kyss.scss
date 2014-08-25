@@ -38,3 +38,8 @@
 //   "foundation/components/type",
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
+
+// Support submenus.
+.side-nav > li > ul {
+	list-style-type: none;
+}
