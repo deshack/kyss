@@ -17,7 +17,7 @@
 			<span class="dashicons dashicons-groups"></span> Utenti
 		</a></li>
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/events.php">
-			<span class="dahsicons dashicons-calendar"></span> Eventi
+			<span class="dashicons dashicons-calendar"></span> Eventi
 		</a>
 		<?php if ( ( strpos( $_SERVER['PHP_SELF'], 'events' ) ||
 			strpos( $_SERVER['PHP_SELF'], 'meetings' ) ||

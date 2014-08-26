@@ -63,7 +63,7 @@ header( 'Content-Type: text/html; charset=utf-8' );
 	<section class="top-bar-section">
 		<ul class="right">
 			<li class="has-form">
-				<a href="<?php echo get_site_url( 'logout.php' ); ?>" class="button secondary">Logout</a>
+				<a href="<?php echo get_site_url( 'logout.php' ); ?>" class="button ghost">Logout</a>
 			</li>
 		</ul>
 	</section>

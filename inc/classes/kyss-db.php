@@ -277,6 +277,31 @@ class KYSS_DB extends mysqli {
 	}
 
 	/**
+	 * Retrieve possible ENUM or SET values.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 *
+	 * @param  string $table Table name.
+	 * @param  string $field Field name.
+	 * @return array|false List of possible values for the given field.
+	 */
+	public function get_enum_set( $table, $field ) {
+		$query = "SHOW COLUMNS FROM $table LIKE '$field'";
+
+		if ( ! $result = $this->query( $query ) )
+			return false;
+
+		$row = $result->fetch_assoc();
+		$values = preg_replace( '/(enum\(|set\()/', '', $row['Type'] );
+		$values = str_replace( ')', '', $values );
+		$values = str_replace( "'", '', $values );
+		$values = explode( ',', $values );
+		var_dump( $values );
+		return $values;
+	}
+
+	/**
 	 * Retrive the list of KYSS database tables
 	 *
 	 * @since  0.9.0

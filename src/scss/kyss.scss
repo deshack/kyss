@@ -39,6 +39,12 @@
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
 
+//--------------------------------------------------
+// Compass modules
+//--------------------------------------------------
+
+@import "compass/css3/transition";
+
 html,
 body {
 	height: 100%;
@@ -48,10 +54,20 @@ table {
 	width: 100%;
 }
 
+fieldset legend {
+	background: transparent;
+}
+
 // Remove max-width from the wrapper row.
 .wrapper {
 	max-width: none;
 	height: calc( 100% - #{($topbar-height * 2)} );
+	overflow: auto;
+}
+
+#content {
+	height: 100%;
+	overflow: auto;
 }
 
 // Fix dashicons size inside h1.
@@ -61,6 +77,15 @@ h1 .dashicons {
 	font-size: ( $h1-font-size / 1.5 );
 	line-height: ( $h1-font-size / 1.5 );
 	vertical-align: middle;
+}
+
+.button.ghost {
+	background-color: transparent !important;
+	border: 1px solid darken( $secondary-color, 15% );
+	&:hover,
+	&:focus {
+		background-color: lighten( $topbar-bg, 30% ) !important;
+	}
 }
 
 #sidebar {
@@ -77,9 +102,11 @@ h1 .dashicons {
 		> a {
 			padding: 1rem 0.5rem;
 			color: $secondary-color !important;
+			@include transition( background-color .1s ease-out 0 );
+
 			&:hover,
 			&:focus {
-				background: $gray-warm;
+				background-color: $gray-warm;
 				color: $primary-color !important;
 			}
 		}
@@ -93,6 +120,7 @@ h1 .dashicons {
 		li {
 			> a {
 				padding-left: 1rem;
+
 				&:hover,
 				&:focus {
 					background: $topbar-bg-color;

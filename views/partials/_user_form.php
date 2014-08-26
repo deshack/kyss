@@ -79,35 +79,40 @@ switch( $action ) {
 		$form_action = 'action=add&save=true';
 		break;
 }
+
+$group_list = KYSS_Groups::get_defaults();
 ?>
 <form id="<?php echo $action; ?>-user" method="post" action="users.php?<?php echo $form_action; ?>">
 	<div class="row">
-		<div class="medium-6 columns">
+		<div class="medium-4 columns">
 			<label for="nome">Nome</label>
 			<input id="nome" name="nome" type="text"<?php echo isset( $user->nome ) ? get_value_html( $user->nome ) : '' ?> required>
 		</div>
-		<div class="medium-6 columns">
+		<div class="medium-4 columns">
 			<label for="cognome">Cognome</label>
 			<input id="cognome" name="cognome" type="text"<?php echo isset( $user->cognome ) ? get_value_html( $user->cognome ) : '' ?> required>
 		</div>
-	</div>
-	<div class="row">
-		<div class="medium-12 columns">
+		<div class="medium-4 columns">
 			<label for="anagrafica[CF]">Codice Fiscale</label>
 			<input id="anagrafica[CF]" name="anagrafica[CF]" type="text"<?php echo isset( $anagrafica['CF'] ) ? get_value_html( $anagrafica['CF'] ) : ''; ?>>
 		</div>
 	</div>
 	<div class="row">
-		<div class="medium-6 columns">
+		<div class="medium-4 columns">
+			<label>Gruppo</label><br>
+		<?php foreach ( $group_list as $slug => $name ) : ?>
+			<label><input type="checkbox" name="gruppo[]" value="<?php echo $slug; ?>"<?php echo isset( $user->gruppo ) && in_array( $slug, $user->gruppo ) ? checked( true, true, false ) : ''; ?>> <?php echo $name; ?></label>
+		<?php endforeach; ?>
+		</div>
+		<div class="medium-4 columns">
 			<label for="email">Email</label>
 			<input id="email" name="email" type="email"<?php echo isset( $user->email ) ? get_value_html( $user->email ) : '' ?>>
 		</div>
-		<div class="medium-6 columns">
+		<div class="medium-4 columns">
 			<label for="telefono">Telefono</label>
 			<input id="telefono" name="telefono" type="tel"<?php echo isset( $user->telefono ) ? get_value_html( $user->telefono ) : '' ?>>
 		</div>
 	</div>
-	<?php // Add group ?>
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="password">Password</label>
@@ -196,8 +201,10 @@ function validate_user_data() {
 	foreach ( $_POST as $key => $value ) {
 		if ( $key == 'anagrafica' ) {
 			$valid[$key] = serialize( $value );
+		} elseif ( $key == 'gruppo' ) {
+			$valid[$key] = join( ',', $value );
 		} elseif ( ( isset( $user->{$key} ) && $user->{$key} == $value ) || empty( $value ) ) {
-			unset( $valid[$key] );
+			continue;
 		} else {
 			$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
 		}

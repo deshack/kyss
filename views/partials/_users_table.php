@@ -37,7 +37,16 @@ if( is_array( $users ) )
 			<td><?php echo ( isset( $user->nome ) ? $user->nome : '' ) . ' ' . ( isset( $user->cognome ) ? $user->cognome : '' ); ?></td>
 			<td><?php echo isset( $user->email ) ? $user->email : ''; ?></td>
 			<td><?php echo isset( $user->telefono ) ? $user->telefono : ''; ?></td>
-			<td><?php echo isset( $user->gruppo ) ? $user->gruppo : ''; ?></td>
+			<td>
+			<?php if ( isset( $user->gruppo ) ) : ?>
+				<?php $groups = array(); ?>
+				<?php foreach ( $user->gruppo as $slug ) : ?>
+					<?php $group = KYSS_Groups::get_group( $slug ); ?>
+					<?php array_push( $groups, $group->name ); ?>
+				<?php endforeach; ?>
+				<?php echo join( ', ', $groups ); ?>
+			<?php endif; ?>
+			</td>
 			<td>
 				<a href="<?php echo get_site_url( 'users.php?action=view&id=' . $user->ID ); ?>" title="Dettagli">
 					<span class="dashicons dashicons-visibility"></span>

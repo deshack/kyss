@@ -171,6 +171,5 @@ function validate_meeting_data() {
 	}
 
 	//KYSS_Event::update( $event_id, $valid_event );
-	if ( ! KYSS_Meeting::update( $id, $valid ) )
-		kyss_die( "Something went wrong." );
+	KYSS_Meeting::update( $id, $valid );
 }

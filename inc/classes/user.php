@@ -55,27 +55,9 @@ class KYSS_User {
 	 * object from the DB.
 	 * @param  string $email Optional. User's email.
 	 */
-	function __construct( $id = 0, $email = '' ) {
-		if ( is_a( $id, 'KYSS_User' ) ) {
-			$this->init( $id->data );
-			return;
-		} elseif ( is_object( $id ) ) {
-			$this->init( $id );
-			return;
-		}
-
-		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
-			$name = $id; // TODO: what?? We don't use $name
-			$id = 0;
-		}
-
-		if ( $id )
-			$data = self::get_user_by( 'id', $id );
-		else
-			$data = self::get_user_by( 'email', $email );
-
-		//if ( $data )
-		//	$this->init( $data );
+	function __construct() {
+		if ( isset( $this->gruppo ) )
+			$this->gruppo = explode( ',', $this->gruppo );
 	}
 
 	/**
@@ -547,8 +529,8 @@ class KYSS_Groups {
 	 * @return KYSS_Group|null Group object. Null if not found.
 	 */
 	public static function get_group( $slug ) {
-		if ( isset( $this->groups[$slug] ) )
-			return $this->groups[$slug];
+		if ( isset( self::$groups[$slug] ) )
+			return self::$groups[$slug];
 	}
 
 	/**
@@ -562,6 +544,23 @@ class KYSS_Groups {
 	 */
 	public static function get_slugs() {
 		return array_keys( self::$groups );
+	}
+
+	/**
+	 * Retrieve list of default groups.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @return  array Associative array of group slugs and names.
+	 */
+	public static function get_defaults() {
+		$list = array();
+		foreach ( self::$defaults as $slug => $atts )
+			$list[$slug] = $atts['name'];
+
+		return $list;
 	}
 
 	/**
