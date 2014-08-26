@@ -10,13 +10,17 @@
 
 <h1 class="page-title">Eventi</h1>
 
-<?php
-require( VIEWS . '/partials/_meeting_table.php' );
-?>
+	<div class="row">
+		<div class="medium-12 columns">
+			<?php require( VIEWS . '/partials/_other_event_table.php' ); ?>
+		</div>
+	</div>
+	<div class="row">
+		<div class="medium-6 columns">
+			<?php require( VIEWS . '/partials/_meeting_table.php' ); ?>
+		</div>
 
-<?php
-require( VIEWS . '/partials/_course_table.php' );
-?>
-
-<?php
-require( VIEWS . '/partials/_other_event_table.php' );
+		<div class="medium-6 columns">
+			<?php require( VIEWS . '/partials/_course_table.php' ); ?>
+		</div>
+	</div>

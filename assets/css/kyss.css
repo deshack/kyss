@@ -7726,7 +7726,17 @@ th.hide-for-touch {
   display: table-cell !important;
 }
 
-/* line 43, ../../src/scss/kyss.scss */
+/* line 42, ../../src/scss/kyss.scss */
+table {
+  width: 100%;
+}
+
+/* line 47, ../../src/scss/kyss.scss */
+.wrapper {
+  max-width: none;
+}
+
+/* line 52, ../../src/scss/kyss.scss */
 h1 .dashicons {
   width: 1.83333rem;
   height: 1.83333rem;
@@ -7735,30 +7745,36 @@ h1 .dashicons {
   vertical-align: middle;
 }
 
-/* line 52, ../../src/scss/kyss.scss */
-.side-nav {
+/* line 60, ../../src/scss/kyss.scss */
+#sidebar {
   background: #e7e7e7;
-  padding-top: 0;
+  padding: 0;
 }
-/* line 57, ../../src/scss/kyss.scss */
+
+/* line 65, ../../src/scss/kyss.scss */
+.side-nav {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+/* line 70, ../../src/scss/kyss.scss */
 .side-nav li > a {
   padding: 1rem 0.5rem;
 }
-/* line 60, ../../src/scss/kyss.scss */
+/* line 73, ../../src/scss/kyss.scss */
 .side-nav li > a:hover, .side-nav li > a:focus {
   background: #aea79f;
   color: white !important;
 }
-/* line 67, ../../src/scss/kyss.scss */
+/* line 80, ../../src/scss/kyss.scss */
 .side-nav ul {
   list-style-type: none;
   margin-left: 0;
 }
-/* line 71, ../../src/scss/kyss.scss */
+/* line 84, ../../src/scss/kyss.scss */
 .side-nav ul li {
   padding-left: 1.25rem;
 }
-/* line 74, ../../src/scss/kyss.scss */
+/* line 87, ../../src/scss/kyss.scss */
 .side-nav ul li:hover, .side-nav ul li:focus {
   background: #aea79f;
 }

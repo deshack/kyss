@@ -41,6 +41,7 @@ header( 'Content-Type: text/html; charset=utf-8' );
 	<?php kyss_js( 'fastclick', true ); ?>
 	<?php kyss_js( 'modernizr.js', true ); ?>
 	<?php kyss_js( 'foundation', true ); ?>
+	<?php //kyss_js( 'kyss', true ); ?>
 
 	<?php
 	/**
@@ -68,4 +69,4 @@ header( 'Content-Type: text/html; charset=utf-8' );
 	</section>
 </nav>
 
-<div class="row">
+<div class="wrapper row">

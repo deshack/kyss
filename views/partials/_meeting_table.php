@@ -15,7 +15,11 @@ if ( is_array( $meetings ) )
 	$meetings = array_filter( $meetings );
 ?>
 
-<h1>Riunoni <small><a href="<?php echo get_site_url( 'meetings.php?action=add'); ?>">Aggiungi</a></small></h1>
+<h1>Riunoni
+	<small><a href="<?php echo get_site_url( 'meetings.php?action=add'); ?>">
+		<span class="dashicons dashicons-plus"></span>
+	</a></small>
+</h1>
 
 <?php
 if ( ! empty( $meetings ) ) : ?>

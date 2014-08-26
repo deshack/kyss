@@ -39,6 +39,15 @@
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
 
+table {
+	width: 100%;
+}
+
+// Remove max-width from the wrapper row.
+.wrapper {
+	max-width: none;
+}
+
 // Fix dashicons size inside h1.
 h1 .dashicons {
 	width: ($h1-font-size / 1.5 );
@@ -48,10 +57,14 @@ h1 .dashicons {
 	vertical-align: middle;
 }
 
+#sidebar {
+	background: $secondary-color;
+	padding: 0;
+}
 // Support submenus.
 .side-nav {
-	background: $secondary-color;
 	padding-top: 0;
+	padding-bottom: 0;
 
 	li {
 		> a {
