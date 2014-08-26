@@ -1,4 +1,4 @@
-<?php
+-<?php
 /**
  * Render KYSS Courses view.
  *
@@ -39,17 +39,17 @@ get_sidebar();
 <?php
 switch ( $action ) {
 	case 'view':
-		require( VIEWS . '/partials/_other_event_details.php' );
+		require( VIEWS . '/partials/_other-event_details.php' );
 		break;
 	case 'edit':
-		require( VIEWS . '/partials/_other_event_form.php' );
+		require( VIEWS . '/partials/_other-event_form.php' );
 		break;
 	case 'add':
-		require( VIEWS . '/partials/_other_event_form.php' );
+		require( VIEWS . '/partials/_other-event_form.php' );
 		break;
 	case 'list':	
 	default:
-		require( VIEWS . '/partials/_other_event_table.php' );
+		require( VIEWS . '/partials/_other-event_table.php' );
 		break;
 }
 get_footer();

@@ -31,15 +31,13 @@ switch( $action ) {
 				$data[$key] = $value;
 			}
 
-			//$event_id = KYSS_Event::create( $nome, $data_inizio, $data_fine );
 			$id = KYSS_Meeting::create( $data );
-			//kyss_redirect( get_site_url( '/meetings.php' ) );
+			kyss_redirect( get_site_url( '/meetings.php' ) );
 		}
 		break;
 }
 
 $meeting = KYSS_Meeting::get_meeting_by_id( $id );
-//$event = KYSS_Event::get_event_by( 'id', $event_id );
 $users = KYSS_User::get_users_list();
 ?>
 
@@ -112,8 +110,8 @@ switch( $action ) {
 			<label for="presidente">Presidente</label>
 			<select name="presidente">
 			<?php foreach ( $users as $user ) : ?>
-				<option value="<?php echo $user->ID; ?>"<?php echo isset( $meeting->presidente ) ? selected( $meeting->presidente, $user->ID, false ) : ''; ?>>
-					<?php echo $user->nome . ' ' . $user->cognome; ?>
+				<option value="NULL"<?php echo !isset( $meeting->segretario ) ? selected( true, true, false ) : ''; ?>>
+					Nessuno
 				</option>
 			<?php endforeach; ?>
 			</select>
@@ -122,8 +120,8 @@ switch( $action ) {
 			<label for="segretario">Segretario</label>
 			<select name="segretario">
 			<?php foreach ( $users as $user ) : ?>
-				<option value="<?php echo $user->ID; ?>"<?php echo isset( $meeting->segretario ) ? selected( $meeting->segretario, $user->ID, false ) : ''; ?>>
-					<?php echo $user->nome . ' ' . $user->cognome; ?>
+				<option value="NULL"<?php echo !isset( $meeting->segretario ) ? selected( true, true, false ) : ''; ?>>
+					Nessuno
 				</option>
 			<?php endforeach; ?>
 			</select>
@@ -164,6 +162,6 @@ function validate_meeting_data() {
 		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
 	}
 
-	//KYSS_Event::update( $event_id, $valid_event );
-	KYSS_Meeting::update( $id, $valid );
+	if ( ! KYSS_Meeting::update( $id, $valid ) )
+		kyss_die( "Something went wrong." );
 }

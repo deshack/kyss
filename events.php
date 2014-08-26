@@ -52,5 +52,4 @@ switch ( $action ) {
 		require( VIEWS . '/partials/_event_table.php' );
 		break;
 }
-
 get_footer();

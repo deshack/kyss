@@ -208,8 +208,8 @@ class KYSS_Meeting extends KYSS_Event {
 
 		if ( ! $meeting = $kyssdb->query(
 			"SELECT * 
-			FROM {$kyssdb->riunioni}
-			INNER JOIN {$kyssdb->eventi} ON {$kyssdb->riunioni}.ID = {$kyssdb->eventi}.ID
+			FROM {$kyssdb->riunioni} INNER JOIN {$kyssdb->eventi} 
+				ON {$kyssdb->riunioni}.ID = {$kyssdb->eventi}.ID
 			WHERE {$kyssdb->eventi}.ID = {$id}"
 		) )
 			return false;
@@ -284,7 +284,7 @@ class KYSS_Meeting extends KYSS_Event {
 
 		foreach ( $data as $key => $value ) {
 			array_push( $columns, $key );
-			if ( is_int( $value ) )
+			if ( is_int( $value ) || $value === 'NULL' )
 				array_push( $values, $value );
 			else
 				array_push( $values, "'{$value}'" );
@@ -346,65 +346,21 @@ class KYSS_Meeting extends KYSS_Event {
  * @package  KYSS
  * @subpackage Events
  */
-class KYSS_Course {
+class KYSS_Course extends KYSS_Event {
 	/**
-	 * The course's ID.
+	 * Holds the list of KYSS_Event column names.
 	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  int
+	 * @since  0.12.0
+	 * @access private
+	 * @static
+	 * @var  array
 	 */
-	public $ID;
-
-	/**
-	 * The course's title.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  string
-	 */
-	public $titolo;
-
-	/**
-	 * The course's level
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  string
-	 */
-	public $livello;
-
-	/**
-	 * The course's place.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  string
-	 */
-	public $luogo;
-
-	/**
-	 * The course's lessons number.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  int
-	 */
-	public $lezioni;
-
-	/**
-	 * Constructor.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 *
-	 * @param int|string|stdClass|KYSS_Course $id Course ID, or a KYSS_Course object,
-	 * or a course object from the DB.
-	 */
-	public function __construct() {
-
-	}
-
+	private static $event_data = array(
+		'nome',
+		'data_inizio',
+		'data_fine'
+	);
+	
 	/**
 	 * Retrieve course by ID.
 	 *
@@ -414,7 +370,7 @@ class KYSS_Course {
 	 *
 	 * @global  kyssdb
 	 *
-	 * @param  int $id The event id.
+	 * @param  int $id The course ID.
 	 * @return  KYSS_Course|bool KYSS_Course object. False on failure.
 	 */
 	public static function get_course_by_id( $id ) {
@@ -429,15 +385,16 @@ class KYSS_Course {
 
 		if ( ! $course = $kyssdb->query(
 			"SELECT * 
-			FROM {$kyssdb->corsi}
-			WHERE ID = {$id}"
+			FROM {$kyssdb->corsi} INNER JOIN {$kyssdb->eventi}
+				ON {$kyssdb->corsi}.ID = {$kyssdb->eventi}.ID
+			WHERE {$kyssdb->eventi}.ID = {$id}"
 		) )
 			return false;
 
 		if ( $course->num_rows == 0 )
 			return new KYSS_Error( 'course_not_found', 'Course not found.', array( 'ID' => $id ) );
 
-		$course = $course->fetch_object( 'KYSS_Event' );
+		$course = $course->fetch_object( 'KYSS_Course' );
 
 		return $course;
 	}
@@ -455,17 +412,15 @@ class KYSS_Course {
 	 * else only the fields of Courses. Default true.
 	 * @return array|false Array of KYSS_Course object. False on failure.
 	 */
-	public static function get_courses_list( $event = true ) {
+	public static function get_list( $event = true ) {
 		global $kyssdb;
 
 		$query = "SELECT * FROM {$kyssdb->corsi}";
 
 		if ( $event )
 			$query .= " JOIN {$kyssdb->eventi} ON ({$kyssdb->corsi}.ID = {$kyssdb->eventi}.ID)";
-
 		if ( ! $course = $kyssdb->query( $query ) )
 			return false;
-
 		$courses = array();
 
 		for ( $i = 0; $i < $course->num_rows; $i++ )
@@ -484,16 +439,22 @@ class KYSS_Course {
 	 * @global  kyssdb
 	 *
 	 * @param  array $data Course data.
-	 * @return int|bool|KYSS_Error The newly created course's ID, KYSS_Error
-	 * or false on failure.
+	 * @return int|bool|KYSS_Error
 	 */
 	public static function create( $data ) {
 		global $kyssdb;
 
-		if ( ! isset( $data['titolo'] ) )
-			return new KYSS_Error( 'course_title_missing', 'Per creare un nuovo corso &egrave; necessario un titolo.' );
-		if ( ! isset( $data['livello'] ) )
-			$data['livello'] = 'base';
+		// Put all $data items representing $kyssdb->eventi columns
+		// into the $event array.
+		$event = array();
+		foreach ( array_keys( $data ) as $key ) {
+			if ( in_array( $key, self::$event_data ) ) {
+				$event[$key] = $data[$key];
+				unset( $data[$key] );
+			}
+		}
+
+		$data['ID'] = parent::create( $event );
 
 		$columns = array();
 		$values = array();
@@ -529,16 +490,24 @@ class KYSS_Course {
 	 * @param  array $data Course data.
 	 * @return bool Whether the update succeeded or not.
 	 */
-	public function update( $data ) {
+	public static function update( $id, $data ) {
 		global $kyssdb;
 
-		foreach ( $data as $key => $value ) {
-			if ( is_int( $value ) )
-				continue;
-			$data[$key] = "'{$value}'";
+		if ( empty( $data ) )
+			return false;
+
+		// Put all $data items representing $kyssdb->eventi columns
+		// into the $event array.
+		$event = array();
+		foreach ( array_keys( $data ) as $key ) {
+			if ( in_array( $key, self::$event_data ) ) {
+				$event[$key] = $data[$key];
+				unset( $data[$key] );
+			}
 		}
 
-		$result = $kyssdb->update( $kyssdb->corsi, $data, array( 'ID' => $this->ID ) );
+		parent::update( $id, $event );
+		$result = $kyssdb->update( $kyssdb->corsi, $data, array( 'ID' => $id ) );
 
 		if ( $result )
 			return true;
