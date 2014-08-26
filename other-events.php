@@ -1,4 +1,4 @@
--<?php
+<?php
 /**
  * Render KYSS Courses view.
  *

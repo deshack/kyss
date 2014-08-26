@@ -15,7 +15,11 @@ if ( is_array( $other_events ) )
 	$other_events = array_filter( $other_events ); 
 ?>
 
-<h1>Altri <small><a href="<?php echo get_site_url( 'other-events.php?action=add'); ?>">Aggiungi</a></small></h1>
+<h1>Altri 
+	<small><a href="<?php echo get_site_url( 'other-events.php?action=add'); ?>">
+		<span class="dashicons dashicons-plus"></span>
+	</a></small>
+</h1>
 
 <?php
 if ( ! empty( $other_events ) ) : ?>
@@ -37,8 +41,12 @@ if ( ! empty( $other_events ) ) : ?>
 			<td><?php echo isset( $other_event->data_inizio ) ? $other_event->data_inizio : ''; ?></td>
 			<td><?php echo isset( $other_event->data_fine ) ? $other_event->data_fine : ''; ?></td>
 			<td>
-				<a href="<?php echo get_site_url( 'other-events.php?action=view&id=' . $other_event->ID ); ?>">Dettagli</a>
-				<a href="<?php echo get_site_url( 'other-events.php?action=edit&id=' . $other_event->ID ); ?>">Modifica</a>
+				<a href="<?php echo get_site_url( 'other-events.php?action=view&id=' . $other_event->ID ); ?>" title="Dettagli">
+					<span class="dashicons dashicons-visibility"></span>
+				</a>
+				<a href="<?php echo get_site_url( 'other-events.php?action=edit&id=' . $other_event->ID ); ?>" title="Modifica">
+					<span class="dashicons dashicons-edit"></span>
+				</a>
 			</td>
 		</tr>
 	<?php endforeach; ?>

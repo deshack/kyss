@@ -15,7 +15,7 @@ if ( is_array( $meetings ) )
 	$meetings = array_filter( $meetings );
 ?>
 
-<h1>Riunoni
+<h1>Riunioni
 	<small><a href="<?php echo get_site_url( 'meetings.php?action=add'); ?>">
 		<span class="dashicons dashicons-plus"></span>
 	</a></small>
