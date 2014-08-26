@@ -10,35 +10,62 @@
 
 <section id="sidebar" class="medium-2 columns">
 	<ul class="side-nav">
-		<li><a href="<?php echo get_option( 'siteurl' ); ?>">Home</a></li>
-		<li><a href="<?php echo get_option( 'siteurl' ); ?>/users.php">Utenti</a></li>
-		<li><a href="<?php echo get_option( 'siteurl' ); ?>/events.php">Eventi</a>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>">
+			<span class="dashicons dashicons-dashboard"></span> Dashboard
+		</a></li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/users.php">
+			<span class="dashicons dashicons-groups"></span> Utenti
+		</a></li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/events.php">
+			<span class="dahsicons dashicons-calendar"></span> Eventi
+		</a>
 		<?php if ( ( strpos( $_SERVER['PHP_SELF'], 'events' ) ||
 			strpos( $_SERVER['PHP_SELF'], 'meetings' ) ||
 			strpos( $_SERVER['PHP_SELF'], 'courses' ) ||
 			strpos( $_SERVER['PHP_SELF'], 'talks' ) ) !== false ) : ?>
 			<ul>
-				<li><a href="<?php echo get_option( 'siteurl' ); ?>/meetings.php">Riunioni</a></li>
-				<li><a href="<?php echo get_option( 'siteurl' ); ?>/courses.php">Corsi</a></li>
-				<li><a href="<?php echo get_option( 'siteurl' ); ?>/other-events.php">Altri</a></li>
-				<li><a href="<?php echo get_option( 'siteurl' ); ?>/talks.php">Talk</a></li>
+				<li><a href="<?php echo get_option( 'siteurl' ); ?>/meetings.php">
+					<span class="dashicons dashicons-arrow-right"></span> Riunioni
+				</a></li>
+				<li><a href="<?php echo get_option( 'siteurl' ); ?>/courses.php">
+					<span class="dashicons dashicons-arrow-right"></span> Corsi
+				</a></li>
+				<li>
+					<a href="<?php echo get_option( 'siteurl' ); ?>/other-events.php">
+						<span class="dashicons dashicons-arrow-right"></span> Altri
+					</a></li>
+				<li><a href="<?php echo get_option( 'siteurl' ); ?>/talks.php">
+					<span class="dashicons dashicons-arrow-right"></span> Talk
+				</a></li>
 			</ul>
 		<?php endif; ?>
 		</li>
-		<li><a href="<?php echo get_option( 'siteurl' ); ?>/documents.php">Documenti</a>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/documents.php">
+			<span class="dashicons dashicons-format-aside"></span> Documenti
+		</a>
 		<?php if ( ( strpos( $_SERVER['PHP_SELF'], 'documents' ) ||
 			strpos( $_SERVER['PHP_SELF'], 'practices' ) ||
 			strpos( $_SERVER['PHP_SELF'], 'reports' ) ||
 			strpos( $_SERVER['PHP_SELF'], 'budgets' ) ) !== false ) : ?>
 			<ul>
-				<li><a href="<?php echo get_option( 'siteurl' ); ?>/practices.php">Pratiche</a></li>
-				<li><a href="<?php echo get_option( 'siteurl' ); ?>/reports.php">Verbali</a></li>
-				<li><a href="<?php echo get_option( 'siteurl' ); ?>/budgets.php">Bilanci</a></li>
+				<li><a href="<?php echo get_option( 'siteurl' ); ?>/practices.php">
+					<span class="dashicons dashicons-arrow-right"></span> Pratiche
+				</a></li>
+				<li><a href="<?php echo get_option( 'siteurl' ); ?>/reports.php">
+					<span class="dashicons dashicons-arrow-right"></span> Verbali
+				</a></li>
+				<li><a href="<?php echo get_option( 'siteurl' ); ?>/budgets.php">
+					<span class="dashicons dashicons-arrow-right"></span> Bilanci
+				</a></li>
+				<li><a href="<?php echo get_option( 'siteurl' ); ?>/movements.php">
+					<span class="dashicons dashicons-arrow-right"></span> Movimenti
+				</a></li>
 			</ul>
 		<?php endif; ?>
 		</li>
-		<li><a href="<?php echo get_option( 'siteurl' ); ?>/movements.php">Movimenti</a></li>
-		<li><a href="<?php echo get_option( 'siteurl' ); ?>/offices.php">Cariche</a></li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/offices.php">
+			<span class="dashicons dashicons-businessman"></span> Cariche
+		</a></li>
 	</ul>
 </section><!-- #sidebar -->
 

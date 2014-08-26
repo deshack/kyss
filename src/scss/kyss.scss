@@ -39,6 +39,11 @@
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
 
+html,
+body {
+	height: 100%;
+}
+
 table {
 	width: 100%;
 }
@@ -46,6 +51,7 @@ table {
 // Remove max-width from the wrapper row.
 .wrapper {
 	max-width: none;
+	height: calc( 100% - #{($topbar-height * 2)} );
 }
 
 // Fix dashicons size inside h1.
@@ -58,8 +64,9 @@ h1 .dashicons {
 }
 
 #sidebar {
-	background: $secondary-color;
+	background: $topbar-bg-color;
 	padding: 0;
+	height: 100%;
 }
 // Support submenus.
 .side-nav {
@@ -69,10 +76,11 @@ h1 .dashicons {
 	li {
 		> a {
 			padding: 1rem 0.5rem;
+			color: $secondary-color !important;
 			&:hover,
 			&:focus {
 				background: $gray-warm;
-				color: lighten($secondary-color, 15%) !important;
+				color: $primary-color !important;
 			}
 		}
 	}
@@ -80,12 +88,15 @@ h1 .dashicons {
 	ul {
 		list-style-type: none;
 		margin-left: 0;
+		background: lighten( $topbar-bg-color, 7% );
 
 		li {
-			padding-left: 1.25rem;
-			&:hover,
-			&:focus {
-				background: $gray-warm;
+			> a {
+				padding-left: 1rem;
+				&:hover,
+				&:focus {
+					background: $topbar-bg-color;
+				}
 			}
 		}
 	}

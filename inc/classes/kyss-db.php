@@ -256,16 +256,24 @@ class KYSS_DB extends mysqli {
 
 		$query = array();
 		foreach ( $data as $field => $value ) {
-			$query[] = "`$field`='{$value}'";
+			if ( is_string( $value ) && ($value !== 'NULL' ) )
+				$query[] = "`$field`='{$value}'";
+			else
+				$query[] = "`$field`={$value}";
 		}
 		$wheres = array();
 		foreach ( $where as $field => $value ) {
-			$wheres[] = "`$field`='{$value}'";
+			if ( is_string( $value ) && ( $value !== 'NULL' ) )
+				$wheres[] = "`$field`='{$value}'";
+			else
+				$wheres[] = "`$field`={$value}";
 		}
 
 		$sql = "UPDATE $table SET " . implode( ', ', $query ) . " WHERE " . implode( ' AND ', $wheres );
 		
-		return $this->query( $sql );
+		if ( ! $result = $this->query( $sql ) )
+			trigger_error( $this->error, E_USER_WARNING );
+		return $result;
 	}
 
 	/**
