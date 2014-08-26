@@ -33,14 +33,14 @@ header( 'Content-Type: text/html; charset=utf-8' );
 <html lang="it">
 <head>
 	<title><?php echo $title; ?></title>
-	<link rel="stylesheet" type="text/css" id="dashicons" href="<?php echo get_site_url( 'lib/dashicons/css/dashicons.min.css' ); ?>" media="all" />
+	<?php kyss_css( 'dashicons', true ); ?>
 	<?php kyss_css( 'kyss', true ); ?>
-	<script type="text/javascript" src="<?php echo get_site_url( 'lib/jquery/dist/jquery.min.js' ); ?>"></script>
-	<script type="text/javascript" src="<?php echo get_site_url( 'lib/jquery-placeholder/jquery.placeholder.js' ); ?>"></script>
-	<script type="text/javascript" src="<?php echo get_site_url( 'lib/jquery.cookie/jquery.cookie.js' ); ?>"></script>
-	<script type="text/javascript" src="<?php echo get_site_url( 'lib/fastclick/lib/fastclick.js' ); ?>"></script>
-	<script type="text/javascript" src="<?php echo get_site_url( 'lib/modernizr/modernizr.js' ); ?>"></script>
-	<script type="text/javascript" src="<?php echo get_site_url( 'lib/foundation/js/foundation.min.js' ); ?>"></script>
+	<?php kyss_js( 'jquery', true ); ?>
+	<?php kyss_js( 'placeholder', true ); ?>
+	<?php kyss_js( 'jquery.cookie', true ); ?>
+	<?php kyss_js( 'fastclick', true ); ?>
+	<?php kyss_js( 'modernizr.js', true ); ?>
+	<?php kyss_js( 'foundation', true ); ?>
 
 	<?php
 	/**

@@ -439,7 +439,7 @@ function kyss_css( $name, $echo = false ) {
 	global $kyss_version;
 
 	$name = trim($name);
-	$output = sprintf( '<link rel="stylesheet" id="%1$s" href="%2$s" type="text/css" media="all">',
+	$output = sprintf( '<link rel="stylesheet" id="%1$s" href="%2$s" type="text/css" media="all">'."\n",
 		$name,
 		clean_url( get_asset_url() . $name . '.css?' . $kyss_version )
 	);
@@ -464,7 +464,7 @@ function kyss_js( $name, $echo = false ) {
 	global $kyss_version;
 
 	$name = trim($name);
-	$output = sprintf( '<style type="text/javascript" id="%1$s-script" src="%2$s">',
+	$output = sprintf( '<style type="text/javascript" id="%1$s-script" src="%2$s"></style>'."\n",
 		$name,
 		clean_url( get_asset_url( 'js' ) . $name . '.js?' . $kyss_version )
 	);
