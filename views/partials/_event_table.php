@@ -12,7 +12,7 @@
 
 	<div class="row">
 		<div class="medium-12 columns">
-			<?php require( VIEWS . '/partials/_other_event_table.php' ); ?>
+			<?php require( VIEWS . '/partials/_other-event_table.php' ); ?>
 		</div>
 	</div>
 	<div class="row">

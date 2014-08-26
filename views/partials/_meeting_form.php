@@ -115,8 +115,8 @@ switch( $action ) {
 					Nessuno
 				</option>
 			<?php foreach ( $users as $user ) : ?>
-				<option value="<?php echo $user->ID; ?>"<?php echo isset( $meeting->presidente ) ? selected( $meeting->presidente, $user->ID, false ) : ''; ?>>
-					<?php echo $user->nome . ' ' . $user->cognome; ?>
+				<option value="NULL"<?php echo !isset( $meeting->segretario ) ? selected( true, true, false ) : ''; ?>>
+					Nessuno
 				</option>
 			<?php endforeach; ?>
 			</select>
@@ -128,8 +128,8 @@ switch( $action ) {
 					Nessuno
 				</option>
 			<?php foreach ( $users as $user ) : ?>
-				<option value="<?php echo $user->ID; ?>"<?php echo isset( $meeting->segretario ) ? selected( $meeting->segretario, $user->ID, false ) : ''; ?>>
-					<?php echo $user->nome . ' ' . $user->cognome; ?>
+				<option value="NULL"<?php echo !isset( $meeting->segretario ) ? selected( true, true, false ) : ''; ?>>
+					Nessuno
 				</option>
 			<?php endforeach; ?>
 			</select>

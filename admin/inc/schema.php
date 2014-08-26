@@ -111,7 +111,6 @@ function get_db_schema() {
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->corsi} (
 			`ID`			bigint(20) UNSIGNED NOT NULL,
-			`titolo`		varchar(255) NOT NULL,
 			`livello`		enum('base', 'medio', 'avanzato') NOT NULL,
 			`luogo`			varchar(20),
 			`lezioni`		int,
