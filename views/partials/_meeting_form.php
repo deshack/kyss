@@ -111,6 +111,9 @@ switch( $action ) {
 		<div class="medium-6 columns">
 			<label for="presidente">Presidente</label>
 			<select name="presidente">
+				<option value="NULL"<?php echo !isset( $meeting->segretario ) ? selected( true, true, false ) : ''; ?>>
+					Nessuno
+				</option>
 			<?php foreach ( $users as $user ) : ?>
 				<option value="<?php echo $user->ID; ?>"<?php echo isset( $meeting->presidente ) ? selected( $meeting->presidente, $user->ID, false ) : ''; ?>>
 					<?php echo $user->nome . ' ' . $user->cognome; ?>
@@ -121,6 +124,9 @@ switch( $action ) {
 		<div class="medium-6 columns">
 			<label for="segretario">Segretario</label>
 			<select name="segretario">
+				<option value="NULL"<?php echo !isset( $meeting->segretario ) ? selected( true, true, false ) : ''; ?>>
+					Nessuno
+				</option>
 			<?php foreach ( $users as $user ) : ?>
 				<option value="<?php echo $user->ID; ?>"<?php echo isset( $meeting->segretario ) ? selected( $meeting->segretario, $user->ID, false ) : ''; ?>>
 					<?php echo $user->nome . ' ' . $user->cognome; ?>
@@ -165,5 +171,6 @@ function validate_meeting_data() {
 	}
 
 	//KYSS_Event::update( $event_id, $valid_event );
-	KYSS_Meeting::update( $id, $valid );
+	if ( ! KYSS_Meeting::update( $id, $valid ) )
+		kyss_die( "Something went wrong." );
 }

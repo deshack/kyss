@@ -284,7 +284,7 @@ class KYSS_Meeting extends KYSS_Event {
 
 		foreach ( $data as $key => $value ) {
 			array_push( $columns, $key );
-			if ( is_int( $value ) )
+			if ( is_int( $value ) || $value === 'NULL' )
 				array_push( $values, $value );
 			else
 				array_push( $values, "'{$value}'" );
