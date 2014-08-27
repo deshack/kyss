@@ -39,17 +39,17 @@ get_sidebar();
 <?php
 switch ( $action ) {
 	case 'view':
-		require( VIEWS . '/partials/_talk_details.php' );
+		require( VIEWS . 'partials/_talk_details.php' );
 		break;
 	case 'edit':
-		require( VIEWS . '/partials/_talk_form.php' );
+		require( VIEWS . 'partials/_talk_form.php' );
 		break;
 	case 'add':
-		require( VIEWS . '/partials/_talk_form.php' );
+		require( VIEWS . 'partials/_talk_form.php' );
 		break;
 	case 'list':	
 	default:
-		require( VIEWS . '/partials/_talk_table.php' );
+		require( VIEWS . 'partials/_talk_table.php' );
 		break;
 }
 get_footer();

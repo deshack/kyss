@@ -17,6 +17,11 @@ global $hook;
 Something
 </footer>
 
+<script>
+	jQuery(document).foundation();
+</script>
+
 <?php $hook->run( 'kyss_footer' ); ?>
+
 </body>
 </html>

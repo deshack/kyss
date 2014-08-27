@@ -42,7 +42,7 @@ $users = KYSS_User::get_users_list();
 ?>
 
 <?php if ( $action == 'edit' ) : ?>
-	<h1 class="page-title">Modifica riunione <?php if ( isset( $event->nome ) ) : ?><small><?php echo $event->nome; ?></small><?php endif; ?></h1>
+	<h1 class="page-title">Modifica riunione <?php if ( isset( $meeting->nome ) ) : ?><small><?php echo $meeting->nome; ?></small><?php endif; ?></h1>
 <?php elseif ( $action == 'add' ) : ?>
 	<h1 class="page-title">Nuova riunione</h1>
 <?php endif; ?>
@@ -59,17 +59,18 @@ switch( $action ) {
 }
 ?>
 
-<form id="<?php echo $action; ?>-meeting" method="post" action="meetings.php?<?php echo $form_action; ?>">
+<form id="<?php echo $action; ?>-meeting" method="post" action="meetings.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
 		<div class="medium-12 columns">
 			<label for="nome">Nome</label>
-			<input id="nome" name="nome" type="text"<?php echo isset( $meeting->nome ) ? get_value_html( $meeting->nome ) : '' ?>>
+			<input id="nome" name="nome" type="text" autofocus<?php echo isset( $meeting->nome ) ? get_value_html( $meeting->nome ) : '' ?>>
 		</div>
 	</div>
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="data_inizio">Inizio</label>
 			<input type="date" id="data_inizio" name="data_inizio"<?php echo isset( $meeting->data_inizio ) ? get_value_html( $meeting->data_inizio ) : '' ?> required>
+			<?php field_error(); ?>
 		</div>
 		<div class="medium-6 columns">
 			<label for="data_fine">Fine</label>

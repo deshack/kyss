@@ -7,7 +7,7 @@
  * @since  
  */
 
-$talks = KYSS_Talk::get_list( $id );
+$talks = KYSS_Talk::get_list();
 
 // Small workaround to remove array elements that evaluate to false.
 // Useful if `KYSS_Event::get_other_events_list()` adds a NULL element.
@@ -16,7 +16,7 @@ if ( is_array( $talks ) )
 ?>
 
 <h1>Talk
-	<small><a href="<?php echo get_site_url( 'talks.php?action=add&id=' . $id); ?>">
+	<small><a href="<?php echo get_site_url( 'talks.php?action=add' ); ?>">
 		<span class="dashicons dashicons-plus"></span>
 	</a></small>
 </h1>
@@ -39,10 +39,10 @@ if ( ! empty( $talks ) ) : ?>
 			<td><?php echo isset( $talk->titolo ) ? $talk->titolo : ''; ?></td>
 			<td><?php echo isset( $talk->data ) ? $talk->data : ''; ?></td>
 			<td>
-				<a href="<?php echo get_site_url( 'talks.php?action=view&id=' . $id . '&talk_id=' . $talk->ID ); ?>" title="Dettagli">
+				<a href="<?php echo get_site_url( 'talks.php?action=view&id=' . $talk->ID ); ?>" title="Dettagli">
 					<span class="dashicons dashicons-visibility"></span>
 				</a>
-				<a href="<?php echo get_site_url( 'talks.php?action=edit&id=' . $id . '&talk_id=' . $talk->ID ); ?>" title="Modifica">
+				<a href="<?php echo get_site_url( 'talks.php?action=edit&id=' . $talk->ID ); ?>" title="Modifica">
 					<span class="dashicons dashicons-edit"></span>
 				</a>
 			</td>

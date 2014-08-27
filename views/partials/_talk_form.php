@@ -16,8 +16,6 @@ if ( $action == 'edit' && empty( $id ) ) {
 	kyss_die( $message, '', array( 'back_link' => true ) );
 }
 
-$talk_id = isset( $_GET['talk_id'] ) ? $_GET['talk_id'] : '';
-
 switch( $action ) {
 	case 'edit' :
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
@@ -33,13 +31,13 @@ switch( $action ) {
 				$data[$key] = $value;
 			}
 
-			$talk_id = KYSS_Talk::create( $data );
+			$id = KYSS_Talk::create( $data );
 			kyss_redirect( get_site_url( '/other-events.php?' ) );
 		}
 		break;
 }
 
-$talk = KYSS_Talk::get_talk_by( 'id', $talk_id );
+$talk = KYSS_Talk::get_talk_by( 'id', $id );
 $users = KYSS_User::get_users_list();
 $events = KYSS_Event::get_events_list();
 ?>
@@ -62,11 +60,12 @@ switch( $action ) {
 }
 ?>
 
-<form id="<?php echo $action; ?>-talk" method="post" action="talks.php?<?php echo $form_action; ?>">
+<form id="<?php echo $action; ?>-talk" method="post" action="talks.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
 		<div class="medium-8 columns">
 			<label for="titolo">Titolo</label>
-			<input id="titolo" name="titolo" type="text"<?php echo isset( $talk->titolo ) ? get_value_html( $talk->titolo ) : '' ?>>
+			<input id="titolo" name="titolo" type="text" autofocus required<?php echo isset( $talk->titolo ) ? get_value_html( $talk->titolo ) : '' ?>>
+			<?php field_error(); ?>
 		</div>
 		<div class="medium-4 columns">
 			<label for="data">Data</label>
@@ -76,7 +75,7 @@ switch( $action ) {
 	<div class="row">
 		<div class="medium-12 columns">
 			<label for="argomenti">Argomenti</label>
-			<input id="argomenti" name="argomenti" type="text"<?php echo isset( $talk->argomenti ) ? get_value_html( $talk->argomenti ) : '' ?>>
+			<textarea id="argomenti" name="argomenti" rows="5"><?php echo isset( $talk->argomenti ) ? $talk->argomenti : ''; ?></textarea>
 		</div>
 	</div>
 	<div class="row">
@@ -142,5 +141,5 @@ function validate_talk_data() {
 		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
 	}
 
-	KYSS_Talk::update( $talk_id, $valid );
+	KYSS_Talk::update( $id, $valid );
 }

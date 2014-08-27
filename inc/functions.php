@@ -464,7 +464,7 @@ function kyss_js( $name, $echo = false ) {
 	global $kyss_version;
 
 	$name = trim($name);
-	$output = sprintf( '<style type="text/javascript" id="%1$s-script" src="%2$s"></style>'."\n",
+	$output = sprintf( '<script type="text/javascript" id="%1$s-script" src="%2$s"></script>'."\n",
 		$name,
 		clean_url( get_asset_url( 'js' ) . $name . '.js?' . $kyss_version )
 	);

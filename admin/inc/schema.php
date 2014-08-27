@@ -79,7 +79,7 @@ function get_db_schema() {
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->talk} (
-			`ID`			bigint(20) UNSIGNED NOT NULL,
+			`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
 			`titolo`		varchar(255) NOT NULL,
 			`data`			datetime,
 			`argomenti`		text,

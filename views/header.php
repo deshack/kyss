@@ -35,13 +35,10 @@ header( 'Content-Type: text/html; charset=utf-8' );
 	<title><?php echo $title; ?></title>
 	<?php kyss_css( 'dashicons', true ); ?>
 	<?php kyss_css( 'kyss', true ); ?>
+	<?php kyss_js( 'modernizr', true ); ?>
 	<?php kyss_js( 'jquery', true ); ?>
-	<?php kyss_js( 'placeholder', true ); ?>
-	<?php kyss_js( 'jquery.cookie', true ); ?>
 	<?php kyss_js( 'fastclick', true ); ?>
-	<?php kyss_js( 'modernizr.js', true ); ?>
 	<?php kyss_js( 'foundation', true ); ?>
-	<?php //kyss_js( 'kyss', true ); ?>
 
 	<?php
 	/**

@@ -82,15 +82,17 @@ switch( $action ) {
 
 $group_list = KYSS_Groups::get_defaults();
 ?>
-<form id="<?php echo $action; ?>-user" method="post" action="users.php?<?php echo $form_action; ?>">
+<form id="<?php echo $action; ?>-user" method="post" action="users.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
 		<div class="medium-4 columns">
 			<label for="nome">Nome</label>
 			<input id="nome" name="nome" type="text"<?php echo isset( $user->nome ) ? get_value_html( $user->nome ) : '' ?> required>
+			<?php field_error(); ?>
 		</div>
 		<div class="medium-4 columns">
 			<label for="cognome">Cognome</label>
 			<input id="cognome" name="cognome" type="text"<?php echo isset( $user->cognome ) ? get_value_html( $user->cognome ) : '' ?> required>
+			<?php field_error(); ?>
 		</div>
 		<div class="medium-4 columns">
 			<label for="anagrafica[CF]">Codice Fiscale</label>
@@ -98,17 +100,11 @@ $group_list = KYSS_Groups::get_defaults();
 		</div>
 	</div>
 	<div class="row">
-		<div class="medium-4 columns">
-			<label>Gruppo</label><br>
-		<?php foreach ( $group_list as $slug => $name ) : ?>
-			<label><input type="checkbox" name="gruppo[]" value="<?php echo $slug; ?>"<?php echo isset( $user->gruppo ) && in_array( $slug, $user->gruppo ) ? checked( true, true, false ) : ''; ?>> <?php echo $name; ?></label>
-		<?php endforeach; ?>
-		</div>
-		<div class="medium-4 columns">
+		<div class="medium-4 medium-offset-2 columns">
 			<label for="email">Email</label>
 			<input id="email" name="email" type="email"<?php echo isset( $user->email ) ? get_value_html( $user->email ) : '' ?>>
 		</div>
-		<div class="medium-4 columns">
+		<div class="medium-4 columns end">
 			<label for="telefono">Telefono</label>
 			<input id="telefono" name="telefono" type="tel"<?php echo isset( $user->telefono ) ? get_value_html( $user->telefono ) : '' ?>>
 		</div>
@@ -160,6 +156,16 @@ $group_list = KYSS_Groups::get_defaults();
 			</div>
 		</div>
 	</fieldset>
+	<div class="row">
+		<div class="medium-4 medium-offset-4 columns end">
+			<fieldset>
+				<legend>Gruppo</legend>
+			<?php foreach ( $group_list as $slug => $name ) : ?>
+				<label><input type="checkbox" name="gruppo[]" value="<?php echo $slug; ?>"<?php echo isset( $user->gruppo ) && in_array( $slug, $user->gruppo ) ? checked( true, true, false ) : ''; ?>> <?php echo $name; ?></label>
+			<?php endforeach; ?>
+			</fieldset>
+		</div>
+	</div>
 	<div class="row action-buttons text-center">
 		<div class="small-6 columns">
 			<input type="submit" class="button" name="submit" value="Salva">

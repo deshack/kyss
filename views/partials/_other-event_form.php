@@ -59,17 +59,18 @@ switch( $action ) {
 }
 ?>
 
-<form id="<?php echo $action; ?>-other-event" method="post" action="other-events.php?<?php echo $form_action; ?>">
+<form id="<?php echo $action; ?>-other-event" method="post" action="other-events.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
 		<div class="medium-12 columns">
 			<label for="nome">Nome</label>
-			<input id="nome" name="nome" type="text"<?php echo isset( $event->nome ) ? get_value_html( $event->nome ) : '' ?>>
+			<input id="nome" name="nome" type="text" autofocus<?php echo isset( $event->nome ) ? get_value_html( $event->nome ) : '' ?>>
 		</div>
 	</div>
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="data_inizio">Inizio</label>
 			<input type="date" id="data_inizio" name="data_inizio"<?php echo isset( $event->data_inizio ) ? get_value_html( $event->data_inizio ) : '' ?> required>
+			<?php field_error(); ?>
 		</div>
 		<div class="medium-6 columns">
 			<label for="data_fine">Fine</label>

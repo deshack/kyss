@@ -189,3 +189,18 @@ function back_button() {
 </a>
 <?php
 }
+
+/**
+ * Render field error description.
+ *
+ * @since  0.12.0
+ *
+ * @param  string $message Custom error message.
+ */
+function field_error( $message = '' ) {
+	if ( empty( $message ) )
+		$message = 'Questo campo non pu&ograve; essere vuoto.';
+?>
+	<small class="error"><?php echo $message; ?></small>
+<?php
+}
