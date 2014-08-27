@@ -58,9 +58,7 @@ $course = KYSS_Course::get_course_by_id( $id );
 			</a>
 		</div>
 		<div class="medium-6 columns">
-			<a href="<?php echo get_site_url( 'courses.php' ); ?>" class="button">
-				<span class="dashicons dashicons-undo"></span>
-			</a>
+			<?php back_button(); ?>
 		</div>
 	</div>
 </footer>

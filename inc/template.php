@@ -176,3 +176,16 @@ function _checked_helper( $helper, $current, $echo, $type ) {
 
 	return $result;
 }
+
+/**
+ * Render back button.
+ *
+ * @since  0.12.0
+ */
+function back_button() {
+?>
+<a href="javascript:history.back()" class="button">
+	<span class="dashicons dashicons-undo"></span>
+</a>
+<?php
+}
