@@ -74,6 +74,7 @@ function get_db_schema() {
 			`nome`			varchar(20),
 			`data_inizio`	date NOT NULL,
 			`data_fine`		date,
+			`luogo`			varchar(20),
 			PRIMARY KEY (`ID`)
 		) ENGINE = InnoDB",
 
@@ -81,7 +82,6 @@ function get_db_schema() {
 			`ID`			bigint(20) UNSIGNED NOT NULL,
 			`titolo`		varchar(255) NOT NULL,
 			`data`			datetime,
-			`luogo`			varchar(20),
 			`argomenti`		text,
 			`relatore`		bigint(20) UNSIGNED,
 			`evento`		bigint(20) UNSIGNED,
@@ -97,7 +97,6 @@ function get_db_schema() {
 			`tipo`			enum('CD', 'AdA') NOT NULL,
 			`ora_inizio`	time,
 			`ora_fine`		time,
-			`luogo`			varchar(20),
 			`presidente`	bigint(20) UNSIGNED,
 			`segretario`	bigint(20) UNSIGNED,
 			PRIMARY KEY (`ID`),
@@ -112,8 +111,6 @@ function get_db_schema() {
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->corsi} (
 			`ID`			bigint(20) UNSIGNED NOT NULL,
 			`livello`		enum('base', 'medio', 'avanzato') NOT NULL,
-			`luogo`			varchar(20),
-			`lezioni`		int,
 			PRIMARY KEY (`ID`),
 			FOREIGN KEY (`ID`) REFERENCES {$kyssdb->eventi}(`ID`)
 				ON UPDATE CASCADE ON DELETE CASCADE,

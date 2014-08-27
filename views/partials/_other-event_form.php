@@ -76,6 +76,12 @@ switch( $action ) {
 			<input id="data_fine" name="data_fine" type="date"<?php echo isset( $event->data_fine ) ? get_value_html( $event->data_fine ) : '' ?>>
 		</div>
 	</div>
+	<div class="row">
+		<div class="medium-12 columns">
+			<label for="luogo">Luogo</label>
+			<input id="luogo" name="luogo" type="text"<?php echo isset( $event->luogo ) ? get_value_html( $event->luogo ) : '' ?>>
+		</div>
+	</div>
 	<div class="row action-buttons text-center">
 		<div class="small-6 columns">
 			<input type="submit" class="button" name="submit" value="Salva">

@@ -23,14 +23,14 @@ $event = KYSS_Event::get_event_by( 'id', $id );
 </h1>
 
 <div class="row">
-	<div class="medium-6 columns">
+	<div class="medium-3 columns">
 		<dl>
 			<dt>Inizio</dt>
 			<dd><?php echo isset( $event->data_inizio ) ? date( 'd/m/Y', strtotime( $event->data_inizio ) ) : ''; ?>
 			</dd>
 		</dl>
 	</div>
-	<div class="medium-6 columns">
+	<div class="medium-3 columns">
 		<dl>
 			<dt>Fine</dt>
 			<dd>
@@ -38,7 +38,19 @@ $event = KYSS_Event::get_event_by( 'id', $id );
 			</dd>
 		</dl>
 	</div>
+	<div class="medium-6 columns">
+		<dl>
+			<dt>Luogo</dt>
+			<dd><?php echo isset( $event->luogo ) ? $event->luogo : ''; ?>
+			</dd>
+		</dl>
+	</div>
 </div>
+
+<?php 
+require( VIEWS . '/partials/_talk_table.php');
+?>
+
 <footer class="entry-meta text-center">
 	<div class="row">
 		<div class="medium-6 columns">

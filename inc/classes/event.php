@@ -181,7 +181,8 @@ class KYSS_Meeting extends KYSS_Event {
 	private static $event_data = array(
 		'nome',
 		'data_inizio',
-		'data_fine'
+		'data_fine',
+		'luogo'
 	);
 
 	/**
@@ -358,7 +359,8 @@ class KYSS_Course extends KYSS_Event {
 	private static $event_data = array(
 		'nome',
 		'data_inizio',
-		'data_fine'
+		'data_fine',
+		'luogo'
 	);
 	
 	/**
@@ -524,91 +526,6 @@ class KYSS_Course extends KYSS_Event {
  */
 class KYSS_Talk {
 	/**
-	 * The Talk's ID.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  int
-	 */
-	public $ID;
-
-	/**
-	 * The Talk's title.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  string
-	 */
-	public $title;
-
-	/**
-	 * The Talk's date.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  date
-	 */
-	public $data;
-
-	/**
-	 * The Talk's date time.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  string
-	 */
-	public $ora;
-
-	/**
-	 * The Talk's place.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  string
-	 */
-	public $luogo;
-
-	/**
-	 * The Talk's arguments
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  string
-	 */
-	public $argomenti;
-
-	/**
-	 * The Talk's rapporteur ID.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  int
-	 */
-	public $relatore;
-
-	/**
-	 * The Talk's event ID.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @var  int
-	 */
-	public $evento;
-
-	/**
-	 * Constructor.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 *
-	 * @param  int|string|stdClass|KYSS_Talk $id Talk ID, or a KYSS_Talk object, or
-	 * a talk object from the DB.
-	 */
-	public function __construct() {
-	
-	}
-	
-	/**
 	 * Retrieve talk by ID.
 	 *
 	 * @since  0.11.0
@@ -620,27 +537,37 @@ class KYSS_Talk {
 	 * @param  int $id The talk id.
 	 * @return KYSS_Talk|bool KYSS_Course object. False on failure.
 	 */
-	public static function get_talk_by_id( $id ) {
+	public static function get_talk_by( $field, $value ) {
 		global $kyssdb;
 
-		if ( ! is_numeric( $id ) )
-			return false;
-		$id = intval( $id );
+		switch ( $field ) {
+			case 'id':
+				$db_field = 'ID';
+				// Make sure the value is numeric to avoid casting objects,
+				// for example to int 1.
+				if ( ! is_numeric( $value ) )
+					return false;
+				$value = intval( $value );
+				if ( $value < 1 )
+					return false;
+				break;
+			default:
+				return false;
+		}
 
-		if ( $id < 1 )
-			return false;
-
-		if ( ! $course = $kyssdb->query(
-			"SELECT * FROM {$kyssdb->talk} WHERE ID = {$id}"
+		if ( ! $talk = $kyssdb->query(
+			"SELECT * 
+			FROM {$kyssdb->talk} 
+			WHERE {$db_field} = {$value}"
 		) )
 			return false;
 
-		if ( $course->num_rows == 0 )
-			return new KYSS_Error( 'talk_not_found', 'Talk not found.', array( 'ID' => $id ) );
+		if ( $talk->num_rows == 0 )
+			return new KYSS_Error( 'talk_not_found', 'Talk not found.', array( $field => $value ) );
 
-		$course = $course->fetch_object( 'KYSS_Talk' );
+		$talk = $talk->fetch_object( 'KYSS_Talk' );
 
-		return $course;
+		return $talk;
 	}
 
 	/**
@@ -654,12 +581,15 @@ class KYSS_Talk {
 	 *
 	 * @return  array|false Array of KYSS_Talk objects. False on failure.
 	 */
-	public static function get_talks_list() {
+	public static function get_list( $event_id = '' ) {
 		global $kyssdb;
 
-		if ( ! $talk = $kyssdb->query(
-			"SELECT * FROM {$kyssdb->talk}"
-		) )
+		$query = "SELECT * FROM {$kyssdb->talk}";
+
+		if ( is_numeric( $event_id ) )
+			$query .= " WHERE evento = {$event_id}";
+		
+		if ( ! $talk = $kyssdb->query( $query ) )
 			return false;
 
 		$talks = array();
@@ -722,16 +652,13 @@ class KYSS_Talk {
 	 * @param  array $data Talk data.
 	 * @return  bool Whether the update succeeded or not.
 	 */
-	public function update( $data ) {
+	public static function update( $id, $data ) {
 		global $kyssdb;
 
-		foreach ( $data as $key => $value ) {
-			if ( is_int( $value ) )
-				continue;
-			$data[$key] = "'{$value}'";
-		}
+		if ( empty( $data) )
+			return false;
 
-		$result = $kyssdb->update( $kyssdb->corsi, $data, array( 'ID', $this->ID ) );
+		$result = $kyssdb->update( $kyssdb->talk, $data, array( 'ID', $id ) );
 
 		if ( $result )
 			return true;

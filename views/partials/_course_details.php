@@ -43,14 +43,7 @@ $course = KYSS_Course::get_course_by_id( $id );
 	</div>
 </div>
 <div class="row">
-	<div class="medium-4 columns">
-		<dl>
-			<dt>N° lezioni</dt>
-			<dd><?php echo isset( $course->lezioni ) ? $course->lezioni : '-'; ?></dd>
-			</dd>
-		</dl>
-	</div>
-	<div class="medium-8 columns">
+	<div class="medium-12 columns">
 		<dl>
 			<dt>Luogo</dt>
 			<dd><?php echo isset( $course->luogo ) ? $course->luogo : '-'; ?></dd>

@@ -109,13 +109,13 @@ switch( $action ) {
 		<div class="medium-6 columns">
 			<label for="presidente">Presidente</label>
 			<select name="presidente">
-				<option value="NULL"<?php echo !isset( $meeting->segretario ) ? selected( true, true, false ) : ''; ?>>
+				<option value="NULL"<?php echo !isset( $meeting->presidente ) ? selected( true, true, false ) : ''; ?>>
 					Nessuno
 				</option>
 			<?php foreach ( $users as $user ) : ?>
-				<option value="NULL"<?php echo !isset( $meeting->segretario ) ? selected( true, true, false ) : ''; ?>>
-					Nessuno
-				</option>
+				<option value="<?php echo $user->ID; ?>"<?php echo isset( $meeting->presidente ) ? selected( $meeting->presidente, $user->ID, false ) : ''; ?>>
+ 					<?php echo $user->nome . ' ' . $user->cognome; ?>
+ 				</option>
 			<?php endforeach; ?>
 			</select>
 		</div>
@@ -126,9 +126,9 @@ switch( $action ) {
 					Nessuno
 				</option>
 			<?php foreach ( $users as $user ) : ?>
-				<option value="NULL"<?php echo !isset( $meeting->segretario ) ? selected( true, true, false ) : ''; ?>>
-					Nessuno
-				</option>
+				<option value="<?php echo $user->ID; ?>"<?php echo isset( $meeting->segretario ) ? selected( $meeting->segretario, $user->ID, false ) : ''; ?>>
+ 					<?php echo $user->nome . ' ' . $user->cognome; ?>
+ 				</option>
 			<?php endforeach; ?>
 			</select>
 		</div>
@@ -168,5 +168,6 @@ function validate_meeting_data() {
 		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
 	}
 
-	KYSS_Meeting::update( $id, $valid );
+	if ( ! KYSS_Meeting::update( $id, $valid ) )
+		kyss_die( "Something went wrong." );
 }

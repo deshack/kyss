@@ -61,10 +61,12 @@ switch( $action ) {
 
 <form id="<?php echo $action; ?>-course" method="post" action="courses.php?<?php echo $form_action; ?>">
 	<div class="row">
-		<div class="medium-10 columns">
+		<div class="medium-12 columns">
 			<label for="nome">Nome</label>
 			<input id="nome" name="nome" type="text"<?php echo isset( $course->nome ) ? get_value_html( $course->nome ) : '' ?>>
 		</div>
+	</div>
+	<div class="row">
 		<div class="medium-2 columns">
 			<label for="livello">Livello</label>
 			<select name="livello">
@@ -78,8 +80,6 @@ switch( $action ) {
 			<?php endforeach; ?>
 			</select>
 		</div>
-	</div>
-	<div class="row">
 		<div class="medium-5 columns">
 			<label for="data_inizio">Inizio</label>
 			<input type="date" id="data_inizio" name="data_inizio"<?php echo isset( $course->data_inizio ) ? get_value_html( $course->data_inizio ) : '' ?> required>
@@ -87,10 +87,6 @@ switch( $action ) {
 		<div class="medium-5 columns">
 			<label for="data_fine">Fine</label>
 			<input id="data_fine" name="data_fine" type="date"<?php echo isset( $course->data_fine ) ? get_value_html( $course->data_fine ) : '' ?>>
-		</div>
-		<div class="small-2 columns">
-			<label for="lezioni">N° lezioni</label>
-			<input id="lezioni" name="lezioni" type="text"<?php echo isset( $course->lezioni ) ? get_value_html( $course->lezioni ) : ''; ?>>
 		</div>
 	</div>
 	<div class="row">

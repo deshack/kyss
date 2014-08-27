@@ -23,7 +23,7 @@ $hook->add( 'kyss_title', function( $title ) {
 		$title .= 'Modifica evento';
 	elseif ( $action == 'add' )
 		$title .= 'Nuovo evento';
-	elseif ( $action == 'veiw' )
+	elseif ( $action == 'view' )
 		$title .= 'Dettagli evento';
 	else 
 		$title .= 'Altri eventi';
