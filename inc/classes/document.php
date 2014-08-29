@@ -15,86 +15,7 @@
  */
 class KYSS_Practice {
 	/**
-	 * The Practice's protocol number.
-	 *
-	 * @since 0.12.0
-	 * @access public
-	 * @var  
-	 */
-	public $protocollo;
-
-	/**
-	 * THe Practice's user ID.
-	 *
-	 * @since 0.12.0
-	 * @access public
-	 * @var  
-	 */
-	public $utente;
-
-	/**
-	 * The Practice's type.
-	 *
-	 * @since 0.12.0
-	 * @access public
-	 * @var  
-	 */
-	public $tipo;
-
-	/**
-	 * The practice's date.
-	 *
-	 * @since 0.12.0
-	 * @access public
-	 * @var  
-	 */
-	public $data;
-
-	/**
-	 * The Practice's date of receipt.
-	 *
-	 * @since 0.12.0
-	 * @access public
-	 * @var  
-	 */
-	public $ricezione;
-
-	/**
-	 * The Practice's status.
-	 *
-	 * @since 0.12.0
-	 * @access public
-	 * @var  bool
-	 */
-	public $approvata;
-
-	/**
-	 * The Practice's note.
-	 *
-	 * @since 0.12.0
-	 * @access public
-	 * @var  string
-	 */
-	public $note;
-
-	/**
-	 * Constructor.
-	 *
-	 * @since 0.12.0 
-	 * @access public
-	 *
-	 * @param  string|stdClass|KYSS_Practice $prot Protocol number, a KYSS_Practice
-	 * object or a practice object from the db.
-	 */
-	public function __construct( $prot ) {
-		if ( is_a( $prot, 'KYSS_Practice' ) || is_object( $prot ) )
-			return;
-
-		$this = self::get( $prot );
-	}
-
-	/**
-	 * Retrieve practice by protocol.
+	 * Retrieve Practice by protocol.
 	 *
 	 * @since  0.12.0
 	 * @access public
@@ -109,7 +30,9 @@ class KYSS_Practice {
 		global $kyssdb;
 
 		if ( ! $practice = $kyssdb->query(
-			"SELECT * FROM {$kyssdb->pratiche} WHERE protocollo = '{$prot}'"
+			"SELECT * 
+			FROM {$kyssdb->pratiche} 
+			WHERE protocollo = '{$prot}'"
 		) )
 			return false;
 
@@ -121,7 +44,7 @@ class KYSS_Practice {
 	}
 
 	/**
-	 * Retrieve practices list.
+	 * Retrieve Practices list.
 	 *
 	 * @since  0.12.0
 	 * @access public
@@ -146,6 +69,69 @@ class KYSS_Practice {
 
 		return $practices;
 	}
+
+	/**
+	 * Insert new Prectice into the database.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  array $data Associative array of column names and values.
+	 * @return int Prectice's protocol number.
+	 */
+	public static function create( $data ) {
+		global $kyssdb;
+
+		if ( empty( $data ) )
+			return new KYSS_Error( 'empty_practice_data', 'Practices data cannot be empty!' );
+
+		$columns = array();
+		$values = array();
+
+		foreach ( $data as $key => $value ) {
+			array_push( $columns, $key );
+			array_push( $values, "'{$value}'" );
+		}
+
+		$columns = join( ',', $columns );
+		$values = join( ',', $values );
+
+		$query = "INSERT INTO {$kyssdb->pratiche} ({$columns}) VALUES ({$values})";
+		if ( ! $result = $kyssdb->query( $query ) ) {
+			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
+			return false;
+		}
+
+		return $data['protocollo'];
+	}
+
+	/**
+	 * Update Precticle in the db.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @global kyssdb
+	 *
+	 * @param  array $data Practice's data.
+	 * @return bool Whether the update succeeded or not.
+	 */
+	public static function update( $proc, $data ) {
+		global $kyssdb;
+
+		if ( empty( $data) )
+			return false;
+
+		$result = $kyssdb->update( $kyssdb->pratiche, $data, array( 'protocollo' => $proc ) );
+
+		if ( $result )
+			return true;
+		return false;
+	}
 }
 
 /**
@@ -157,35 +143,124 @@ class KYSS_Practice {
  */
 class KYSS_Report {
 	/**
-	 * The Report's protocol number.
+	 * Retrieve Report by protocol.
 	 *
-	 * @since 
+	 * @since  0.12.0
 	 * @access public
-	 * @var  int
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $prot Report protocol number.
+	 * @return  KYSS_Report|bool KYSS_Report object or false on failure.
 	 */
-	public $protocollo;
+	public static function get( $prot ) {
+		global $kyssdb;
 
-	/**
-	 * The Report's reuinion ID.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  int
-	 */
-	public $riunione;
+		if ( ! $report = $kyssdb->query(
+			"SELECT * 
+			FROM {$kyssdb->verbali} 
+			WHERE protocollo = '{$prot}'"
+		) )
+			return false;
 
-	/**
-	 * Constructor.
-	 *
-	 * @since  
-	 * @access public
-	 *
-	 * @param  
-	 * @return KYSS_Report
-	 */
-	function __construct() {
-		
+		if ( $report->num_rows == 0 )
+			return new KYSS_Error( 'report_not_found', 'Verbale non trovato', array( 'protocollo' => $prot ) );
+		$report = $report->fetch_object( 'KYSS_Report' );
+
+		return $report;
 	}
+
+	/**
+	 * Retrieve Reports list.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @return array|false Array of KYSS_Report objects or false on failure.
+	 */
+	public static function get_list() {
+		global $kyssdb;
+
+		if ( ! $report = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->verbali}"
+		) )
+			return false;
+
+		$reports = array();
+
+		for ( $i = 0; $i < $report->num_rows; $i++ )
+			array_push( $reports, $report->fetch_object( 'KYSS_Report' ) );
+
+		return $reports;
+	}
+
+	/**
+	 * Insert new Report into the database.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  array $data Associative array of column names and values.
+	 * @return int Report's protocol number.
+	 */
+	public static function create( $data ) {
+		global $kyssdb;
+
+		if ( empty( $data ) )
+			return new KYSS_Error( 'empty_report_data', 'Reports data cannot be empty!' );
+
+		$columns = array();
+		$values = array();
+
+		foreach ( $data as $key => $value ) {
+			array_push( $columns, $key );
+			array_push( $values, "'{$value}'" );
+		}
+
+		$columns = join( ',', $columns );
+		$values = join( ',', $values );
+
+		$query = "INSERT INTO {$kyssdb->verbali} ({$columns}) VALUES ({$values})";
+		if ( ! $result = $kyssdb->query( $query ) ) {
+			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
+			return false;
+		}
+
+		return $data['protocollo'];
+	}
+
+	/**
+	 * Update Report in the db.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @global kyssdb
+	 *
+	 * @param  array $data Report's data.
+	 * @return bool Whether the update succeeded or not.
+	 */
+	public static function update( $proc, $data ) {
+		global $kyssdb;
+
+		if ( empty( $data) )
+			return false;
+
+		$result = $kyssdb->update( $kyssdb->verbali, $data, array( 'protocollo' => $proc ) );
+
+		if ( $result )
+			return true;
+		return false;
+	}
+}
 
 /**
  * KYSS Budget class
@@ -195,87 +270,122 @@ class KYSS_Report {
  * @subpackage  Budget
  */
 class KYSS_Budget {
-	/**
-	 * The Budget's ID.
+/**
+	 * Retrieve Budget by protocol.
 	 *
-	 * @since 
+	 * @since  0.12.0
 	 * @access public
-	 * @var  int
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $id Budget ID.
+	 * @return  KYSS_Budget|bool KYSS_Budget object or false on failure.
 	 */
-	public $ID;
+	public static function get( $id ) {
+		global $kyssdb;
 
-	/**
-	 * The Budget's type.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  string
-	 */
-	public $tipo;
+		if ( ! $budget = $kyssdb->query(
+			"SELECT * 
+			FROM {$kyssdb->bilanci} 
+			WHERE ID = '{$id}'"
+		) )
+			return false;
 
-	/**
-	 * The Budget's month.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  int
-	 */
-	public $mese;
+		if ( $budget->num_rows == 0 )
+			return new KYSS_Error( 'budget_not_found', 'Bilancio non trovato', array( 'ID' => $id ) );
+		$budget = $budget->fetch_object( 'KYSS_Budget' );
 
-	/**
-	 * The Budget's year.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  int
-	 */
-	public $anno;
-
-	/**
-	 * Amount of the funds in bank
-	 *
-	 * @since 
-	 * @access public
-	 * @var  
-	 */
-	public $cassa;
-
-	/**
-	 * Amount of the funds in the checkout.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  
-	 */
-	public $banca;
-
-	/**
-	 * The Budeget's status.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  
-	 */
-	public $approvato;
-
-	/**
-	 * The Budget's report ID.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  
-	 */
-	public $verbale;
-
-	/**
-	 * Constructor.
-	 *
-	 * @since  
-	 * @access public
-	 *
-	 * @param  
-	 * @return KYSS_Budget
-	 */
-	function __construct() {
-		
+		return $budget;
 	}
+
+	/**
+	 * Retrieve Budget list.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @return array|false Array of KYSS_Budget objects or false on failure.
+	 */
+	public static function get_list() {
+		global $kyssdb;
+
+		if ( ! $budget = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->bilanci}"
+		) )
+			return false;
+
+		$budgets = array();
+
+		for ( $i = 0; $i < $budget->num_rows; $i++ )
+			array_push( $budgets, $budget->fetch_object( 'KYSS_Budget' ) );
+
+		return $budgets;
+	}
+
+	/**
+	 * Insert new Budget into the database.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  array $data Associative array of column names and values.
+	 * @return int The new created budget's ID or false on failure.
+	 */
+	public static function create( $data ) {
+		global $kyssdb;
+
+		if ( empty( $data ) )
+			return new KYSS_Error( 'empty_budget_data', 'Budgets data cannot be empty!' );
+
+		$columns = array();
+		$values = array();
+
+		foreach ( $data as $key => $value ) {
+			array_push( $columns, $key );
+			array_push( $values, "'{$value}'" );
+		}
+
+		$columns = join( ',', $columns );
+		$values = join( ',', $values );
+
+		$query = "INSERT INTO {$kyssdb->bilanci} ({$columns}) VALUES ({$values})";
+		if ( ! $result = $kyssdb->query( $query ) ) {
+			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
+			return false;
+		}
+
+		return $kyssdb->insert_id;
+	}
+
+	/**
+	 * Update Budget in the db.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @global kyssdb
+	 *
+	 * @param  array $data Budget's data.
+	 * @return bool Whether the update succeeded or not.
+	 */
+	public static function update( $id, $data ) {
+		global $kyssdb;
+
+		if ( empty( $data) )
+			return false;
+
+		$result = $kyssdb->update( $kyssdb->bilanci, $data, array( 'ID' => $id ) );
+
+		if ( $result )
+			return true;
+		return false;
+	}
+}
