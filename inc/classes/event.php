@@ -537,33 +537,25 @@ class KYSS_Talk {
 	 * @param  int $id The talk id.
 	 * @return KYSS_Talk|bool KYSS_Course object. False on failure.
 	 */
-	public static function get_talk_by( $field, $value ) {
+	public static function get_talk_by_id( $id ) {
 		global $kyssdb;
 
-		switch ( $field ) {
-			case 'id':
-				$db_field = 'ID';
-				// Make sure the value is numeric to avoid casting objects,
-				// for example to int 1.
-				if ( ! is_numeric( $value ) )
-					return false;
-				$value = intval( $value );
-				if ( $value < 1 )
-					return false;
-				break;
-			default:
-				return false;
-		}
+		if ( ! is_numeric( $id ) )
+			return false;
+		$id = intval( $id );
+
+		if ( $id < 1 )
+			return false;
 
 		if ( ! $talk = $kyssdb->query(
 			"SELECT * 
 			FROM {$kyssdb->talk} 
-			WHERE {$db_field} = {$value}"
+			WHERE ID = {$id}"
 		) )
 			return false;
 
 		if ( $talk->num_rows == 0 )
-			return new KYSS_Error( 'talk_not_found', 'Talk not found.', array( $field => $value ) );
+			return new KYSS_Error( 'talk_not_found', 'Talk not found.', array( 'ID' => $id ) );
 
 		$talk = $talk->fetch_object( 'KYSS_Talk' );
 
@@ -658,7 +650,7 @@ class KYSS_Talk {
 		if ( empty( $data) )
 			return false;
 
-		$result = $kyssdb->update( $kyssdb->talk, $data, array( 'ID', $id ) );
+		$result = $kyssdb->update( $kyssdb->talk, $data, array( 'ID' => $id ) );
 
 		if ( $result )
 			return true;

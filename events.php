@@ -39,7 +39,7 @@ get_sidebar();
 <?php
 switch ( $action ) {
 	case 'view':
-		require( VIEWS . '/partials/_event_details.php' );
+		require( VIEWS . '/partials/_other-event_details.php' );
 		break;
 	case 'edit':
 		require( VIEWS . '/partials/_event_form.php' );

@@ -201,6 +201,6 @@ function field_error( $message = '' ) {
 	if ( empty( $message ) )
 		$message = 'Questo campo non pu&ograve; essere vuoto.';
 ?>
-	<small class="error"><?php echo $message; ?></small>
+<small class="error"><?php echo $message; ?></small>
 <?php
 }

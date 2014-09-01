@@ -37,7 +37,7 @@ switch( $action ) {
 		break;
 }
 
-$talk = KYSS_Talk::get_talk_by( 'id', $id );
+$talk = KYSS_Talk::get_talk_by_id( $id );
 $users = KYSS_User::get_users_list();
 $events = KYSS_Event::get_events_list();
 ?>
@@ -60,16 +60,21 @@ switch( $action ) {
 }
 ?>
 
-<form id="<?php echo $action; ?>-talk" method="post" action="talks.php?<?php echo $form_action; ?>" data-abide>
+<form id="<?php echo $action; ?>-talk" method="post" action="talks.php?<?php echo $form_action; ?>">
 	<div class="row">
-		<div class="medium-8 columns">
-			<label for="titolo">Titolo</label>
-			<input id="titolo" name="titolo" type="text" autofocus required<?php echo isset( $talk->titolo ) ? get_value_html( $talk->titolo ) : '' ?>>
-			<?php field_error(); ?>
+		<div class="medium-6 columns">
+			<div>
+				<label for="titolo">Titolo</label>
+				<input id="titolo" name="titolo" type="text"<?php echo isset( $talk->titolo ) ? get_value_html( $talk->titolo ) : '' ?> autofocus required>
+			</div>
 		</div>
-		<div class="medium-4 columns">
+		<div class="medium-3 columns">
 			<label for="data">Data</label>
-			<input type="date" id="data" name="data"<?php echo isset( $talk->data ) ? get_value_html( $talk->data ) : '' ?>>
+			<input type="date" id="data" name="data"<?php echo isset( $talk->data ) ? get_value_html( date( 'Y-m-d', strtotime( $talk->data ) ) ) : ''; ?>>
+		</div>
+		<div class="medium-3 columns">
+			<label for="ora">Ora</label>
+			<input type="time" id="ora" name="ora"<?php echo isset( $talk->data ) ? get_value_html( date( 'H:i', strtotime( $talk->data ) ) ) : ''; ?>>
 		</div>
 	</div>
 	<div class="row">
@@ -138,7 +143,17 @@ function validate_talk_data() {
 	foreach ($_POST as $key => $value) {
 		if ( empty( $value ) )
 			continue;
-		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
+		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );			
+	}
+
+	if ( isset( $valid['ora'] ) ) {
+		$date = new DateTime( strtotime( $valid['ora'] ) );
+		if ( isset( $valid['data'] ) ) {
+			$pieces = explode( '-', $valid['data'] );
+			$date->setDate( $pieces[0], $pieces[1], $pieces[2] );
+		}
+		unset( $valid['ora'] );
+		$valid['data'] = $date->format( 'Y-m-d H:i:s' );
 	}
 
 	KYSS_Talk::update( $id, $valid );

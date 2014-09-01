@@ -121,7 +121,7 @@ function footer() {
 function form( $error = null ) {
 	global $kyssdb;
 
-	$name = isset( $_POST['name'] ) ? trim( unslash( $_POST['name'] ) ) : '';
+	$assoc_name = isset( $_POST['assoc_name'] ) ? trim( unslash( $_POST['assoc_name'] ) ) : '';
 	$admin_name = isset( $_POST['admin_name'] ) ? trim( unslash( $_POST['admin_name'] ) ) : '';
 	$admin_surname = isset( $_POST['admin_surname'] ) ? trim( unslash( $_POST['admin_surname'] ) ) : '';
 	$admin_email = isset( $_POST['admin_email'] ) ? trim( unslash( $_POST['admin_email'] ) ) : '';
@@ -129,7 +129,7 @@ function form( $error = null ) {
 ?>
 	<section>
 		<p>Benvenuto nell'installer di KYSS!</p>
-		<p>Abbiamo bisogno di alcune informazioni, ma ti basteranno solamente cinque minuti.</p>
+		<p>Sono necessarie le seguenti informazioni:</p>
 	</section>
 <?php
 	if ( ! is_null( $error ) ) :
@@ -141,8 +141,8 @@ function form( $error = null ) {
 	<form id="setup" method="post" action="install.php?step=1">
 		<div class="row">
 			<div class="medium-12 columns">
-				<label for="name">Nome dell'associazione</label>
-				<input name="name" id="name" type="text" autofocus>
+				<label for="assoc_name">Nome dell'associazione</label>
+				<input name="assoc_name" id="assoc_name" type="text" autofocus>
 			</div>
 		</div>
 		<fieldset>
@@ -172,6 +172,7 @@ function form( $error = null ) {
 					<label for="admin_password_check">Conferma password</label>
 					<input name="admin_password_check" id="admin_password_check" type="password">
 				</div>
+				<p class="help">Lasciare <strong>vuoto</strong> il campo <em>Password</em> per generare automaticamente una password.</p>
 			</div>
 		</fieldset>
 		<div class="row">
@@ -189,7 +190,7 @@ function form( $error = null ) {
  * @since  0.9.0
  */
 function validate() {
-	$name = isset( $_POST['name'] ) ? trim( unslash( $_POST['name'] ) ) : '';
+	$assoc_name = isset( $_POST['assoc_name'] ) ? trim( unslash( $_POST['assoc_name'] ) ) : '';
 	$admin_name = isset( $_POST['admin_name'] ) ? trim( unslash( $_POST['admin_name'] ) ) : '';
 	$admin_surname = isset( $_POST['admin_surname'] ) ? trim( unslash( $_POST['admin_surname'] ) ) : '';
 	$admin_email = isset( $_POST['admin_email'] ) ? trim( unslash( $_POST['admin_email'] ) ) : '';
@@ -216,13 +217,11 @@ function validate() {
 	}
 
 	if ( $error === false ) :
-		$result = kyss_install( $name, $admin_name, $admin_surname, $admin_email, slash( $admin_password ) );
+		$result = kyss_install( $assoc_name, $admin_name, $admin_surname, $admin_email, slash( $admin_password ) );
 		extract( $result, EXTR_SKIP );
 ?>
 
-<h2>Fatto!</h2>
-
-<p>KYSS &egrave; stato installato. &Egrave; stato facile, vero?</p>
+<h2>Installazione avvenuta con successo!</h2>
 
 <table>
 	<tr>
@@ -234,7 +233,8 @@ function validate() {
 		<td><?php
 		if ( ! empty( $password ) && empty( $admin_password_check ) )
 			echo '<code>' . $password . '</code><br>';
-		echo "<p>$password_message</p>"; ?>
+		if ( ! empty ( $password_message ) )
+			echo $password_message; ?>
 		</td>
 	</tr>
 </table>

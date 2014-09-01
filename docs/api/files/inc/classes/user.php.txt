@@ -24,15 +24,6 @@ class KYSS_User {
 	private $data;
 
 	/**
-	 * The user's ID.
-	 *
-	 * @since  0.7.0
-	 * @access public
-	 * @var  int
-	 */
-	public $ID = 0;
-
-	/**
 	 * The user's group(s).
 	 *
 	 * @since  0.7.0
@@ -63,29 +54,10 @@ class KYSS_User {
 	 * @param  int|string|stdClass|KYSS_User $id User's ID, a KYSS_User object, or a user
 	 * object from the DB.
 	 * @param  string $email Optional. User's email.
-	 * @return KYSS_User
 	 */
-	function __construct( $id = 0, $email = '' ) {
-		if ( is_a( $id, 'KYSS_User' ) ) {
-			$this->init( $id->data );
-			return;
-		} elseif ( is_object( $id ) ) {
-			$this->init( $id );
-			return;
-		}
-
-		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
-			$name = $id;
-			$id = 0;
-		}
-
-		if ( $id )
-			$data = self::get_user_by( 'id', $id );
-		else
-			$data = self::get_user_by( 'email', $email );
-
-		if ( $data )
-			$this->init( $data );
+	function __construct() {
+		if ( isset( $this->gruppo ) )
+			$this->gruppo = explode( ',', $this->gruppo );
 	}
 
 	/**
@@ -110,6 +82,8 @@ class KYSS_User {
 	 * @since  0.7.0
 	 * @access public
 	 * @static
+	 *
+	 * @global  kyssdb
 	 *
 	 * @param string $field The field to query against. Accepts <id>, <email>.
 	 * @param  string|int $value The field value.
@@ -144,7 +118,42 @@ class KYSS_User {
 		) )
 			return false;
 
+		if ( $user->num_rows == 0 ) {
+			trigger_error( "Unknown user {$field}: {$value}", E_USER_WARNING );
+			return false; // TODO: Return KYSS_Error instead
+		} else {
+			$user = $user->fetch_object( 'KYSS_User' );
+		}
+
 		return $user;
+	}
+
+	/**
+	 * Retrieve users list.
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 * 
+	 * @return  array|false Array of user objects. False on failure.
+	 */
+	public static function get_users_list() {
+		global $kyssdb;
+
+		if ( !$user = $kyssdb->query(
+			"SELECT * FROM {$kyssdb->utenti}"
+		) )
+			return false;
+
+		$users = array();
+
+		for ( $i = 0; $i < $user->num_rows; $i++ ) {
+			array_push( $users, $user->fetch_object( 'KYSS_User' ) );
+		}
+
+		return $users;
 	}
 
 	/**
@@ -183,44 +192,96 @@ class KYSS_User {
 		global $kyssdb;
 
 		// Hash the password.
-		$pass = KYSS_Pass::hash( $pass );
+		if ( ! empty( $pass ) )
+			$pass = KYSS_Pass::hash( $pass );
 
 		// If email is given, check that it is unique.
 		if ( isset( $data['email'] ) && self::email_exists( $data['email'] ) )
-			return new KYSS_Error( 'existing_user_email', "Mi dispiace, questa email &egrave; gi&agrave; in uso!" );
+			return new KYSS_Error( 'existing_user_email', "Spiacenti, questo indirizzo email &egrave; gi&agrave; in uso." );
 
-		$columns = array( 'nome', 'cognome', 'password' );
-		$values = array( "'{$name}'", "'{$surname}'", "'{$pass}'" );
+		$columns = array( 'nome', 'cognome' );
+		$values = array( "'{$name}'", "'{$surname}'" );
+
+		if ( ! empty( $pass ) && ! is_null( $pass ) ) {
+			array_push( $columns, 'password' );
+			array_push( $values, "'{$pass}'" );
+		}
 		if ( ! empty( $data ) ) {
 			foreach ( $data as $key => $value ) {
-				switch( $key ) {
-					case 'email':
-						$columns[] = $key;
-						$values[] = "'{$value}'";
-						break;
-					case 'telefono':
-						$columns[] = $key;
-						$values[] = "'{$value}'";
-						break;
-					case 'gruppo':
-						$columns[] = $key;
-						$values[] = "'{$value}'";
-						break;
-					case 'anagrafica':
-						$columns[] = $key;
-						$values[] = serialize($value);
-						break;
-				}
+				if ( $key == 'anagrafica' )
+					$value = serialize( $value );
+				if ( empty( $value ) )
+					continue;
+				else
+					$value = "'{$value}'";
+				array_push( $columns, $key );
+				array_push( $values, $value );
 			}
+			
 			$columns = join( ',', $columns );
 			$values = join( ',', $values );
-			$result = $kyssdb->query( "INSERT INTO {$kyssdb->utenti} ({$columns}) VALUES ({$values})" );
 		}
 
+		$query = "INSERT INTO {$kyssdb->utenti} ({$columns}) VALUES ({$values})";
+		if ( !$result = $kyssdb->query( $query ) ) {
+			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
+			return false;
+		}
+
+		return $kyssdb->insert_id;
+	}
+
+	/**
+	 * Update user in the db.
+	 *
+	 * The `$data` array can contain the following fields:
+	 * - 'nome' - The user's first name.
+	 * - 'cognome' - The user's surname.
+	 * - 'password' - The user's password.
+	 * - 'email' - A string containing the user's email address.
+	 * - 'telefono' - A string containing the user's phone number.
+	 * - 'gruppo' - An array of strings containing the user's group slugs.
+	 * - 'anagrafica' - An associative array of the user's anagraphic data.
+	 * It can contain the following fields:
+	 * - 'CF' - The user's tax code.
+	 * - 'nato_a' - The user's birthplace.
+	 * - 'nato_il' - The user's birthday.
+	 * - 'cittadinanza' - The user's nationality.
+	 * - 'residenza' => array(
+	 * 	'via' => A string with the user's street,
+	 * 	'city' => A string with the user's city,
+	 * 	'provincia' => A two-letters string with the user's district,
+	 * 	'CAP' => A five-digits string with the user's ZIP code );
+	 *
+	 * @since  0.11.0
+	 * @access public
+	 * @static
+	 *
+	 * @global kyssdb
+	 *
+	 * @param  int $id User's ID.
+	 * @param  array $data User's data.
+	 * @return  bool True if successful, false otherwise.
+	 */
+	public static function update( $id, $data ) {
+		global $kyssdb;
+
+		// Hash the password, if given.
+		if ( isset( $data['password'] ) && ! empty( $data['password'] ) )
+			$data['password'] = KYSS_Pass::hash( $data['password'] );
+
+		// If email is given, check that it is unique.
+		if ( isset( $data['email'] ) && self::email_exists( $data['email'] ) )
+			return new KYSS_Error( 'existing_user_email', "Spiacenti, questo indirizzo email &egrave; gi&agrave; in uso." );
+
+		if ( empty( $data ) )
+			return false;
+		
+		$result = $kyssdb->update( $kyssdb->utenti, $data, array( 'ID' => $id ) );
+
 		if ( $result )
-			return $kyssdb->insert_id;
-		else
-			trigger_error( $kyssdb->error, E_USER_WARNING ); // TODO: Return KYSS_Error instead.
+			return true;
+		return false;
 	}
 
 	/**
@@ -468,8 +529,8 @@ class KYSS_Groups {
 	 * @return KYSS_Group|null Group object. Null if not found.
 	 */
 	public static function get_group( $slug ) {
-		if ( isset( $this->groups[$slug] ) )
-			return $this->groups[$slug];
+		if ( isset( self::$groups[$slug] ) )
+			return self::$groups[$slug];
 	}
 
 	/**
@@ -483,6 +544,23 @@ class KYSS_Groups {
 	 */
 	public static function get_slugs() {
 		return array_keys( self::$groups );
+	}
+
+	/**
+	 * Retrieve list of default groups.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @return  array Associative array of group slugs and names.
+	 */
+	public static function get_defaults() {
+		$list = array();
+		foreach ( self::$defaults as $slug => $atts )
+			$list[$slug] = $atts['name'];
+
+		return $list;
 	}
 
 	/**

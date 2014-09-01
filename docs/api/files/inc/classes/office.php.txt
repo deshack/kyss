@@ -1,0 +1,65 @@
+<?php
+/**
+ * KYSS Office API
+ *
+ * @package  KYSS
+ * @subpackage  Office
+ */
+
+/**
+ * KYSS Office class
+ *
+ * @since
+ * @package  KYSS
+ * @subpackage  Office
+ */
+class KYSS_Office {
+	/**
+	 * The Office's type.
+	 *
+	 * @since 
+	 * @access public
+	 * @var  string
+	 */
+	public $carica;
+
+	/**
+	 * The Office's user ID.
+	 *
+	 * @since 
+	 * @access public
+	 * @var  int
+	 */
+	public $utente;
+
+	/**
+	 * The Office's start date.
+	 *
+	 * @since 
+	 * @access public
+	 * @var  date
+	 */
+	public $inizio;
+
+	/**
+	 * The Office's end date.
+	 *
+	 * @since 
+	 * @access public
+	 * @var  date
+	 */
+	public $fine;
+
+	/**
+	 * Constructor.
+	 *
+	 * @since  
+	 * @access public
+	 *
+	 * @param  
+	 * @return KYSS_Office
+	 */
+	function __construct() {
+		
+	}
+
