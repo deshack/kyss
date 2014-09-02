@@ -10,7 +10,7 @@
 $meetings = KYSS_Meeting::get_list();
 
 // Small workaround to remove array elements that evaluate to false.
-// Useful if `KYSS_Event::get_meetings_list()` adds a NULL element.
+// Useful if `KYSS_Meeting::get_list()` adds a NULL element.
 if ( is_array( $meetings ) ) 
 	$meetings = array_filter( $meetings );
 ?>

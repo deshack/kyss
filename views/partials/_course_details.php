@@ -50,6 +50,12 @@ $course = KYSS_Course::get_course_by_id( $id );
 		</dl>
 	</div>
 </div>
+
+<?php 
+// Display subscriptions list
+// require( VIEWS . '/partials/_subscription_table.php');
+?>
+
 <footer class="entry-meta text-center">
 	<div class="row">
 		<div class="medium-6 columns">

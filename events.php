@@ -37,19 +37,6 @@ get_sidebar();
 ?>
 
 <?php
-switch ( $action ) {
-	case 'view':
-		require( VIEWS . '/partials/_event_details.php' );
-		break;
-	case 'edit':
-		require( VIEWS . '/partials/_event_form.php' );
-		break;
-	case 'add':
-		require( VIEWS . '/partials/_event_form.php' );
-		break;
-	case 'list':	
-	default:
-		require( VIEWS . '/partials/_event_table.php' );
-		break;
-}
+require( VIEWS . '/partials/_event_table.php' );
+
 get_footer();
