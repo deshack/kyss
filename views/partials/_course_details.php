@@ -8,10 +8,10 @@
  */
 
 if ( ! defined( 'ABSPATH' ) )
-	kyss_die( 'You cannot access this file directly!', '', array( 'back_link' => true ) );
+	kyss_die( 'Non puoi accedere direttamente a questo file!', '', array( 'back_link' => true ) );
 
 if ( empty( $id ) ) {
-	$message = 'Stai tentando di visualizzare i dettagli di una corso, ma non hai specificato quale.';
+	$message = 'Stai tentando di visualizzare i dettagli di un corso, ma non hai specificato quale.';
 	kyss_die( $message, '', array( 'back_link' => true ) );
 }
 

@@ -272,7 +272,7 @@ class KYSS_DB extends mysqli {
 		$sql = "UPDATE $table SET " . implode( ', ', $query ) . " WHERE " . implode( ' AND ', $wheres );
 		
 		if ( ! $result = $this->query( $sql ) )
-			trigger_error( $this->error, E_USER_WARNING );
+			trigger_error( "Query $sql returned $this->error", E_USER_WARNING );
 		return $result;
 	}
 

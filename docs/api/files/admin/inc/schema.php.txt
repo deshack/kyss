@@ -46,7 +46,7 @@ function get_db_schema() {
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->cariche} (
-			`carica`		ENUM('presidente','vicepresidente','segretario','tesoriere','consigliere') NOT NULL,
+			`carica`		ENUM('presidente', 'vicepresidente', 'segretario', 'tesoriere', 'consigliere') NOT NULL,
 			`inizio`		date NOT NULL,
 			`utente`		bigint(20) UNSIGNED NOT NULL,
 			`fine`			date,
@@ -59,7 +59,7 @@ function get_db_schema() {
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->pratiche} (
 			`protocollo`		int(6) UNSIGNED AUTO_INCREMENT NOT NULL,
 			`utente`			bigint(20) UNSIGNED NOT NULL,
-			`tipo`				enum('adesione','liberatoria') NOT NULL,
+			`tipo`				enum('adesione', 'liberatoria') NOT NULL,
 			`data`				date NOT NULL,
 			`ricezione`			date NOT NULL,
 			`approvata`			boolean DEFAULT NULL,
@@ -72,16 +72,16 @@ function get_db_schema() {
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->eventi} (
 			`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
 			`nome`			varchar(20),
-			`inizio`		date NOT NULL,
-			`fine`			date,
+			`data_inizio`	date NOT NULL,
+			`data_fine`		date,
+			`luogo`			varchar(20),
 			PRIMARY KEY (`ID`)
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->talk} (
-			`ID`			bigint(20) UNSIGNED NOT NULL,
+			`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
 			`titolo`		varchar(255) NOT NULL,
 			`data`			datetime,
-			`luogo`			varchar(20),
 			`argomenti`		text,
 			`relatore`		bigint(20) UNSIGNED,
 			`evento`		bigint(20) UNSIGNED,
@@ -94,32 +94,25 @@ function get_db_schema() {
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->riunioni} (
 			`ID`			bigint(20) UNSIGNED NOT NULL,
-			`tipo`			enum('CD','AdA') NOT NULL,
-			`data`			date NOT NULL,
-			`inizio`		time,
-			`fine`			time,
-			`luogo`			varchar(20),
+			`tipo`			enum('CD', 'AdA') NOT NULL,
+			`ora_inizio`	time,
+			`ora_fine`		time,
 			`presidente`	bigint(20) UNSIGNED,
 			`segretario`	bigint(20) UNSIGNED,
-			`evento`		bigint(20) UNSIGNED,
 			PRIMARY KEY (`ID`),
+			FOREIGN KEY (`ID`) REFERENCES {$kyssdb->eventi}(`ID`)
+				ON UPDATE CASCADE ON DELETE CASCADE,
 			FOREIGN KEY (`presidente`) REFERENCES {$kyssdb->utenti}(`ID`)
 				ON UPDATE CASCADE ON DELETE RESTRICT,
 			FOREIGN KEY (`segretario`) REFERENCES {$kyssdb->utenti}(`ID`)
-				ON UPDATE CASCADE ON DELETE RESTRICT,
-			FOREIGN KEY (`evento`) REFERENCES {$kyssdb->eventi}(`ID`)
-				ON UPDATE CASCADE ON DELETE CASCADE
+				ON UPDATE CASCADE ON DELETE RESTRICT
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->corsi} (
 			`ID`			bigint(20) UNSIGNED NOT NULL,
-			`titolo`		varchar(255) NOT NULL,
-			`livello`		enum('base','medio','avanzato') NOT NULL,
-			`luogo`			varchar(20),
-			`lezioni`		int,
-			`evento`		bigint(20) UNSIGNED,
+			`livello`		enum('base', 'medio', 'avanzato') NOT NULL,
 			PRIMARY KEY (`ID`),
-			FOREIGN KEY (`evento`) REFERENCES {$kyssdb->eventi}(`ID`)
+			FOREIGN KEY (`ID`) REFERENCES {$kyssdb->eventi}(`ID`)
 				ON UPDATE CASCADE ON DELETE CASCADE,
 			CHECK(`lezioni` > 0)
 		) ENGINE = InnoDB",
@@ -145,6 +138,7 @@ function get_db_schema() {
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->verbali} (
 			`protocollo`	int(6) UNSIGNED AUTO_INCREMENT NOT NULL,
+			`contenuto`		text,
 			`riunione`		bigint(20) UNSIGNED NOT NULL,
 			PRIMARY KEY (`protocollo`),
 			FOREIGN KEY (`riunione`) REFERENCES {$kyssdb->riunioni}(`ID`)
@@ -153,10 +147,10 @@ function get_db_schema() {
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->bilanci} (
 			`ID`			bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
-			`tipo`			enum('mensile','consuntivo','preventivo') NOT NULL,
-			`mese`			enum('Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'),
+			`tipo`			enum('mensile', 'consuntivo', 'preventivo') NOT NULL,
+			`mese`			enum('Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'),
 			`anno`			year NOT NULL,
-			`cassa`			varchar(10) NOT NULL DEFAULT 0,
+			`cassa`			varchar(10) NOT NULL,
 			`banca`			varchar(10) NOT NULL,
 			`approvato`		boolean,
 			`verbale`		int(6) UNSIGNED,
@@ -188,7 +182,7 @@ function get_db_schema() {
 			`value`			longtext NOT NULL,
 			PRIMARY KEY (`ID`),
 			UNIQUE (`name`)
-		) ENGINE = InnoDB;"
+		) ENGINE = InnoDB"
 	);
 
 	return $schema;
@@ -266,7 +260,6 @@ function populate_options() {
 	$query = "INSERT INTO {$kyssdb->options} (name, value) VALUES " . $insert;
 
 	if ( ! $kyssdb->query( $query ) ) {
-		trigger_error( 'MySQL query: ' . $query, E_USER_NOTICE );
 		trigger_error( $kyssdb->error, E_USER_ERROR );
 	}
 }

@@ -256,16 +256,49 @@ class KYSS_DB extends mysqli {
 
 		$query = array();
 		foreach ( $data as $field => $value ) {
-			$query[] = "`$field` = '{$value}'";
+			if ( is_string( $value ) && ($value !== 'NULL' ) )
+				$query[] = "`$field`='{$value}'";
+			else
+				$query[] = "`$field`={$value}";
 		}
 		$wheres = array();
 		foreach ( $where as $field => $value ) {
-			$wheres[] = "`$field` = '{$value}'";
+			if ( is_string( $value ) && ( $value !== 'NULL' ) )
+				$wheres[] = "`$field`='{$value}'";
+			else
+				$wheres[] = "`$field`={$value}";
 		}
 
 		$sql = "UPDATE $table SET " . implode( ', ', $query ) . " WHERE " . implode( ' AND ', $wheres );
+		
+		if ( ! $result = $this->query( $sql ) )
+			trigger_error( "Query $sql returned $this->error", E_USER_WARNING );
+		return $result;
+	}
 
-		return $this->query( $sql );
+	/**
+	 * Retrieve possible ENUM or SET values.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 *
+	 * @param  string $table Table name.
+	 * @param  string $field Field name.
+	 * @return array|false List of possible values for the given field.
+	 */
+	public function get_enum_set( $table, $field ) {
+		$query = "SHOW COLUMNS FROM $table LIKE '$field'";
+
+		if ( ! $result = $this->query( $query ) )
+			return false;
+
+		$row = $result->fetch_assoc();
+		$values = preg_replace( '/(enum\(|set\()/', '', $row['Type'] );
+		$values = str_replace( ')', '', $values );
+		$values = str_replace( "'", '', $values );
+		$values = explode( ',', $values );
+		var_dump( $values );
+		return $values;
 	}
 
 	/**

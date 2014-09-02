@@ -439,9 +439,34 @@ function kyss_css( $name, $echo = false ) {
 	global $kyss_version;
 
 	$name = trim($name);
-	$output = sprintf( '<link rel="stylesheet" id="%1$s" href="%2$s" type="text/css" media="all">',
+	$output = sprintf( '<link rel="stylesheet" id="%1$s" href="%2$s" type="text/css" media="all">'."\n",
 		$name,
 		clean_url( get_asset_url() . $name . '.css?' . $kyss_version )
+	);
+
+	if ( $echo ) {
+		echo $output;
+		return;
+	}
+	return $output;
+}
+
+/**
+ * Get JavaScript tag.
+ *
+ * @global  kyss_version
+ *
+ * @param string $name JavaScript file name.
+ * @param bool $echo Optional. True to echo the result, false to return. Default <false>.
+ * @return  string The HTML string to be used in page `<head>`.
+ */
+function kyss_js( $name, $echo = false ) {
+	global $kyss_version;
+
+	$name = trim($name);
+	$output = sprintf( '<script type="text/javascript" id="%1$s-script" src="%2$s"></script>'."\n",
+		$name,
+		clean_url( get_asset_url( 'js' ) . $name . '.js?' . $kyss_version )
 	);
 
 	if ( $echo ) {

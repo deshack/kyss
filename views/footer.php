@@ -18,7 +18,7 @@ Something
 </footer>
 
 <script>
-	jQuery(document).foundation();
+jQuery(document).foundation();
 </script>
 
 <?php $hook->run( 'kyss_footer' ); ?>

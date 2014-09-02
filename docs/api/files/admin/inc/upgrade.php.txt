@@ -62,7 +62,7 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	}
 	$user_id = KYSS_User::create($user_name, $user_surname, $user_password, array( 'email' => $user_email ) );
 
-	$user = new KYSS_User($user_id);
+	$user = KYSS_User::get_user_by( 'id', $user_id );
 	$user->set_role('owner');
 	
 	/**
@@ -75,5 +75,5 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	$hook->run( 'kyss_installed', $user );
 	
 	// TODO: remove 'empty message' string.
-	return array('url' => $guessurl, 'user_id' => $user_id, 'password' => $user_password, 'password_message' => (isset($message) ? $message : 'empty message') );
+	return array('url' => $guessurl, 'user_id' => $user_id, 'password' => $user_password, 'password_message' => (isset($message) ? $message : '') );
 }

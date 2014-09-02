@@ -85,8 +85,9 @@ class KYSS_Pass {
 	public static function verify_auth_cookie( $cookie ) {
 		list( $user, $hash ) = explode( ',', $cookie );
 
-		if ( sha1( $user, 'abcd' ) == $hash )
+		if ( sha1( $user . 'abcd' ) == $hash ) {
 			return intval( $user );
+		}
 		return false;
 	}
 }
