@@ -15,22 +15,13 @@
  */
 class KYSS_User {
 	/**
-	 * User data container.
-	 *
-	 * @since  0.7.0
-	 * @access private
-	 * @var  array
-	 */
-	private $data;
-
-	/**
 	 * The user's group(s).
 	 *
 	 * @since  0.7.0
 	 * @access private
 	 * @var  array
 	 */
-	private $groups = array();
+	public $groups = array();
 
 	/**
 	 * The user's office.
@@ -39,7 +30,22 @@ class KYSS_User {
 	 * @access private
 	 * @var  string
 	 */
-	private $carica = '';
+	public $carica;
+
+	/**
+	 * List of available user offices.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @var array
+	 */
+	public static $cariche = array(
+		'presidente',
+		'vicepresidente',
+		'segretario',
+		'tesoriere',
+		'consigliere'
+	);
 
 	/**
 	 * Constructor.
@@ -57,21 +63,7 @@ class KYSS_User {
 	 */
 	function __construct() {
 		if ( isset( $this->gruppo ) )
-			$this->gruppo = explode( ',', $this->gruppo );
-	}
-
-	/**
-	 * Set up object properties.
-	 *
-	 * @since  0.7.0
-	 * @access private
-	 *
-	 * @param  object $data User DB row object.
-	 */
-	private function init( $data ) {
-		$data = $data->fetch_array( MYSQLI_ASSOC );
-		$this->data = $data;
-		$this->ID = (int) $data['ID'];
+			$this->groups = explode( ',', $this->gruppo );
 	}
 
 	/**
@@ -427,13 +419,17 @@ class KYSS_User {
 	 *
 	 * @todo  Write method KYSS_User::set_role()
 	 *
-	 * @since  x.x.x
+	 * @since  0.12.0
 	 * @access public
+	 *
+	 * @global  kyssdb
 	 *
 	 * @param  string $slug The role slug.
 	 * @return  null
 	 */
 	public function set_role( $slug ) {
+		global $kyssdb;
+		
 		$this->role = $slug;
 	}
 }
