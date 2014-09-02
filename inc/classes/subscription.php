@@ -27,15 +27,15 @@ class KYSS_Subscription {
 	 * @param  int $value The field value.
 	 * @return array|false Array of KYSS_Subscription object. False on failure.
 	 */
-	public static function get_subscription_list( $field = '', $value ) {
+	public static function get_list( $field = '', $value = 0) {
 		global $kyssdb;
 
-		switch ( $filed ) {
+		switch ( $field ) {
 			case 'utente':
-				$query = "SELECT utente ";
+				$query = "SELECT corso ";
 				break;
 			case 'corso':
-				$query = "SELECT corso ";
+				$query = "SELECT utente ";
 				break;
 			case '':
 			default:
@@ -44,14 +44,14 @@ class KYSS_Subscription {
 
 		$query .= "FROM {$kyssdb->iscritto} ";
 
-		if ( ! empty( $filed ) && isset( $value ) ) {
+		if ( ! empty( $filed ) ) {
 			if ( ! is_numeric( $value ) )
 				return false;
 			$value = intval( $value );
 			if ( $value < 1 )
 				return false;
 
-			$query .= "WHERE {$kyssdb->iscritto}.{$field} = {$value}";
+			$query .= "WHERE {$field} = {$value}";
 		}
 
 		if ( ! $subscription = $kyssdb->query( $query ) )
