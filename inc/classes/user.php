@@ -33,21 +33,6 @@ class KYSS_User {
 	public $carica;
 
 	/**
-	 * List of available user offices.
-	 *
-	 * @since  0.12.0
-	 * @access public
-	 * @var array
-	 */
-	public static $cariche = array(
-		'presidente',
-		'vicepresidente',
-		'segretario',
-		'tesoriere',
-		'consigliere'
-	);
-
-	/**
 	 * Constructor.
 	 *
 	 * Retrieves the userdata and passes it to {@link KYSS_User::init()}.
@@ -251,11 +236,10 @@ class KYSS_User {
 	 *
 	 * @global kyssdb
 	 *
-	 * @param  int $id User's ID.
 	 * @param  array $data User's data.
 	 * @return  bool True if successful, false otherwise.
 	 */
-	public static function update( $id, $data ) {
+	public function update( $data ) {
 		global $kyssdb;
 
 		// Hash the password, if given.
@@ -266,10 +250,29 @@ class KYSS_User {
 		if ( isset( $data['email'] ) && self::email_exists( $data['email'] ) )
 			return new KYSS_Error( 'existing_user_email', "Spiacenti, questo indirizzo email &egrave; gi&agrave; in uso." );
 
+		// If $data is empty, return as unsuccessful.
 		if ( empty( $data ) )
 			return false;
+
+		foreach ( $data as $key => $value ) {
+			if ( $user->{$key} == $value )
+				unset( $data[$key] );
+		}
+
+		// If $data is empty here, we were trying to update the user with
+		// the same data stored in the db, so do nothing and return as successful.
+		if ( empty( $data ) )
+			return true;
+
+		if ( isset( $data['carica'] ) ) {
+			if ( !isset( $this->carica ) || empty( $this->carica ) )
+				$this->set_office( $data['carica'] );
+			else
+				$this->update_office( $data['carica'] );
+			unset( $data['carica'] );
+		}
 		
-		$result = $kyssdb->update( $kyssdb->utenti, $data, array( 'ID' => $id ) );
+		$result = $kyssdb->update( $kyssdb->utenti, $data, array( 'ID' => $this->ID ) );
 
 		if ( $result )
 			return true;
@@ -424,13 +427,115 @@ class KYSS_User {
 	 *
 	 * @global  kyssdb
 	 *
-	 * @param  string $slug The role slug.
-	 * @return  null
+	 * @param  string $data Associative array of office data.
+	 * @return true|KYSS_Error True if successful, KYSS_Error with appropriate descriptions otherwise.
 	 */
-	public function set_role( $slug ) {
+	public function set_office( $data ) {
 		global $kyssdb;
+
+		if ( !isset( $data['carica'] ) )
+			return new KYSS_Error( 'empty_carica', 'Devi specificare la carica da associare all\'utente.' );
+		if ( !isset( $data['inizio'] ) )
+			return new KYSS_Error( 'empty_inizio', 'Devi specificare da quando l\'utente ricopre questa carica.', array( 'carica' => $data['carica'] ) );
+
+		if ( ! in_array( $data['carica'], $this->cariche ) )
+			return new KYSS_Error( 'invalid_carica', 'La carica che vuoi assegnare non &egrave; valida.', array( 'carica' => $data['carica'] ) );
+
+		// Let's see if we are updating an existing office or inserting a new one.
+		if ( isset( $this->carica ) && !empty( $this->carica ) ) {
+			if ( $this->carica == $data['carica'] ) {
+				// Same office, check start date.
+				
+			}
+		}
+
+		$end_str = !empty( $end ) ? ',fine' : '';
+		$end = !empty( $end ) ? ",'{$end}'" : '';
+
+		$query = "INSERT INTO {$kyssdb->cariche} (carica,inizio,utente{$end_str}) VALUES ('{$slug}','{$start}','{$this->ID}'{$end})";
+		if ( ! $result = $kyssdb->query( $query ) ) {
+			trigger_error( "Query $query returned an error: $kyssdb->error", E_USER_WARNING );
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+		}
 		
-		$this->role = $slug;
+		$this->carica = $data['carica'];
+		return true;
+	}
+}
+
+/**
+ * KYSS Office class.
+ *
+ * Handles all the operations that can be done with offices and office data.
+ *
+ * @since  0.12.0
+ * @package KYSS
+ * @subpackage  User
+ */
+class KYSS_Office {
+	/**
+	 * List of default offices.
+	 *
+	 * @since  0.12.0
+	 * @access private
+	 * @static
+	 * @var array
+	 */
+	private static $defaults = array(
+		'presidente',
+		'vicepresidente',
+		'segretario',
+		'tesoriere',
+		'consigliere'
+	);
+
+	/**
+	 * Retrieve a list of default offices.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 * 
+	 * @return array List of default offices.
+	 */
+	public static function get_defaults() {
+		return self::$defaults;
+	}
+
+	/**
+	 * Set user office.
+	 *
+	 * Adds or updates user office based on slug and dates.
+	 *
+	 * Assumes you set the end date of a office before adding a new one to the
+	 * same user. The new one should start after the end of the previous one,
+	 * of course.
+	 *
+	 * @internal There should be a better way.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @param  string $office Office slug.
+	 * @param  string $start Start date.
+	 * @param  KYSS_User $user User object.
+	 * @param  string $end Optional. End date.
+	 */
+	public static function set( $office, $start, $user, $end = null ) {
+		// Check if we are updating an existing office or adding a new one.
+		if ( isset( $user->carica ) && !empty( $user->carica ) ) {
+			if ( $user->carica == $office ) {
+				// Same slug, check dates.
+				if ( ! isset( $user->carica->fine ) || strtotime( $start ) < strtotime( $user->carica->fine ) ) {
+					// Add new record.
+				} else {
+					// Update existing record.
+				}
+			} else {
+				// Update existing record.
+			}
+		}
 	}
 }
 

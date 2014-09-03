@@ -199,6 +199,8 @@ $office_list = KYSS_User::$cariche;
 function validate_user_data() {
 	global $id, $kyssdb;
 
+	$user = KYSS_User::get_user_by( 'id', $id );
+
 	if ( isset( $_POST['submit'] ) )
 		unset( $_POST['submit'] );
 	if ( isset( $_POST['password'] ) ) {
@@ -227,5 +229,5 @@ function validate_user_data() {
 
 	//var_dump( $valid );
 
-	KYSS_User::update( $id, $valid );
+	$user->update( $valid );
 }
