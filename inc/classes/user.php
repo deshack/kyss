@@ -517,25 +517,74 @@ class KYSS_Office {
 	 * @access public
 	 * @static
 	 *
+	 * @global  kyssdb
+	 *
 	 * @param  string $office Office slug.
 	 * @param  string $start Start date.
 	 * @param  KYSS_User $user User object.
 	 * @param  string $end Optional. End date.
 	 */
 	public static function set( $office, $start, $user, $end = null ) {
+		global $kyssdb;
+
 		// Check if we are updating an existing office or adding a new one.
 		if ( isset( $user->carica ) && !empty( $user->carica ) ) {
 			if ( $user->carica == $office ) {
 				// Same slug, check dates.
 				if ( ! isset( $user->carica->fine ) || strtotime( $start ) < strtotime( $user->carica->fine ) ) {
-					// Add new record.
+					$query = "INSERT INTO {$kyssdb->cariche} (carica,inizio,utente,fine) VALUES ('{$office}','{$start}',{$user->id}";
+					$query .= isset( $end ) ? ",'{$end}')" : ')';
+					if ( ! $result = $kyssdb->query( $query ) ) {
+						trigger_error( "Query $query returned an error: {$kyssdb->error}", E_USER_WARNING );
+						return false;
+					}
 				} else {
-					// Update existing record.
+					$data = array( 'carica' => $office, 'inizio' => $start, 'utente' => $user->ID );
+					if ( isset( $end ) )
+						$data[] = array( 'fine' => $end );
+					$result = $kyssdb->update( $kyssdb->cariche, )
 				}
 			} else {
 				// Update existing record.
 			}
 		}
+
+		return $result;
+	}
+
+	/**
+	 * Retrieve office from the db.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param int $user User id.
+	 * @return KYSS_Office|KYSS_Error|false
+	 */
+	public static function get( $user ) {
+		global $kyssdb;
+
+		$query = "SELECT * FROM {$kyssdb->cariche} WHERE `utente`={$user}";
+		if ( ! $result = $kyssdb->query( $query ) ) {
+			trigger_error( "Query $query returned an error: {$kyssdb->error}", E_USER_WARNING );
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'utente' => $id ) );
+		}
+
+		if ( $result->num_rows === 0 )
+			return false;
+
+		for ( $i = 0; $i < $result->num_rows, $i++ ) {
+			$office = $result->fetch_object( 'KYSS_Office' );
+			if ( !isset( $office->fine ) || strtotime( $office->fine ) > time() )
+				break;
+		}
+
+		if ( isset( $office ) )
+			return $office;
+		return false;
 	}
 }
 

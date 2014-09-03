@@ -57,6 +57,8 @@ require( INC . 'functions.php' );
 require( CLASSES . 'kyss-error.php' );
 require( CLASSES . 'user.php' );
 require( CLASSES . 'event.php' );
+require( CLASSES . 'document.php' );
+require( CLASSES . 'subscription.php' );
 
 // Check PHP version
 check_php_version();

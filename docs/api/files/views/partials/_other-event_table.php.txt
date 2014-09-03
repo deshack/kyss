@@ -10,7 +10,7 @@
 $other_events = KYSS_Event::get_events_list();
 
 // Small workaround to remove array elements that evaluate to false.
-// Useful if `KYSS_Event::get_other_events_list()` adds a NULL element.
+// Useful if `KYSS_Event::get_list()` adds a NULL element.
 if ( is_array( $other_events ) )
 	$other_events = array_filter( $other_events ); 
 ?>

@@ -10,7 +10,7 @@
 $talks = KYSS_Talk::get_list();
 
 // Small workaround to remove array elements that evaluate to false.
-// Useful if `KYSS_Event::get_other_events_list()` adds a NULL element.
+// Useful if `KYSS_Talk::get_list()` adds a NULL element.
 if ( is_array( $talks ) )
 	$talks = array_filter( $talks ); 
 ?>
