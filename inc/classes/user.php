@@ -24,15 +24,6 @@ class KYSS_User {
 	public $groups = array();
 
 	/**
-	 * The user's office.
-	 *
-	 * @since  0.8.0
-	 * @access private
-	 * @var  string
-	 */
-	public $carica;
-
-	/**
 	 * Constructor.
 	 *
 	 * Retrieves the userdata and passes it to {@link KYSS_User::init()}.
@@ -530,6 +521,8 @@ class KYSS_Office {
 		foreach ( $data as $key => $value ) {
 			if ( ! in_array( $key, $fields ) || $value == $this->{$key} )
 				unset( $data[$key] );
+			if ( empty( $value ) )
+				$data[$key] = 'NULL';
 		}
 
 		if ( empty( $data ) )

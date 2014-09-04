@@ -93,12 +93,12 @@ $meeting = KYSS_Meeting::get_meeting_by_id( $id );
 
 <footer class="entry-meta text-center">
 	<div class="row">
-		<div class="medium-6 columns">
+		<div class="small-6 columns">
 			<a href="<?php echo get_site_url( 'meetings.php?action=edit&id=' . $id ); ?>" class="button" title="Modifica">
 				<span class="dashicons dashicons-edit"></span>
 			</a>
 		</div>
-		<div class="medium-6 columns">
+		<div class="small-6 columns">
 			<?php back_button(); ?>
 		</div>
 	</div>

@@ -70,14 +70,14 @@ $users_list = KYSS_User::get_users_list()
 			</select>
 		</div>
 	<?php endif; ?>
-		<div class="medium-6 columns<?php echo ($action == 'edit') ? 'medium-offset-3 end' : ''; ?>">
+		<div class="medium-6 columns<?php echo ($action == 'edit') ? ' medium-offset-3 end' : ''; ?>">
 			<label for="utente">Utente</label>
 			<select name="utente">
 				<option value="NULL"<?php echo !isset( $office->utente ) ? selected( true, true, false ) : ''; ?>>
 					Nessuno
 				</option>
 			<?php foreach ( $users_list as $user ) : ?>
-				<option value="<?php echo $user->ID; ?>"<?php echo isset( $office->utente ) ? selected( $office->utente, $user->ID, false ) : ''; ?>>
+				<option value="<?php echo $user->ID; ?>"<?php echo isset( $office->utente ) ? selected( $office->utente->ID, $user->ID, false ) : ''; ?>>
 					<?php echo $user->nome . ' ' . $user->cognome; ?>
 				</option>
 			<?php endforeach; ?>
@@ -119,11 +119,8 @@ function validate_office_data( $office, $start ) {
 		unset( $_POST['submit'] );
 
 	$valid = array();
-	foreach ( $_POST as $key => $value ) {
-		if ( empty( $value ) )
-			continue;
+	foreach ( $_POST as $key => $value )
 		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
-	}
 
 	$office = KYSS_Office::get( $office, $start );
 	$result = $office->update( $valid );
