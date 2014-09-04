@@ -13,9 +13,18 @@
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>">
 			<span class="dashicons dashicons-dashboard"></span> Dashboard
 		</a></li>
-		<li><a href="<?php echo get_option( 'siteurl' ); ?>/users.php">
-			<span class="dashicons dashicons-groups"></span> Utenti
-		</a></li>
+		<li>
+			<a href="<?php echo get_option( 'siteurl' ); ?>/users.php">
+				<span class="dashicons dashicons-groups"></span> Utenti
+			</a>
+		<?php if ( ( strpos( $_SERVER['PHP_SELF'], 'offices' ) || strpos( $_SERVER['PHP_SELF'], 'users' ) ) !== false ) : ?>
+			<ul>
+				<li><a href="<?php echo get_site_url( 'offices.php' ); ?>">
+					<span class="dashicons dashicons-arrow-right"></span> Cariche
+				</a></li>
+			</ul>
+		<?php endif; ?>
+		</li>
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/events.php">
 			<span class="dashicons dashicons-calendar"></span> Eventi
 		</a>

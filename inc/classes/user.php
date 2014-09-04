@@ -491,7 +491,7 @@ class KYSS_Office {
 	public static function create( $office, $start, $user, $end = null ) {
 		global $kyssdb;
 
-		if ( ! in_array( $office, $this->defaults ) )
+		if ( ! in_array( $office, self::$defaults ) )
 			return new KYSS_Error( 'invalid_office', 'Nome della carica non valido.' );
 
 		$columns = array( 'carica', 'inizio', 'utente' );

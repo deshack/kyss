@@ -11,7 +11,7 @@
 if ( ! defined( 'ABSPATH' ) )
 	kyss_die( 'You cannot access this page directly!' );
 
-if ( $action == 'edit' && ( empty( $slug ) || empty( $start ) ) {
+if ( $action == 'edit' && ( empty( $slug ) || empty( $start ) ) ) {
 	$message = 'Stai tentando di modificare una carica, ma non hai specificato quale.';
 	kyss_die( $message, '', array( 'back_link' => true ) );
 }
@@ -27,7 +27,7 @@ if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) :
 			$user = isset( $_POST['utente'] ) ? $_POST['utente'] : null;
 			$end = isset( $_POST['fine'] ) ? $_POST['fine'] : null;
 			$office = KYSS_Office::create( $office, $start, $user, $end );
-			kyss_redirect( get_site_url( '/offices.php' );
+			kyss_redirect( get_site_url( '/offices.php' ) );
 			break;
 	}
 endif;
@@ -60,12 +60,12 @@ $users_list = KYSS_User::get_users_list()
 
 <form id="<?php echo $action; ?>-office" method="post" action="offices.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
-	<?php if ( $action == 'add ' ) : ?>
+	<?php if ( $action == 'add' ) : ?>
 		<div class="medium-6 columns">
 			<label for="carica">Carica</label>
 			<select name="carica">
 			<?php foreach ( $offices_list as $office ) : ?>
-				<option value="<?php echo $office->carica; ?>"><?php echo ucfirst( $office->carica ); ?></option>
+				<option value="<?php echo $office; ?>"><?php echo ucfirst( $office ); ?></option>
 			<?php endforeach; ?>
 			</select>
 		</div>
@@ -73,6 +73,9 @@ $users_list = KYSS_User::get_users_list()
 		<div class="medium-6 columns<?php echo ($action == 'edit') ? 'medium-offset-3 end' : ''; ?>">
 			<label for="utente">Utente</label>
 			<select name="utente">
+				<option value="NULL"<?php echo !isset( $office->utente ) ? selected( true, true, false ) : ''; ?>>
+					Nessuno
+				</option>
 			<?php foreach ( $users_list as $user ) : ?>
 				<option value="<?php echo $user->ID; ?>"<?php echo isset( $office->utente ) ? selected( $office->utente, $user->ID, false ) : ''; ?>>
 					<?php echo $user->nome . ' ' . $user->cognome; ?>
@@ -89,6 +92,14 @@ $users_list = KYSS_User::get_users_list()
 		<div class="medium-6 columns">
 			<label for="fine">Fine</label>
 			<input type="date" id="fine" name="fine"<?php echo isset( $office->fine ) ? get_value_html( $office->fine ) : ''; ?>>
+		</div>
+	</div>
+	<div class="row action-buttons text-center">
+		<div class="small-6 columns">
+			<input type="submit" class="button" name="submit" value="Salva">
+		</div>
+		<div class="small-6 columns">
+			<a href="<?php echo get_site_url( 'offices.php' ); ?>" class="button">Annulla</a>
 		</div>
 	</div>
 </form>
