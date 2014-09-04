@@ -23,17 +23,26 @@ $offices = KYSS_Office::get_list();
 			<th>Inizio</th>
 			<th>Fine</th>
 			<th>Utente</th>
+			<th>Azioni</th>
 		</tr>
 	</thead>
 	<tbody>
 	<?php foreach ( $offices as $office ) : ?>
 		<tr>
-			<td><?php echo $office->carica; ?></td>
+			<td><?php echo ucfirst( $office->carica ); ?></td>
 			<td><?php echo $office->inizio; ?></td>
 			<td><?php echo isset( $office->fine ) ? $office->fine : '-'; ?></td>
 			<td>
 				<a href="<?php echo get_site_url( 'users.php?action=view&id=' . $office->utente->ID ); ?>">
 					<?php echo ( isset( $office->utente->nome ) ? $office->utente->nome : '' ) . ' ' . ( isset( $office->utente->cognome ) ? $office->utente->cognome : '' ); ?>
+				</a>
+			</td>
+			<td>
+				<a href="<?php echo get_site_url( 'offices.php?action=view&office=' . $office->carica . '&start=' . $office->inizio ); ?>" title="Dettagli">
+					<span class="dashicons dashicons-visibility"></span>
+				</a>
+				<a href="<?php echo get_site_url( 'offices.php?action=edit&office=' . $office->carica . '&start=' . $office->inizio ); ?>" title="Modifica">
+					<span class="dashicons dashicons-edit"></span>
 				</a>
 			</td>
 		</tr>

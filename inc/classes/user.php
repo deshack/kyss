@@ -450,7 +450,12 @@ class KYSS_Office {
 	 * @since  0.12.0
 	 * @access public
 	 */
-	public function __construct() {
+	public function __construct( $data = array() ) {
+		if ( ! empty( $data ) ) {
+			foreach ( $data as $key => $value ) {
+				$this->{$key} = $value;
+			}
+		}
 		if ( isset( $this->utente ) && is_numeric( $this->utente ) )
 			$this->utente = KYSS_User::get_user_by( 'id', $this->utente );
 	}
@@ -481,7 +486,7 @@ class KYSS_Office {
 	 * @param  string $start Start date.
 	 * @param  int $user User ID.
 	 * @param  string $end Optional. End date. Default null.
-	 * @return int|KYSS_Error Office ID.
+	 * @return KYSS_Office|KYSS_Error KYSS_Office object.
 	 */
 	public static function create( $office, $start, $user, $end = null ) {
 		global $kyssdb;
@@ -502,7 +507,7 @@ class KYSS_Office {
 		$query = "INSERT INTO {$kyssdb->cariche} ({$columns}) VALUES ({$values})";
 		if ( ! $id = $kyssdb->query( $query ) )
 			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
-		return $kyssdb->insert_id;
+		return new self( array( 'carica' => $office, 'inizio' => $start, 'utente' => $user, 'fine' => $end ) );
 	}
 
 	/**
