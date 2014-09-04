@@ -35,16 +35,11 @@ get_header();
 
 get_sidebar();
 
-?>
-
-<?php
 switch( $action ) {
 	case 'view':
 		require( VIEWS . '/partials/_user_details.php' );
 		break;
 	case 'edit':
-		require( VIEWS . '/partials/_user_form.php' );
-		break;
 	case 'add':
 		require( VIEWS . '/partials/_user_form.php' );
 		break;
