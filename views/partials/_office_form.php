@@ -19,7 +19,7 @@ if ( $action == 'edit' && ( empty( $slug ) || empty( $start ) ) ) {
 if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) :
 	switch ( $action ) {
 		case 'edit':
-			validate_office_data( $slug, $start );
+			$office = validate_office_data( $slug, $start );
 			break;
 		case 'add':
 			$office = isset( $_POST['carica'] ) ? $_POST['carica'] : null;
@@ -32,16 +32,19 @@ if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) :
 	}
 endif;
 
-$office = KYSS_Office::get( $slug, $start );
+if ( ! isset( $office ) )
+	$office = KYSS_Office::get( $slug, $start );
 ?>
 
 <h1 class="page-title">
 <?php if ( $action == 'edit' ) : ?>
-	Modifica carica <small><?php echo $office->carica; ?></small>
+	Modifica carica <small><?php echo ucfirst( $office->carica ); ?></small>
 <?php else : ?>
 	Nuova carica
 <?php endif; ?>
 </h1>
+
+<?php alert_save( $office ); ?>
 
 <?php
 $form_action = '';
@@ -126,4 +129,5 @@ function validate_office_data( $office, $start ) {
 	$result = $office->update( $valid );
 	if ( is_kyss_error( $result ) )
 		kyss_die( $result );
+	return $result;
 }

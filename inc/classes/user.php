@@ -450,12 +450,17 @@ class KYSS_Office {
 	 * @since  0.12.0
 	 * @access public
 	 */
-	public function __construct( $data = array() ) {
-		if ( ! empty( $data ) ) {
-			foreach ( $data as $key => $value ) {
-				$this->{$key} = $value;
-			}
-		}
+	public function __construct() {
+		$this->get_user();
+	}
+
+	/**
+	 * Convert $this->user from user ID to KYSS_User object.
+	 *
+	 * @since 0.13.0
+	 * @access private
+	 */
+	private function get_user() {
 		if ( isset( $this->utente ) && is_numeric( $this->utente ) )
 			$this->utente = KYSS_User::get_user_by( 'id', $this->utente );
 	}
@@ -544,6 +549,8 @@ class KYSS_Office {
 		foreach ( $data as $key => $value )
 			$this->{$key} = $value;
 
+		$this->get_user();
+
 		return $this;
 	}
 
@@ -568,8 +575,10 @@ class KYSS_Office {
 		if ( ! $office = $kyssdb->query( $query ) )
 			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'query' => $query ) );
 
-		if ( $office->num_rows === 0 )
+		if ( $office->num_rows === 0 ) {
+			trigger_error( $query );
 			return false;
+		}
 
 		$office = $office->fetch_object( 'KYSS_Office' );
 

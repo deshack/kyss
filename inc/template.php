@@ -197,10 +197,66 @@ function back_button() {
  *
  * @param  string $message Custom error message.
  */
-function field_error( $message = '' ) {
-	if ( empty( $message ) )
-		$message = 'Questo campo non pu&ograve; essere vuoto.';
+function field_error( $message ) {
 ?>
 <small class="error"><?php echo $message; ?></small>
 <?php
+}
+
+/**
+ * Render alert box with custom message.
+ *
+ * @since  0.13.0
+ *
+ * @param  string $message Custom message.
+ * @param  string $classes Optional. Additional classes.
+ */
+function alert_box( $message, $classes = '' ) {
+?>
+<div data-alert class="alert-box <?php echo $classes; ?>">
+	<?php echo $message; ?>
+	<a href="#" class="close">&times;</a>
+</div>
+<?php
+}
+
+/**
+ * Render success alert box with custom message.
+ *
+ * @since  0.13.0
+ *
+ * @param  string $message Custom message.
+ */
+function alert_success( $message ) {
+	alert_box( $message, 'success' );
+}
+
+/**
+ * Render error alert box with custom message.
+ *
+ * @since  0.13.0
+ *
+ * @param  string $message Custom message.
+ */
+function alert_error( $message ) {
+	alert_box( $message, 'alert' );
+}
+
+/**
+ * Render alert box with information about save action.
+ *
+ * @since  0.13.0
+ *
+ * @param  misc $error Entity to check errors against.
+ */
+function alert_save( $error ) {
+	if ( ! isset( $_GET['save'] ) || $_GET['save'] != 'true' )
+		return;
+
+	if ( is_kyss_error( $error ) )
+		alert_error( $error->get_error_message() );
+	elseif ( ! $error )
+		alert_error( 'Salvataggio fallito.' );
+	else
+		alert_success( 'Salvataggio effettuato con successo.' );
 }
