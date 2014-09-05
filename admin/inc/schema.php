@@ -213,7 +213,7 @@ function get_db_triggers() {
 			DECLARE quote INT;
 			SELECT COUNT(*) INTO quote
 			FROM {$kyssdb->movimenti}
-			WHERE {$kyssdb->movimenti}.utente = utente AND {$kyssdb->movimenti}.corso = corso;
+			WHERE {$kyssdb->movimenti}.utente = utente AND {$kyssdb->movimenti}.causale = 'quote' AND {$kyssdb->movimenti}.corso = corso;
 			IF ( quote = 0 ) THEN
 				SIGNAL SQLSTATE '45000'
 				SET MESSAGE_TEXT = 'Quota non pagata';
@@ -239,7 +239,7 @@ function get_db_triggers() {
 			SELECT COUNT(*) INTO già_assegnata
 			FROM {$kyssdb->cariche}
 			WHERE {$kyssdb->cariche}.carica = carica AND (
-				( DATE( {$kyssdb->cariche}.inizio ) < DATE( inizio ) AND DATE( {$kyssdb->cariche}.fine ) > DATE( inizio AND {$kyssdb->cariche}.fine < fine ) )
+				( DATE( {$kyssdb->cariche}.inizio ) < DATE( inizio ) AND DATE( {$kyssdb->cariche}.fine ) > DATE( inizio ) AND DATE( {$kyssdb->cariche}.fine ) < DATE( fine ) )
 				OR ( DATE( {$kyssdb->cariche}.inizio ) < DATE( inizio ) AND DATE( {$kyssdb->cariche}.fine ) > DATE( fine ) )
 				OR ( DATE( {$kyssdb->cariche}.inizio ) > DATE( inizio ) AND DATE( {$kyssdb->cariche}.inizio ) < DATE( fine ) AND DATE( {$kyssdb->cariche}.fine ) > DATE( fine ) )
 				OR ( DATE( {$kyssdb->cariche}.inizio ) > DATE( inizio ) AND DATE( {$kyssdb->cariche}.fine ) < DATE( fine ) )
@@ -252,7 +252,7 @@ function get_db_triggers() {
 			FROM {$kyssdb->cariche}
 			WHERE {$kyssdb->cariche}.utente = utente AND (
 				( {$kyssdb->cariche}.fine IS NULL ) 
-				OR ( DATE( {$kyssdb->cariche}.inizio ) < DATE( inizio ) AND DATE( {$kyssdb->cariche}.fine ) > DATE( inizio AND {$kyssdb->cariche}.fine < fine ) )
+				OR ( DATE( {$kyssdb->cariche}.inizio ) < DATE( inizio ) AND DATE( {$kyssdb->cariche}.fine ) > DATE( inizio ) AND DATE( {$kyssdb->cariche}.fine ) < DATE( fine ) )
 				OR ( DATE( {$kyssdb->cariche}.inizio ) < DATE( inizio ) AND DATE( {$kyssdb->cariche}.fine ) > DATE( fine ) )
 				OR ( DATE( {$kyssdb->cariche}.inizio ) > DATE( inizio ) AND DATE( {$kyssdb->cariche}.inizio ) < DATE( fine ) AND DATE( {$kyssdb->cariche}.fine ) > DATE( fine ) )
 				OR ( DATE( {$kyssdb->cariche}.inizio ) > DATE( inizio ) AND DATE( {$kyssdb->cariche}.fine ) < DATE( fine ) )
@@ -276,7 +276,6 @@ function get_db_triggers() {
 		FOR EACH ROW BEGIN
 			IF (NEW.fine IS NULL) THEN
 				CALL controlloCariche( NEW.carica, NEW.utente, NEW.inizio, CURRENT_DATE() );
-				CALL controlloDataCarica( NEW.inizio, CURRENT_DATE() );
 			ELSE
 				CALL controlloCariche( NEW.carica, NEW.utente, NEW.inizio, NEW.fine );
 				CALL controlloDataCarica( NEW.inizio, NEW.fine );
@@ -286,11 +285,10 @@ function get_db_triggers() {
 		"CREATE TRIGGER controlloCaricheUpd
 		BEFORE UPDATE ON {$kyssdb->cariche}
 		FOR EACH ROW BEGIN
-			IF ( NEW.fine IS NULL ) THEN
-				CALL controlloCariche( NEW.utente, NEW.inizio, CURRENT_DATE() );
-				CALL controlloDataCarica( NEW.inizio, CURRENT_DATE() );
+			IF (NEW.fine IS NULL) THEN
+				CALL controlloCariche( NEW.carica, NEW.utente, NEW.inizio, CURRENT_DATE() );
 			ELSE
-				CALL controlloCariche( NEW.utente, NEW.inizio, NEW.fine );
+				CALL controlloCariche( NEW.carica, NEW.utente, NEW.inizio, NEW.fine );
 				CALL controlloDataCarica( NEW.inizio, NEW.fine );
 			END IF;
 		END",
