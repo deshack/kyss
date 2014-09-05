@@ -507,7 +507,7 @@ class KYSS_Office {
 		$query = "INSERT INTO {$kyssdb->cariche} ({$columns}) VALUES ({$values})";
 		if ( ! $id = $kyssdb->query( $query ) )
 			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
-		new self( array( 'carica' => $office, 'inizio' => $start, 'utente' => $user, 'fine' => $end ) );
+		return new self( array( 'carica' => $office, 'inizio' => $start, 'utente' => $user, 'fine' => $end ) );
 	}
 
 	/**
@@ -530,6 +530,8 @@ class KYSS_Office {
 		foreach ( $data as $key => $value ) {
 			if ( ! in_array( $key, $fields ) || $value == $this->{$key} )
 				unset( $data[$key] );
+			if ( empty( $value ) )
+				$data[$key] = 'NULL';
 		}
 
 		if ( empty( $data ) )

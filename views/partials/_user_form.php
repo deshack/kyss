@@ -81,7 +81,6 @@ switch( $action ) {
 }
 
 $group_list = KYSS_Groups::get_defaults();
-$office_list = KYSS_User::$cariche;
 ?>
 <form id="<?php echo $action; ?>-user" method="post" action="users.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
@@ -158,19 +157,11 @@ $office_list = KYSS_User::$cariche;
 		</div>
 	</fieldset>
 	<div class="row">
-		<div class="medium-4 medium-offset-2 columns">
+		<div class="medium-4 medium-offset-4 columns end">
 			<fieldset>
 				<legend>Gruppo</legend>
 			<?php foreach ( $group_list as $slug => $name ) : ?>
 				<label><input type="checkbox" name="gruppo[]" value="<?php echo $slug; ?>"<?php echo isset( $user->groups ) && in_array( $slug, $user->groups ) ? checked( true, true, false ) : ''; ?>> <?php echo $name; ?></label>
-			<?php endforeach; ?>
-			</fieldset>
-		</div>
-		<div class="medium-4 columns end">
-			<fieldset>
-				<legend>Carica</legend>
-			<?php foreach( $office_list as $carica ) : ?>
-				<label><input type="radio" name="carica" value="<?php echo $carica; ?>"<?php echo isset( $user->carica ) ? checked( $carica, $user->carica, false ) : ''; ?>> <?php echo ucfirst( $carica ); ?></label>
 			<?php endforeach; ?>
 			</fieldset>
 		</div>

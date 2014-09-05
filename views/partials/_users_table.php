@@ -40,7 +40,7 @@ if( is_array( $users ) )
 			<td>
 			<?php if ( isset( $user->gruppo ) ) : ?>
 				<?php $groups = array(); ?>
-				<?php foreach ( $user->gruppo as $slug ) : ?>
+				<?php foreach ( $user->groups as $slug ) : ?>
 					<?php $group = KYSS_Groups::get_group( $slug ); ?>
 					<?php array_push( $groups, $group->name ); ?>
 				<?php endforeach; ?>
