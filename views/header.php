@@ -34,9 +34,13 @@ header( 'Content-Type: text/html; charset=utf-8' );
 <head>
 	<title><?php echo $title; ?></title>
 	<?php kyss_css( 'dashicons', true ); ?>
+	<?php kyss_css( 'jquery-ui', true ); ?>
+	<?php kyss_css( 'jquery-ui-structure', true ); ?>
+	<?php kyss_css( 'jquery-ui-theme', true ); ?>
 	<?php kyss_css( 'kyss', true ); ?>
 	<?php kyss_js( 'modernizr', true ); ?>
 	<?php kyss_js( 'jquery', true ); ?>
+	<?php kyss_js( 'jquery-ui', true ); ?>
 	<?php kyss_js( 'fastclick', true ); ?>
 	<?php kyss_js( 'foundation', true ); ?>
 

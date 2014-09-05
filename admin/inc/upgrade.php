@@ -63,8 +63,7 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	$user_id = KYSS_User::create($user_name, $user_surname, $user_password, array( 'email' => $user_email ) );
 
 	$user = KYSS_User::get_user_by( 'id', $user_id );
-	$user->set_role('owner');
-	
+
 	/**
 	 * Fires after the application is fully installed.
 	 *
