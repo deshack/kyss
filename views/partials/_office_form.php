@@ -87,11 +87,11 @@ $users_list = KYSS_User::get_users_list()
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="inizio">Inizio</label>
-			<input type="date" id="inizio" name="inizio"<?php echo isset( $office->inizio ) ? get_value_html( $office->inizio ) : ''; ?>>
+			<input type="text" class="datepicker" id="inizio" name="inizio"<?php echo isset( $office->inizio ) ? get_value_html( $office->inizio ) : ''; ?>>
 		</div>
 		<div class="medium-6 columns">
 			<label for="fine">Fine</label>
-			<input type="date" id="fine" name="fine"<?php echo isset( $office->fine ) ? get_value_html( $office->fine ) : ''; ?>>
+			<input type="text" class="datepicker" id="fine" name="fine"<?php echo isset( $office->fine ) ? get_value_html( $office->fine ) : ''; ?>>
 		</div>
 	</div>
 	<div class="row action-buttons text-center">
