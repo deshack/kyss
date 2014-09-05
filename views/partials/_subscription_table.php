@@ -16,7 +16,7 @@ if ( is_array( $subscriptions ) )
 ?>
 
 <h1>Iscrizioni
-	<small><a href="<?php echo get_site_url('views/partials/_subscription_form.php?action=add') ?>">
+	<small><a href="#">
 		<span class="dashicons dashicons-plus"></span>
 	</a></small>
 </h1>
@@ -29,6 +29,7 @@ if ( ! empty( $subscriptions ) ) : ?>
 			<th>ID</th>
 			<th>Nome</th>
 			<th>Cognome</th>
+			<th>Azioni</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -39,8 +40,23 @@ if ( ! empty( $subscriptions ) ) : ?>
 			<td><?php echo $user->ID ?></td>
 			<td><?php echo $user->nome ?></td>
 			<td><?php echo $user->cognome ?></td>
+			<td>
+				<a href="#" title="Modifica">
+					<span class="dashicons dashicons-edit"></span>
+				</a>
+			</td>
 		</tr>
 	<?php endforeach; ?>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+				<a href="#" title="Aggiungi">
+					<span class="dashicons dashicons-plus"></span>
+				</a>
+			</td>
+		</tr>
 	</tbody>
 </table>
 <?php

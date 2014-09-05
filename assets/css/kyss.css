@@ -7737,25 +7737,25 @@ table {
   width: 100%;
 }
 
-/* line 56, ../../src/scss/kyss.scss */
+/* line 57, ../../src/scss/kyss.scss */
 fieldset legend {
   background: transparent;
 }
 
-/* line 61, ../../src/scss/kyss.scss */
+/* line 62, ../../src/scss/kyss.scss */
 .wrapper {
   max-width: none;
   height: calc(100% - 90px );
   overflow: auto;
 }
 
-/* line 67, ../../src/scss/kyss.scss */
+/* line 68, ../../src/scss/kyss.scss */
 #content {
   height: 100%;
   overflow: auto;
 }
 
-/* line 73, ../../src/scss/kyss.scss */
+/* line 74, ../../src/scss/kyss.scss */
 h1 .dashicons {
   width: 1.83333rem;
   height: 1.83333rem;
@@ -7764,29 +7764,33 @@ h1 .dashicons {
   vertical-align: middle;
 }
 
-/* line 81, ../../src/scss/kyss.scss */
+/* line 82, ../../src/scss/kyss.scss */
 .button.ghost {
   background-color: transparent !important;
   border: 1px solid #c1c1c1;
 }
-/* line 85, ../../src/scss/kyss.scss */
+/* line 86, ../../src/scss/kyss.scss */
 .button.ghost:hover, .button.ghost:focus {
   background-color: gray !important;
 }
 
-/* line 90, ../../src/scss/kyss.scss */
+/* line 91, ../../src/scss/kyss.scss */
 #sidebar {
   background: #333333;
   padding: 0;
   height: 100%;
 }
 
-/* line 96, ../../src/scss/kyss.scss */
+/* line 97, ../../src/scss/kyss.scss */
 .side-nav {
   padding-top: 0;
   padding-bottom: 0;
 }
 /* line 101, ../../src/scss/kyss.scss */
+.side-nav li {
+  margin: 0;
+}
+/* line 103, ../../src/scss/kyss.scss */
 .side-nav li > a {
   padding: 1rem 0.5rem;
   color: #e7e7e7 !important;
@@ -7796,22 +7800,22 @@ h1 .dashicons {
   -o-transition: background-color 0.1s ease-out 0;
   transition: background-color 0.1s ease-out 0;
 }
-/* line 107, ../../src/scss/kyss.scss */
+/* line 109, ../../src/scss/kyss.scss */
 .side-nav li > a:hover, .side-nav li > a:focus {
   background-color: #aea79f;
   color: #dd4814 !important;
 }
-/* line 114, ../../src/scss/kyss.scss */
+/* line 116, ../../src/scss/kyss.scss */
 .side-nav ul {
   list-style-type: none;
   margin-left: 0;
   background: #454545;
 }
-/* line 120, ../../src/scss/kyss.scss */
+/* line 122, ../../src/scss/kyss.scss */
 .side-nav ul li > a {
   padding-left: 1rem;
 }
-/* line 124, ../../src/scss/kyss.scss */
+/* line 126, ../../src/scss/kyss.scss */
 .side-nav ul li > a:hover, .side-nav ul li > a:focus {
   background: #333333;
 }
