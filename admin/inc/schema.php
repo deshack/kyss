@@ -196,6 +196,269 @@ function get_db_schema() {
 }
 
 /**
+ * Retrieve SQL for creating triggers and procedures.
+ *
+ * @since  0.13.0
+ *
+ * @global  kyssdb
+ *
+ * @return  array Array of SQL code strings.
+ */
+function get_db_triggers() {
+	global $kyssdb;
+
+	$triggers = array(
+		"CREATE PROCEDURE controlloIscritti(IN utente INT(20), corso INT(20))
+		BEGIN
+			DECLARE quote INT;
+			SELECT COUNT(*) INTO quote
+			FROM {$kyssdb->movimenti}
+			WHERE {$kyssdb->movimenti}.utente = utente AND {$kyssdb->movimenti}.corso = corso;
+			IF (quote = 0) THEN
+				SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Quota non pagata';
+			END IF;
+		END",
+
+		"CREATE TRIGGER controlloIscrittiIns
+		BEFORE INSERT ON {$kyssdb->iscritto}
+		FOR EACH ROW BEGIN
+			CALL supportoControlloIscritti(NEW.utente, NEW.corso);
+		END",
+
+		"CREATE TRIGGER controlloIscrittiUpd
+		BEFORE UPDATE ON {$kyssdb->iscritto}
+		FOR EACH ROW BEGIN
+			CALL supportoControlloIscritti(NEW.utente, NEW.corso);
+		END",
+
+		"CREATE PROCEDURE controlloCariche(IN utente INT(20))
+		BEGIN
+			DECLARE n_cariche INT;
+			SELECT COUNT(*) INTO n_cariche
+			FROM {$kyssdb->cariche} 
+			WHERE {$kyssdb->cariche}.utente = utente AND {$kyssdb->cariche}.fine IS NULL;
+			IF (n_cariche > 0) THEN
+				SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'L`utente ricopre già una carica';
+			END IF;
+		END",
+
+		"CREATE TRIGGER controlloCaricheIns
+		BEFORE INSERT ON {$kyssdb->cariche}
+		FOR EACH ROW BEGIN
+			CALL controlloCariche(NEW.utente);
+		END",
+
+		"CREATE TRIGGER controlloCaricheUpd
+		BEFORE UPDATE ON {$kyssdb->cariche}
+		FOR EACH ROW BEGIN
+			CALL controlloCariche(NEW.utente);
+		END",
+
+		"CREATE PROCEDURE controlloUtenti(IN nato_il DATE)
+		BEGIN
+			DECLARE differenza INT;
+			SELECT DATEDIFF( nato_il, CURRENT_DATE() ) INTO differenza;
+			IF ( differenza > 0 ) THEN
+				SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Data di nascita successiva alla data corrente';
+			END IF;
+		END",
+
+		"CREATE TRIGGER controlloUtentiIns
+		BEFORE INSERT ON {$kyssdb->utenti}
+		FOR EACH ROW BEGIN
+			CALL controlloUtenti(NEW.nato_il);
+			SET NEW.codice_fiscale = UPPER(NEW.codice_fiscale);
+		END",
+
+		"CREATE TRIGGER controlloUtentiUpd
+		BEFORE UPDATE ON {$kyssdb->utenti}
+		FOR EACH ROW BEGIN
+			CALL controlloUtenti(NEW.nato_il);
+			SET NEW.codice_fiscale = UPPER(NEW.codice_fiscale);
+		END",
+
+		"CREATE PROCEDURE controlloInizioFineEvento(IN data_inizio date, data_fine date)
+		BEGIN
+			DECLARE differenza INT;
+			SELECT DATEDIFF( data_inizio, data_fine ) INTO differenza;
+			IF ( differenza > 0 ) THEN
+				SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Data di inizio successiva a data di fine evento';
+			END IF;
+		END",
+
+		"CREATE TRIGGER controlloInizioFineEventoIns
+		BEFORE INSERT ON {$kyssdb->eventi}
+		FOR EACH ROW BEGIN
+			IF (NEW.data_fine IS NOT NULL) THEN
+				CALL controlloInizioFineEvento(NEW.data_inizio, NEW.data_fine);
+			END IF;
+		END",
+
+		"CREATE TRIGGER controlloInizioFineEventoUpd
+		BEFORE UPDATE ON {$kyssdb->eventi}
+		FOR EACH ROW BEGIN
+			IF (NEW.data_fine IS NOT NULL) THEN
+				CALL controlloInizioFineEvento(NEW.data_inizio, NEW.data_fine);
+			END IF;
+		END",
+
+		"CREATE PROCEDURE controlloDataTalk(IN data date, inizio_evento date, fine_evento DATE)
+		BEGIN
+			DECLARE differenza INT;
+			SELECT DATEDIFF( data, inizio_evento ) INTO differenza;
+			IF ( differenza < 0 ) THEN
+				SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Data precedente alla data di inizio evento';
+			END IF;
+			IF (fine_evento IS NOT NULL) THEN
+				SELECT DATEDIFF( data, fine_evento ) INTO differenza;
+				IF ( differenza > 0 ) THEN
+					SIGNAL SQLSTATE '45000'
+				   SET MESSAGE_TEXT = 'Data successiva alla dati di fine evento';
+			   END IF;
+			END IF;
+		END",
+
+		"CREATE TRIGGER controlloDataTalkIns
+		BEFORE INSERT ON {$kyssdb->talk}
+		FOR EACH ROW BEGIN
+			DECLARE data_inizio DATE;
+			DECLARE data_fine DATE;
+			SELECT {$kyssdb->eventi}.data_inizio INTO data_inizio
+			FROM {$kyssdb->eventi}
+			WHERE {$kyssdb->eventi}.ID = NEW.evento;
+			SELECT {$kyssdb->eventi}.data_fine INTO data_fine
+			FROM {$kyssdb->eventi}
+			WHERE {$kyssdb->eventi}.ID = NEW.evento;
+			CALL controlloDataTalk(NEW.data, data_inizio, data_fine);
+		END",
+
+		"CREATE TRIGGER controlloDataTalkUpd
+		BEFORE UPDATE ON {$kyssdb->talk}
+		FOR EACH ROW BEGIN
+			DECLARE data_inizio DATE;
+			DECLARE data_fine DATE;
+			SELECT {$kyssdb->eventi}.data_inizio INTO data_inizio
+			FROM {$kyssdb->eventi}
+			WHERE {$kyssdb->eventi}.ID = NEW.evento;
+			SELECT {$kyssdb->eventi}.data_fine INTO data_fine
+			FROM {$kyssdb->eventi}
+			WHERE {$kyssdb->eventi}.ID = NEW.evento;
+			CALL controlloDataTalk(NEW.data, data_inizio, data_fine);
+		END",
+
+		"CREATE PROCEDURE controlloOrarioRiunioni(IN ora_inizio TIME, ora_fine TIME)
+		BEGIN
+			DECLARE differenza INT;
+			SELECT TIMEDIFF( ora_inizio, ora_fine ) INTO differenza;
+			IF (differenza > 0) THEN
+				SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Ora inizio successiva ad ora fine';
+			END IF;
+		END",
+
+		"CREATE TRIGGER controlloOrarioRiunioniIns
+		BEFORE INSERT ON {$kyssdb->riunioni}
+		FOR EACH ROW BEGIN
+			IF (NEW.ora_inizio IS NOT NULL AND NEW.ora_fine IS NOT NULL) THEN
+				CALL controlloOrarioRiunioni(NEW.ora_inizio, NEW.ora_fine);
+			END IF;
+		END",
+
+		"CREATE TRIGGER controlloOrarioRiunioniUpd
+		BEFORE UPDATE ON {$kyssdb->riunioni}
+		FOR EACH ROW BEGIN
+			IF (NEW.ora_inizio IS NOT NULL AND NEW.ora_fine IS NOT NULL) THEN
+				CALL controlloOrarioRiunioni(NEW.ora_inizio, NEW.ora_fine);
+			END IF;
+		END",
+
+		"CREATE PROCEDURE controlloDatePratiche(IN data date, ricezione date)
+		BEGIN
+			DECLARE differenza INT;
+			SELECT DATEDIFF( data, CURRENT_DATE() ) INTO differenza;
+			IF (differenza > 0) THEN
+				SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Data della pratica successiva alla data corrente';
+			END IF;
+			SELECT DATEDIFF( ricezione, CURRENT_DATE() ) INTO differenza;
+			IF (differenza > 0) THEN
+				SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Data di ricezione successiva alla data corrente';
+			END IF;
+			SELECT DATEDIFF( ricezione, data ) INTO differenza;
+			IF (differenza < 0) THEN
+				SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Data di ricezione precedente alla data della pratica';
+			END IF;
+		END",
+
+		"CREATE TRIGGER controlloDatePraticheIns
+		BEFORE INSERT ON {$kyssdb->pratiche}
+		FOR EACH ROW BEGIN
+			CALL controlloDatePratiche(NEW.data, NEW.ricezione);    
+		END",
+
+		"CREATE TRIGGER controlloDatePraticheUpd
+		BEFORE UPDATE ON {$kyssdb->pratiche}
+		FOR EACH ROW BEGIN
+			CALL controlloDatePratiche(NEW.data, NEW.ricezione);    
+		END",
+
+		"CREATE PROCEDURE controlloDataLezioni(IN data DATE, data_inizio DATE, data_fine DATE)
+		BEGIN 
+			DECLARE differenza INT;
+			SELECT DATEDIFF( data, data_inizio ) INTO differenza;
+			IF (differenza < 0) THEN
+				SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Data lezione precedente alla data di inizio corso';
+			END IF;
+			IF (data_fine IS NOT NULL) THEN
+				SELECT DATEDIFF( data, data_fine ) INTO differenza;
+				IF (differenza > 0) THEN
+					SIGNAL SQLSTATE '45000'
+					SET MESSAGE_TEXT = 'Data lezione successiva alla data di fine corso';
+				END IF;
+			END IF;
+		END",
+
+		"CREATE TRIGGER controlloDataLezioniIns
+		BEFORE INSERT ON {$kyssdb->lezioni}
+		FOR EACH ROW BEGIN
+			DECLARE data_inizio DATE;
+			DECLARE data_fine DATE;
+			SELECT {$kyssdb->eventi}.data_inizio INTO data_inizio
+			FROM {$kyssdb->eventi}
+			WHERE {$kyssdb->eventi}.ID = NEW.corso;
+			SELECT {$kyssdb->eventi}.data_fine INTO data_fine
+			FROM {$kyssdb->eventi}
+			WHERE {$kyssdb->eventi}.ID = NEW.corso;
+			CALL controlloDataLezioni(NEW.data, data_inizio, data_fine);
+		END",
+
+		"CREATE TRIGGER controlloDataLezioniUpd
+		BEFORE UPDATE ON {$kyssdb->lezioni}
+		FOR EACH ROW BEGIN
+			DECLARE data_inizio DATE;
+			DECLARE data_fine DATE;
+			SELECT {$kyssdb->eventi}.data_inizio INTO data_inizio
+			FROM {$kyssdb->eventi}
+			WHERE {$kyssdb->eventi}.ID = NEW.corso;
+			SELECT {$kyssdb->eventi}.data_fine INTO data_fine
+			FROM {$kyssdb->eventi}
+			WHERE {$kyssdb->eventi}.ID = NEW.corso;
+			CALL controlloDataLezioni(NEW.data, data_inizio, data_fine);
+		END"
+	);
+
+	return $triggers;
+}
+
+/**
  * Create KYSS database tables.
  *
  * @since  0.9.0
@@ -225,304 +488,16 @@ function populate_db() {
 		} while ( $kyssdb->more_results() );
 	}
 
-	// $kyssdb->multi_query does not handle custom delimiters
-
-	$kyssdb->query(
-		"CREATE PROCEDURE controlloIscritti(IN utente INT(20), corso INT(20))
-		BEGIN
-			DECLARE quote INT;
-			SELECT COUNT(*) INTO quote
-			FROM {$kyssdb->movimenti}
-			WHERE {$kyssdb->movimenti}.utente = utente AND {$kyssdb->movimenti}.corso = corso;
-			IF (quote = 0) THEN
-				SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Quota non pagata';
-			END IF;
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloIscrittiIns
-		BEFORE INSERT ON {$kyssdb->iscritto}
-		FOR EACH ROW BEGIN
-			CALL supportoControlloIscritti(NEW.utente, NEW.corso);
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloIscrittiUpd
-		BEFORE UPDATE ON {$kyssdb->iscritto}
-		FOR EACH ROW BEGIN
-			CALL supportoControlloIscritti(NEW.utente, NEW.corso);
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE PROCEDURE controlloCariche(IN utente INT(20))
-		BEGIN
-			DECLARE n_cariche INT;
-			SELECT COUNT(*) INTO n_cariche
-			FROM {$kyssdb->cariche} 
-			WHERE {$kyssdb->cariche}.utente = utente AND {$kyssdb->cariche}.fine IS NULL;
-			IF (n_cariche > 0) THEN
-				SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'L`utente ricopre già una carica';
-			END IF;
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloCaricheIns
-		BEFORE INSERT ON {$kyssdb->cariche}
-		FOR EACH ROW BEGIN
-			CALL controlloCariche(NEW.utente);
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloCaricheUpd
-		BEFORE UPDATE ON {$kyssdb->cariche}
-		FOR EACH ROW BEGIN
-			CALL controlloCariche(NEW.utente);
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE PROCEDURE controlloUtenti(IN nato_il DATE)
-		BEGIN
-			DECLARE differenza INT;
-			SELECT DATEDIFF( nato_il, CURRENT_DATE() ) INTO differenza;
-			IF ( differenza > 0 ) THEN
-				SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Data di nascita successiva alla data corrente';
-			END IF;
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloUtentiIns
-		BEFORE INSERT ON {$kyssdb->utenti}
-		FOR EACH ROW BEGIN
-			CALL controlloUtenti(NEW.nato_il);
-			SET NEW.codice_fiscale = UPPER(NEW.codice_fiscale);
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloUtentiUpd
-		BEFORE UPDATE ON {$kyssdb->utenti}
-		FOR EACH ROW BEGIN
-			CALL controlloUtenti(NEW.nato_il);
-			SET NEW.codice_fiscale = UPPER(NEW.codice_fiscale);
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE PROCEDURE controlloInizioFineEvento(IN data_inizio date, data_fine date)
-		BEGIN
-			DECLARE differenza INT;
-			SELECT DATEDIFF( data_inizio, data_fine ) INTO differenza;
-			IF ( differenza > 0 ) THEN
-				SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Data di inizio successiva a data di fine evento';
-			END IF;
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloInizioFineEventoIns
-		BEFORE INSERT ON {$kyssdb->eventi}
-		FOR EACH ROW BEGIN
-			IF (NEW.data_fine IS NOT NULL) THEN
-				CALL controlloInizioFineEvento(NEW.data_inizio, NEW.data_fine);
-			END IF;
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloInizioFineEventoUpd
-		BEFORE UPDATE ON {$kyssdb->eventi}
-		FOR EACH ROW BEGIN
-			IF (NEW.data_fine IS NOT NULL) THEN
-				CALL controlloInizioFineEvento(NEW.data_inizio, NEW.data_fine);
-			END IF;
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE PROCEDURE controlloDataTalk(IN data date, inizio_evento date, fine_evento DATE)
-		BEGIN
-			DECLARE differenza INT;
-			SELECT DATEDIFF( data, inizio_evento ) INTO differenza;
-			IF ( differenza < 0 ) THEN
-				SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Data precedente alla data di inizio evento';
-			END IF;
-			IF (fine_evento IS NOT NULL) THEN
-				SELECT DATEDIFF( data, fine_evento ) INTO differenza;
-				IF ( differenza > 0 ) THEN
-					SIGNAL SQLSTATE '45000'
-				   SET MESSAGE_TEXT = 'Data successiva alla dati di fine evento';
-			   END IF;
-			END IF;
-		END"
-	);
-
-	$kyssdb->query(
-			"CREATE TRIGGER controlloDataTalkIns
-			BEFORE INSERT ON {$kyssdb->talk}
-			FOR EACH ROW BEGIN
-				DECLARE data_inizio DATE;
-				DECLARE data_fine DATE;
-				SELECT {$kyssdb->eventi}.data_inizio INTO data_inizio
-				FROM {$kyssdb->eventi}
-				WHERE {$kyssdb->eventi}.ID = NEW.evento;
-				SELECT {$kyssdb->eventi}.data_fine INTO data_fine
-				FROM {$kyssdb->eventi}
-				WHERE {$kyssdb->eventi}.ID = NEW.evento;
-				CALL controlloDataTalk(NEW.data, data_inizio, data_fine);
-			END"
-	);
-
-	$kyssdb->query(
-			"CREATE TRIGGER controlloDataTalkUpd
-			BEFORE UPDATE ON {$kyssdb->talk}
-			FOR EACH ROW BEGIN
-				DECLARE data_inizio DATE;
-				DECLARE data_fine DATE;
-				SELECT {$kyssdb->eventi}.data_inizio INTO data_inizio
-				FROM {$kyssdb->eventi}
-				WHERE {$kyssdb->eventi}.ID = NEW.evento;
-				SELECT {$kyssdb->eventi}.data_fine INTO data_fine
-				FROM {$kyssdb->eventi}
-				WHERE {$kyssdb->eventi}.ID = NEW.evento;
-				CALL controlloDataTalk(NEW.data, data_inizio, data_fine);
-			END"
-	);
-
-	$kyssdb->query(
-		"CREATE PROCEDURE controlloOrarioRiunioni(IN ora_inizio TIME, ora_fine TIME)
-		BEGIN
-			DECLARE differenza INT;
-			SELECT TIMEDIFF( ora_inizio, ora_fine ) INTO differenza;
-			IF (differenza > 0) THEN
-				SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Ora inizio successiva ad ora fine';
-			END IF;
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloOrarioRiunioniIns
-		BEFORE INSERT ON {$kyssdb->riunioni}
-		FOR EACH ROW BEGIN
-			IF (NEW.ora_inizio IS NOT NULL AND NEW.ora_fine IS NOT NULL) THEN
-				CALL controlloOrarioRiunioni(NEW.ora_inizio, NEW.ora_fine);
-			END IF;
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloOrarioRiunioniUpd
-		BEFORE UPDATE ON {$kyssdb->riunioni}
-		FOR EACH ROW BEGIN
-			IF (NEW.ora_inizio IS NOT NULL AND NEW.ora_fine IS NOT NULL) THEN
-				CALL controlloOrarioRiunioni(NEW.ora_inizio, NEW.ora_fine);
-			END IF;
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE PROCEDURE controlloDatePratiche(IN data date, ricezione date)
-		BEGIN
-			DECLARE differenza INT;
-			SELECT DATEDIFF( data, CURRENT_DATE() ) INTO differenza;
-			IF (differenza > 0) THEN
-				SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Data della pratica successiva alla data corrente';
-			END IF;
-			SELECT DATEDIFF( ricezione, CURRENT_DATE() ) INTO differenza;
-			IF (differenza > 0) THEN
-				SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Data di ricezione successiva alla data corrente';
-			END IF;
-			SELECT DATEDIFF( ricezione, data ) INTO differenza;
-			IF (differenza < 0) THEN
-				SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Data di ricezione precedente alla data della pratica';
-			END IF;
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloDatePraticheIns
-		BEFORE INSERT ON {$kyssdb->pratiche}
-		FOR EACH ROW BEGIN
-			CALL controlloDatePratiche(NEW.data, NEW.ricezione);    
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloDatePraticheUpd
-		BEFORE UPDATE ON {$kyssdb->pratiche}
-		FOR EACH ROW BEGIN
-			CALL controlloDatePratiche(NEW.data, NEW.ricezione);    
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE PROCEDURE controlloDataLezioni(IN data DATE, data_inizio DATE, data_fine DATE)
-		BEGIN 
-			DECLARE differenza INT;
-			SELECT DATEDIFF( data, data_inizio ) INTO differenza;
-			IF (differenza < 0) THEN
-				SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Data lezione precedente alla data di inizio corso';
-			END IF;
-			IF (data_fine IS NOT NULL) THEN
-				SELECT DATEDIFF( data, data_fine ) INTO differenza;
-				IF (differenza > 0) THEN
-					SIGNAL SQLSTATE '45000'
-					SET MESSAGE_TEXT = 'Data lezione successiva alla data di fine corso';
-				END IF;
-			END IF;
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloDataLezioniIns
-		BEFORE INSERT ON {$kyssdb->lezioni}
-		FOR EACH ROW BEGIN
-			DECLARE data_inizio DATE;
-			DECLARE data_fine DATE;
-			SELECT {$kyssdb->eventi}.data_inizio INTO data_inizio
-			FROM {$kyssdb->eventi}
-			WHERE {$kyssdb->eventi}.ID = NEW.corso;
-			SELECT {$kyssdb->eventi}.data_fine INTO data_fine
-			FROM {$kyssdb->eventi}
-			WHERE {$kyssdb->eventi}.ID = NEW.corso;
-			CALL controlloDataLezioni(NEW.data, data_inizio, data_fine);
-		END"
-	);
-
-	$kyssdb->query(
-		"CREATE TRIGGER controlloDataLezioniUpd
-		BEFORE UPDATE ON {$kyssdb->lezioni}
-		FOR EACH ROW BEGIN
-			DECLARE data_inizio DATE;
-			DECLARE data_fine DATE;
-			SELECT {$kyssdb->eventi}.data_inizio INTO data_inizio
-			FROM {$kyssdb->eventi}
-			WHERE {$kyssdb->eventi}.ID = NEW.corso;
-			SELECT {$kyssdb->eventi}.data_fine INTO data_fine
-			FROM {$kyssdb->eventi}
-			WHERE {$kyssdb->eventi}.ID = NEW.corso;
-			CALL controlloDataLezioni(NEW.data, data_inizio, data_fine);
-		END"
-	);
-	
 	if ( $kyssdb->errno )
 		kyss_die( 'Query #' . ($i + 1) . ':</p><pre>' . $schema[$i] . '</pre><p>' . $kyssdb->error );
+
+	$triggers = get_db_triggers();
+
+	// mysqli::multi_query doesn't support custom delimiters.
+	foreach ( $triggers as $trigger ) {
+		if ( ! $kyssdb->query( $trigger ) )
+			kyss_die( "C'&egrave; stato un errore durante l'installazione: {$kyssdb->error}" );
+	}
 }
 
 /**

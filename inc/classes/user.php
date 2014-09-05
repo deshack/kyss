@@ -575,10 +575,8 @@ class KYSS_Office {
 		if ( ! $office = $kyssdb->query( $query ) )
 			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'query' => $query ) );
 
-		if ( $office->num_rows === 0 ) {
-			trigger_error( $query );
+		if ( $office->num_rows === 0 )
 			return false;
-		}
 
 		$office = $office->fetch_object( 'KYSS_Office' );
 

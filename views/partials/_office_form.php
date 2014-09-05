@@ -20,6 +20,7 @@ if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) :
 	switch ( $action ) {
 		case 'edit':
 			$office = validate_office_data( $slug, $start );
+			$start = $office->inizio;
 			break;
 		case 'add':
 			$office = isset( $_POST['carica'] ) ? $_POST['carica'] : null;
