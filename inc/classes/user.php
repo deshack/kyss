@@ -416,51 +416,6 @@ class KYSS_User {
 			return true;
 		return false;
 	}
-
-	/**
-	 * Set the user role.
-	 *
-	 * @todo  Write method KYSS_User::set_role()
-	 *
-	 * @since  0.12.0
-	 * @access public
-	 *
-	 * @global  kyssdb
-	 *
-	 * @param  string $data Associative array of office data.
-	 * @return true|KYSS_Error True if successful, KYSS_Error with appropriate descriptions otherwise.
-	 */
-	public function set_office( $data ) {
-		global $kyssdb;
-
-		if ( !isset( $data['carica'] ) )
-			return new KYSS_Error( 'empty_carica', 'Devi specificare la carica da associare all\'utente.' );
-		if ( !isset( $data['inizio'] ) )
-			return new KYSS_Error( 'empty_inizio', 'Devi specificare da quando l\'utente ricopre questa carica.', array( 'carica' => $data['carica'] ) );
-
-		if ( ! in_array( $data['carica'], $this->cariche ) )
-			return new KYSS_Error( 'invalid_carica', 'La carica che vuoi assegnare non &egrave; valida.', array( 'carica' => $data['carica'] ) );
-
-		// Let's see if we are updating an existing office or inserting a new one.
-		if ( isset( $this->carica ) && !empty( $this->carica ) ) {
-			if ( $this->carica == $data['carica'] ) {
-				// Same office, check start date.
-				
-			}
-		}
-
-		$end_str = !empty( $end ) ? ',fine' : '';
-		$end = !empty( $end ) ? ",'{$end}'" : '';
-
-		$query = "INSERT INTO {$kyssdb->cariche} (carica,inizio,utente{$end_str}) VALUES ('{$slug}','{$start}','{$this->ID}'{$end})";
-		if ( ! $result = $kyssdb->query( $query ) ) {
-			trigger_error( "Query $query returned an error: $kyssdb->error", E_USER_WARNING );
-			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
-		}
-		
-		$this->carica = $data['carica'];
-		return true;
-	}
 }
 
 /**
@@ -490,6 +445,22 @@ class KYSS_Office {
 	);
 
 	/**
+	 * Constructor.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 */
+	public function __construct( $data = array() ) {
+		if ( ! empty( $data ) ) {
+			foreach ( $data as $key => $value ) {
+				$this->{$key} = $value;
+			}
+		}
+		if ( isset( $this->utente ) && is_numeric( $this->utente ) )
+			$this->utente = KYSS_User::get_user_by( 'id', $this->utente );
+	}
+
+	/**
 	 * Retrieve a list of default offices.
 	 *
 	 * @since  0.12.0
@@ -503,15 +474,7 @@ class KYSS_Office {
 	}
 
 	/**
-	 * Set user office.
-	 *
-	 * Adds or updates user office based on slug and dates.
-	 *
-	 * Assumes you set the end date of a office before adding a new one to the
-	 * same user. The new one should start after the end of the previous one,
-	 * of course.
-	 *
-	 * @internal There should be a better way.
+	 * Insert new office in the db.
 	 *
 	 * @since  0.12.0
 	 * @access public
@@ -521,35 +484,65 @@ class KYSS_Office {
 	 *
 	 * @param  string $office Office slug.
 	 * @param  string $start Start date.
-	 * @param  KYSS_User $user User object.
-	 * @param  string $end Optional. End date.
+	 * @param  int $user User ID.
+	 * @param  string $end Optional. End date. Default null.
+	 * @return KYSS_Office|KYSS_Error KYSS_Office object.
 	 */
-	public static function set( $office, $start, $user, $end = null ) {
+	public static function create( $office, $start, $user, $end = null ) {
 		global $kyssdb;
 
-		// Check if we are updating an existing office or adding a new one.
-		if ( isset( $user->carica ) && !empty( $user->carica ) ) {
-			if ( $user->carica == $office ) {
-				// Same slug, check dates.
-				if ( ! isset( $user->carica->fine ) || strtotime( $start ) < strtotime( $user->carica->fine ) ) {
-					$query = "INSERT INTO {$kyssdb->cariche} (carica,inizio,utente,fine) VALUES ('{$office}','{$start}',{$user->id}";
-					$query .= isset( $end ) ? ",'{$end}')" : ')';
-					if ( ! $result = $kyssdb->query( $query ) ) {
-						trigger_error( "Query $query returned an error: {$kyssdb->error}", E_USER_WARNING );
-						return false;
-					}
-				} else {
-					$data = array( 'carica' => $office, 'inizio' => $start, 'utente' => $user->ID );
-					if ( isset( $end ) )
-						$data[] = array( 'fine' => $end );
-					$result = $kyssdb->update( $kyssdb->cariche, )
-				}
-			} else {
-				// Update existing record.
-			}
+		if ( ! in_array( $office, self::$defaults ) )
+			return new KYSS_Error( 'invalid_office', 'Nome della carica non valido.' );
+
+		$columns = array( 'carica', 'inizio', 'utente' );
+		$values = array( "'{$office}'", "'{$start}'", "{$user}" );
+		if ( isset( $end ) ) {
+			$columns[] = 'fine';
+			$values[] = "'{$end}'";
 		}
 
-		return $result;
+		$columns = join( ',', $columns );
+		$values = join( ',', $values );
+
+		$query = "INSERT INTO {$kyssdb->cariche} ({$columns}) VALUES ({$values})";
+		if ( ! $id = $kyssdb->query( $query ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+		new self( array( 'carica' => $office, 'inizio' => $start, 'utente' => $user, 'fine' => $end ) );
+	}
+
+	/**
+	 * Update office in the db.
+	 *
+	 * Allows you to edit start date, end date and user, but not office slug.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  array $data Data to update.
+	 * @return KYSS_Office|KYSS_Error
+	 */
+	public function update( $data ) {
+		global $kyssdb;
+
+		$fields = array( 'inizio', 'utente', 'fine' );
+		foreach ( $data as $key => $value ) {
+			if ( ! in_array( $key, $fields ) || $value == $this->{$key} )
+				unset( $data[$key] );
+		}
+
+		if ( empty( $data ) )
+			return $this;
+
+		if ( ! $kyssdb->update( $kyssdb->cariche, $data, array( 'carica' => $this->carica, 'inizio' => $this->inizio ) ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+
+		// Here $data holds only the new values.
+		foreach ( $data as $key => $value )
+			$this->{$key} = $value;
+
+		return $this;
 	}
 
 	/**
@@ -561,30 +554,88 @@ class KYSS_Office {
 	 *
 	 * @global  kyssdb
 	 *
-	 * @param int $user User id.
+	 * @param string $office Office slug.
+	 * @param string $start Start date.
 	 * @return KYSS_Office|KYSS_Error|false
 	 */
-	public static function get( $user ) {
+	public static function get( $office, $start ) {
 		global $kyssdb;
 
-		$query = "SELECT * FROM {$kyssdb->cariche} WHERE `utente`={$user}";
-		if ( ! $result = $kyssdb->query( $query ) ) {
-			trigger_error( "Query $query returned an error: {$kyssdb->error}", E_USER_WARNING );
-			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'utente' => $id ) );
-		}
+		$query = "SELECT * FROM {$kyssdb->cariche} WHERE `carica`='{$office}' AND `inizio`='{$start}'";
 
-		if ( $result->num_rows === 0 )
+		if ( ! $office = $kyssdb->query( $query ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'query' => $query ) );
+
+		if ( $office->num_rows === 0 )
 			return false;
 
-		for ( $i = 0; $i < $result->num_rows, $i++ ) {
-			$office = $result->fetch_object( 'KYSS_Office' );
-			if ( !isset( $office->fine ) || strtotime( $office->fine ) > time() )
-				break;
-		}
+		$office = $office->fetch_object( 'KYSS_Office' );
 
-		if ( isset( $office ) )
-			return $office;
-		return false;
+		return $office;
+	}
+
+	/**
+	 * Retrieve list of offices from the db.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 */
+	public static function get_list() {
+		global $kyssdb;
+
+		$query = "SELECT * FROM {$kyssdb->cariche} ORDER BY inizio DESC";
+
+		if ( ! $result = $kyssdb->query( $query ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'query', $query ) );
+
+		$offices = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$offices[] = $result->fetch_object( 'KYSS_Office' );
+
+		return $offices;
+	}
+
+	/**
+	 * Retrieve list of current offices from the db.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @return  array Array of KYSS_Office objects.
+	 */
+	public static function get_current_list() {
+		$offices = self::get_list();
+
+		$current = array();
+		foreach ( $offices as $office )
+			if ( ! isset( $office->fine ) || strtotime( $office->fine ) > time() )
+				$current[] = $office;
+
+		return $current;
+	}
+
+	/**
+	 * Retrieve list of past offices from the db.
+	 *
+	 * @since  0.12.0
+	 * @access public
+	 * @static
+	 *
+	 * @return  array Array of KYSS_Office objects.
+	 */
+	public static function get_past_list() {
+		$offices = self::get_list();
+
+		$past = array();
+		foreach ( $offices as $office )
+			if ( isset( $office->fine ) && strtotime( $office->fine ) < time() )
+				$past[] = $office;
+
+		return $past;
 	}
 }
 
