@@ -244,13 +244,13 @@ function get_db_triggers() {
 		"CREATE TRIGGER controlloIscrittiIns
 		BEFORE INSERT ON {$kyssdb->iscritto}
 		FOR EACH ROW BEGIN
-			CALL supportoControlloIscritti( NEW.utente, NEW.corso );
+			CALL controlloIscritti( NEW.utente, NEW.corso );
 		END",
 
 		"CREATE TRIGGER controlloIscrittiUpd
 		BEFORE UPDATE ON {$kyssdb->iscritto}
 		FOR EACH ROW BEGIN
-			CALL supportoControlloIscritti( NEW.utente, NEW.corso );
+			CALL controlloIscritti( NEW.utente, NEW.corso );
 		END",
 
 		"CREATE PROCEDURE controlloCariche( IN carica VARCHAR(10), utente INT(20), inizio DATE, fine DATE )
