@@ -59,25 +59,12 @@ switch( $action ) {
 }
 ?>
 
-<form id="<?php echo $action; ?>-meeting" method="post" action="meetings.php?<?php echo $form_action; ?>" data-abide>
+<form id="<?php echo $action; ?>-meeting" method="post" action="meetings.php?<?php echo $form_action; ?>">
 	<div class="row">
-		<div class="medium-12 columns">
+		<div class="medium-8 columns">
 			<label for="nome">Nome</label>
 			<input id="nome" name="nome" type="text" autofocus<?php echo isset( $meeting->nome ) ? get_value_html( $meeting->nome ) : '' ?>>
 		</div>
-	</div>
-	<div class="row">
-		<div class="medium-6 columns">
-			<label for="data_inizio">Inizio</label>
-			<input type="date" id="data_inizio" name="data_inizio"<?php echo isset( $meeting->data_inizio ) ? get_value_html( $meeting->data_inizio ) : '' ?> required>
-			<?php field_error(); ?>
-		</div>
-		<div class="medium-6 columns">
-			<label for="data_fine">Fine</label>
-			<input id="data_fine" name="data_fine" type="date"<?php echo isset( $meeting->data_fine ) ? get_value_html( $meeting->data_fine ) : '' ?>>
-		</div>
-	</div>
-	<div class="row">
 		<div class="medium-4 columns">
 			<label for="tipo">Tipo</label>
 			<select name="tipo">
@@ -90,6 +77,12 @@ switch( $action ) {
 				</option>
 			<?php endforeach; ?>
 			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="medium-4 columns">
+			<label for="data_inizio">Data</label>
+			<input type="date" id="data_inizio" name="data_inizio"<?php echo isset( $meeting->data_inizio ) ? get_value_html( $meeting->data_inizio ) : '' ?> required>
 		</div>
 		<div class="medium-4 columns">
 			<label for="ora_inizio">Ora inizio</label>

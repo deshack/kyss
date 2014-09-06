@@ -43,7 +43,7 @@ function get_db_schema() {
 			`via`				varchar(20),
 			`citta`				varchar(20),
 			`provincia`			varchar(20),
-			`CAP`				int(5),
+			`CAP`				char(5),
 			`email`				varchar(30),
 			`telefono`			varchar(15),
 			`gruppo`			{$groups} DEFAULT 'ordinari',

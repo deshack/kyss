@@ -255,7 +255,7 @@ class KYSS_User {
 			return false;
 
 		foreach ( $data as $key => $value ) {
-			if ( $user->{$key} == $value )
+			if ( $this->{$key} == $value )
 				unset( $data[$key] );
 		}
 

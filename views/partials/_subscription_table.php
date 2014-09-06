@@ -26,7 +26,6 @@ if ( ! empty( $subscriptions ) ) : ?>
 <table>
 	<thead>
 		<tr>
-			<th>ID</th>
 			<th>Nome</th>
 			<th>Cognome</th>
 			<th>Azioni</th>
@@ -37,7 +36,6 @@ if ( ! empty( $subscriptions ) ) : ?>
 	foreach ( $subscriptions as $subscription ) : 
 		$user = KYSS_User::get_user_by('id', $subscription->utente);?>
 		<tr>
-			<td><?php echo $user->ID ?></td>
 			<td><?php echo $user->nome ?></td>
 			<td><?php echo $user->cognome ?></td>
 			<td>
