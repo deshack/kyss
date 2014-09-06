@@ -38,8 +38,8 @@ if ( ! empty( $courses ) ) : ?>
 	foreach ( $courses as $course ) : ?>
 		<tr>
 			<td><?php echo isset( $course->nome ) ? $course->nome : ''; ?></td>
-			<td><?php echo isset( $course->data_inizio ) ? $course->data_inizio : ''; ?></td>
-			<td><?php echo isset( $course->data_fine ) ? $course->data_fine : ''; ?></td>
+			<td><?php echo isset( $course->data_inizio ) ? date( 'd/m/Y', strtotime( $course->data_inizio ) ) : ''; ?></td>
+			<td><?php echo isset( $course->data_fine ) ? date( 'd/m/Y', strtotime( $course->data_fine ) ) : ''; ?></td>
 			<td><?php echo isset( $course->livello ) ? $course->livello : ''; ?></td>
 
 			<td>

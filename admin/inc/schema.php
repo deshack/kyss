@@ -34,17 +34,17 @@ function get_db_schema() {
 	$schema = array(
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->utenti} (
 			`ID`				bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
-			`nome`				varchar(20) NOT NULL,
-			`cognome`			varchar(20) NOT NULL,
+			`nome`				varchar(255) NOT NULL,
+			`cognome`			varchar(255) NOT NULL,
 			`codice_fiscale`	varchar(16),
-			`nato_a`			varchar(20),
+			`nato_a`			varchar(255),
 			`nato_il`			date,
-			`cittadinanza`		varchar(20),
-			`via`				varchar(20),
-			`citta`				varchar(20),
-			`provincia`			varchar(20),
+			`cittadinanza`		varchar(255),
+			`via`				varchar(255),
+			`citta`				varchar(255),
+			`provincia`			varchar(255),
 			`CAP`				char(5),
-			`email`				varchar(30),
+			`email`				varchar(255),
 			`telefono`			varchar(15),
 			`gruppo`			{$groups} DEFAULT 'ordinari',
 			`password`			char(128),
@@ -64,7 +64,7 @@ function get_db_schema() {
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->pratiche} (
-			`protocollo`		int(6) UNSIGNED AUTO_INCREMENT NOT NULL,
+			`protocollo`		char(6) NOT NULL,
 			`utente`			bigint(20) UNSIGNED NOT NULL,
 			`tipo`				enum('adesione', 'liberatoria') NOT NULL,
 			`data`				date NOT NULL,
@@ -78,10 +78,10 @@ function get_db_schema() {
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->eventi} (
 			`ID`				bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
-			`nome`				varchar(20),
+			`nome`				varchar(255),
 			`data_inizio`		date NOT NULL,
 			`data_fine`			date,
-			`luogo`				varchar(20),
+			`luogo`				varchar(255),
 			PRIMARY KEY (`ID`)
 		) ENGINE = InnoDB",
 
@@ -144,7 +144,7 @@ function get_db_schema() {
 		) ENGINE = InnoDB",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->verbali} (
-			`protocollo`		int(6) UNSIGNED AUTO_INCREMENT NOT NULL,
+			`protocollo`		char(6) NOT NULL,
 			`contenuto`			text,
 			`riunione`			bigint(20) UNSIGNED NOT NULL,
 			PRIMARY KEY (`protocollo`),
@@ -160,7 +160,7 @@ function get_db_schema() {
 			`cassa`				varchar(10) NOT NULL,
 			`banca`				varchar(10) NOT NULL,
 			`approvato`			boolean,
-			`verbale`			int(6) UNSIGNED,
+			`verbale`			char(6),
 			PRIMARY KEY (`ID`),
 			FOREIGN KEY (`verbale`) REFERENCES {$kyssdb->verbali}(`protocollo`)
 				ON UPDATE CASCADE ON DELETE RESTRICT

@@ -16,11 +16,10 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="medium-12 columns">
+		<div class="medium-6 columns">
 			<?php require( VIEWS . '/partials/_report_table.php' ); ?>
 		</div>
-
-		<div class="medium-12 columns">
+		<div class="medium-6 columns">
 			<?php require( VIEWS . '/partials/_budget_table.php' ); ?>
 		</div>
 	</div>
