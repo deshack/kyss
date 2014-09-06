@@ -43,7 +43,7 @@ function get_db_schema() {
 			`via`				varchar(20),
 			`citta`				varchar(20),
 			`provincia`			varchar(20),
-			`CAP`				int(5),
+			`CAP`				char(5),
 			`email`				varchar(30),
 			`telefono`			varchar(15),
 			`gruppo`			{$groups} DEFAULT 'ordinari',
@@ -244,13 +244,13 @@ function get_db_triggers() {
 		"CREATE TRIGGER controlloIscrittiIns
 		BEFORE INSERT ON {$kyssdb->iscritto}
 		FOR EACH ROW BEGIN
-			CALL supportoControlloIscritti( NEW.utente, NEW.corso );
+			CALL controlloIscritti( NEW.utente, NEW.corso );
 		END",
 
 		"CREATE TRIGGER controlloIscrittiUpd
 		BEFORE UPDATE ON {$kyssdb->iscritto}
 		FOR EACH ROW BEGIN
-			CALL supportoControlloIscritti( NEW.utente, NEW.corso );
+			CALL controlloIscritti( NEW.utente, NEW.corso );
 		END",
 
 		"CREATE PROCEDURE controlloCariche( IN carica VARCHAR(10), utente INT(20), inizio DATE, fine DATE )

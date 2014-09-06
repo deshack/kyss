@@ -27,14 +27,39 @@ if ( ! empty( $budgets ) ) : ?>
 <table>
 	<thead>
 		<tr>
-			<th></th>
+			<th>Tipo</th>
+			<th>Periodo</th>
+			<th>Stato</th>
+			<th>Azioni</th>
 		</tr>
 	</thead>
 	<tbody>
 <?php
 	foreach ( $budgets as $budget ) : ?>
 		<tr>
-			<td></td>
+			<td><?php echo $budget->tipo; ?></td>
+			<td><?php echo ( isset( $budget->mese ) ? $budget->mese : '' ) . ' ' . ( isset( $budget->anno ) ? $budget->anno : '' ); ?></td>
+			<td><?php switch( $budget->approvato ) {
+						case '1':
+							echo 'Approvato';
+							break;
+						case '0':
+							echo 'Non approvato';
+							break;
+						case '':
+						default:
+							echo 'Nessun giudizio';
+							break;
+					} 
+			?></td>
+			<td>
+				<a href="<?php echo get_site_url( 'budgets.php?action=view&id=' . $budget->ID ); ?>" title="Dettagli">
+					<span class="dashicons dashicons-visibility"></span>
+				</a>
+				<a href="<?php echo get_site_url( 'budgets.php?action=edit&id=' . $budget->ID ); ?>" title="Modifica">
+					<span class="dashicons dashicons-edit"></span>
+				</a>
+			</td>
 		</tr>
 	<?php endforeach; ?>
 	</tbody>

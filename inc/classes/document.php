@@ -349,7 +349,10 @@ class KYSS_Budget {
 
 		foreach ( $data as $key => $value ) {
 			array_push( $columns, $key );
-			array_push( $values, "'{$value}'" );
+			if ( $value != 'NULL')
+				array_push( $values, "'{$value}'" );
+			else
+				array_push( $values, "$value" );
 		}
 
 		$columns = join( ',', $columns );
