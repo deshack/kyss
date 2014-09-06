@@ -190,20 +190,19 @@ function get_db_schema() {
 		) ENGINE = InnoDB",
 
 		"INSERT INTO {$kyssdb->errori}(`Codice`, `Descrizione`) VALUES 
-			(1, 'Quota non pagata'),
-			(2, 'Carica già ricoperta da qualcuno in queso periodo'),
-			(3, 'L`utente ricopre un`altra carica in questo periodo'),
-			(4, 'Data di inizio carica successiva alla data di fine'),
-			(5, 'Data di nascita successiva alla data corrente'),
-			(6, 'Data di inizio successiva a data di fine evento'),
-			(7, 'Data precedente alla data di inizio evento'),
-			(8, 'Data successiva alla dati di fine evento'),
-			(9, 'Ora inizio successiva ad ora fine'),
-			(10, 'Data della pratica successiva alla data corrente'),
-			(11, 'Data di ricezione successiva alla data corrente'),
-			(12, 'Data di ricezione precedente alla data della pratica'),
-			(13, 'Data lezione precedente alla data di inizio corso'),
-			(14, 'Data lezione successiva alla data di fine corso')",
+			(1, 'Carica già ricoperta da qualcuno in queso periodo'),
+			(2, 'L`utente ricopre un`altra carica in questo periodo'),
+			(3, 'Data di inizio carica successiva alla data di fine'),
+			(4, 'Data di nascita successiva alla data corrente'),
+			(5, 'Data di inizio successiva a data di fine evento'),
+			(6, 'Data precedente alla data di inizio evento'),
+			(7, 'Data successiva alla dati di fine evento'),
+			(8, 'Ora inizio successiva ad ora fine'),
+			(9, 'Data della pratica successiva alla data corrente'),
+			(10, 'Data di ricezione successiva alla data corrente'),
+			(11, 'Data di ricezione precedente alla data della pratica'),
+			(12, 'Data lezione precedente alla data di inizio corso'),
+			(13, 'Data lezione successiva alla data di fine corso')",
 
 		"CREATE TABLE IF NOT EXISTS {$kyssdb->options} (
 			`ID`				bigint(20) UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -230,29 +229,6 @@ function get_db_triggers() {
 	global $kyssdb;
 
 	$triggers = array(
-		"CREATE PROCEDURE controlloIscritti( IN utente INT(20), corso INT(20) )
-		BEGIN
-			DECLARE quote INT;
-			SELECT COUNT(*) INTO quote
-			FROM {$kyssdb->movimenti}
-			WHERE {$kyssdb->movimenti}.utente = utente AND {$kyssdb->movimenti}.causale = 'quote' AND {$kyssdb->movimenti}.corso = corso;
-			IF ( quote = 0 ) THEN
-				INSERT INTO Errori VALUES (1, 'Quota non pagata');
-			END IF;
-		END",
-
-		"CREATE TRIGGER controlloIscrittiIns
-		BEFORE INSERT ON {$kyssdb->iscritto}
-		FOR EACH ROW BEGIN
-			CALL controlloIscritti( NEW.utente, NEW.corso );
-		END",
-
-		"CREATE TRIGGER controlloIscrittiUpd
-		BEFORE UPDATE ON {$kyssdb->iscritto}
-		FOR EACH ROW BEGIN
-			CALL controlloIscritti( NEW.utente, NEW.corso );
-		END",
-
 		"CREATE PROCEDURE controlloCariche( IN carica VARCHAR(10), utente INT(20), inizio DATE, fine DATE )
 		BEGIN
 			DECLARE già_assegnata INT;
@@ -266,7 +242,7 @@ function get_db_triggers() {
 				OR ( DATE( {$kyssdb->cariche}.inizio ) > DATE( inizio ) AND DATE( {$kyssdb->cariche}.fine ) < DATE( fine ) )
 			);
 			IF ( già_assegnata > 0 ) THEN
-				INSERT INTO Errori VALUES (2, 'Carica già ricoperta da qualcuno in queso periodo');
+				INSERT INTO Errori VALUES (1, 'Carica già ricoperta da qualcuno in queso periodo');
 			END IF;
 			SELECT COUNT(*) INTO cariche_attive
 			FROM {$kyssdb->cariche}
@@ -278,14 +254,14 @@ function get_db_triggers() {
 				OR ( DATE( {$kyssdb->cariche}.inizio ) > DATE( inizio ) AND DATE( {$kyssdb->cariche}.fine ) < DATE( fine ) )
 			);
 			IF ( cariche_attive > 0 ) THEN
-				INSERT INTO Errori VALUES (3, 'L`utente ricopre un`altra carica in questo periodo');
+				INSERT INTO Errori VALUES (2, 'L`utente ricopre un`altra carica in questo periodo');
 			END IF;
 		END",
 
 		"CREATE PROCEDURE controlloDataCarica( IN inizio DATE, fine DATE )
 		BEGIN
 			IF ( DATE( inizio ) > DATE( fine ) ) THEN
-				INSERT INTO Errori VALUES (4, 'Data di inizio carica successiva alla data di fine');
+				INSERT INTO Errori VALUES (3, 'Data di inizio carica successiva alla data di fine');
 			END IF;
 		END",
 
@@ -314,7 +290,7 @@ function get_db_triggers() {
 		"CREATE PROCEDURE controlloUtenti( IN nato_il DATE )
 		BEGIN
 			IF ( DATE( nato_il ) > CURRENT_DATE() ) THEN
-				INSERT INTO Errori VALUES (5, 'Data di nascita successiva alla data corrente');
+				INSERT INTO Errori VALUES (4, 'Data di nascita successiva alla data corrente');
 			END IF;
 		END",
 
@@ -335,7 +311,7 @@ function get_db_triggers() {
 		"CREATE PROCEDURE controlloInizioFineEvento( IN data_inizio DATE, data_fine DATE )
 		BEGIN
 			IF ( DATE( data_inizio ) > DATE( data_fine ) ) THEN
-				INSERT INTO Errori VALUES (6, 'Data di inizio successiva a data di fine evento');
+				INSERT INTO Errori VALUES (5, 'Data di inizio successiva a data di fine evento');
 			END IF;
 		END",
 
@@ -358,11 +334,11 @@ function get_db_triggers() {
 		"CREATE PROCEDURE controlloDataTalk( IN data DATE, inizio_evento DATE, fine_evento DATE )
 		BEGIN
 			IF ( DATE( data ) < DATE( inizio_evento ) ) THEN
-				INSERT INTO Errori VALUES (7, 'Data precedente alla data di inizio evento');
+				INSERT INTO Errori VALUES (6, 'Data precedente alla data di inizio evento');
 			END IF;
 			IF ( fine_evento IS NOT NULL ) THEN
 				IF ( DATE( data ) > DATE( fine_evento ) ) THEN
-					INSERT INTO Errori VALUES (8, 'Data successiva alla dati di fine evento');
+					INSERT INTO Errori VALUES (7, 'Data successiva alla dati di fine evento');
 			   END IF;
 			END IF;
 		END",
@@ -398,7 +374,7 @@ function get_db_triggers() {
 		"CREATE PROCEDURE controlloOrarioRiunioni( IN ora_inizio TIME, ora_fine TIME )
 		BEGIN
 			IF ( TIME( ora_inizio ) > TIME( ora_fine ) ) THEN
-				INSERT INTO Errori VALUES (9, 'Ora inizio successiva ad ora fine');
+				INSERT INTO Errori VALUES (8, 'Ora inizio successiva ad ora fine');
 			END IF;
 		END",
 
@@ -421,13 +397,13 @@ function get_db_triggers() {
 		"CREATE PROCEDURE controlloDatePratiche( IN data DATE, ricezione DATE )
 		BEGIN
 			IF ( DATE( data ) > CURRENT_DATE() ) THEN
-				INSERT INTO Errori VALUES (10, 'Data della pratica successiva alla data corrente');
+				INSERT INTO Errori VALUES (9, 'Data della pratica successiva alla data corrente');
 			END IF;
 			IF ( DATE( ricezione ) > CURRENT_DATE() ) THEN
-				INSERT INTO Errori VALUES (11, 'Data di ricezione successiva alla data corrente');
+				INSERT INTO Errori VALUES (10, 'Data di ricezione successiva alla data corrente');
 			END IF;
 			IF ( DATE( ricezione ) < DATE( data ) ) THEN
-				INSERT INTO Errori VALUES (12, 'Data di ricezione precedente alla data della pratica');
+				INSERT INTO Errori VALUES (11, 'Data di ricezione precedente alla data della pratica');
 			END IF;
 		END",
 
@@ -446,11 +422,11 @@ function get_db_triggers() {
 		"CREATE PROCEDURE controlloDataLezioni( IN data DATE, data_inizio DATE, data_fine DATE )
 		BEGIN
 			IF ( DATE( data ) < DATE( data_inizio ) ) THEN
-				INSERT INTO Errori VALUES (13, 'Data lezione precedente alla data di inizio corso');
+				INSERT INTO Errori VALUES (12, 'Data lezione precedente alla data di inizio corso');
 			END IF;
 			IF ( data_fine IS NOT NULL ) THEN
 				IF ( DATE( data ) > DATE( data_fine ) ) THEN
-					INSERT INTO Errori VALUES (14, 'Data lezione successiva alla data di fine corso');
+					INSERT INTO Errori VALUES (13, 'Data lezione successiva alla data di fine corso');
 				END IF;
 			END IF;
 		END",
