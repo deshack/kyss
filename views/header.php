@@ -43,6 +43,7 @@ header( 'Content-Type: text/html; charset=utf-8' );
 	<?php kyss_js( 'jquery-ui', true ); ?>
 	<?php kyss_js( 'fastclick', true ); ?>
 	<?php kyss_js( 'foundation', true ); ?>
+	<?php kyss_js( 'kyss', true ); ?>
 
 	<?php
 	/**

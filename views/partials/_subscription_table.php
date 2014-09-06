@@ -14,7 +14,7 @@ $subscriptions = KYSS_Subscription::get_list('corso', $id);
 
 <?php
 if ( ! empty( $subscriptions ) ) : ?>
-<table>
+<table id="subscriptions">
 	<thead>
 		<tr>
 			<th>Nome</th>
@@ -32,11 +32,12 @@ if ( ! empty( $subscriptions ) ) : ?>
 			<td></td>
 			<td></td>
 			<td>
-				<a href="#" title="Aggiungi">
+				<a href="#" id="add-subscription" title="Aggiungi">
 					<span class="dashicons dashicons-plus"></span>
 				</a>
 			</td>
 		</tr>
+		<tr class="new"></tr>
 	</tbody>
 </table>
 <?php
