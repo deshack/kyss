@@ -72,9 +72,6 @@
 			</ul>
 		<?php endif; ?>
 		</li>
-		<li><a href="<?php echo get_option( 'siteurl' ); ?>/offices.php">
-			<span class="dashicons dashicons-businessman"></span> Cariche
-		</a></li>
 	</ul>
 </section><!-- #sidebar -->
 

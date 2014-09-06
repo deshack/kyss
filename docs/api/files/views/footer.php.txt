@@ -19,6 +19,12 @@ Something
 
 <script>
 jQuery(document).foundation();
+jQuery.datepicker.setDefaults({
+	showOn: "focus",
+	dateFormat: 'yy-mm-dd',
+	regional: 'it'
+});
+jQuery( ".datepicker" ).datepicker();
 </script>
 
 <?php $hook->run( 'kyss_footer' ); ?>

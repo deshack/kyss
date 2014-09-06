@@ -19,7 +19,8 @@ if ( $action == 'edit' && ( empty( $slug ) || empty( $start ) ) ) {
 if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) :
 	switch ( $action ) {
 		case 'edit':
-			validate_office_data( $slug, $start );
+			$office = validate_office_data( $slug, $start );
+			$start = $office->inizio;
 			break;
 		case 'add':
 			$office = isset( $_POST['carica'] ) ? $_POST['carica'] : null;
@@ -32,16 +33,19 @@ if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) :
 	}
 endif;
 
-$office = KYSS_Office::get( $slug, $start );
+if ( ! isset( $office ) )
+	$office = KYSS_Office::get( $slug, $start );
 ?>
 
 <h1 class="page-title">
 <?php if ( $action == 'edit' ) : ?>
-	Modifica carica <small><?php echo $office->carica; ?></small>
+	Modifica carica <small><?php echo ucfirst( $office->carica ); ?></small>
 <?php else : ?>
 	Nuova carica
 <?php endif; ?>
 </h1>
+
+<?php alert_save( $office ); ?>
 
 <?php
 $form_action = '';
@@ -70,14 +74,14 @@ $users_list = KYSS_User::get_users_list()
 			</select>
 		</div>
 	<?php endif; ?>
-		<div class="medium-6 columns<?php echo ($action == 'edit') ? 'medium-offset-3 end' : ''; ?>">
+		<div class="medium-6 columns<?php echo ($action == 'edit') ? ' medium-offset-3 end' : ''; ?>">
 			<label for="utente">Utente</label>
 			<select name="utente">
 				<option value="NULL"<?php echo !isset( $office->utente ) ? selected( true, true, false ) : ''; ?>>
 					Nessuno
 				</option>
 			<?php foreach ( $users_list as $user ) : ?>
-				<option value="<?php echo $user->ID; ?>"<?php echo isset( $office->utente ) ? selected( $office->utente, $user->ID, false ) : ''; ?>>
+				<option value="<?php echo $user->ID; ?>"<?php echo isset( $office->utente ) ? selected( $office->utente->ID, $user->ID, false ) : ''; ?>>
 					<?php echo $user->nome . ' ' . $user->cognome; ?>
 				</option>
 			<?php endforeach; ?>
@@ -87,11 +91,11 @@ $users_list = KYSS_User::get_users_list()
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="inizio">Inizio</label>
-			<input type="date" id="inizio" name="inizio"<?php echo isset( $office->inizio ) ? get_value_html( $office->inizio ) : ''; ?>>
+			<input type="text" class="datepicker" id="inizio" name="inizio"<?php echo isset( $office->inizio ) ? get_value_html( $office->inizio ) : ''; ?>>
 		</div>
 		<div class="medium-6 columns">
 			<label for="fine">Fine</label>
-			<input type="date" id="fine" name="fine"<?php echo isset( $office->fine ) ? get_value_html( $office->fine ) : ''; ?>>
+			<input type="text" class="datepicker" id="fine" name="fine"<?php echo isset( $office->fine ) ? get_value_html( $office->fine ) : ''; ?>>
 		</div>
 	</div>
 	<div class="row action-buttons text-center">
@@ -119,14 +123,12 @@ function validate_office_data( $office, $start ) {
 		unset( $_POST['submit'] );
 
 	$valid = array();
-	foreach ( $_POST as $key => $value ) {
-		if ( empty( $value ) )
-			continue;
+	foreach ( $_POST as $key => $value )
 		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
-	}
 
 	$office = KYSS_Office::get( $office, $start );
 	$result = $office->update( $valid );
 	if ( is_kyss_error( $result ) )
 		kyss_die( $result );
+	return $result;
 }

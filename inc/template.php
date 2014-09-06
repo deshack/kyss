@@ -197,7 +197,9 @@ function back_button() {
  *
  * @param  string $message Custom error message.
  */
-function field_error( $message ) {
+function field_error( $message = '' ) {
+	if ( empty( $message ) )
+		$message = 'Quasto campo non pu&ograve; essere vuoto.';
 ?>
 <small class="error"><?php echo $message; ?></small>
 <?php

@@ -37,7 +37,7 @@ class KYSS_Pass {
 	 */
 	public static function hash( $password ) {
 		if ( defined( 'CRYPT_BLOWFISH' ) && CRYPT_BLOWFISH ) {
-			$salt = '$2y$11$' . bin2hex( openssl_random_pseudo_bytes(11) );
+			$salt = '$2a$11$' . bin2hex( openssl_random_pseudo_bytes(11) );
 			return crypt( $password, $salt );
 		}
 	}

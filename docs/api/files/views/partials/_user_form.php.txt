@@ -28,21 +28,13 @@ switch( $action ) {
 			$surname = $_POST['cognome'];
 			$password = $_POST['password'];
 			$data = array();
+			$to_remove = array( 'nome', 'cognome', 'password', 'submit' );
 			foreach ( $_POST as $key => $value ) {
-				switch ( $key ) {
-					case 'email':
-						$data['email'] = $_POST['email'];
-						break;
-					case 'telefono':
-						$data['telefono'] = $_POST['telefono'];
-						break;
-					case 'gruppo':
-						$data['gruppo'] = $_POST['gruppo'];
-						break;
-					case 'anagrafica':
-						$data['anagrafica'] = serialize( $_POST['anagrafica'] ); 
-						break;
-				}
+				if ( in_array( $key, $to_remove ) )
+					continue;
+				elseif ( $key == 'gruppo' )
+					$value = join( ',', $value );
+				$data[$key] = $value;
 			}
 			
 			$id = KYSS_User::create( $name, $surname, $password, $data );
@@ -81,7 +73,6 @@ switch( $action ) {
 }
 
 $group_list = KYSS_Groups::get_defaults();
-$office_list = KYSS_User::$cariche;
 ?>
 <form id="<?php echo $action; ?>-user" method="post" action="users.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
@@ -96,8 +87,8 @@ $office_list = KYSS_User::$cariche;
 			<?php field_error(); ?>
 		</div>
 		<div class="medium-4 columns">
-			<label for="anagrafica[CF]">Codice Fiscale</label>
-			<input id="anagrafica[CF]" name="anagrafica[CF]" type="text"<?php echo isset( $anagrafica['CF'] ) ? get_value_html( $anagrafica['CF'] ) : ''; ?>>
+			<label for="codice_fiscale">Codice Fiscale</label>
+			<input id="codice_fiscale" name="codice_fiscale" type="text"<?php echo isset( $user->codice_fiscale ) ? get_value_html( strtoupper( $user->codice_fiscale ) ) : ''; ?>>
 		</div>
 	</div>
 	<div class="row">
@@ -122,55 +113,47 @@ $office_list = KYSS_User::$cariche;
 	</div>
 	<div class="row">
 		<div class="medium-4 columns">
-			<label for="anagrafica[nato_a]">Nato a</label>
-			<input id="anagrafica[nato_a]" name="anagrafica[nato_a]" type="text"<?php echo isset( $anagrafica['nato_a'] ) ? get_value_html( $anagrafica['nato_a'] ) : ''; ?>>
+			<label for="nato_a">Nato a</label>
+			<input id="nato_a" name="nato_a" type="text"<?php echo isset( $user->nato_a ) ? get_value_html( $user->nato_a ) : ''; ?>>
 		</div>
 		<div class="medium-4 columns">
-			<label for="anagrafica[nato_il]">Nato il</label>
-			<input id="anagrafica[nato_il]" name="anagrafica[nato_il]" type="date"<?php echo isset( $anagrafica['nato_il'] ) ? get_value_html( $anagrafica['nato_il'] ) : ''; ?>>
+			<label for="nato_il">Nato il</label>
+			<input id="nato_il" name="nato_il" type="date"<?php echo isset( $user->nato_il ) ? get_value_html( $user->nato_il ) : ''; ?>>
 		</div>
 		<div class="medium-4 columns">
-			<label for="anagrafica[cittadinanza]">Cittadinanza</label>
-			<input id="anagrafica[cittadinanza]" name="anagrafica[cittadinanza]" type="text"<?php echo isset( $anagrafica['cittadinanza'] ) ? get_value_html( $anagrafica['cittadinanza'] ) : ''; ?>>
+			<label for="cittadinanza">Cittadinanza</label>
+			<input id="cittadinanza" name="cittadinanza" type="text"<?php echo isset( $user->cittadinanza ) ? get_value_html( $user->cittadinanza ) : ''; ?>>
 		</div>
 	</div>
 	<fieldset>
 		<legend>Residenza</legend>
 		<div class="row">
 			<div class="medium-6 columns">
-				<label for="anagrafica[residenza][via]">Via</label>
-				<input id="anagrafica[residenza][via]" name="anagrafica[residenza][via]" type="text"<?php echo isset( $anagrafica['residenza']['via'] ) ? get_value_html( $anagrafica['residenza']['via'] ) : ''; ?>>
+				<label for="via">Via</label>
+				<input id="via" name="via" type="text"<?php echo isset( $user->via ) ? get_value_html( $user->via ) : ''; ?>>
 			</div>
 			<div class="medium-6 columns">
-				<label for="anagrafica[residenza][city]">Citt&agrave;</label>
-				<input id="anagrafica[residenza][city]" name="anagrafica[residenza][city]" type="text"<?php echo isset( $anagrafica['residenza']['city'] ) ? get_value_html( $anagrafica['residenza']['city'] ) : ''; ?>>
+				<label for="citta">Citt&agrave;</label>
+				<input id="citta" name="citta" type="text"<?php echo isset( $user->citta ) ? get_value_html( $user->citta ) : ''; ?>>
 			</div>
 		</div>
 		<div class="row">
 			<div class="medium-6 columns">
-				<label for="anagrafica[residenza][provincia]">Provincia</label>
-				<input id="anagrafica[residenza][provincia]" name="anagrafica[residenza][provincia]" type="text"<?php echo isset( $anagrafica['residenza']['provincia'] ) ? get_value_html( $anagrafica['residenza']['provincia'] ) : ''; ?>>
+				<label for="provincia">Provincia</label>
+				<input id="provincia" name="provincia" type="text"<?php echo isset( $user->provincia ) ? get_value_html( $user->provincia ) : ''; ?>>
 			</div>
 			<div class="medium-6 columns">
-				<label for="anagrafica[residenza][CAP]">CAP</label>
-				<input id="anagrafica[residenza][CAP]" name="anagrafica[residenza][CAP]" type="text"<?php echo isset( $anagrafica['residenza']['CAP'] ) ? get_value_html( $anagrafica['residenza']['CAP'] ) : ''; ?>>
+				<label for="CAP">CAP</label>
+				<input id="CAP" name="CAP" type="text"<?php echo isset( $user->CAP ) ? get_value_html( $user->CAP ) : ''; ?>>
 			</div>
 		</div>
 	</fieldset>
 	<div class="row">
-		<div class="medium-4 medium-offset-2 columns">
+		<div class="medium-4 medium-offset-4 columns end">
 			<fieldset>
 				<legend>Gruppo</legend>
 			<?php foreach ( $group_list as $slug => $name ) : ?>
 				<label><input type="checkbox" name="gruppo[]" value="<?php echo $slug; ?>"<?php echo isset( $user->groups ) && in_array( $slug, $user->groups ) ? checked( true, true, false ) : ''; ?>> <?php echo $name; ?></label>
-			<?php endforeach; ?>
-			</fieldset>
-		</div>
-		<div class="medium-4 columns end">
-			<fieldset>
-				<legend>Carica</legend>
-			<?php foreach( $office_list as $carica ) : ?>
-				<label><input type="radio" name="carica" value="<?php echo $carica; ?>"<?php echo isset( $user->carica ) ? checked( $carica, $user->carica, false ) : ''; ?>> <?php echo ucfirst( $carica ); ?></label>
 			<?php endforeach; ?>
 			</fieldset>
 		</div>
@@ -216,9 +199,7 @@ function validate_user_data() {
 	}
 	$valid = array();
 	foreach ( $_POST as $key => $value ) {
-		if ( $key == 'anagrafica' ) {
-			$valid[$key] = serialize( $value );
-		} elseif ( $key == 'gruppo' ) {
+		if ( $key == 'gruppo' ) {
 			$valid[$key] = join( ',', $value );
 		} elseif ( ( isset( $user->{$key} ) && $user->{$key} == $value ) || empty( $value ) ) {
 			continue;

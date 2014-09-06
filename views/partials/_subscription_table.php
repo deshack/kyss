@@ -8,25 +8,15 @@
  */
 
 $subscriptions = KYSS_Subscription::get_list('corso', $id);
-
-// Small workaround to remove array elements that evaluate to false.
-// Useful if `KYSS_Subscription::get_list()` adds a NULL element.
-if ( is_array( $subscriptions ) )
-	$subscriptions = array_filter( $subscriptions ); 
 ?>
 
-<h1>Iscrizioni
-	<small><a href="#">
-		<span class="dashicons dashicons-plus"></span>
-	</a></small>
-</h1>
+<h1>Iscrizioni</h1>
 
 <?php
 if ( ! empty( $subscriptions ) ) : ?>
 <table>
 	<thead>
 		<tr>
-			<th>ID</th>
 			<th>Nome</th>
 			<th>Cognome</th>
 			<th>Azioni</th>
@@ -34,21 +24,11 @@ if ( ! empty( $subscriptions ) ) : ?>
 	</thead>
 	<tbody>
 <?php
-	foreach ( $subscriptions as $subscription ) : 
-		$user = KYSS_User::get_user_by('id', $subscription->utente);?>
+	foreach ( $subscriptions as $subscription ) {
+		$user = KYSS_User::get_user_by('id', $subscription->utente);
+		include( VIEWS . '/partials/_subscription_details.php' );
+	} ?>
 		<tr>
-			<td><?php echo $user->ID ?></td>
-			<td><?php echo $user->nome ?></td>
-			<td><?php echo $user->cognome ?></td>
-			<td>
-				<a href="#" title="Modifica">
-					<span class="dashicons dashicons-edit"></span>
-				</a>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-		<tr>
-			<td></td>
 			<td></td>
 			<td></td>
 			<td>

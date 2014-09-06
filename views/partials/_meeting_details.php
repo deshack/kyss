@@ -23,24 +23,25 @@ $meeting = KYSS_Meeting::get_meeting_by_id( $id );
 </h1>
 
 <div class="row">
-	<div class="medium-4 columns">
+	<div class="medium-3 columns">
+		<dl>
+			<dt>Data</dt>
+			<dd><?php echo isset( $meeting->data_inizio ) ? date( 'd/m/Y', strtotime( $meeting->data_inizio ) ) : ''; ?></dd>
+		</dl>
+	</div>
+	<div class="medium-3 columns">
 		<dl>
 			<dt>Inizio</dt>
-			<dd><?php echo isset( $meeting->data_inizio ) ? date( 'd/m/Y', strtotime( $meeting->data_inizio ) ) : ''; ?><br>
-				<?php echo isset( $meeting->ora_inizio ) ? date( 'H:i', strtotime( $meeting->ora_inizio ) ) : ''; ?>
-			</dd>
+			<dd><?php echo isset( $meeting->ora_inizio ) ? date( 'H:i', strtotime( $meeting->ora_inizio ) ) : ''; ?></dd>
 		</dl>
 	</div>
-	<div class="medium-4 columns">
+	<div class="medium-3 columns">
 		<dl>
 			<dt>Fine</dt>
-			<dd>
-				<?php echo isset( $meeting->data_fine ) ? date( 'd/m/Y', strtotime( $meeting->data_fine ) ) : ''; ?><br>
-				<?php echo isset( $meeting->ora_fine ) ? date( 'H:i', strtotime( $meeting->ora_fine ) ) : ''; ?>
-			</dd>
+			<dd><?php echo isset( $meeting->ora_fine ) ? date( 'H:i', strtotime( $meeting->ora_fine ) ) : ''; ?></dd>
 		</dl>
 	</div>
-	<div class="medium-4 columns">
+	<div class="medium-3 columns">
 		<dl>
 			<dt>Luogo</dt>
 			<dd><?php echo isset( $meeting->luogo ) ? $meeting->luogo : '-'; ?></dd>

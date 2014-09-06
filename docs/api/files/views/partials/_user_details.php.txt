@@ -13,14 +13,6 @@ if ( empty( $id ) ) {
 }
 
 $user = KYSS_User::get_user_by( 'id', $id );
-$anagrafica = isset( $user->anagrafica ) ? $user->anagrafica : '';
-
-// Anagrafica is a two-dimensions array, if not empty.
-// It may be necessary to unserialize it twice.
-if ( ! empty( $anagrafica ) )
-	$anagrafica = unserialize( $anagrafica );
-if ( ! is_array( $anagrafica ) )
-	$anagrafica = unserialize( $anagrafica );
 ?>
 
 <h1 class="page-title">Dettagli utente <small><?php echo $user->nome . ' ' . $user->cognome; ?></small></h1>
@@ -29,12 +21,12 @@ if ( ! is_array( $anagrafica ) )
 	<div class="medium-4 small-centered columns">
 		<ul class="vcard">
 			<li class="fn"><?php echo join( ' ', array( $user->nome, $user->cognome ) ); ?></li>
-			<?php echo isset( $anagrafica['residenza']['via'] ) ? '<li class="street-address">' . $anagrafica['residenza']['via'] . '</li>' : ''; ?>
-			<?php echo isset( $anagrafica['residenza']['city'] ) ? '<li class="locality">' . $anagrafica['residenza']['city'] . '</li>' : ''; ?>
-			<?php if ( isset( $anagrafica['residenza']['CAP'] ) || isset( $anagrafica['residenza']['provincia'] ) ) : ?>
+			<?php echo isset( $user->via ) ? '<li class="street-address">' . $user->via . '</li>' : ''; ?>
+			<?php echo isset( $user->citta ) ? '<li class="locality">' . $user->citta . '</li>' : ''; ?>
+			<?php if ( isset( $user->CAP ) || isset( $user->provincia ) ) : ?>
 				<li>
-					<?php echo isset( $anagrafica['residenza']['provincia'] ) ? '<span class="state">' . $anagrafica['residenza']['provincia'] . '</span>' : ''; ?>
-					<?php echo isset( $anagrafica['residenza']['CAP'] ) ? '<span class="zip">' . $anagrafica['residenza']['CAP'] . '</span>' : ''; ?>
+					<?php echo isset( $user->provincia ) ? '<span class="state">' . $user->provincia . '</span>' : ''; ?>
+					<?php echo isset( $user->CAP ) ? '<span class="zip">' . $user->CAP . '</span>' : ''; ?>
 				</li>
 			<?php endif; ?>
 		</ul>
@@ -57,7 +49,7 @@ if ( ! is_array( $anagrafica ) )
 	<div class="medium-4 columns">
 		<dl>
 			<dt>Codice Fiscale</dt>
-			<dd><?php echo isset( $anagrafica['CF'] ) ? $anagrafica['CF'] : '-'; ?></dd>
+			<dd><?php echo isset( $user->codice_fiscale ) ? $user->codice_fiscale : '-'; ?></dd>
 		</dl>
 	</div>
 </div>
@@ -65,19 +57,19 @@ if ( ! is_array( $anagrafica ) )
 	<div class="medium-4 columns">
 		<dl>
 			<dt>Nato a</dt>
-			<dd><?php echo isset( $anagrafica['nato_a'] ) ? $anagrafica['nato_a'] : '-'; ?></dd>
+			<dd><?php echo isset( $user->nato_a ) ? $user->nato_a : '-'; ?></dd>
 		</dl>
 	</div>
 	<div class="medium-4 columns">
 		<dl>
 			<dt>Nato il</dt>
-			<dd><?php echo isset( $anagrafica['nato_il'] ) ? $anagrafica['nato_il'] : '-'; ?></dd>
+			<dd><?php echo isset( $user->nato_il ) ? $user->nato_il : '-'; ?></dd>
 		</dl>
 	</div>
 	<div class="medium-4 columns">
 		<dl>
 			<dt>Cittadinanza</dt>
-			<dd><?php echo isset( $anagrafica['cittadinanza'] ) ? $anagrafica['cittadinanza'] : '-'; ?></dd>
+			<dd><?php echo isset( $user->cittadinanza ) ? $user->cittadinanza : '-'; ?></dd>
 		</dl>
 	</div>
 </div>
