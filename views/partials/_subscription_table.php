@@ -23,16 +23,21 @@ if ( ! empty( $subscriptions ) ) : ?>
 		</tr>
 	</thead>
 	<tbody>
-<?php
-	foreach ( $subscriptions as $subscription ) {
-		$user = KYSS_User::get_user_by('id', $subscription->utente);
-		include( VIEWS . '/partials/_subscription_details.php' );
-	} ?>
+		<?php foreach ( $subscriptions as $subscription ) {
+			echo '<tr>';
+			$user = KYSS_User::get_user_by('id', $subscription->utente);
+			include( VIEWS . '/partials/_subscription_details.php' );
+			echo '</tr>';
+		} ?>
 		<tr>
-			<td></td>
-			<td></td>
 			<td>
-				<a href="#" id="add-subscription" title="Aggiungi">
+				<input type="hidden" name="action" value="create">
+			</td>
+			<td>
+				<input type="hidden" name="corso" value="<?php echo $course->ID; ?>">
+			</td>
+			<td>
+				<a id="add-subscription" title="Aggiungi">
 					<span class="dashicons dashicons-plus"></span>
 				</a>
 			</td>

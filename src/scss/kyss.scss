@@ -52,6 +52,12 @@ body {
 
 table {
 	width: 100%;
+
+	select,
+	button,
+	.button {
+		margin-bottom: 0;
+	}
 }
 
 fieldset legend {

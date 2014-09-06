@@ -17,11 +17,15 @@
 require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/load.php' );
 
 $users = KYSS_User::get_users_list();
+
+$action = $_POST['action'];
 ?>
 
-<form>
-	<td><label for="utente">Aggiungi iscritto</label></td>
-	<td>
+<td>Aggiungi iscritto</td>
+<td>
+	<form>
+		<input type="hidden" name="action" value="<?php echo $action; ?>">
+		<input type="hidden" name="corso" value="<?php echo $_POST['corso']; ?>">
 		<select name="utente">
 		<?php foreach ( $users as $user ) : ?>
 			<option value="<?php echo $user->ID; ?>"<?php echo isset( $subscription->utente ) ? selected( $subscription->utente, $user->ID, false ) : ''; ?>>
@@ -29,8 +33,13 @@ $users = KYSS_User::get_users_list();
 			</option>
 		<?php endforeach; ?>
 		</select>
-	</td>
-	<td>
-		<input type="submit" class="button tiny" name="submit" value="Salva">
-	</td>
-</form>
+	</form>
+</td>
+<td>
+	<a class="submit" title="Salva">
+		<span class="dashicons dashicons-yes"></span>
+	</a>
+	<a class="remove" title="Annulla">
+		<span class="dashicons dashicons-no"></span>
+	</a>
+</td>

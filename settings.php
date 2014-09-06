@@ -111,6 +111,6 @@ if ( false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || ! defined( 'INST
 	}
 
 	if ( ! empty( $login ) ) {
-		$GLOBALS['user'] = new KYSS_User( $login );
+		$GLOBALS['current_user'] = new KYSS_User( $login );
 	}
 }
