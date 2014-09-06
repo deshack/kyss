@@ -44,7 +44,7 @@ $reports = KYSS_Report::get_list();
 <?php if ( $action == 'edit' ) : ?>
 	<h1 class="page-title">Modifica bilancio 
 		<small>
-			<?php echo ( isset( $budget->mese ) ? ( $budget->mese . ' ' ) : '' ) . $budget->anno; ?>
+			<?php echo ( isset( $budget->mese ) ? ( get_value_html( $budget->mese ) . ' ' ) : '' ) . get_value_html( $budget->anno ); ?>
 		</small>
 	</h1>
 <?php elseif ( $action == 'add' ) : ?>
@@ -92,7 +92,7 @@ switch( $action ) {
 		</div>
 		<div class="medium-4 columns">
 			<label for="anno">Anno</label>
-			<input id="anno" name="anno" type="text"<?php echo isset( $budget->anno ) ? $budget->anno : ''; ?>>
+			<input id="anno" name="anno" type="text"<?php echo isset( $budget->anno ) ? get_value_html( $budget->anno ) : ''; ?>>
 		</div>
 	</div>
 	<fieldset>
@@ -100,11 +100,11 @@ switch( $action ) {
 		<div class="row">
 			<div class="medium-6 columns">
 				<label for="cassa">Cassa</label>
-				<input id"cassa" name="cassa" type="text"<?php echo isset( $budget->cassa ) ? $budget->cassa : ''; ?>>
+				<input id="cassa" name="cassa" type="text"<?php echo isset( $budget->cassa ) ? get_value_html( $budget->cassa ) : ''; ?>>
 			</div>
 			<div class="medium-6 columns">
 				<label for="banca">Banca</label>
-				<input id="banca" name="banca" type="text"<?php echo isset( $budget->banca ) ? $budget->banca : ''; ?>>
+				<input id="banca" name="banca" type="text"<?php echo isset( $budget->banca ) ? get_value_html( $budget->banca ) : ''; ?>>
 			</div>
 		</div>
 	</fieldset>
@@ -112,7 +112,7 @@ switch( $action ) {
 		<div class="medium-6 columns">
 			<label for="approvato">Stato</label>
 			<select name="approvato">
-				<option value="NULL"<?php echo isset( $budget->approvato ) ? $budget->approvato : ''; ?>>
+				<option value="NULL"<?php echo isset( $budget->approvato ) ? get_value_html( $budget->approvato ) : ''; ?>>
 					-
 				</option>
 			<?php foreach ( array(
@@ -127,12 +127,12 @@ switch( $action ) {
 		<div class="medium-6 columns">
 			<label for="verbale">Verbale</label>
 			<select name="verbale">
-				<option value="NULL"<?php echo isset( $budget->verbale ) ? $budget->verbale : ''; ?>>
+				<option value="NULL"<?php echo isset( $budget->verbale ) ? get_value_html( $budget->verbale ) : ''; ?>>
 					-
 				</option>
 			<?php foreach ( $reports as $report ) : ?>
 				<option value="<?php echo $report->protocollo; ?>"<?php echo isset( $budget->verbale ) ? selected( $budget->verbale, $report->protocollo, false ) : ''; ?>>
-					<?php echo 'Verbale ' . $report->data_inizio; ?>
+					<?php echo 'Verbale ' . $report->protocollo; ?>
 				</option>
 			<?php endforeach; ?>
 			</select>

@@ -27,14 +27,28 @@ if ( ! empty( $reports ) ) : ?>
 <table>
 	<thead>
 		<tr>
-			<th></th>
+			<th>Protocollo</th>
+			<th>Data</th>
+			<th>Azioni</th>	
 		</tr>
 	</thead>
 	<tbody>
 <?php
 	foreach ( $reports as $report ) : ?>
 		<tr>
-			<td></td>
+			<td><?php echo $report->protocollo; ?></td>
+			<td><?php 
+				$meeting = KYSS_Meeting::get_meeting_by_id( $report->riunione );
+				echo date( 'd/m/Y', strtotime( $meeting->data_inizio ) );
+			 ?></td>
+			<td>
+				<a href="<?php echo get_site_url( 'reports.php?action=view&prot=' . $report->protocollo ); ?>" title="Dettagli">
+					<span class="dashicons dashicons-visibility"></span>
+				</a>
+				<a href="<?php echo get_site_url( 'reports.php?action=edit&prot=' . $report->protocollo ); ?>" title="Modifica">
+					<span class="dashicons dashicons-edit"></span>
+				</a>
+			</td>
 		</tr>
 	<?php endforeach; ?>
 	</tbody>
