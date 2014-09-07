@@ -248,7 +248,9 @@ function validate() {
 			$errors->add( 'invalid_password', 'Password errata. Riprovare.' );
 	}
 
-	if ( ! empty( $errors->get_error_code() ) ) {
+	$var = $errors->get_error_code();
+	
+	if ( ! empty( $var ) ) {
 		// TODO: handle some errors
 		echo "Failure!";
 	} else {

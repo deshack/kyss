@@ -57,7 +57,7 @@ $budget = KYSS_Budget::get( $id );
 		</dl>
 	</div>
 </div>
-
+<?php require( VIEWS . '/partials/_movement_table.php' ); ?>
 <footer class="entry-meta text-center">
 	<div class="row">
 		<div class="medium-6 columns">

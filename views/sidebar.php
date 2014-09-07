@@ -66,12 +66,12 @@
 				<li><a href="<?php echo get_option( 'siteurl' ); ?>/budgets.php">
 					<span class="dashicons dashicons-arrow-right"></span> Bilanci
 				</a></li>
-				<li><a href="<?php echo get_option( 'siteurl' ); ?>/movements.php">
-					<span class="dashicons dashicons-arrow-right"></span> Movimenti
-				</a></li>
 			</ul>
 		<?php endif; ?>
 		</li>
+		<li><a href="<?php echo get_option( 'siteurl' ); ?>/movements.php">
+			<span class="dashicons dashicons-arrow-right"></span> Movimenti
+		</a></li>
 	</ul>
 </section><!-- #sidebar -->
 

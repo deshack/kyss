@@ -270,8 +270,8 @@ class KYSS_Report {
  * @subpackage  Budget
  */
 class KYSS_Budget {
-/**
-	 * Retrieve Budget by protocol.
+	/**
+	 * Retrieve Budget by id.
 	 *
 	 * @since  0.12.0
 	 * @access public

@@ -15,6 +15,35 @@
  */
 class KYSS_Movement {
 	/**
+	 * Retrieve Movement by id.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global kyssdb
+	 *
+	 * @param  string $id Movement ID.
+	 * @return KYSS_Movement|bool KYSS_Movement object or false on failure.
+	 */
+	public static function get( $id ) {
+		global $kyssdb;
+
+		if ( ! $movement = $kyssdb->query(
+			"SELECT * 
+			FROM {$kyssdb->movimenti} 
+			WHERE ID = '{$id}'"
+		) )
+			return false;
+
+		if ( $movement->num_rows == 0 )
+			return new KYSS_Error( 'movement_not_found', 'Movimento non trovato', array( 'ID' => $id ) );
+		$movement = $movement->fetch_object( 'KYSS_Movement' );
+
+		return $movement;
+	}
+
+	/**
 	 * Retrieve movements list.
 	 *
 	 * @since  0.13.0
@@ -23,48 +52,92 @@ class KYSS_Movement {
 	 *
 	 * @global kyssdb
 	 *
-	 * @param  string $filed Optional. If is an empty string returns all the subscription. Default empty.
+	 * @param  string $filed Optional. If is an empty string returns all the movement. Default empty.
 	 * @param  int $value The field value.
 	 * @return array|false Array of KYSS_Movement object. False on failure.
 	 */
 	public static function get_list( $field = '', $value = 0) {
 		global $kyssdb;
 
-		switch ( $field ) {
-			case 'utente':
-				$query = "SELECT corso ";
-				break;
-			case 'corso':
-				$query = "SELECT utente ";
-				break;
-			case '':
-			default:
-				$query = "SELECT * ";	
-		}
+		$query = "SELECT * FROM {$kyssdb->movimenti} ";
 
-		$query .= "FROM {$kyssdb->iscritto} ";
-
-		if ( ! empty( $filed ) ) {
-			if ( ! is_numeric( $value ) )
-				return false;
-			$value = intval( $value );
-			if ( $value < 1 )
-				return false;
-
+		if ( ! empty( $field ) )
 			$query .= "WHERE {$field} = {$value}";
-		}
 
-		if ( ! $subscription = $kyssdb->query( $query ) )
+		if ( ! $movement = $kyssdb->query( $query ) )
 			return false;
 
-		if ( $subscription->num_rows == 0 )
-			return new KYSS_Error( 'no_subscrtiption_found', 'No subscription found.', array( $field => $value ) );
+		$movements = array();
 
-		$subscriptions = array();
+		for ( $i = 0; $i < $movement->num_rows; $i++ )
+			array_push( $movements, $movement->fetch_object( 'KYSS_Movement' ) );
 
-		for ( $i = 0; $i < $subscription->num_rows; $i++ )
-			array_push( $subscriptions, $subscription->fetch_object( 'KYSS_Subscription' ) );
+		return $movements;
+	}
 
-		return $subscriptions;
+	/**
+	 * Insert new Movement into the database.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global kyssdb
+	 *
+	 * @param  array $data Associative array of column names and values.
+	 * @return int The new created movement's ID or false on failure.
+	 */
+	public static function create( $data ) {
+		global $kyssdb;
+
+		if ( empty( $data ) )
+			return new KYSS_Error( 'empty_movement_data', 'Movements data cannot be empty!' );
+
+		$columns = array();
+		$values = array();
+
+		foreach ( $data as $key => $value ) {
+			array_push( $columns, $key );
+			if ( $value != 'NULL')
+				array_push( $values, "'{$value}'" );
+			else
+				array_push( $values, "$value" );
+		}
+
+		$columns = join( ',', $columns );
+		$values = join( ',', $values );
+
+		$query = "INSERT INTO {$kyssdb->movimenti} ({$columns}) VALUES ({$values})";
+		if ( ! $result = $kyssdb->query( $query ) ) {
+			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
+			return false;
+		}
+
+		return $kyssdb->insert_id;
+	}
+
+	/**
+	 * Update Movement in the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global kyssdb
+	 *
+	 * @param  array $data Movement's data.
+	 * @return bool Whether the update succeeded or not.
+	 */
+	public static function update( $id, $data ) {
+		global $kyssdb;
+
+		if ( empty( $data) )
+			return false;
+
+		$result = $kyssdb->update( $kyssdb->movimenti, $data, array( 'ID' => $id ) );
+
+		if ( $result )
+			return true;
+		return false;
 	}
 }

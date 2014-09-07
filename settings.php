@@ -59,6 +59,7 @@ require( CLASSES . 'user.php' );
 require( CLASSES . 'event.php' );
 require( CLASSES . 'document.php' );
 require( CLASSES . 'subscription.php' );
+require( CLASSES . 'movement.php' );
 
 // Check PHP version
 check_php_version();
