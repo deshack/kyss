@@ -15,77 +15,56 @@
  */
 class KYSS_Movement {
 	/**
-	 * The Movement's ID.
+	 * Retrieve movements list.
 	 *
-	 * @since 
+	 * @since  0.13.0
 	 * @access public
-	 * @var  int
+	 * @static
+	 *
+	 * @global kyssdb
+	 *
+	 * @param  string $filed Optional. If is an empty string returns all the subscription. Default empty.
+	 * @param  int $value The field value.
+	 * @return array|false Array of KYSS_Movement object. False on failure.
 	 */
-	public $ID;
+	public static function get_list( $field = '', $value = 0) {
+		global $kyssdb;
 
-	/**
-	 * The Movement's user ID.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  int
-	 */
-	public $utente;
+		switch ( $field ) {
+			case 'utente':
+				$query = "SELECT corso ";
+				break;
+			case 'corso':
+				$query = "SELECT utente ";
+				break;
+			case '':
+			default:
+				$query = "SELECT * ";	
+		}
 
-	/**
-	 * The Movement's type.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  string
-	 */
-	public $causale;
+		$query .= "FROM {$kyssdb->iscritto} ";
 
-	/**
-	 * The Movement's value.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  string
-	 */
-	public $importo;
+		if ( ! empty( $filed ) ) {
+			if ( ! is_numeric( $value ) )
+				return false;
+			$value = intval( $value );
+			if ( $value < 1 )
+				return false;
 
-	/**
-	 * The Movement's date.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  date
-	 */
-	public $data;
+			$query .= "WHERE {$field} = {$value}";
+		}
 
-	/**
-	 * The Movement's budget ID.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  int
-	 */
-	public $bilancio;
+		if ( ! $subscription = $kyssdb->query( $query ) )
+			return false;
 
-	/**
-	 * The Movement's event ID.
-	 *
-	 * @since 
-	 * @access public
-	 * @var  int
-	 */
-	public $evento;
+		if ( $subscription->num_rows == 0 )
+			return new KYSS_Error( 'no_subscrtiption_found', 'No subscription found.', array( $field => $value ) );
 
-	/**
-	 * Constructor.
-	 *
-	 * @since  
-	 * @access public
-	 *
-	 * @param  
-	 * @return KYSS_Movement
-	 */
-	function __construct() {
-		
+		$subscriptions = array();
+
+		for ( $i = 0; $i < $subscription->num_rows; $i++ )
+			array_push( $subscriptions, $subscription->fetch_object( 'KYSS_Subscription' ) );
+
+		return $subscriptions;
 	}
+}

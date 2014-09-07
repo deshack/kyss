@@ -40,7 +40,7 @@ function kyss_not_installed() {
 	if ( is_installed() || false !== strpos( $_SERVER['PHP_SELF'], 'install.php' ) || defined( 'INSTALLING' ) )
 		return;
 	
-	$link = kyss_guess_url() . '/admin/install.php';
+	$link = kyss_guess_url() . '/install.php';
 	kyss_redirect( $link );
 	die();
 }

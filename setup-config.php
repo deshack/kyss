@@ -29,7 +29,7 @@ error_reporting( E_ALL );
 ini_set('display_errors', 1);
 
 // These defines are required to allow us to build paths.
-define('ABSPATH', dirname(dirname(__FILE__)) . '/');
+define('ABSPATH', dirname(__FILE__) . '/');
 define('INC', ABSPATH . 'inc/');
 
 require(INC . 'version.php');

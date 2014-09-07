@@ -183,7 +183,9 @@ function get_db_schema() {
 				ON UPDATE CASCADE ON DELETE RESTRICT
 		) ENGINE = InnoDB",
 
-		"CREATE TABLE IF NOT EXISTS {$kyssdb->errori} (
+		"DROP TABLE IF EXISTS {$kyssdb->errori}",
+
+		"CREATE TABLE {$kyssdb->errori} (
 			`Codice`             int UNSIGNED NOT NULL,
 			`Descrizione`        varchar(50) NOT NULL,
 			PRIMARY KEY (`Codice`, `Descrizione`)
@@ -210,7 +212,51 @@ function get_db_schema() {
 			`value`				longtext NOT NULL,
 			PRIMARY KEY (`ID`),
 			UNIQUE (`name`)
-		) ENGINE = InnoDB"
+		) ENGINE = InnoDB",
+
+		"DROP PROCEDURE IF EXISTS controlloCariche",
+
+		"DROP PROCEDURE IF EXISTS controlloDataCarica",
+
+		"DROP TRIGGER IF EXISTS controlloCaricheIns",
+
+		"DROP TRIGGER IF EXISTS controlloCaricheUpd",
+
+		"DROP PROCEDURE IF EXISTS controlloUtenti",
+
+		"DROP TRIGGER IF EXISTS controlloUtentiIns",
+
+		"DROP TRIGGER IF EXISTS controlloUtentiUpd",
+
+		"DROP PROCEDURE IF EXISTS controlloInizioFineEvento",
+
+		"DROP TRIGGER IF EXISTS controlloInizioFineEventoIns",
+
+		"DROP TRIGGER IF EXISTS controlloInizioFineEventoUpd",
+
+		"DROP PROCEDURE IF EXISTS controlloDataTalk",
+
+		"DROP TRIGGER IF EXISTS controlloDataTalkIns",
+
+		"DROP TRIGGER IF EXISTS controlloDataTalkUpd",
+
+		"DROP PROCEDURE IF EXISTS controlloOrarioRiunioni",
+
+		"DROP TRIGGER IF EXISTS controlloOrarioRiunioniIns",
+
+		"DROP TRIGGER IF EXISTS controlloOrarioRiunioniUpd",
+
+		"DROP PROCEDURE IF EXISTS controlloDatePratiche",
+
+		"DROP TRIGGER IF EXISTS controlloDatePraticheIns",
+
+		"DROP TRIGGER IF EXISTS controlloDatePraticheUpd",
+
+		"DROP PROCEDURE IF EXISTS controlloDataLezioni",
+
+		"DROP TRIGGER IF EXISTS controlloDataLezioniIns",
+
+		"DROP TRIGGER IF EXISTS controlloDataLezioniUpd"
 	);
 
 	return $schema;

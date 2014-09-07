@@ -36,7 +36,7 @@ if ( file_exists( ABSPATH . 'config.php' ) ) {
 
 	// PHP version is equal or higher than the required one
 	
-	$path = kyss_guess_url() . '/admin/setup-config.php';
+	$path = kyss_guess_url() . '/setup-config.php';
 
 	// Die with an error message
 	$die = '<h1>Missing config file</h1>';

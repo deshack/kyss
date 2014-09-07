@@ -39,7 +39,7 @@ define( 'INSTALLING', true );
 /**
  * Load KYSS Bootstrap.
  */
-require_once( dirname(dirname(__FILE__)) . '/load.php' );
+require_once( dirname(__FILE__) . '/load.php' );
 
 /**
  * Load KYSS Administration Upgrade API.
@@ -239,7 +239,7 @@ function validate() {
 	</tr>
 </table>
 
-<p class="step"><a href="../login.php" class="button primary">Login</a></p>
+<p class="step"><a href="<?php echo get_option( 'siteurl' ); ?>/login.php" class="button primary">Login</a></p>
 
 <?php
 	endif; // $error === false
