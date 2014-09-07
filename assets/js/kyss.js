@@ -51,6 +51,14 @@
 		});
 
 		/**
+		 * Edit subscription.
+		 */
+		$('#subscriptions').on('click', '.edit', function() {
+			var self = $(this);
+			self.loadForm('views/partials/_subscription_form.php');
+		});
+
+		/**
 		 * Remove subscription form.
 		 */
 		$('#subscriptions').on('click', '.remove', function() {
