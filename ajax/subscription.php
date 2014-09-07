@@ -9,7 +9,7 @@
 
 require_once( dirname( dirname( __FILE__ ) ) . '/load.php' );
 
-$data['corso'] = $_POST['corso'];
+$data['corso'] = $_POST['id'];
 $data['utente'] = $_POST['utente'];
 
 KYSS_Subscription::create( $data );

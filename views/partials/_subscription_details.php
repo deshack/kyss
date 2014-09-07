@@ -19,13 +19,16 @@ if ( ! isset( $user ) ) {
 	$user = KYSS_User::get_user_by('id',$_REQUEST['utente']);
 }
 ?>
-
-<td><?php echo $user->nome ?></td>
-<td><?php echo $user->cognome ?></td>
+<td id="<?php echo $user->ID; ?>">
+	<a href="<?php echo get_site_url( 'users.php?action=view&id=' . $user->ID ); ?>">
+		<?php echo $user->nome . ' ' . $user->cognome; ?>
+	</a>
+</td>
 <td>
-	<input type="hidden" name="action" value="update">
-	<input type="hidden" name="utente" value="<?php echo $user->ID; ?>">
 	<a class="edit" title="Modifica">
 		<span class="dashicons dashicons-edit"></span>
+	</a>
+	<a class="delete" title="Elimina">
+		<span class="dashicons dashicons-trash"></span>
 	</a>
 </td>

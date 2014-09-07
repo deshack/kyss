@@ -18,27 +18,25 @@ $_GET = <?php echo json_encode($_GET); ?>;
 $subscriptions = KYSS_Subscription::get_list('corso', $id);
 ?>
 
-<h1>Iscrizioni</h1>
+<h2>Iscritti</h2>
 
 <?php
 if ( ! empty( $subscriptions ) ) : ?>
 <table id="subscriptions">
 	<thead>
 		<tr>
-			<th>Nome</th>
-			<th>Cognome</th>
+			<th>Utente</th>
 			<th>Azioni</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php foreach ( $subscriptions as $subscription ) {
 			echo '<tr>';
-			$user = KYSS_User::get_user_by('id', $subscription->utente);
+			$user = KYSS_User::get_user_by( 'id', $subscription->utente );
 			include( VIEWS . '/partials/_subscription_details.php' );
 			echo '</tr>';
 		} ?>
 		<tr>
-			<td></td>
 			<td></td>
 			<td>
 				<input type="hidden" name="action" value="create">

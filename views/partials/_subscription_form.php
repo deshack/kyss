@@ -20,18 +20,22 @@ $users = KYSS_User::get_users_list();
 
 ?>
 
-<td>Aggiungi iscritto</td>
 <td>
 	<form>
-		<input type="hidden" name="action" value="<?php echo $action; ?>">
-		<input type="hidden" name="corso" value="<?php echo $_POST['corso']; ?>">
-		<select name="utente">
-		<?php foreach ( $users as $user ) : ?>
-			<option value="<?php echo $user->ID; ?>"<?php echo isset( $subscription->utente ) ? selected( $subscription->utente, $user->ID, false ) : ''; ?>>
-				<?php echo $user->nome . ' ' . $user->cognome; ?>
-			</option>
-		<?php endforeach; ?>
-		</select>
+		<div class="row">
+			<div class="small-3 columns">
+				<label for="utente" class="label-select right">Aggiungi iscritto</label>
+			</div>
+			<div class="small-5 columns end">
+				<select name="utente">
+				<?php foreach ( $users as $user ) : ?>
+					<option value="<?php echo $user->ID; ?>"<?php echo isset( $subscription->utente ) ? selected( $subscription->utente, $user->ID, false ) : ''; ?>>
+						<?php echo $user->nome . ' ' . $user->cognome; ?>
+					</option>
+				<?php endforeach; ?>
+				</select>
+			</div>
+		</div>
 	</form>
 </td>
 <td>

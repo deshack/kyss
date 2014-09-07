@@ -26,7 +26,7 @@
 		 */
 		loadRow: function(p, data) {
 			var row = $(this).closest('tr');
-			var newRow = $('.new').load(p, data);
+			var newRow = $('.new').load(p, data );
 			row.before(newRow);
 			$('.new').removeClass('new');
 			row.after('<tr class="new"></tr>');
