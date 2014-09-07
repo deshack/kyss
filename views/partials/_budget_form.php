@@ -44,7 +44,7 @@ $reports = KYSS_Report::get_list();
 <?php if ( $action == 'edit' ) : ?>
 	<h1 class="page-title">Modifica bilancio 
 		<small>
-			<?php echo ( isset( $budget->mese ) ? ( get_value_html( $budget->mese ) . ' ' ) : '' ) . get_value_html( $budget->anno ); ?>
+			<?php echo ( isset( $budget->mese ) ? ( $budget->mese . ' ' ) : '' ) . $budget->anno ; ?>
 		</small>
 	</h1>
 <?php elseif ( $action == 'add' ) : ?>

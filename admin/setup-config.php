@@ -95,7 +95,7 @@ function display_header() {
 <html lang="en">
 <head>
 	<meta name="viewport" content="width=device-width" />
-	<meta charset="URF-8" />
+	<meta charset="UTF-8" />
 	<title>KYSS &rsaquo; Setup Configuration File</title>
 	<?php
 	/**

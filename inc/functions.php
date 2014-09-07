@@ -66,7 +66,7 @@ function kyss_die( $message = '', $title = '', $args = array() ) {
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?php echo $title; ?></title>
-	<link rel="stylesheet" type="text/css" href="/assets/css/install.css" />
+	<link rel="stylesheet" type="text/css" href="assets/css/install.css" />
 </head>
 <body id="error-page">
 <div class="container">
