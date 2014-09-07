@@ -18,7 +18,6 @@ require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/load.php' );
 
 $users = KYSS_User::get_users_list();
 
-$action = $_POST['action'];
 ?>
 
 <td>Aggiungi iscritto</td>

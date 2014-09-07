@@ -7,6 +7,14 @@
  * @since  
  */
 
+$hook->add( 'kyss_footer', function() {
+?>
+<script type="text/javascript">
+$_GET = <?php echo json_encode($_GET); ?>;
+</script>
+<?php
+});
+
 $subscriptions = KYSS_Subscription::get_list('corso', $id);
 ?>
 
@@ -30,13 +38,11 @@ if ( ! empty( $subscriptions ) ) : ?>
 			echo '</tr>';
 		} ?>
 		<tr>
+			<td></td>
+			<td></td>
 			<td>
 				<input type="hidden" name="action" value="create">
-			</td>
-			<td>
 				<input type="hidden" name="corso" value="<?php echo $course->ID; ?>">
-			</td>
-			<td>
 				<a id="add-subscription" title="Aggiungi">
 					<span class="dashicons dashicons-plus"></span>
 				</a>
