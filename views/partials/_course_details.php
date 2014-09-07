@@ -52,6 +52,7 @@ $course = KYSS_Course::get_course_by_id( $id );
 </div>
 
 <?php 
+require( VIEWS . '/partials/_lesson_table.php');
 require( VIEWS . '/partials/_subscription_table.php');
 ?>
 

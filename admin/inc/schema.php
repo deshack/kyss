@@ -128,7 +128,7 @@ function get_db_schema() {
 			`data`				datetime NOT NULL,
 			`argomento`			text,
 			`corso`				bigint(20) UNSIGNED NOT NULL,
-			PRIMARY KEY (`data`),
+			PRIMARY KEY (`corso`, `data`),
 			FOREIGN KEY (`corso`) REFERENCES {$kyssdb->corsi}(`ID`)
 				ON UPDATE CASCADE ON DELETE CASCADE
 		) ENGINE = InnoDB",
@@ -422,11 +422,11 @@ function get_db_triggers() {
 		"CREATE PROCEDURE controlloDataLezioni( IN data DATE, data_inizio DATE, data_fine DATE )
 		BEGIN
 			IF ( DATE( data ) < DATE( data_inizio ) ) THEN
-				INSERT INTO Errori VALUES (12, 'Data lezione precedente alla data di inizio corso');
+				INSERT INTO {$kyssdb->errori} VALUES (12, 'Data lezione precedente alla data di inizio corso');
 			END IF;
 			IF ( data_fine IS NOT NULL ) THEN
 				IF ( DATE( data ) > DATE( data_fine ) ) THEN
-					INSERT INTO Errori VALUES (13, 'Data lezione successiva alla data di fine corso');
+					INSERT INTO {$kyssdb->errori} VALUES (13, 'Data lezione successiva alla data di fine corso');
 				END IF;
 			END IF;
 		END",

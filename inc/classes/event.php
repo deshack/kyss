@@ -569,9 +569,10 @@ class KYSS_Talk {
 	 * @access public
 	 * @static
 	 *
-	 * @global  kyssdb
+	 * @param  int $event_id The event ID.
+	 * @global kyssdb
 	 *
-	 * @return  array|false Array of KYSS_Talk objects. False on failure.
+	 * @return array|false Array of KYSS_Talk objects. False on failure.
 	 */
 	public static function get_list( $event_id = '' ) {
 		global $kyssdb;
@@ -668,106 +669,26 @@ class KYSS_Talk {
  */
 class KYSS_Lesson {
 	/**
-	 * The Lesson's date.
-	 *
-	 * @since 0.11.0 
-	 * @access public
-	 * @var  date
-	 */
-	public $data;
-
-	/**
-	 * The Lesson's start date time.
-	 *
-	 * @since 0.11.0 
-	 * @access public
-	 * @var  string
-	 */
-	public $ora;
-
-	/**
-	 * The Lesson's arguments.
-	 *
-	 * @since 0.11.0 
-	 * @access public
-	 * @var  string
-	 */
-	public $argomenti;
-
-	/**
-	 * The Lesson's course ID.
-	 *
-	 * @since 0.11.0 
-	 * @access public
-	 * @var  int
-	 */
-	public $corso;
-
-	/**
-	 * Constructor.
-	 *
-	 * @since 0.11.0 
-	 * @access public
-	 *
-	 * @param  int|string|stdClass|KYSS_Lesson $id Lesson ID, or a KYSS_Lesson object,
-	 * or a lesson object from the DB.
-	 */
-	public function __construct() {
-	
-	}
-
-	/**
-	 * Retrieve lesson by ID.
-	 *
-	 * @since  0.11.0
-	 * @access public
-	 * @static
-	 *
-	 * @global  kyssdb
-	 *
-	 * @param  int $id The lesson ID.
-	 * @return  KYSS_Lesson|bool False on failure.
-	 */
-	public static function get_lesson_by_id( $id ) {
-		global $kyssdb;
-
-		if ( ! is_numeric( $id ) )
-			return false;
-		$id = intval( $id );
-
-		if ( $id < 1 )
-			return false;
-
-		if ( ! $lesson = $kyssdb->query (
-			"SELECT * FROM {$kyssdb->lezioni} WHERE ID = {$id}"
-		) )
-			return false;
-
-		if ( $lesson->num_rows == 0 )
-			return new KYSS_Error( 'lesson_not_found', 'Lesson not found.', array( 'ID' => $id ) );
-
-		$lesson = $lesson->fetch_object( 'KYSS_Lesson' );
-
-		return $lesson;
-	}
-
-	/**
 	 * Retrieve lessons list.
 	 *
 	 * @since  0.11.0
 	 * @access public
 	 * @static
 	 *
-	 * @global  kyssdb
+	 * @param  int $course The course ID.
+	 * @global kyssdb
 	 *
-	 * @return  array|false Array of KYSS_Lesson objects. False on failure.
+	 * @return array|false Array of KYSS_Lesson objects. False on failure.
 	 */
-	public static function get_lessons_list() {
+	public static function get_list( $course = '' ) {
 		global $kyssdb;
 
-		if ( ! $lesson = $kyssdb->query(
-			"SELECT * FROM {$kyssdb->lezioni}"
-		) )
+		$query = "SELECT * FROM {$kyssdb->lezioni}";
+
+		if ( is_numeric( $course ) )
+			$query .= " WHERE corso = {$course}";
+
+		if ( ! $lesson = $kyssdb->query( $query ) )
 			return false;
 
 		$lessons = array();
@@ -824,21 +745,20 @@ class KYSS_Lesson {
 	 * @since  0.11.0
 	 * @access public
 	 *
-	 * @global  kyssdb
+	 * @global kyssdb
 	 *
+	 * @param  int $course The course ID.
+	 * @param  datetime $datetime The lesson date and time.
 	 * @param  array $data Lesson data.
-	 * @return  bool Whether the update succeeded or not.
+	 * @return bool Whether the update succeeded or not.
 	 */
-	public function update( $data ) {
+	public function update( $course, $datatime, $data ) {
 		global $kyssdb;
 
-		foreach ( $data as $key => $value ) {
-			if ( is_int( $value ) )
-				continue;
-			$data[$key] = "'{$value}'";
-		}
+		if ( empty( $data ) )
+			return false;
 
-		$result = $kyssdb->update( $kyssdb->lezioni, $data, array( 'ID' => $this->ID ) );
+		$result = $kyssdb->update( $kyssdb->lezioni, $data, array( 'corso' => $course, 'data' => $datetime ) );
 
 		if ( $result )
 			return true;

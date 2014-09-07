@@ -1,32 +1,31 @@
 <?php
 /**
- * Render KYSS Subscriptions table.
+ * Render KYSS Lesson table.
  *
  * @package  KYSS
  * @subpackage  Partials
- * @since  
+ * @since  0.13.0
  */
 
-$subscriptions = KYSS_Subscription::get_list('corso', $id);
+$lessons = KYSS_Lesson::get_list( $id );
 ?>
 
-<h1>Iscrizioni</h1>
+<h1>Lezioni</h1>
 
 <?php
-if ( ! empty( $subscriptions ) ) : ?>
-<table id="subscriptions">
+if ( ! empty( $lessons ) ) : ?>
+<table id="lessons">
 	<thead>
 		<tr>
-			<th>Nome</th>
-			<th>Cognome</th>
+			<th>Argomento</th>
+			<th>Data e ora</th>
 			<th>Azioni</th>
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ( $subscriptions as $subscription ) {
+		<?php foreach ( $lessons as $lesson ) {
 			echo '<tr>';
-			$user = KYSS_User::get_user_by('id', $subscription->utente);
-			include( VIEWS . '/partials/_subscription_details.php' );
+			include( VIEWS . '/partials/_lesson_details.php' );
 			echo '</tr>';
 		} ?>
 		<tr>
@@ -37,7 +36,7 @@ if ( ! empty( $subscriptions ) ) : ?>
 				<input type="hidden" name="corso" value="<?php echo $course->ID; ?>">
 			</td>
 			<td>
-				<a id="add-subscription" title="Aggiungi">
+				<a id="add-lesson" title="Aggiungi">
 					<span class="dashicons dashicons-plus"></span>
 				</a>
 			</td>
