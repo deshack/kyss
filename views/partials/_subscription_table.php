@@ -52,6 +52,4 @@ if ( ! empty( $subscriptions ) ) : ?>
 	</tbody>
 </table>
 <?php
-else :
-	echo 'Non ci sono iscirtti per questo corso.';
 endif;

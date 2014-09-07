@@ -27,14 +27,32 @@ if ( ! empty( $practices ) ) : ?>
 <table>
 	<thead>
 		<tr>
-			<th></th>
+			<th>Protocollo</th>
+			<th>Utente</th>
+			<th>Tipo</th>
+			<th>Data</th>
+			<th>Azioni</th>
 		</tr>
 	</thead>
 	<tbody>
 <?php
 	foreach ( $practices as $practice ) : ?>
 		<tr>
-			<td></td>
+			<td><?php echo $practice->protocollo?></td>
+			<td><?php 
+				$user = KYSS_User::get_user_by('id', $practice->utente);
+				echo $user->nome . ' ' . $user->cognome; 
+			?></td>
+			<td><?php echo $practice->tipo; ?></td>
+			<td><?php echo $practice->data; ?></td>
+			<td>
+				<a href="<?php echo get_site_url( 'practices.php?action=view&prot=' . $practice->protocollo ); ?>" title="Dettagli">
+					<span class="dashicons dashicons-visibility"></span>
+				</a>
+				<a href="<?php echo get_site_url( 'practices.php?action=edit&prot=' . $practice->protocollo ); ?>" title="Modifica">
+					<span class="dashicons dashicons-edit"></span>
+				</a>
+			</td>
 		</tr>
 	<?php endforeach; ?>
 	</tbody>

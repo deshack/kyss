@@ -65,6 +65,12 @@ switch( $action ) {
 
 <form id="<?php echo $action; ?>-report" method="post" action="reports.php?<?php echo $form_action; ?>">
 	<div class="row">
+		<?php if ( $action == 'add' ) : ?>
+		<div class="medium-6 columns">
+			<label for="protocollo">Protocollo</label>
+			<input id="protocollo" name="protocollo" type="text"<?php echo isset( $report->protocollo ) ? get_value_html( $report->protocollo ) : ''; ?>> 
+		</div>
+		<?php endif; ?>
 		<div class="medium-6 columns">
 			<label for="riunione">Riunione</label>
 			<select name="riunione">
@@ -84,6 +90,7 @@ switch( $action ) {
 			<label for="contenuto">Contenuto</label>
 			<input id="contenuto" name="contenuto" type="text"<?php echo isset( $report->contenuto ) ? get_value_html( $report->contenuto ) : ''; ?>>
 		</div>
+	</div>
 	<div class="row action-buttons text-center">
 		<div class="small-6 columns">
 			<input type="submit" class="button" name="submit" value="Salva">
