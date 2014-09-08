@@ -82,11 +82,11 @@ switch( $action ) {
 		</div>
 		<div class="medium-5 columns">
 			<label for="data_inizio">Inizio</label>
-			<input type="date" id="data_inizio" name="data_inizio"<?php echo isset( $course->data_inizio ) ? get_value_html( $course->data_inizio ) : '' ?> required>
+			<input type="text" class="datepicker" id="data_inizio" name="data_inizio"<?php echo isset( $course->data_inizio ) ? get_value_html( $course->data_inizio ) : '' ?> required>
 		</div>
 		<div class="medium-5 columns">
 			<label for="data_fine">Fine</label>
-			<input id="data_fine" name="data_fine" type="date"<?php echo isset( $course->data_fine ) ? get_value_html( $course->data_fine ) : '' ?>>
+			<input id="data_fine" name="data_fine" class="datepicker" type="text"<?php echo isset( $course->data_fine ) ? get_value_html( $course->data_fine ) : '' ?>>
 		</div>
 	</div>
 	<div class="row">

@@ -18,13 +18,17 @@ Something
 </footer>
 
 <script>
-jQuery(document).foundation();
-jQuery.datepicker.setDefaults({
-	showOn: "focus",
-	dateFormat: 'yy-mm-dd',
-	regional: 'it'
-});
-jQuery( ".datepicker" ).datepicker();
+(function($) {
+	$(document).foundation();
+	$(function(){
+		$.datepicker.setDefaults({
+			showOn: "focus",
+			dateFormat: 'yy-mm-dd',
+			regional: 'it'
+		});
+		$( ".datepicker" ).datepicker();
+	});
+})(jQuery);
 </script>
 
 <?php $hook->run( 'kyss_footer' ); ?>

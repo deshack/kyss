@@ -75,6 +75,7 @@
 				e.preventDefault();
 				var that = $(this);
 				var data = that.serializeArray();
+				data.push(_GET);
 				$.post('ajax/subscription.php', data, function() {
 					var data = that.serializeArray();
 					self.loadRow('views/partials/_subscription_details.php', data);

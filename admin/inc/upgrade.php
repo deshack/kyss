@@ -59,6 +59,8 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	if ( empty( $user_password ) ) {
 		$user_password = generate_password(); // Defaults to 10 char long, with special chars.
 		$message = '<strong><em>Note that password</em></strong> carefully! It is a <em>random</em> password that was generated just for you.';
+	} else {
+		$message = 'La password che hai scelto.';
 	}
 	$user_id = KYSS_User::create($user_name, $user_surname, $user_password, array( 'email' => $user_email ) );
 
@@ -74,5 +76,5 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	$hook->run( 'kyss_installed', $user );
 	
 	// TODO: remove 'empty message' string.
-	return array('url' => $guessurl, 'user_id' => $user_id, 'password' => $user_password, 'password_message' => (isset($message) ? $message : '') );
+	return array('url' => $guessurl, 'user_id' => $user_id, 'password' => $user_password, 'password_message' => $message );
 }

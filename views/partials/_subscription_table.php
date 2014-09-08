@@ -10,7 +10,10 @@
 $hook->add( 'kyss_footer', function() {
 ?>
 <script type="text/javascript">
-$_GET = <?php echo json_encode($_GET); ?>;
+_GET = {
+	name: "corso",
+	value: "<?php echo $_GET['id']; ?>"
+};
 </script>
 <?php
 });

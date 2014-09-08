@@ -225,12 +225,12 @@ function validate() {
 
 <table>
 	<tr>
-		<th>Email</th>
+		<th scope="row">Email</th>
 		<td><?php echo $admin_email; ?></td>
 	</tr>
 	<tr>
-		<th>Password</th>
-		<td><?php
+		<th scope="row">Password</th>
+		<td> <?php
 		if ( ! empty( $password ) && empty( $admin_password_check ) )
 			echo '<code>' . $password . '</code><br>';
 		if ( ! empty ( $password_message ) )
