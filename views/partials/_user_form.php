@@ -44,15 +44,6 @@ switch( $action ) {
 }
 
 $user = KYSS_User::get_user_by('id', $id);
-
-$anagrafica = isset( $user->anagrafica ) ? $user->anagrafica : '';
-
-// $anagrafica is a two-dimensions array, if not empty.
-// It may be necessary to unserialize it twice.
-if ( ! empty( $anagrafica ) )
-	$anagrafica = unserialize( $anagrafica );
-if ( ! is_array( $anagrafica ) )
-	$anagrafica = unserialize( $anagrafica );
 ?>
 
 <?php if ( $action == 'edit' ) : ?>

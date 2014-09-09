@@ -88,6 +88,13 @@ h1 .dashicons {
 	line-height: ( $h1-font-size / 1.5 );
 	vertical-align: middle;
 }
+h2 .dashicons {
+	width: ($h2-font-size / 1.5 );
+	height: ( $h2-font-size / 1.5 );
+	font-size: ( $h2-font-size / 1.5 );
+	line-height: ( $h2-font-size / 1.5 );
+	vertical-align: middle;
+}
 
 .button.ghost {
 	background-color: transparent !important;
@@ -138,6 +145,49 @@ h1 .dashicons {
 					background: $topbar-bg-color;
 				}
 			}
+		}
+	}
+}
+
+/**
+ * jQuery UI Timepicker
+ */
+.ui-timepicker-div {
+	.ui-widget-header {
+		margin-bottom: 8px;
+	}
+	dl {
+		text-align: left;
+		dt {
+			float: left;
+			clear: left;
+			padding: 0 0 0 5px;
+		}
+		dd {
+			margin: 0 10px 10px 45%;
+		}
+	}
+	td {
+		font-size: 90%;
+	}
+}
+.ui-tpicker-grid-label {
+	background: none;
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+.ui-timepicker-rtl {
+	direction: rtl;
+	dl {
+		text-align: right;
+		padding: 0 5px 0 0;
+		dt {
+			float: right;
+			clear: right;
+		}
+		dd {
+			margin: 0 45% 10px 10px;
 		}
 	}
 }

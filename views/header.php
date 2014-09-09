@@ -41,6 +41,7 @@ header( 'Content-Type: text/html; charset=utf-8' );
 	<?php kyss_js( 'modernizr', true ); ?>
 	<?php kyss_js( 'jquery', true ); ?>
 	<?php kyss_js( 'jquery-ui', true ); ?>
+	<?php kyss_js( 'datetimepicker', true ); ?>
 	<?php kyss_js( 'datepicker-it', true ); ?>
 	<?php kyss_js( 'fastclick', true ); ?>
 	<?php kyss_js( 'foundation', true ); ?>

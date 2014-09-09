@@ -10,7 +10,7 @@
 $lessons = KYSS_Lesson::get_list( $id );
 ?>
 
-<h1>Lezioni</h1>
+<h2>Lezioni<a href="<?php echo get_site_url( 'lessons.php?action=add&course='.$id ); ?>" title="Nuova"><span class="dashicons dashicons-plus"></span></a></h2>
 
 <?php
 if ( ! empty( $lessons ) ) : ?>
@@ -24,23 +24,8 @@ if ( ! empty( $lessons ) ) : ?>
 	</thead>
 	<tbody>
 		<?php foreach ( $lessons as $lesson ) {
-			echo '<tr>';
 			include( VIEWS . '/partials/_lesson_details.php' );
-			echo '</tr>';
 		} ?>
-		<tr>
-			<td>
-				<input type="hidden" name="action" value="create">
-			</td>
-			<td>
-				<input type="hidden" name="corso" value="<?php echo $course->ID; ?>">
-			</td>
-			<td>
-				<a id="add-lesson" title="Aggiungi">
-					<span class="dashicons dashicons-plus"></span>
-				</a>
-			</td>
-		</tr>
 		<tr class="new"></tr>
 	</tbody>
 </table>

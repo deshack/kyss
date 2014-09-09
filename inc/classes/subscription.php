@@ -135,6 +135,7 @@ class KYSS_Subscription {
 		$query = "DELETE FROM {$kyssdb->iscritto} WHERE {$wheres}";
 		$result = $kyssdb->query( $query );
 		if ( ! $result )
-			trigger_error( 'Fuck!', E_USER_ERROR );
+			return false;
+		return true;
 	}
 }

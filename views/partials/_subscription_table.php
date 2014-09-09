@@ -7,17 +7,6 @@
  * @since  
  */
 
-$hook->add( 'kyss_footer', function() {
-?>
-<script type="text/javascript">
-_GET = {
-	name: "corso",
-	value: "<?php echo $_GET['id']; ?>"
-};
-</script>
-<?php
-});
-
 $subscriptions = KYSS_Subscription::get_list('corso', $id);
 ?>
 

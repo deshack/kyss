@@ -17,6 +17,8 @@ global $hook;
 Something
 </footer>
 
+<?php $hook->run( 'kyss_footer' ); ?>
+
 <script>
 (function($) {
 	$(document).foundation();
@@ -27,11 +29,10 @@ Something
 			regional: 'it'
 		});
 		$( ".datepicker" ).datepicker();
+		$( ".datetimepicker" ).datetimepicker();
+		$( ".timepicker" ).timepicker();
 	});
 })(jQuery);
 </script>
-
-<?php $hook->run( 'kyss_footer' ); ?>
-
 </body>
 </html>

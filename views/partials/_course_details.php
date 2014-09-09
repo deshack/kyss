@@ -15,6 +15,17 @@ if ( empty( $id ) ) {
 	kyss_die( $message, '', array( 'back_link' => true ) );
 }
 
+$hook->add( 'kyss_footer', function() {
+?>
+<script type="text/javascript">
+_GET = {
+	name: "corso",
+	value: "<?php echo $_GET['id']; ?>"
+};
+</script>
+<?php
+});
+
 $course = KYSS_Course::get_course_by_id( $id );
 ?>
 

@@ -31,7 +31,8 @@
 		<?php if ( ( strpos( $_SERVER['PHP_SELF'], 'events' ) ||
 			strpos( $_SERVER['PHP_SELF'], 'meetings' ) ||
 			strpos( $_SERVER['PHP_SELF'], 'courses' ) ||
-			strpos( $_SERVER['PHP_SELF'], 'talks' ) ) !== false ) : ?>
+			strpos( $_SERVER['PHP_SELF'], 'talks' ) ||
+			strpos( $_SERVER['PHP_SELF'], 'lessons' ) ) !== false ) : ?>
 			<ul>
 				<li><a href="<?php echo get_option( 'siteurl' ); ?>/meetings.php">
 					<span class="dashicons dashicons-arrow-right"></span> Riunioni
@@ -70,7 +71,7 @@
 		<?php endif; ?>
 		</li>
 		<li><a href="<?php echo get_option( 'siteurl' ); ?>/movements.php">
-			<span class="dashicons dashicons-arrow-right"></span> Movimenti
+			<span class="dashicons dashicons-randomize"></span> Movimenti
 		</a></li>
 	</ul>
 </section><!-- #sidebar -->

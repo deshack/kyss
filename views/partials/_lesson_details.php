@@ -13,14 +13,18 @@
  * @subpackage Partials
  * @since  0.13.0
  */
-require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/load.php' );
 ?>
 
-<td><?php echo $lesson->argomento; ?></td>
-<td><?php echo $lesson->data; ?></td>
-<td>
-	<input type="hidden" name="action" value="update">
-	<a class="edit" title="Modifica">
-		<span class="dashicons dashicons-edit"></span>
-	</a>
-</td>
+<tr>
+	<td><?php echo $lesson->argomento; ?></td>
+	<td><time><?php echo $lesson->data; ?></time></td>
+	<td>
+		<input type="hidden" name="action" value="update">
+		<a href="<?php echo get_site_url( 'lessons.php?action=edit&course='.$id.'&date='.$lesson->data ); ?>" class="edit" title="Modifica">
+			<span class="dashicons dashicons-edit"></span>
+		</a>
+		<a class="delete" title="Elimina">
+			<span class="dashicons dashicons-trash"></span>
+		</a>
+	</td>
+</tr>

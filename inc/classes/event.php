@@ -700,6 +700,35 @@ class KYSS_Lesson {
 	}
 
 	/**
+	 * Retrieve lesson from the db.
+	 *
+	 * @since 0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  int $course Course ID.
+	 * @param  string $date Datetime string.
+	 * @return  KYSS_Lesson
+	 */
+	public static function get_lesson( $course, $date ) {
+		global $kyssdb;
+
+		$query = "SELECT * FROM {$kyssdb->lezioni} WHERE `corso`={$course} AND `data`='{$date}'";
+
+		if ( ! $lesson = $kyssdb->query( $query ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'query' => $query ) );
+
+		if ( $lesson->num_rows === 0 )
+			return false;
+
+		$lesson = $lesson->fetch_object( 'KYSS_Lesson' );
+
+		return $lesson;
+	}
+
+	/**
 	 * Insert new lesson into the database.
 	 *
 	 * @since  0.11.0
@@ -732,11 +761,9 @@ class KYSS_Lesson {
 		$values = join( ',', $values );
 
 		$query = "INSERT INTO {$kyssdb->lezioni} ({$columns}) VALUES ({$values})";
-		if ( !$result = $kyssdb->query( $query ) ) {
-			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
-			return false;
-		}
-		return $kyssdb->insert_id;
+		if ( !$result = $kyssdb->query( $query ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+		return true;
 	}
 
 	/**
@@ -752,16 +779,39 @@ class KYSS_Lesson {
 	 * @param  array $data Lesson data.
 	 * @return bool Whether the update succeeded or not.
 	 */
-	public function update( $course, $datatime, $data ) {
+	public function update( $data ) {
 		global $kyssdb;
 
 		if ( empty( $data ) )
 			return false;
 
-		$result = $kyssdb->update( $kyssdb->lezioni, $data, array( 'corso' => $course, 'data' => $datetime ) );
+		$result = $kyssdb->update( $kyssdb->lezioni, $data, array( 'corso' => $this->corso, 'data' => $this->data ) );
 
 		if ( $result )
-			return true;
+			return $this;
 		return false;
+	}
+
+	/**
+	 * Remove lesson from db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  int $corso Course ID.
+	 * @param  string $data Lesson date.
+	 * @return  bool
+	 */
+	public static function delete( $corso, $data ) {
+		global $kyssdb;
+
+		$query = "DELETE FROM {$kyssdb->lezioni} WHERE `corso`={$corso} AND `data`='{$data}'";
+		$result = $kyssdb->query( $query );
+		if ( ! $result )
+			return false;
+		return true;
 	}
 }

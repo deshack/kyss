@@ -85,6 +85,18 @@
 				e.preventDefault();
 				var that = $(this);
 				var data = that.serializeArray();
+				var users = self.closest('tbody').find('td');
+				users.each(function() {
+					if ( $(this).attr('id') == data['utente'] ) {
+						alert( "Questo utente è già iscritto!" );
+						iscritto = true;
+						return false;
+					}
+				});
+				if ( iscritto ) {
+					self.removeRow();
+					return false;
+				}
 				data.push(_GET);
 				data.push({name: 'action', value: 'add'});
 				console.log(data);
@@ -96,6 +108,23 @@
 					self.closest('tr').addClass('error');
 				});
 			}).submit();
+		});
+
+		/**
+		 * Delete lesson.
+		 */
+		$('#lessons').on('click', '.delete', function() {
+			var self = $(this);
+			if (! window.confirm("Sei sicuro di voler eliminare questa lezione?") )
+				return false;
+			var date = self.closest('tr').find('time').text();
+			var data = {
+				data: date,
+				corso: _GET.value,
+				action: 'delete'
+			};
+			$.post('ajax/lesson.php', data);
+			self.removeRow();
 		});
 	});
 })(jQuery);
