@@ -109,4 +109,32 @@ class KYSS_Subscription {
 		}
 		return true;
 	}
+
+	/**
+	 * Delete subscription in the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global kyssdb
+	 *
+	 * @param  array $data
+	 * @return bool
+	 */
+	public static function delete( $data ) {
+		global $kyssdb;
+
+		$wheres = array();
+		foreach ( $data as $key => $value ) {
+			$wheres[] = " `{$key}`={$value} ";
+		}
+
+		$wheres = join( ' AND ', $wheres );
+
+		$query = "DELETE FROM {$kyssdb->iscritto} WHERE {$wheres}";
+		$result = $kyssdb->query( $query );
+		if ( ! $result )
+			trigger_error( 'Fuck!', E_USER_ERROR );
+	}
 }

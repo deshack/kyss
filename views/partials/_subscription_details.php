@@ -25,9 +25,6 @@ if ( ! isset( $user ) ) {
 	</a>
 </td>
 <td>
-	<a class="edit" title="Modifica">
-		<span class="dashicons dashicons-edit"></span>
-	</a>
 	<a class="delete" title="Elimina">
 		<span class="dashicons dashicons-trash"></span>
 	</a>

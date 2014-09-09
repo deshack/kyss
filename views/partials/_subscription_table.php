@@ -42,9 +42,7 @@ if ( ! empty( $subscriptions ) ) : ?>
 		<tr>
 			<td></td>
 			<td>
-				<input type="hidden" name="action" value="create">
-				<input type="hidden" name="corso" value="<?php echo $course->ID; ?>">
-				<a id="add-subscription" title="Aggiungi">
+				<a class="add" title="Aggiungi">
 					<span class="dashicons dashicons-plus"></span>
 				</a>
 			</td>

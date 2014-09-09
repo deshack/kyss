@@ -9,7 +9,18 @@
 
 require_once( dirname( dirname( __FILE__ ) ) . '/load.php' );
 
-$data['corso'] = $_POST['id'];
+$data['corso'] = $_POST['corso'];
 $data['utente'] = $_POST['utente'];
+$action = $_POST['action'];
 
-KYSS_Subscription::create( $data );
+switch( $action ) {
+	case 'add':
+		KYSS_Subscription::create( $data );
+		break;
+	case 'edit':
+		KYSS_Subscription::update( $data );
+		break;
+	case 'delete':
+		KYSS_Subscription::delete( $data );
+		break;
+}

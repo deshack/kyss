@@ -13,7 +13,7 @@
 		 */
 		loadForm: function(p) {
 			var row = $(this).closest('tr');
-			var newRow = $('.new').load(p, row.find('input').serializeArray());
+			var newRow = $('.new').load(p);
 			row.before(newRow);
 			$('.new').removeClass('new');
 			row.after('<tr class="new"></tr>');
@@ -45,23 +45,33 @@
 		/**
 		 * Add subscription form.
 		 */
-		$('#subscriptions').on('click', '#add-subscription', function() {
+		$('#subscriptions').on('click', '.add', function() {
 			var self = $(this);
-			self.loadForm('views/partials/_subscription_form.php');
+			var action = {action: 'add'};
+			self.loadForm('views/partials/_subscription_form.php', action);
 		});
 
 		/**
-		 * Edit subscription.
+		 * Delete subscription.
 		 */
-		$('#subscriptions').on('click', '.edit', function() {
+		$('#subscriptions').on('click', '.delete', function() {
 			var self = $(this);
-			self.loadForm('views/partials/_subscription_form.php');
+			if (! window.confirm("Sei sicuro di voler eliminare questo iscritto?") )
+				return false;
+			var id = self.closest('tr').find('td').attr('id');
+			var data = {
+				utente: id,
+				corso: _GET.value,
+				action: 'delete'
+			};
+			$.post('ajax/subscription.php', data);
+			self.removeRow();
 		});
 
 		/**
 		 * Remove subscription form.
 		 */
-		$('#subscriptions').on('click', '.remove', function() {
+		$('#subscriptions').on('click', '.cancel', function() {
 			var self = $(this);
 			self.removeRow();
 		});
@@ -76,13 +86,14 @@
 				var that = $(this);
 				var data = that.serializeArray();
 				data.push(_GET);
+				data.push({name: 'action', value: 'add'});
+				console.log(data);
 				$.post('ajax/subscription.php', data, function() {
 					var data = that.serializeArray();
 					self.loadRow('views/partials/_subscription_details.php', data);
 					self.removeRow();
 				} ).error( function() {
 					self.closest('tr').addClass('error');
-					self.delay(500).removeRow();
 				});
 			}).submit();
 		});

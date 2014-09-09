@@ -17,14 +17,15 @@
 require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/load.php' );
 
 $users = KYSS_User::get_users_list();
-
 ?>
 
 <td>
 	<form>
 		<div class="row">
 			<div class="small-3 columns">
-				<label for="utente" class="label-select right">Aggiungi iscritto</label>
+				<label for="utente" class="label-select right">
+					<?php echo isset($_POST['utente']) ? 'Modifica iscritto' : 'Aggiungi iscritto'; ?>
+				</label>
 			</div>
 			<div class="small-5 columns end">
 				<select name="utente">
@@ -42,7 +43,7 @@ $users = KYSS_User::get_users_list();
 	<a class="submit" title="Salva">
 		<span class="dashicons dashicons-yes"></span>
 	</a>
-	<a class="remove" title="Annulla">
+	<a class="cancel" title="Annulla">
 		<span class="dashicons dashicons-no"></span>
 	</a>
 </td>
