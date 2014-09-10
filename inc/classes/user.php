@@ -280,6 +280,48 @@ class KYSS_User {
 	}
 
 	/**
+	 * Search user(s) in the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $query Query to search for.
+	 * @return array|KYSS_User|KYSS_Error|false
+	 */
+	public static function search( $query = '' ) {
+		global $kyssdb;
+
+		if ( empty( $query ) )
+			return self::get_users_list();
+
+		$query = $kyssdb->real_escape_string( $query );
+
+		$sql = "SELECT * FROM {$kyssdb->utenti} WHERE ";
+
+		$search = array();
+		$fields = array( 'nome', 'cognome', 'email', 'telefono', 'gruppo', 'citta' );
+		foreach ( $fields as $field )
+			$search[] = "`{$field}` LIKE '%{$query}%'";
+		$search = join( ' OR ', $search );
+		$sql .= $search;
+
+		if ( ! $result = $kyssdb->query( $sql ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'query' => $sql ) );
+
+		if ( 0 === $result )
+			return false;
+
+		$users = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$users[] = $result->fetch_object( 'KYSS_User' );
+
+		return $users;
+	}
+
+	/**
 	 * Check if the provided email already exists in the database. Use KYSS_Error object.
 	 *
 	 * @since  0.9.0
