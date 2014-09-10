@@ -69,12 +69,12 @@ switch( $action ) {
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="data_inizio">Inizio</label>
-			<input type="date" id="data_inizio" name="data_inizio"<?php echo isset( $event->data_inizio ) ? get_value_html( $event->data_inizio ) : '' ?> required>
+			<input type="text" class="datepicker" id="data_inizio" name="data_inizio"<?php echo isset( $event->data_inizio ) ? get_value_html( $event->data_inizio ) : '' ?> required>
 			<?php field_error(); ?>
 		</div>
 		<div class="medium-6 columns">
 			<label for="data_fine">Fine</label>
-			<input id="data_fine" name="data_fine" type="date"<?php echo isset( $event->data_fine ) ? get_value_html( $event->data_fine ) : '' ?>>
+			<input id="data_fine" name="data_fine" class="datepicker" type="text"<?php echo isset( $event->data_fine ) ? get_value_html( $event->data_fine ) : '' ?>>
 		</div>
 	</div>
 	<div class="row">

@@ -52,17 +52,19 @@ class KYSS_Movement {
 	 *
 	 * @global kyssdb
 	 *
-	 * @param  string $filed Optional. If is an empty string returns all the movement. Default empty.
-	 * @param  int $value The field value.
+	 * @param  int $balance Optional. Balance ID.
+	 * @param  string $order Optional. Results order. Accepts 'ASC', 'DESC'. Default 'DESC'.
 	 * @return array|false Array of KYSS_Movement object. False on failure.
 	 */
-	public static function get_list( $field = '', $value = 0) {
+	public static function get_list( $balance = 0, $order = 'DESC' ) {
 		global $kyssdb;
 
-		$query = "SELECT * FROM {$kyssdb->movimenti} ";
+		$query = "SELECT * FROM {$kyssdb->movimenti}";
 
-		if ( ! empty( $field ) )
-			$query .= "WHERE {$field} = {$value}";
+		if ( $balance )
+			$query .= " WHERE `bilancio`={$balance}";
+
+		$query .= " ORDER BY `data` {$order}";
 
 		if ( ! $movement = $kyssdb->query( $query ) )
 			return false;

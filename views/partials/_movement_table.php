@@ -7,12 +7,10 @@
  * @since  0.13.0
  */
 
-$movements = KYSS_Movement::get_list();
-
-// Small workaround to remove array elements that evaluate to false.
-// Useful if `KYSS_Movement::get_list()` adds a NULL element.
-if ( is_array( $movements ) ) 
-	$movements = array_filter( $movements );
+if ( ! empty( $id ) )
+	$movements = KYSS_Movement::get_list( $id, 'ASC' );
+else
+	$movements = KYSS_Movement::get_list();
 ?>
 
 <h1>Movimenti

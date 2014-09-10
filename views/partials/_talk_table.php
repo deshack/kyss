@@ -7,7 +7,10 @@
  * @since  
  */
 
-$talks = KYSS_Talk::get_list();
+if ( ! empty( $id ) )
+	$talks = KYSS_Talk::get_list( $id, 'ASC' );
+else
+	$talks = KYSS_Talk::get_list();
 
 // Small workaround to remove array elements that evaluate to false.
 // Useful if `KYSS_Talk::get_list()` adds a NULL element.

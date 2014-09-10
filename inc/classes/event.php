@@ -572,15 +572,19 @@ class KYSS_Talk {
 	 * @param  int $event_id The event ID.
 	 * @global kyssdb
 	 *
+	 * @param  int $event_id Optional. Event ID.
+	 * @param  string $order Optional. Results order. Accepts 'ASC', 'DESC'. Default 'DESC'.
 	 * @return array|false Array of KYSS_Talk objects. False on failure.
 	 */
-	public static function get_list( $event_id = '' ) {
+	public static function get_list( $event_id = 0, $order = 'DESC' ) {
 		global $kyssdb;
 
 		$query = "SELECT * FROM {$kyssdb->talk}";
 
-		if ( is_numeric( $event_id ) )
-			$query .= " WHERE evento = {$event_id}";
+		if ( $event_id )
+			$query .= " WHERE `evento`={$event_id}";
+
+		$query .= " ORDER BY `data` {$order}";
 		
 		if ( ! $talk = $kyssdb->query( $query ) )
 			return false;
@@ -626,10 +630,8 @@ class KYSS_Talk {
 		$values = join( ',', $values );
 
 		$query = "INSERT INTO {$kyssdb->talk} ({$columns}) VALUES ({$values})";
-		if ( ! $result = $kyssdb->query( $query ) ) {
-			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
-			return false;
-		}
+		if ( ! $result = $kyssdb->query( $query ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
 
 		return $kyssdb->insert_id;
 	}
@@ -645,17 +647,18 @@ class KYSS_Talk {
 	 * @param  array $data Talk data.
 	 * @return  bool Whether the update succeeded or not.
 	 */
-	public static function update( $id, $data ) {
+	public function update( $data ) {
 		global $kyssdb;
 
 		if ( empty( $data) )
 			return false;
 
-		$result = $kyssdb->update( $kyssdb->talk, $data, array( 'ID' => $id ) );
+		$result = $kyssdb->update( $kyssdb->talk, $data, array( 'ID' => $this->ID ) );
 
-		if ( $result )
-			return true;
-		return false;
+		if ( ! $result )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+
+		return $this;
 	}
 }
 

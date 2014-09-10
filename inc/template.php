@@ -255,8 +255,12 @@ function alert_save( $error ) {
 	if ( ! isset( $_GET['save'] ) || $_GET['save'] != 'true' )
 		return;
 
-	if ( is_kyss_error( $error ) )
-		alert_error( $error->get_error_message() );
+	if ( is_kyss_error( $error ) ) {
+		$message = $error->get_error_message();
+		$message = preg_replace( '/Duplicate entry \'[0-9]+\-/', '', $message );
+		$message = preg_replace( '/\' for key \'PRIMARY\'/', '', $message );
+		alert_error( $message );
+	}
 	elseif ( ! $error )
 		alert_error( 'Salvataggio fallito.' );
 	else

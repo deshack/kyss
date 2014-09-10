@@ -42,8 +42,6 @@ switch ( $action ) {
 		require( VIEWS . '/partials/_movement_details.php' );
 		break;
 	case 'edit':
-		require( VIEWS . '/partials/_movement_form.php' );
-		break;
 	case 'add':
 		require( VIEWS . '/partials/_movement_form.php' );
 		break;
