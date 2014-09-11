@@ -7,7 +7,7 @@
  * @since 0.11.0
  */
 
-global $hook;
+global $hook, $current_user;
 
 $title = 'KYSS';
 
@@ -66,6 +66,11 @@ header( 'Content-Type: text/html; charset=utf-8' );
 	</ul>
 	<section class="top-bar-section">
 		<ul class="right">
+			<li>
+				<a href="<?php echo get_site_url( 'users.php?action=view&id=' . $current_user->ID ); ?>" title="Profilo utente" class="tooltip-bottom" data-tooltip aria-haspopup="true">
+					<?php echo $current_user->nome . ' ' . $current_user->cognome; ?>
+				</a>
+			</li>
 			<li class="has-form">
 				<a href="<?php echo get_site_url( 'logout.php' ); ?>" class="button ghost">Logout</a>
 			</li>

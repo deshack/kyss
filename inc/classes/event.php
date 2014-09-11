@@ -199,6 +199,54 @@ class KYSS_Event {
 			$events[] = $result->fetch_object( 'KYSS_Event' );
 		return $events;
 	}
+
+	/**
+	 * Retrieve upcoming events from the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @return  array.
+	 */
+	public static function get_upcoming() {
+		global $kyssdb;
+
+		$query = "SELECT e.* FROM {$kyssdb->eventi} e
+			WHERE (e.ID NOT IN (
+				SELECT r.ID FROM {$kyssdb->riunioni} r
+				UNION
+				SELECT c.ID FROM {$kyssdb->corsi} c
+				) AND (
+					MONTH(e.data_inizio) >= MONTH(CURRENT_DATE())
+					AND
+					YEAR(e.data_inizio) = YEAR(CURRENT_DATE())
+					AND
+					MONTH(e.data_inizio) < MONTH(DATE_ADD(
+						CURRENT_DATE(), INTERVAL 1 MONTH
+					)) AND
+					YEAR(e.data_inizio) <= YEAR(DATE_ADD(
+						CURRENT_DATE(), INTERVAL 1 MONTH
+					))
+				) OR (
+					e.data_inizio < CURRENT_DATE()
+					AND
+					e.data_fine > CURRENT_DATE()
+			))";
+
+		if ( ! $result = $kyssdb->query( $query ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'query' => $query ) );
+
+		if ( 0 === $result->num_rows )
+			return false;
+
+		$events = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$events[] = $result->fetch_object( 'KYSS_Event' );
+		return $events;
+	}
 }
 
 /**
@@ -335,11 +383,10 @@ class KYSS_Meeting extends KYSS_Event {
 
 		$query = "INSERT INTO {$kyssdb->riunioni} ({$columns}) VALUES ({$values})";
 		if ( ! $result = $kyssdb->query( $query ) ) {
-			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
-			return false;
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
 		}
 
-		return $kyssdb->insert_id;
+		return $data['ID'];
 	}
 
 	/**
@@ -407,6 +454,59 @@ class KYSS_Meeting extends KYSS_Event {
 
 		if ( $result->num_rows === 0 )
 			return false;
+
+		$meetings = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$meetings[] = $result->fetch_object( 'KYSS_Meeting' );
+		return $meetings;
+	}
+
+	/**
+	 * Retrieve upcoming meetings from the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 * @global  current_user
+	 *
+	 * @return  array.
+	 */
+	public static function get_upcoming() {
+		global $kyssdb, $current_user;
+
+		if ( $current_user->gruppo == 'collaboratori' )
+			return false;
+		elseif ( $current_user->is_in_group('cd') )
+			$all_meetings = true;
+		else
+			$all_meetings = false; // Can view only AdA meetings.
+
+		$type = ($all_meetings ? '' : "(r.tipo='AdA') AND ");
+
+		$query = "SELECT * FROM {$kyssdb->riunioni} r
+			NATURAL JOIN {$kyssdb->eventi} e
+			WHERE {$type}(
+				MONTH(e.data_inizio) >= MONTH(CURRENT_DATE())
+				AND
+				YEAR(e.data_inizio) = YEAR(CURRENT_DATE())
+				AND
+				MONTH(e.data_inizio) < MONTH(DATE_ADD(
+					CURRENT_DATE(), INTERVAL 1 MONTH
+				)) AND
+				YEAR(e.data_inizio) <= YEAR(DATE_ADD(
+					CURRENT_DATE(), INTERVAL 1 MONTH
+				))
+			)";
+
+		if ( ! $result = $kyssdb->query( $query ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'query' => $query ) );
+
+		if ( 0 === $result->num_rows ) {
+			trigger_error($query);
+			return false;
+		}
 
 		$meetings = array();
 		for ( $i = 0; $i < $result->num_rows; $i++ )
@@ -548,12 +648,10 @@ class KYSS_Course extends KYSS_Event {
 		$values = join( ',', $values );
 
 		$query = "INSERT INTO {$kyssdb->corsi} ({$columns}) VALUES ({$values})";
-		if ( !$result = $kyssdb->query( $query ) ) {
-			trigger_error( sprintf( "Query %s returned an error: %s", $query, $kyssdb->error ), E_USER_WARNING );
-			return false;
-		}
+		if ( !$result = $kyssdb->query( $query ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
 
-		return $kyssdb->insert_id;
+		return $data['ID'];
 	}
 
 	/**
@@ -619,6 +717,51 @@ class KYSS_Course extends KYSS_Event {
 			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
 
 		if ( $result->num_rows === 0 )
+			return false;
+
+		$courses = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$courses[] = $result->fetch_object( 'KYSS_Course' );
+		return $courses;
+	}
+
+	/**
+	 * Retrieve upcoming courses from the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @return  array.
+	 */
+	public static function get_upcoming() {
+		global $kyssdb;
+
+		$query = "SELECT * FROM {$kyssdb->corsi} c
+			NATURAL JOIN {$kyssdb->eventi} e
+			WHERE (
+				MONTH(e.data_inizio) >= MONTH(CURRENT_DATE())
+				AND
+				YEAR(e.data_inizio) = YEAR(CURRENT_DATE())
+				AND
+				MONTH(e.data_inizio) < MONTH(DATE_ADD(
+					CURRENT_DATE(), INTERVAL 1 MONTH
+				)) AND
+				YEAR(e.data_inizio) <= YEAR(DATE_ADD(
+					CURRENT_DATE(), INTERVAL 1 MONTH
+				))
+			) OR (
+				e.data_inizio < CURRENT_DATE()
+				AND
+				e.data_fine > CURRENT_DATE()
+			)";
+
+		if ( ! $result = $kyssdb->query( $query ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'query' => $query ) );
+
+		if ( 0 === $result->num_rows )
 			return false;
 
 		$courses = array();

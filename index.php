@@ -16,7 +16,20 @@ $hook->add( 'kyss_title', function( $title ) {
 get_header();
 
 get_sidebar();
+?>
 
-echo "index.php";
+<div class="row">
+	<div class="medium-10 medium-offset-1 columns end">
+		<div class="panel">
+			<h3>Benvenuto <?php echo $current_user->nome; ?>!</h3>
+			<p>Di seguito trovi alcune informazioni che ti possono tornare utili.</p>
+		</div>
+	</div>
+</div>
 
+<ul class="medium-block-grid-2 large-block-grid-3">
+	<?php $hook->run('dashboard_widgets'); ?>
+</ul>
+
+<?php
 get_footer();

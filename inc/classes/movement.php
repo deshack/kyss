@@ -177,8 +177,6 @@ class KYSS_Movement {
 		$search = join( ' OR ', $search );
 		$sql .= $search;
 
-		trigger_error($sql);
-
 		if ( ! $result = $kyssdb->query( $sql ) )
 			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
 

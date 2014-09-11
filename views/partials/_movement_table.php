@@ -13,9 +13,6 @@ elseif ( ! empty( $id ) )
 	$movements = KYSS_Movement::get_list( $id, 'ASC' );
 else
 	$movements = KYSS_Movement::get_list();
-
-if ( is_kyss_error( $movements ) )
-	trigger_error($movements->get_error_message());
 ?>
 
 <h1>Movimenti

@@ -7,14 +7,14 @@
  * @since  0.11.0
  */
 
-global $hook;
+global $hook, $kyss_version;
 ?>
 
 </main>
 </div><!-- .row -->
 
-<footer class="top-bar">
-Something
+<footer class="bottom-bar text-right small-only-text-center">
+<span class="text">KYSS v<?php echo $kyss_version; ?></span>
 </footer>
 
 <?php $hook->run( 'kyss_footer' ); ?>

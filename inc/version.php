@@ -4,7 +4,7 @@
  *
  * @global  string $kyss_version
  */
-$kyss_version = '0.12.0';
+$kyss_version = '0.13.0';
 
 /**
  * The required PHP version.

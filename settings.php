@@ -53,13 +53,10 @@ initial_constants();
 debug_mode();
 
 // Load early KYSS files.
+require(CLASSES . 'hook.php');
 require( INC . 'functions.php' );
 require( CLASSES . 'kyss-error.php' );
 require( CLASSES . 'user.php' );
-require( CLASSES . 'event.php' );
-require( CLASSES . 'document.php' );
-require( CLASSES . 'subscription.php' );
-require( CLASSES . 'movement.php' );
 
 // Check PHP version
 check_php_version();
@@ -77,10 +74,13 @@ kyss_not_installed();
 // Load most of KYSS.
 // ToDo: Require all needed files.
 require(INC . 'formatting.php');
-require(CLASSES . 'hook.php');
 require(CLASSES . 'kyss-pass.php');
 require(INC . 'options.php');
 require(INC . 'template.php');
+require( CLASSES . 'event.php' );
+require( CLASSES . 'document.php' );
+require( CLASSES . 'subscription.php' );
+require( CLASSES . 'movement.php' );
 
 // Load pluggable functions.
 require(INC . 'pluggable.php');
@@ -112,6 +112,8 @@ if ( false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || ! defined( 'INST
 	}
 
 	if ( ! empty( $login ) ) {
-		$GLOBALS['current_user'] = new KYSS_User( $login );
+		$GLOBALS['current_user'] = KYSS_User::get_user_by( 'id', $login );
 	}
+
+	$hook->run( 'after_init' );
 }
