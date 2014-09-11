@@ -11,9 +11,9 @@
 		 *
 		 * @param {string} p The url to load content from.
 		 */
-		loadForm: function(p) {
+		loadForm: function(p, action) {
 			var row = $(this).closest('tr');
-			var newRow = $('.new').load(p);
+			var newRow = $('.new').load(p, action);
 			row.before(newRow);
 			$('.new').removeClass('new');
 			row.after('<tr class="new"></tr>');
@@ -47,8 +47,8 @@
 		 */
 		$('#subscriptions').on('click', '.add', function() {
 			var self = $(this);
-			var action = {action: 'add'};
-			self.loadForm('views/partials/_subscription_form.php', action);
+			var action = {action: 'form'};
+			self.loadForm('subscriptions.php', action);
 		});
 
 		/**
@@ -85,24 +85,28 @@
 				e.preventDefault();
 				var that = $(this);
 				var data = that.serializeArray();
+				var utente = data[0].value;
+				console.log(utente);
 				var users = self.closest('tbody').find('td');
 				users.each(function() {
-					if ( $(this).attr('id') == data['utente'] ) {
+					var id = $(this).attr("id");
+					console.log(id);
+					if ( typeof id != 'undefined' && id == utente ) {
 						alert( "Questo utente è già iscritto!" );
 						iscritto = true;
 						return false;
 					}
 				});
-				if ( iscritto ) {
+				if ( typeof iscritto != 'undefined' && iscritto ) {
 					self.removeRow();
 					return false;
 				}
 				data.push(_GET);
 				data.push({name: 'action', value: 'add'});
-				console.log(data);
 				$.post('ajax/subscription.php', data, function() {
 					var data = that.serializeArray();
-					self.loadRow('views/partials/_subscription_details.php', data);
+					data.push({name: 'action', value: 'add'});
+					self.loadRow('subscriptions.php', data);
 					self.removeRow();
 				} ).error( function() {
 					self.closest('tr').addClass('error');

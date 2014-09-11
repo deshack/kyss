@@ -32,9 +32,7 @@ switch( $action ) {
 			}
 
 			$id = KYSS_Course::create( $data );
-			$hook->add( 'kyss_headers', function() {
-				kyss_redirect( get_site_url( '/courses.php' ) );
-			});
+			kyss_redirect( get_site_url( '/courses.php' ) );
 		}
 		break;
 }

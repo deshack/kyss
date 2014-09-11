@@ -7,7 +7,10 @@
  * @since  0.11.0
  */
 
-$users = KYSS_User::get_users_list();
+if ( isset( $_GET['q'] ) )
+	$users = KYSS_User::search( $_GET['q'] );
+else
+	$users = KYSS_User::get_users_list();
 
 // Small workaround to remove array elements that evaluate to false.
 // Useful if `KYSS_User::get_users_list()` adds a NULL element.
@@ -21,11 +24,16 @@ if( is_array( $users ) )
 		</a></h1>
 	</div>
 	<div class="medium-3 columns">
-		<form method="get" action="<?php echo get_site_url( basename( __FILE__ ) ); ?>">
-			<input type="search" id="q" name="q" placeholder="Cerca&hellip;">
+		<form method="get" action="">
+			<input type="search" id="q" name="q" placeholder="Cerca&hellip;"<?php echo isset( $_GET['q'] ) ? get_value_html( $_GET['q'] ) : ''; ?>>
 		</form>
 	</div>
 </div>
+
+<?php
+if ( isset( $_GET['q'] ) )
+	alert_info( "Risultati della ricerca per: <b>{$_GET['q']}</b>." );
+?>
 
 
 <?php if ( ! empty( $users ) ) : ?>

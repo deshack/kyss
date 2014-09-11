@@ -245,6 +245,17 @@ function alert_error( $message ) {
 }
 
 /**
+ * Render info alert box with custom message.
+ *
+ * @since  0.13.0
+ *
+ * @param  string $message Custom message.
+ */
+function alert_info( $message ) {
+	alert_box( $message, 'info' );
+}
+
+/**
  * Render alert box with information about save action.
  *
  * @since  0.13.0
