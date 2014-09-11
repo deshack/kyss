@@ -106,6 +106,15 @@ h2 .dashicons {
 	}
 }
 
+.top-bar-section {
+	li:not(.has-form) {
+		a:not(.button) {
+			.dashicons {
+				line-height: $topbar-height;
+			}
+		}
+	}
+}
 #sidebar {
 	background: $topbar-bg-color;
 	padding: 0;

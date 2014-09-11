@@ -68,7 +68,7 @@ header( 'Content-Type: text/html; charset=utf-8' );
 		<ul class="right">
 			<li>
 				<a href="<?php echo get_site_url( 'users.php?action=view&id=' . $current_user->ID ); ?>" title="Profilo utente" class="tooltip-bottom" data-tooltip aria-haspopup="true">
-					<?php echo $current_user->nome . ' ' . $current_user->cognome; ?>
+					<span class="dashicons dashicons-admin-users"></span> <?php echo $current_user->nome . ' ' . $current_user->cognome; ?>
 				</a>
 			</li>
 			<li class="has-form">

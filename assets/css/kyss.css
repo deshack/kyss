@@ -8217,7 +8217,12 @@ h2 .dashicons {
   background-color: gray !important;
 }
 
-/* line 109, ../../src/scss/kyss.scss */
+/* line 112, ../../src/scss/kyss.scss */
+.top-bar-section li:not(.has-form) a:not(.button) .dashicons {
+  line-height: 45px;
+}
+
+/* line 118, ../../src/scss/kyss.scss */
 #sidebar {
   background: #333333;
   padding: 0;
@@ -8225,16 +8230,16 @@ h2 .dashicons {
   overflow-y: auto;
 }
 
-/* line 116, ../../src/scss/kyss.scss */
+/* line 125, ../../src/scss/kyss.scss */
 .side-nav {
   padding-top: 0;
   padding-bottom: 0;
 }
-/* line 120, ../../src/scss/kyss.scss */
+/* line 129, ../../src/scss/kyss.scss */
 .side-nav li {
   margin: 0;
 }
-/* line 122, ../../src/scss/kyss.scss */
+/* line 131, ../../src/scss/kyss.scss */
 .side-nav li > a {
   padding: 1rem 0.5rem;
   color: #e7e7e7 !important;
@@ -8244,22 +8249,22 @@ h2 .dashicons {
   -o-transition: background-color 0.1s ease-out 0;
   transition: background-color 0.1s ease-out 0;
 }
-/* line 128, ../../src/scss/kyss.scss */
+/* line 137, ../../src/scss/kyss.scss */
 .side-nav li > a:hover, .side-nav li > a:focus {
   background-color: #aea79f;
   color: #dd4814 !important;
 }
-/* line 135, ../../src/scss/kyss.scss */
+/* line 144, ../../src/scss/kyss.scss */
 .side-nav ul {
   list-style-type: none;
   margin-left: 0;
   background: #454545;
 }
-/* line 141, ../../src/scss/kyss.scss */
+/* line 150, ../../src/scss/kyss.scss */
 .side-nav ul li > a {
   padding-left: 1rem;
 }
-/* line 145, ../../src/scss/kyss.scss */
+/* line 154, ../../src/scss/kyss.scss */
 .side-nav ul li > a:hover, .side-nav ul li > a:focus {
   background: #333333;
 }
@@ -8267,30 +8272,30 @@ h2 .dashicons {
 /**
  * jQuery UI Timepicker
  */
-/* line 157, ../../src/scss/kyss.scss */
+/* line 166, ../../src/scss/kyss.scss */
 .ui-timepicker-div .ui-widget-header {
   margin-bottom: 8px;
 }
-/* line 160, ../../src/scss/kyss.scss */
+/* line 169, ../../src/scss/kyss.scss */
 .ui-timepicker-div dl {
   text-align: left;
 }
-/* line 162, ../../src/scss/kyss.scss */
+/* line 171, ../../src/scss/kyss.scss */
 .ui-timepicker-div dl dt {
   float: left;
   clear: left;
   padding: 0 0 0 5px;
 }
-/* line 167, ../../src/scss/kyss.scss */
+/* line 176, ../../src/scss/kyss.scss */
 .ui-timepicker-div dl dd {
   margin: 0 10px 10px 45%;
 }
-/* line 171, ../../src/scss/kyss.scss */
+/* line 180, ../../src/scss/kyss.scss */
 .ui-timepicker-div td {
   font-size: 90%;
 }
 
-/* line 175, ../../src/scss/kyss.scss */
+/* line 184, ../../src/scss/kyss.scss */
 .ui-tpicker-grid-label {
   background: none;
   border: none;
@@ -8298,26 +8303,26 @@ h2 .dashicons {
   padding: 0;
 }
 
-/* line 181, ../../src/scss/kyss.scss */
+/* line 190, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl {
   direction: rtl;
 }
-/* line 183, ../../src/scss/kyss.scss */
+/* line 192, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl dl {
   text-align: right;
   padding: 0 5px 0 0;
 }
-/* line 186, ../../src/scss/kyss.scss */
+/* line 195, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl dl dt {
   float: right;
   clear: right;
 }
-/* line 190, ../../src/scss/kyss.scss */
+/* line 199, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl dl dd {
   margin: 0 45% 10px 10px;
 }
 
-/* line 199, ../../src/scss/kyss.scss */
+/* line 208, ../../src/scss/kyss.scss */
 .bottom-bar .text {
   color: #999999;
   padding: 0 1rem;

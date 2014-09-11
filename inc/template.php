@@ -301,11 +301,8 @@ if ( isset( $_GET['q'] ) )
 function upcoming_events() {
 	$events = KYSS_Event::get_upcoming();
 
-	if ( is_kyss_error( $events ) ) {
-		trigger_error( $events->get_error_message(), E_USER_WARNING );
-		trigger_error( $events->get_error_data()['query'] );
+	if ( is_kyss_error( $events ) )
 		return false;
-	}
 	if ( ! $events )
 		return;
 ?>

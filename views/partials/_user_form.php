@@ -26,9 +26,10 @@ switch( $action ) {
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
 			$name = $_POST['nome'];
 			$surname = $_POST['cognome'];
-			$password = $_POST['password'];
+			if ( $_POST['password'] == $_POST['pass-confirm'] )
+				$password = $_POST['password'];
 			$data = array();
-			$to_remove = array( 'nome', 'cognome', 'password', 'submit' );
+			$to_remove = array( 'nome', 'cognome', 'password', 'pass-confirm', 'submit' );
 			foreach ( $_POST as $key => $value ) {
 				if ( in_array( $key, $to_remove ) )
 					continue;
