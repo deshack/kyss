@@ -19,7 +19,7 @@ if ( $action == 'edit' && empty( $id ) ) {
 switch( $action ) {
 	case 'edit' :
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
-			validate_budget_data();
+			$budget = validate_budget_data();
 		}
 		break;
 	case 'add' :
@@ -32,12 +32,15 @@ switch( $action ) {
 			}
 
 			$id = KYSS_Budget::create( $data );
-			kyss_redirect( get_site_url( '/budgets.php' ) );
+			$budget = KYSS_Budget::get( $id );
 		}
 		break;
 }
 
-$budget = KYSS_Budget::get( $id );
+if ( isset( $budget ) )
+	$after_save = $budget;
+if ( ! isset( $budget ) || is_kyss_error( $budget ) )
+	$budget = KYSS_Budget::get( $id );
 $reports = KYSS_Report::get_list();
 ?>
 
@@ -61,9 +64,12 @@ switch( $action ) {
 		$form_action = 'action=add&save=true';
 		break;
 }
+
+if ( isset( $after_save ) )
+	alert_save( $after_save );
 ?>
 
-<form id="<?php echo $action; ?>-budget" method="post" action="budgets.php?<?php echo $form_action; ?>">
+<form id="<?php echo $action; ?>-budget" method="post" action="budgets.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
 		<div class="medium-4 columns">
 			<label for="tipo">Tipo</label>
@@ -92,7 +98,8 @@ switch( $action ) {
 		</div>
 		<div class="medium-4 columns">
 			<label for="anno">Anno</label>
-			<input id="anno" name="anno" type="text"<?php echo isset( $budget->anno ) ? get_value_html( $budget->anno ) : ''; ?>>
+			<input id="anno" name="anno" type="text"<?php echo isset( $budget->anno ) ? get_value_html( $budget->anno ) : ''; ?> required>
+			<?php field_error(); ?>
 		</div>
 	</div>
 	<fieldset>
@@ -100,11 +107,13 @@ switch( $action ) {
 		<div class="row">
 			<div class="medium-6 columns">
 				<label for="cassa">Cassa</label>
-				<input id="cassa" name="cassa" type="text"<?php echo isset( $budget->cassa ) ? get_value_html( $budget->cassa ) : ''; ?>>
+				<input id="cassa" name="cassa" type="text"<?php echo isset( $budget->cassa ) ? get_value_html( $budget->cassa ) : ''; ?> required>
+				<?php field_error(); ?>
 			</div>
 			<div class="medium-6 columns">
 				<label for="banca">Banca</label>
-				<input id="banca" name="banca" type="text"<?php echo isset( $budget->banca ) ? get_value_html( $budget->banca ) : ''; ?>>
+				<input id="banca" name="banca" type="text"<?php echo isset( $budget->banca ) ? get_value_html( $budget->banca ) : ''; ?> required>
+				<?php field_error(); ?>
 			</div>
 		</div>
 	</fieldset>
@@ -173,5 +182,6 @@ function validate_budget_data() {
 		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
 	}
 
-	KYSS_Budget::update( $id, $valid );
+	$budget = KYSS_Budget::get( $prot );
+	return $budget->update( $valid );
 }

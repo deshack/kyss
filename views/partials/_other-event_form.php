@@ -19,7 +19,7 @@ if ( $action == 'edit' && empty( $id ) ) {
 switch( $action ) {
 	case 'edit' :
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
-			validate_event_data();
+			$event = validate_event_data();
 		}
 		break;
 	case 'add' :
@@ -32,12 +32,15 @@ switch( $action ) {
 			}
 
 			$id = KYSS_Event::create( $data );
-			kyss_redirect( get_site_url( '/other-events.php' ) );
+			$event = KYSS_Event::get_event_by( 'id', $id );
 		}
 		break;
 }
 
-$event = KYSS_Event::get_event_by( 'id', $id );
+if ( isset( $event ) )
+	$after_save = $event;
+if ( ! isset( $event ) || is_kyss_error( $event ) )
+	$event = KYSS_Event::get_event_by( 'id', $id );
 $users = KYSS_User::get_users_list();
 ?>
 
@@ -57,6 +60,9 @@ switch( $action ) {
 		$form_action = 'action=add&save=true';
 		break;
 }
+
+if ( isset( $after_save ) )
+	alert_save( $after_save );
 ?>
 
 <form id="<?php echo $action; ?>-other-event" method="post" action="other-events.php?<?php echo $form_action; ?>" data-abide>
@@ -118,5 +124,6 @@ function validate_event_data() {
 		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
 	}
 
-	KYSS_Event::update( $id, $valid );
+	$event = KYSS_Event::get_event_by( 'id', $id );
+	return $event->update( $valid );
 }

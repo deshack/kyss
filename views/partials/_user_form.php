@@ -19,7 +19,7 @@ if ( $action == 'edit' && empty( $id ) ) {
 switch( $action ) {
 	case 'edit' :
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
-			validate_user_data();
+			$user = validate_user_data();
 		}
 		break;
 	case 'add' :
@@ -38,12 +38,15 @@ switch( $action ) {
 			}
 			
 			$id = KYSS_User::create( $name, $surname, $password, $data );
-			kyss_redirect( get_site_url( '/users.php' ) );
+			$user = KYSS_User::get_user_by( 'id', $id );
 		}
 		break;
 }
 
-$user = KYSS_User::get_user_by('id', $id);
+if ( isset( $user ) )
+	$after_save = $user;
+if ( ! isset( $user ) || is_kyss_error( $user ) )
+	$user = KYSS_User::get_user_by('id', $id);
 ?>
 
 <?php if ( $action == 'edit' ) : ?>
@@ -64,42 +67,45 @@ switch( $action ) {
 }
 
 $group_list = KYSS_Groups::get_defaults();
+
+if ( isset( $after_save ) )
+	alert_save( $after_save );
 ?>
 <form id="<?php echo $action; ?>-user" method="post" action="users.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
 		<div class="medium-4 columns">
 			<label for="nome">Nome</label>
-			<input id="nome" name="nome" type="text"<?php echo isset( $user->nome ) ? get_value_html( $user->nome ) : '' ?> required>
+			<input id="nome" name="nome" type="text"<?php echo isset( $user->nome ) ? get_value_html( $user->nome ) : '' ?> required autocomplete="off">
 			<?php field_error(); ?>
 		</div>
 		<div class="medium-4 columns">
 			<label for="cognome">Cognome</label>
-			<input id="cognome" name="cognome" type="text"<?php echo isset( $user->cognome ) ? get_value_html( $user->cognome ) : '' ?> required>
+			<input id="cognome" name="cognome" type="text"<?php echo isset( $user->cognome ) ? get_value_html( $user->cognome ) : '' ?> required autocomplete="off">
 			<?php field_error(); ?>
 		</div>
 		<div class="medium-4 columns">
 			<label for="codice_fiscale">Codice Fiscale</label>
-			<input id="codice_fiscale" name="codice_fiscale" type="text"<?php echo isset( $user->codice_fiscale ) ? get_value_html( strtoupper( $user->codice_fiscale ) ) : ''; ?>>
+			<input id="codice_fiscale" name="codice_fiscale" type="text"<?php echo isset( $user->codice_fiscale ) ? get_value_html( strtoupper( $user->codice_fiscale ) ) : ''; ?> autocomplete="off">
 		</div>
 	</div>
 	<div class="row">
 		<div class="medium-4 medium-offset-2 columns">
 			<label for="email">Email</label>
-			<input id="email" name="email" type="email"<?php echo isset( $user->email ) ? get_value_html( $user->email ) : '' ?>>
+			<input id="email" name="email" type="email"<?php echo isset( $user->email ) ? get_value_html( $user->email ) : '' ?> autocomplete="off">
 		</div>
 		<div class="medium-4 columns end">
 			<label for="telefono">Telefono</label>
-			<input id="telefono" name="telefono" type="tel"<?php echo isset( $user->telefono ) ? get_value_html( $user->telefono ) : '' ?>>
+			<input id="telefono" name="telefono" type="tel"<?php echo isset( $user->telefono ) ? get_value_html( $user->telefono ) : '' ?> autocomplete="off">
 		</div>
 	</div>
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="password">Password</label>
-			<input id="password" name="password" type="password">
+			<input id="password" name="password" type="password" autocomplete="off">
 		</div>
 		<div class="medium-6 columns">
 			<label for="pass-confirm">Conferma password</label>
-			<input id="pass-confirm" name="pass-confirm" type="password">
+			<input id="pass-confirm" name="pass-confirm" type="password" autocomplete="off">
 		</div>
 	</div>
 	<div class="row">
@@ -109,7 +115,7 @@ $group_list = KYSS_Groups::get_defaults();
 		</div>
 		<div class="medium-4 columns">
 			<label for="nato_il">Nato il</label>
-			<input id="nato_il" name="nato_il" type="date"<?php echo isset( $user->nato_il ) ? get_value_html( $user->nato_il ) : ''; ?>>
+			<input id="nato_il" name="nato_il" class="datepicker" type="text"<?php echo isset( $user->nato_il ) ? get_value_html( $user->nato_il ) : ''; ?> autocomplete="off">
 		</div>
 		<div class="medium-4 columns">
 			<label for="cittadinanza">Cittadinanza</label>
@@ -121,7 +127,7 @@ $group_list = KYSS_Groups::get_defaults();
 		<div class="row">
 			<div class="medium-6 columns">
 				<label for="via">Via</label>
-				<input id="via" name="via" type="text"<?php echo isset( $user->via ) ? get_value_html( $user->via ) : ''; ?>>
+				<input id="via" name="via" type="text"<?php echo isset( $user->via ) ? get_value_html( $user->via ) : ''; ?> autocomplete="off">
 			</div>
 			<div class="medium-6 columns">
 				<label for="citta">Citt&agrave;</label>
@@ -199,7 +205,5 @@ function validate_user_data() {
 		}
 	}
 
-	//var_dump( $valid );
-
-	$user->update( $valid );
+	return $user->update( $valid );
 }

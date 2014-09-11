@@ -120,17 +120,17 @@ class KYSS_Practice {
 	 * @param  array $data Practice's data.
 	 * @return bool Whether the update succeeded or not.
 	 */
-	public static function update( $proc, $data ) {
+	public function update( $proc, $data ) {
 		global $kyssdb;
 
 		if ( empty( $data) )
-			return false;
+			return new KYSS_Error( 'invalid_data', 'I dati che hai inserito non sono validi.' );
 
 		$result = $kyssdb->update( $kyssdb->pratiche, $data, array( 'protocollo' => $proc ) );
 
-		if ( $result )
-			return true;
-		return false;
+		if ( ! $result )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+		return $this;
 	}
 
 	/**

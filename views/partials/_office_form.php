@@ -33,7 +33,9 @@ if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) :
 	}
 endif;
 
-if ( ! isset( $office ) )
+if ( isset( $office ) )
+	$after_save = $office;
+if ( ! isset( $office ) || is_kyss_error( $office ) )
 	$office = KYSS_Office::get( $slug, $start );
 ?>
 
@@ -45,7 +47,7 @@ if ( ! isset( $office ) )
 <?php endif; ?>
 </h1>
 
-<?php alert_save( $office ); ?>
+<?php alert_save( $after_save ); ?>
 
 <?php
 $form_action = '';

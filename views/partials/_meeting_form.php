@@ -19,7 +19,7 @@ if ( $action == 'edit' && empty( $id ) ) {
 switch( $action ) {
 	case 'edit' :
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
-			validate_meeting_data();
+			$meeting = validate_meeting_data();
 		}
 		break;
 	case 'add' :
@@ -32,12 +32,15 @@ switch( $action ) {
 			}
 
 			$id = KYSS_Meeting::create( $data );
-			kyss_redirect( get_site_url( '/meetings.php' ) );
+			$meeting = KYSS_Meeting::get_meeting_by_id( $id );
 		}
 		break;
 }
 
-$meeting = KYSS_Meeting::get_meeting_by_id( $id );
+if ( isset( $meeting ) )
+	$after_save = $meeting;
+if ( !isset( $meeting ) || is_kyss_error( $meeting ) )
+	$meeting = KYSS_Meeting::get_meeting_by_id( $id );
 $users = KYSS_User::get_users_list();
 ?>
 
@@ -57,9 +60,12 @@ switch( $action ) {
 		$form_action = 'action=add&save=true';
 		break;
 }
+
+if ( isset( $after_save ) )
+	alert_save( $after_save );
 ?>
 
-<form id="<?php echo $action; ?>-meeting" method="post" action="meetings.php?<?php echo $form_action; ?>">
+<form id="<?php echo $action; ?>-meeting" method="post" action="meetings.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
 		<div class="medium-8 columns">
 			<label for="nome">Nome</label>
@@ -82,15 +88,16 @@ switch( $action ) {
 	<div class="row">
 		<div class="medium-4 columns">
 			<label for="data_inizio">Data</label>
-			<input type="date" id="data_inizio" name="data_inizio"<?php echo isset( $meeting->data_inizio ) ? get_value_html( $meeting->data_inizio ) : '' ?> required>
+			<input type="text" class="datepicker" id="data_inizio" name="data_inizio"<?php echo isset( $meeting->data_inizio ) ? get_value_html( $meeting->data_inizio ) : '' ?> required>
+			<?php field_error(); ?>
 		</div>
 		<div class="medium-4 columns">
 			<label for="ora_inizio">Ora inizio</label>
-			<input id="ora_inizio" name="ora_inizio" type="time"<?php echo isset( $meeting->ora_inizio ) ? get_value_html( $meeting->ora_inizio ) : '' ?>>
+			<input id="ora_inizio" name="ora_inizio" class="timepicker" type="text"<?php echo isset( $meeting->ora_inizio ) ? get_value_html( $meeting->ora_inizio ) : '' ?>>
 		</div>
 		<div class="medium-4 columns">
 			<label for="ora_fine">Ora fine</label>
-			<input id="ora_fine" name="ora_fine" type="time"<?php echo isset( $meeting->ora_fine ) ? get_value_html( $meeting->ora_fine ) : '' ?>>
+			<input id="ora_fine" name="ora_fine" class="timepicker" type="text"<?php echo isset( $meeting->ora_fine ) ? get_value_html( $meeting->ora_fine ) : '' ?>>
 		</div>
 	</div>
 	<div class="row">
@@ -162,6 +169,7 @@ function validate_meeting_data() {
 		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
 	}
 
-	if ( ! KYSS_Meeting::update( $id, $valid ) )
-		kyss_die( "Something went wrong." );
+	$meeting = KYSS_Meeting::get_meeting_by_id( $id );
+
+	return $meeting->update( $valid );
 }

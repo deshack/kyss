@@ -19,7 +19,7 @@ if ( $action == 'edit' && empty( $prot ) ) {
 switch( $action ) {
 	case 'edit' :
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
-			validate_practice_data();
+			$practice = validate_practice_data();
 		}
 		break;
 	case 'add' :
@@ -32,12 +32,15 @@ switch( $action ) {
 			}
 
 			$prot = KYSS_Practice::create( $data );
-			kyss_redirect( get_site_url( '/practices.php' ) );
+			$practice = KYSS_Practice::get( $prot );
 		}
 		break;
 }
 
-$practice = KYSS_Practice::get( $prot );
+if ( isset( $practice ) )
+	$after_save = $practice;
+if( ! isset( $practice ) || is_kyss_error( $practice ) )
+	$practice = KYSS_Practice::get( $prot );
 $users = KYSS_User::get_users_list();
 ?>
 
@@ -61,14 +64,18 @@ switch( $action ) {
 		$form_action = 'action=add&save=true';
 		break;
 }
+
+if ( isset( $after_save ) )
+	alert_save( $after_save );
 ?>
 
-<form id="<?php echo $action; ?>-practice" method="post" action="practices.php?<?php echo $form_action; ?>">
+<form id="<?php echo $action; ?>-practice" method="post" action="practices.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
 		<?php if ( $action == 'add' ) : ?>
 		<div class="medium-6 columns">
 			<label for="protocollo">Protocollo</label>
-			<input id="protocollo" name="protocollo" type="text"<?php echo isset( $pracice->protocollo ) ? get_value_html( $pracice->protocollo ) : ''; ?>> 
+			<input id="protocollo" name="protocollo" type="text"<?php echo isset( $pracice->protocollo ) ? get_value_html( $pracice->protocollo ) : ''; ?> required>
+			<?php field_error(); ?>
 		</div>
 	</div>
 	<div class="row">
@@ -76,9 +83,6 @@ switch( $action ) {
 		<div class="medium-6 columns">
 			<label for="utente">Utente</label>
 			 <select name="utente">
-			 	<option value="NULL"<?php echo isset( $user->ID ) ? ( $user->nome . ' ' . $user->cognome ) : ''; ?>>
-					-
-				</option>
 			<?php foreach ( $users as $user ) : ?>
 				<option value="<?php echo $user->ID; ?>"<?php echo isset( $practice->utente ) ? selected( $practice->utente, $user->ID, false ) : ''; ?>>
 				<?php echo $user->nome . ' ' . $user->cognome; ?>
@@ -117,11 +121,13 @@ switch( $action ) {
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="data">Data</label>
-			<input id="data" name="data" type="date"<?php echo isset( $practice->data ) ? get_value_html( $practice->data ) : ''; ?>>
+			<input id="data" name="data" class="datepicker" type="text"<?php echo isset( $practice->data ) ? get_value_html( $practice->data ) : ''; ?> required>
+			<?php field_error(); ?>
 		</div>
 		<div class="medium-6 columns">
 			<label for="data">Data ricezione</label>
-			<input id="ricezione" name="ricezione" type="date"<?php echo isset( $practice->ricezione ) ? get_value_html( $practice->ricezione ) : ''; ?>>
+			<input id="ricezione" name="ricezione" class="datepicker" type="text"<?php echo isset( $practice->ricezione ) ? get_value_html( $practice->ricezione ) : ''; ?> required>
+			<?php field_error(); ?>
 		</div>
 	</div>
 	<div class="row">
@@ -165,5 +171,6 @@ function validate_practice_data() {
 		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
 	}
 
-	KYSS_Practice::update( $prot, $valid );
+	$practice = KYSS_Practice::get( $prot );
+	return $practice->update( $valid );
 }

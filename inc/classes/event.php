@@ -148,17 +148,17 @@ class KYSS_Event {
 	 * @param  array $data Event's data.
 	 * @return bool Whether the update succeeded or not.
 	 */
-	public static function update( $id, $data ) {
+	public function update( $data ) {
 		global $kyssdb;
 
 		if ( empty( $data) )
-			return false;
+			return new KYSS_Error( 'invalid_data', 'I dati che hai inserito non sono validi.' );
 
-		$result = $kyssdb->update( $kyssdb->eventi, $data, array( 'ID' => $id ) );
+		$result = $kyssdb->update( $kyssdb->eventi, $data, array( 'ID' => $this->ID ) );
 
-		if ( $result )
-			return true;
-		return false;
+		if ( ! $result )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+		return $this;
 	}
 
 	/**
@@ -353,11 +353,11 @@ class KYSS_Meeting extends KYSS_Event {
 	 * @param  array $data Meeting data.
 	 * @return  bool Whether the update succeeded or not.
 	 */
-	public static function update( $id, $data ) {
+	public function update( $data ) {
 		global $kyssdb;
 
 		if ( empty( $data ) )
-			return false;
+			return new KYSS_Error( 'invalid_data', 'I dati che hai inserito non sono validi.' );
 
 		// Put all $data items representing $kyssdb->eventi columns
 		// into the $event array.
@@ -369,13 +369,13 @@ class KYSS_Meeting extends KYSS_Event {
 			}
 		}
 
-		parent::update( $id, $event );
+		parent::update( $event );
 
-		$result = $kyssdb->update( $kyssdb->riunioni, $data, array( 'ID' => $id ) );
+		$result = $kyssdb->update( $kyssdb->riunioni, $data, array( 'ID' => $this->ID ) );
 
-		if ( $result )
-			return true;
-		return false;
+		if ( ! $result )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+		return $this;
 	}
 
 	/**
@@ -567,11 +567,11 @@ class KYSS_Course extends KYSS_Event {
 	 * @param  array $data Course data.
 	 * @return bool Whether the update succeeded or not.
 	 */
-	public static function update( $id, $data ) {
+	public function update( $data ) {
 		global $kyssdb;
 
 		if ( empty( $data ) )
-			return false;
+			return new KYSS_Error( 'invalid_data', 'I dati che hai inserito non sono validi.' );
 
 		// Put all $data items representing $kyssdb->eventi columns
 		// into the $event array.
@@ -583,12 +583,12 @@ class KYSS_Course extends KYSS_Event {
 			}
 		}
 
-		parent::update( $id, $event );
-		$result = $kyssdb->update( $kyssdb->corsi, $data, array( 'ID' => $id ) );
+		parent::update( $event );
+		$result = $kyssdb->update( $kyssdb->corsi, $data, array( 'ID' => $this->ID ) );
 
-		if ( $result )
-			return true;
-		return false;
+		if ( ! $result )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+		return $this;
 	}
 
 	/**

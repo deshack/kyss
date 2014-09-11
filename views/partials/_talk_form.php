@@ -60,11 +60,16 @@ $users = KYSS_User::get_users_list();
 $events = KYSS_Event::get_events_list();
 ?>
 
+<h1 class="page-title">
+	<a href="<?php echo get_site_url( 'talks.php' ); ?>">
+		<span class="dashicons dashicons-arrow-left-alt2"></span>
+	</a>
 <?php if ( $action == 'edit' ) : ?>
-	<h1 class="page-title">Modifica talk <?php if ( isset( $talk->titolo ) ) : ?><small><?php echo $talk->titolo; ?></small><?php endif; ?></h1>
+	Modifica talk <?php if ( isset( $talk->titolo ) ) : ?><small><?php echo $talk->titolo; ?></small><?php endif; ?>
 <?php elseif ( $action == 'add' ) : ?>
-	<h1 class="page-title">Nuovo talk</h1>
+	Nuovo talk
 <?php endif; ?>
+</h1>
 
 <?php
 $form_action = '';
@@ -77,11 +82,6 @@ switch( $action ) {
 		break;
 }
 
-/**
- * Display alerts for this page.
- *
- * @since  0.13.0
- */
 if ( isset( $after_save ) )
 	alert_save( $after_save );
 ?>

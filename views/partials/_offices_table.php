@@ -7,12 +7,17 @@
  * @since  0.12.0
  */
 
-$offices = KYSS_Office::get_list();
+if ( isset( $_GET['q'] ) )
+	$offices = KYSS_Office::search( $_GET['q'] );
+else
+	$offices = KYSS_Office::get_list();
 ?>
 
 <h1 class="page-title">Cariche<a href="<?php echo get_site_url( 'offices.php?action=add' ); ?>" title="Aggiungi nuovo">
 	<span class="dashicons dashicons-plus"></span>
 </a></h1>
+
+<?php search_form(); ?>
 
 <?php if ( ! empty( $offices ) ) : ?>
 

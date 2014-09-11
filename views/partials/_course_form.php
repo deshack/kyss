@@ -19,7 +19,7 @@ if ( $action == 'edit' && empty( $id ) ) {
 switch( $action ) {
 	case 'edit' :
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
-			validate_course_data();
+			$course = validate_course_data();
 		}
 		break;
 	case 'add' :
@@ -32,12 +32,15 @@ switch( $action ) {
 			}
 
 			$id = KYSS_Course::create( $data );
-			kyss_redirect( get_site_url( '/courses.php' ) );
+			$course = KYSS_Course::get_course_by_id( $id );
 		}
 		break;
 }
 
-$course = KYSS_Course::get_course_by_id( $id );
+if ( isset( $course ) )
+	$after_save = $course;
+if ( ! isset( $course ) || is_kyss_error( $course ) )
+	$course = KYSS_Course::get_course_by_id( $id );
 $users = KYSS_User::get_users_list();
 ?>
 
@@ -57,6 +60,9 @@ switch( $action ) {
 		$form_action = 'action=add&save=true';
 		break;
 }
+
+if ( isset( $after_save ) )
+	alert_save( $after_save );
 ?>
 
 <form id="<?php echo $action; ?>-course" method="post" action="courses.php?<?php echo $form_action; ?>">
@@ -129,6 +135,6 @@ function validate_course_data() {
 			continue;
 		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
 	}
-
-	KYSS_Course::update( $id, $valid );
+	$course = KYSS_Course::get_course_by_id( $id );
+	return $course->update( $valid );
 }

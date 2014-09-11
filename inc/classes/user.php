@@ -252,7 +252,7 @@ class KYSS_User {
 
 		// If $data is empty, return as unsuccessful.
 		if ( empty( $data ) )
-			return false;
+			return new KYSS_Error( 'invalid_data', 'I dati che hai inserito non sono validi.' );
 
 		foreach ( $data as $key => $value ) {
 			if ( $this->{$key} == $value )
@@ -262,7 +262,7 @@ class KYSS_User {
 		// If $data is empty here, we were trying to update the user with
 		// the same data stored in the db, so do nothing and return as successful.
 		if ( empty( $data ) )
-			return true;
+			return $this;
 
 		if ( isset( $data['carica'] ) ) {
 			if ( !isset( $this->carica ) || empty( $this->carica ) )
@@ -274,9 +274,9 @@ class KYSS_User {
 		
 		$result = $kyssdb->update( $kyssdb->utenti, $data, array( 'ID' => $this->ID ) );
 
-		if ( $result )
-			return true;
-		return false;
+		if ( ! $result )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+		return $this;
 	}
 
 	/**
@@ -687,6 +687,49 @@ class KYSS_Office {
 				$past[] = $office;
 
 		return $past;
+	}
+
+	/**
+	 * Search offices in the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $query Search query.
+	 * @return  array
+	 */
+	public static function search( $query = '' ) {
+		global $kyssdb;
+
+		if ( empty( $query ) )
+			return self::get_list();
+
+		$query = $kyssdb->real_escape_string( $query );
+
+		$fields = array( 'c.carica', 'u.nome', 'u.cognome' );
+		$search = array();
+		foreach ( $fields as $field )
+			$search[] = "CONVERT({$field} USING utf8) LIKE '%{$query}%'";
+		$search = join( ' OR ', $search );
+
+		$sql = "SELECT * FROM {$kyssdb->cariche} c
+			LEFT JOIN {$kyssdb->utenti} u ON c.utente = u.ID
+			WHERE {$search}
+			ORDER BY c.inizio DESC";
+
+		if ( ! $result = $kyssdb->query( $sql ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+
+		if ( 0 === $result->num_rows )
+			return false;
+
+		$offices = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$offices[] = $result->fetch_object( 'KYSS_Office' );
+		return $offices;
 	}
 }
 

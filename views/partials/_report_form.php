@@ -19,7 +19,7 @@ if ( $action == 'edit' && empty( $prot ) ) {
 switch( $action ) {
 	case 'edit' :
 		if ( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
-			validate_report_data();
+			$report = validate_report_data();
 		}
 		break;
 	case 'add' :
@@ -32,12 +32,15 @@ switch( $action ) {
 			}
 
 			$prot = KYSS_Report::create( $data );
-			kyss_redirect( get_site_url( '/reports.php' ) );
+			$report = KYSS_Report::get( $prot );
 		}
 		break;
 }
 
-$report = KYSS_Report::get( $prot );
+if ( isset( $report ) )
+	$after_save = $report;
+if ( ! isset( $report ) || is_kyss_error( $report ) )
+	$report = KYSS_Report::get( $prot );
 $meetings = KYSS_Meeting::get_list();
 ?>
 
@@ -61,22 +64,23 @@ switch( $action ) {
 		$form_action = 'action=add&save=true';
 		break;
 }
+
+if ( isset( $after_save ) )
+	alert_save( $after_save );
 ?>
 
-<form id="<?php echo $action; ?>-report" method="post" action="reports.php?<?php echo $form_action; ?>">
+<form id="<?php echo $action; ?>-report" method="post" action="reports.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
 		<?php if ( $action == 'add' ) : ?>
 		<div class="medium-6 columns">
 			<label for="protocollo">Protocollo</label>
-			<input id="protocollo" name="protocollo" type="text"<?php echo isset( $report->protocollo ) ? get_value_html( $report->protocollo ) : ''; ?>> 
+			<input id="protocollo" name="protocollo" type="text"<?php echo isset( $report->protocollo ) ? get_value_html( $report->protocollo ) : ''; ?> required>
+			<?php field_error(); ?>
 		</div>
 		<?php endif; ?>
 		<div class="medium-6 columns">
 			<label for="riunione">Riunione</label>
 			<select name="riunione">
-				<option value="NULL"<?php echo isset( $meeting->riunione ) ? get_value_html( $meeting->riunione ) : ''; ?>>
-					-
-				</option>
 			<?php foreach ($meetings as $meeting ) : ?>
 				<option value="<?php echo $meeting->ID; ?>"<?php echo isset( $report->riunione ) ? selected( $report->riunione, $meeting->ID, false ) : ''; ?>>
 				<?php echo isset( $meeting->name ) ? get_value_html( $meeting->name ) : 'Riunione del ' . date( 'd/m/Y', strtotime( $meeting->data_inizio ) ); ?>
@@ -126,5 +130,6 @@ function validate_report_data() {
 		$valid[$key] = $kyssdb->real_escape_string( trim( $value ) );
 	}
 
-	KYSS_Report::update( $prot, $valid );
+	$report = KYSS_Report::get( $prot );
+	return $report->update( $valid );
 }
