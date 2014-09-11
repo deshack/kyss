@@ -13,8 +13,15 @@ global $hook, $kyss_version;
 </main>
 </div><!-- .row -->
 
-<footer class="bottom-bar text-right small-only-text-center">
-<span class="text">KYSS v<?php echo $kyss_version; ?></span>
+<footer class="bottom-bar">
+	<div class="row">
+		<div class="medium-6 columns text-left small-only-text-center">
+			<span class="text">Copyright &copy; 2014 Dalla Costa Nicola &amp; Migliorini Mattia</span>
+		</div>
+		<div class="medium-6 columns text-right small-only-text-center">
+			<span class="text">KYSS <?php echo $kyss_version; ?></span>
+		</div>
+	</div>
 </footer>
 
 <?php $hook->run( 'kyss_footer' ); ?>
