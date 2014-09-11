@@ -64,7 +64,7 @@
 				corso: _GET.value,
 				action: 'delete'
 			};
-			$.post('ajax/subscription.php', data);
+			$.post('ajax-subscription.php', data);
 			self.removeRow();
 		});
 
@@ -103,7 +103,7 @@
 				}
 				data.push(_GET);
 				data.push({name: 'action', value: 'add'});
-				$.post('ajax/subscription.php', data, function() {
+				$.post('ajax-subscription.php', data, function() {
 					var data = that.serializeArray();
 					data.push({name: 'action', value: 'add'});
 					self.loadRow('subscriptions.php', data);
@@ -127,7 +127,7 @@
 				corso: _GET.value,
 				action: 'delete'
 			};
-			$.post('ajax/lesson.php', data);
+			$.post('ajax-lesson.php', data);
 			self.removeRow();
 		});
 	});

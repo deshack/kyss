@@ -23,11 +23,14 @@ if ( ! isset( $lesson ) && ! empty( $course ) && ! empty( $date ) )
 	$lesson = KYSS_Lesson::get_lesson( $course, $date );
 ?>
 
+<h1 class="page-title">
+	<a href="<?php echo get_site_url( 'courses.php?action=view&id='.$course ); ?>"><span class="dashicons dashicons-arrow-left-alt2"></span></a>
 <?php if ( $action == 'edit' ) : ?>
-	<h1 class="page-title">Modifica lezione</h1>
+	Modifica lezione
 <?php elseif ( $action == 'add' ) : ?>
-	<h1 class="page-title">Nuova lezione</h1>
+	Nuova lezione
 <?php endif; ?>
+</h1>
 
 <?php $form_action = '';
 switch( $action ) {
