@@ -18,7 +18,10 @@ if ( is_array( $courses ) )
 <h1>Corsi 
 	<small><a href="<?php echo get_site_url( 'courses.php?action=add'); ?>">
 		<span class="dashicons dashicons-plus"></span>
-	</a></small></h1>
+	</a></small>
+</h1>
+
+<?php if ( strpos( $_SERVER['PHP_SELF'], 'events' ) === false ) search_form(); ?>
 
 <?php
 if ( ! empty( $courses ) ) : ?>

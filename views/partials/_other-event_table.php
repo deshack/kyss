@@ -21,6 +21,8 @@ if ( is_array( $other_events ) )
 	</a></small>
 </h1>
 
+<?php if ( strpos( $_SERVER['PHP_SELF'], 'other' ) !== false ) search_form(); ?>
+
 <?php
 if ( ! empty( $other_events ) ) : ?>
 

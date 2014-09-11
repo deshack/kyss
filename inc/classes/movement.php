@@ -142,4 +142,45 @@ class KYSS_Movement {
 			return true;
 		return false;
 	}
+
+	/**
+	 * Search movement in the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $query Search query.
+	 * @return  array.
+	 */
+	public static function search( $query = '' ) {
+		global $kyssdb;
+
+		if ( empty( $query ) )
+			return self::get_list();
+
+		$query = $kyssdb->real_escape_string( $query );
+
+		$sql = "SELECT * FROM {$kyssdb->movimenti} WHERE ";
+
+		$fields = array( 'causale', 'importo' );
+		$search = array();
+		foreach ( $fields as $field )
+			$search[] = "{$field} LIKE '%{$query}%'";
+		$search = join( ' OR ', $search );
+		$sql .= $search;
+
+		if ( ! $result = $kyssdb->query( $sql ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+
+		if ( 0 === $result->num_rows )
+			return false;
+
+		$movements = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$movements[] = $result->fetch_object( 'KYSS_Movement' );
+		return $movements;
+	}
 }

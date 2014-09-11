@@ -21,6 +21,8 @@ if ( is_array( $meetings ) )
 	</a></small>
 </h1>
 
+<?php if ( strpos( $_SERVER['PHP_SELF'], 'events' ) === false ) search_form(); ?>
+
 <?php
 if ( ! empty( $meetings ) ) : ?>
 

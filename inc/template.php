@@ -277,3 +277,18 @@ function alert_save( $error ) {
 	else
 		alert_success( 'Salvataggio effettuato con successo.' );
 }
+
+/**
+ * Render search form.
+ *
+ * @since  0.13.0
+ */
+function search_form() {
+?>
+<form method="get" action="">
+	<input type="search" id="q" name="q" placeholder="Cerca&hellip;"<?php echo isset( $_GET['q'] ) ? get_value_html( $_GET['q'] ) : ''; ?>>
+</form>
+<?php
+if ( isset( $_GET['q'] ) )
+	alert_info( "Risultati della ricerca per: <b>{$_GET['q']}</b>." );
+}

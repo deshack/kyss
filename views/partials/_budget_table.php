@@ -21,6 +21,8 @@ if ( is_array( $budgets ) )
 	</a></small>
 </h1>
 
+<?php if ( strpos( $_SERVER['PHP_SELF'], 'documents' ) === false ) search_form(); ?>
+
 <?php
 if ( ! empty( $budgets ) ) : ?>
 

@@ -132,6 +132,47 @@ class KYSS_Practice {
 			return true;
 		return false;
 	}
+
+	/**
+	 * Search practice in the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $query Search query.
+	 * @return  array
+	 */
+	public static function search( $query = '' ) {
+		global $kyssdb;
+
+		if ( empty( $query ) )
+			return self::get_list();
+
+		$query = $kyssdb->real_escape_string( $query );
+
+		$sql = "SELECT * FROM {$kyssdb->pratiche} WHERE ";
+
+		$fields = array( 'tipo', 'note' );
+		$search = array();
+		foreach ( $fields as $field )
+			$search[] = "`{$field}` LIKE '%{$query}%'";
+		$search = join( ' OR ', $search );
+		$sql .= $search;
+
+		if ( ! $result = $kyssdb->query( $sql ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+
+		if ( 0 === $result->num_rows )
+			return false;
+
+		$practices = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$practices[] = $result->fetch_object( 'KYSS_Practice' );
+		return $practices;
+	}
 }
 
 /**
@@ -259,6 +300,40 @@ class KYSS_Report {
 		if ( $result )
 			return true;
 		return false;
+	}
+
+	/**
+	 * Search report in the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $query Search query.
+	 * @return  array
+	 */
+	public static function search( $query = '' ) {
+		global $kyssdb;
+
+		if ( empty( $query ) )
+			return self::get_list();
+
+		$query = $kyssdb->real_escape_string( $query );
+
+		$sql = "SELECT * FROM {$kyssdb->verbali} WHERE contenuto LIKE '%{$query}%'";
+
+		if ( ! $result = $kyssdb->query( $sql ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+
+		if ( 0 === $result->num_rows )
+			return false;
+
+		$reports = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$reports[] = $result->fetch_object( 'KYSS_Report' );
+		return $reports;
 	}
 }
 
@@ -390,5 +465,46 @@ class KYSS_Budget {
 		if ( $result )
 			return true;
 		return false;
+	}
+
+	/**
+	 * Search budget in the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $query Search query.
+	 * @return  array
+	 */
+	public static function search( $query ) {
+		global $kyssdb;
+
+		if ( empty( $query ) )
+			return self::get_list();
+
+		$query = $kyssdb->real_escape_string( $query );
+
+		$sql = "SELECT * FROM {$kyssdb->bilanci} WHERE ";
+
+		$fields = array( 'tipo', 'mese', 'anno' );
+		$search = array();
+		foreach ( $fields as $field )
+			$search[] = "{$field} LIKE '%{$query}%'";
+		$search = join( ' OR ', $search );
+		$sql .= $search;
+
+		if ( ! $result = $kyssdb->query( $sql ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+
+		if ( 0 === $result->num_rows )
+			return false;
+
+		$budgets = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$budgets[] = $result->fetch_object( 'KYSS_Budget' );
+		return $budgets;
 	}
 }

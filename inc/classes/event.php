@@ -160,6 +160,45 @@ class KYSS_Event {
 			return true;
 		return false;
 	}
+
+	/**
+	 * Search event in the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $query Search query.
+	 * @return array Array of KYSS_Event objects.
+	 */
+	public static function search( $query = '' ) {
+		global $kyssdb;
+
+		if ( empty( $query ) )
+			return self::get_events_list();
+
+		$query = $kyssdb->real_escape_string( $query );
+
+		$sql = "SELECT e.* FROM {$kyssdb->eventi} e WHERE e.nome LIKE '%{$query}%'
+			AND e.ID NOT IN (
+				SELECT r.ID FROM {$kyssdb->riunioni} r
+				UNION
+				SELECT c.ID FROM {$kyssdb->corsi} c
+			)";
+
+		if ( ! $result = $kyssdb->query( $sql ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+
+		if ( $result->num_rows === 0 )
+			return false;
+
+		$events = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$events[] = $result->fetch_object( 'KYSS_Event' );
+		return $events;
+	}
 }
 
 /**
@@ -338,6 +377,42 @@ class KYSS_Meeting extends KYSS_Event {
 			return true;
 		return false;
 	}
+
+	/**
+	 * Search meeting in the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global  kyssdb
+	 *
+	 * @param  string $query Search query.
+	 * @return  array Array of KYSS_Meeting objects.
+	 */
+	public static function search( $query = '' ) {
+		global $kyssdb;
+
+		if ( empty( $query ) )
+			return self::get_list();
+
+		$query = $kyssdb->real_escape_string( $query );
+
+		$sql = "SELECT * FROM {$kyssdb->riunioni} r
+			JOIN {$kyssdb->eventi} e ON (r.ID = e.ID)
+			WHERE e.nome LIKE '%{$query}%'";
+
+		if ( ! $result = $kyssdb->query( $sql ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+
+		if ( $result->num_rows === 0 )
+			return false;
+
+		$meetings = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$meetings[] = $result->fetch_object( 'KYSS_Meeting' );
+		return $meetings;
+	}
 }
 
 /**
@@ -515,6 +590,42 @@ class KYSS_Course extends KYSS_Event {
 			return true;
 		return false;
 	}
+
+	/**
+	 * Search course in the db.
+	 *
+	 * @since 0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global kyssdb
+	 *
+	 * @param  string $query Search query.
+	 * @return  array Array of KYSS_Course objects.
+	 */
+	public static function search( $query = '' ) {
+		global $kyssdb;
+
+		if ( empty( $query ) )
+			return self::get_list();
+
+		$query = $kyssdb->real_escape_string( $query );
+
+		$sql = "SELECT * FROM {$kyssdb->corsi} c
+			JOIN {$kyssdb->eventi} e ON (c.ID = e.ID)
+			WHERE e.nome LIKE '%{$query}%' OR c.livello='{$query}'";
+
+		if ( ! $result = $kyssdb->query( $sql ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+
+		if ( $result->num_rows === 0 )
+			return false;
+
+		$courses = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$courses[] = $result->fetch_object( 'KYSS_Course' );
+		return $courses;
+	}
 }
 
 /**
@@ -659,6 +770,46 @@ class KYSS_Talk {
 			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
 
 		return $this;
+	}
+
+	/**
+	 * Search talks in the db.
+	 *
+	 * @since  0.13.0
+	 * @access public
+	 * @static
+	 *
+	 * @global kyssdb
+	 *
+	 * @param  string $query Search query.
+	 * @return array
+	 */
+	public static function search( $query = '' ) {
+		global $kyssdb;
+
+		if ( empty( $query ) )
+			return self::get_list();
+
+		$query = $kyssdb->real_escape_string( $query );
+
+		$sql = "SELECT * FROM {$kyssdb->talk} WHERE ";
+		$fields = array( 'titolo', 'argomenti' );
+		$search = array();
+		foreach ( $fields as $field )
+			$search[] = "`{$field}` LIKE '%{$query}%'";
+		$search = join( ' OR ', $search );
+		$sql .= $search;
+
+		if ( ! $result = $kyssdb->query( $sql ) )
+			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+
+		if ( 0 === $result->num_rows )
+			return false;
+
+		$talks = array();
+		for ( $i = 0; $i < $result->num_rows; $i++ )
+			$talks[] = $result->fetch_object( 'KYSS_Talk' );
+		return $talks;
 	}
 }
 

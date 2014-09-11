@@ -17,23 +17,11 @@ else
 if( is_array( $users ) )
 	$users = array_filter( $users ); ?>
 
-<div class="row">
-	<div class="medium-9 columns">
-		<h1 class="page-title">Utenti<a href="<?php echo get_site_url( 'users.php?action=add'); ?>" title="Aggiungi nuovo">
-			<span class="dashicons dashicons-plus"></span>
-		</a></h1>
-	</div>
-	<div class="medium-3 columns">
-		<form method="get" action="">
-			<input type="search" id="q" name="q" placeholder="Cerca&hellip;"<?php echo isset( $_GET['q'] ) ? get_value_html( $_GET['q'] ) : ''; ?>>
-		</form>
-	</div>
-</div>
+<h1 class="page-title">Utenti<a href="<?php echo get_site_url( 'users.php?action=add'); ?>" title="Aggiungi nuovo">
+	<span class="dashicons dashicons-plus"></span>
+</a></h1>
 
-<?php
-if ( isset( $_GET['q'] ) )
-	alert_info( "Risultati della ricerca per: <b>{$_GET['q']}</b>." );
-?>
+<?php search_form(); ?>
 
 
 <?php if ( ! empty( $users ) ) : ?>

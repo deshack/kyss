@@ -311,7 +311,7 @@ class KYSS_User {
 		if ( ! $result = $kyssdb->query( $sql ) )
 			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'query' => $sql ) );
 
-		if ( 0 === $result )
+		if ( 0 === $result->num_rows )
 			return false;
 
 		$users = array();

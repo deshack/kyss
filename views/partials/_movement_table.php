@@ -19,6 +19,8 @@ else
 	</a></small>
 </h1>
 
+<?php if ( strpos( $_SERVER['PHP_SELF'], 'movements' ) !== false ) search_form(); ?>
+
 <?php
 if ( ! empty( $movements ) ) : ?>
 
