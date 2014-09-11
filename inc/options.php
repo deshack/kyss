@@ -122,17 +122,20 @@ function update_option( $option, $value ) {
  * @global  hook
  *
  * @param  string $option Option name.
- * @return mixed|false Option value, or false on failure.
+ * @return mixed|false Option value, or false if not found, KYSS_Error on failure.
  */
 function get_option( $option ) {
 	global $kyssdb, $hook;
 
 	$option = trim($option);
 	if ( empty( $option ) )
-		return false;
+		return new KYSS_Error( 'empty_option_name', "Il nome dell'opzione che cerchi non pu&ograve; essere vuoto." );
 
 	if ( ! $value = $kyssdb->query( "SELECT value FROM {$kyssdb->options} WHERE name = '{$option}' LIMIT 1" ) )
-		trigger_error( $kyssdb->error, E_USER_WARNING );
+		return new KYSS_Error( $kyssdb->errno, $kyssdb->error );
+
+	if ( $value->num_rows === 0 )
+		return false;
 
 	if ( is_object( $value ) ) {
 		$value = $value->fetch_object();

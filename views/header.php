@@ -23,6 +23,8 @@ $title = 'KYSS';
 $title = $hook->run( 'kyss_title', $title, $_SERVER['PHP_SELF'] );
 
 header( 'Content-Type: text/html; charset=utf-8' );
+
+$hook->run( 'kyss_headers' );
 ?>
 
 <!doctype html>

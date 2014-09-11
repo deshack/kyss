@@ -578,6 +578,8 @@ function populate_options() {
 
 	$insert = '';
 	foreach ( $options as $option => $value ) {
+		if ( false !== get_option( $option ) )
+			continue;
 		// This is to support future options, which can include arrays.
 		if ( is_array( $value ) )
 			$value = serialize($value);
