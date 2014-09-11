@@ -7,7 +7,10 @@
  * @since  
  */
 
-$meetings = KYSS_Meeting::get_list();
+if ( isset( $_GET['q'] ) )
+	$meetings = KYSS_Meeting::search( $_GET['q'] );
+else
+	$meetings = KYSS_Meeting::get_list();
 
 // Small workaround to remove array elements that evaluate to false.
 // Useful if `KYSS_Meeting::get_list()` adds a NULL element.

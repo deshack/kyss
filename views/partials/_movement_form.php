@@ -65,7 +65,7 @@ switch( $action ) {
 }
 ?>
 
-<form id="<?php echo $action; ?>-movement" method="post" action="movements.php?<?php echo $form_action; ?>">
+<form id="<?php echo $action; ?>-movement" method="post" action="movements.php?<?php echo $form_action; ?>" data-abide>
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="utente">Utente</label>
@@ -96,7 +96,7 @@ switch( $action ) {
 		</div>
 		<div class="medium-6 columns">
 			<label for="data">Data</label>
-			<input id="data" name="data" type="date"<?php echo isset( $movement->data ) ? $movement->data : ''; ?>>
+			<input id="data" name="data" class="datepicker" type="text"<?php echo isset( $movement->data ) ? $movement->data : ''; ?>>
 		</div>
 	</div>
 	<div class="row">

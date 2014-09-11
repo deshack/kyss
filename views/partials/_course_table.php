@@ -7,7 +7,10 @@
  * @since  
  */
 
-$courses = KYSS_Course::get_list();
+if ( isset( $_GET['q'] ) )
+	$courses = KYSS_Course::search( $_GET['q'] );
+else
+	$courses = KYSS_Course::get_list();
 
 // Small workaround to remove array elements that evaluate to false.
 // Useful if `KYSS_Event::get_list()` adds a NULL element.

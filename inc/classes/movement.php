@@ -163,14 +163,21 @@ class KYSS_Movement {
 
 		$query = $kyssdb->real_escape_string( $query );
 
-		$sql = "SELECT * FROM {$kyssdb->movimenti} WHERE ";
+		$sql = "SELECT m.* FROM {$kyssdb->movimenti} m
+			LEFT JOIN {$kyssdb->utenti} AS u ON m.utente = u.ID
+			LEFT JOIN {$kyssdb->bilanci} AS b ON m.bilancio = b.ID
+			LEFT JOIN {$kyssdb->verbali} AS v ON b.verbale = v.protocollo
+			WHERE ";
 
-		$fields = array( 'causale', 'importo' );
+		$fields = array( 'm.causale', 'm.importo', 'u.nome', 'u.cognome', 'u.email', 'u.telefono', 'u.gruppo', 'u.citta', 'b.tipo', 'b.mese', 'b.anno', 'v.contenuto' );
+		//$fields = array( 'causale', 'importo' );
 		$search = array();
 		foreach ( $fields as $field )
-			$search[] = "{$field} LIKE '%{$query}%'";
+			$search[] = "CONVERT({$field} USING utf8) LIKE '%{$query}%'";
 		$search = join( ' OR ', $search );
 		$sql .= $search;
+
+		trigger_error($sql);
 
 		if ( ! $result = $kyssdb->query( $sql ) )
 			return new KYSS_Error( $kyssdb->errno, $kyssdb->error );

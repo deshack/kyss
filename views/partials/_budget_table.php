@@ -7,7 +7,10 @@
  * @since  0.12.0
  */
 
-$budgets = KYSS_Budget::get_list();
+if ( isset( $_GET['q'] ) )
+	$budgets = KYSS_Budget::search( $_GET['q'] );
+else
+	$budgets = KYSS_Budget::get_list();
 
 // Small workaround to remove array elements that evaluate to false.
 // Useful if `KYSS_Budget::get_list()` adds a NULL element.

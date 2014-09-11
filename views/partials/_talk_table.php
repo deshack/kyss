@@ -7,7 +7,9 @@
  * @since  
  */
 
-if ( ! empty( $id ) )
+if ( isset( $_GET['q'] ) )
+	$talks = KYSS_Talk::search( $_GET['q'] );
+elseif ( ! empty( $id ) )
 	$talks = KYSS_Talk::get_list( $id, 'ASC' );
 else
 	$talks = KYSS_Talk::get_list();

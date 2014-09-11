@@ -7,10 +7,15 @@
  * @since  0.13.0
  */
 
-if ( ! empty( $id ) )
+if ( isset( $_GET['q'] ) )
+	$movements = KYSS_Movement::search( $_GET['q'] );
+elseif ( ! empty( $id ) )
 	$movements = KYSS_Movement::get_list( $id, 'ASC' );
 else
 	$movements = KYSS_Movement::get_list();
+
+if ( is_kyss_error( $movements ) )
+	trigger_error($movements->get_error_message());
 ?>
 
 <h1>Movimenti
@@ -30,6 +35,7 @@ if ( ! empty( $movements ) ) : ?>
 			<th>Utente</th>
 			<th>Causale</th>
 			<th>Data</th>
+			<th>Importo</th>
 			<th>Azioni</th>
 		</tr>
 	</thead>
@@ -43,6 +49,7 @@ if ( ! empty( $movements ) ) : ?>
 			?></td>
 			<td><?php echo $movement->causale; ?></td>
 			<td><?php echo date( 'd/m/Y', strtotime( $movement->data ) ); ?></td>
+			<td>&euro;<?php echo $movement->importo; ?></td>
 			<td>
 				<a href="<?php echo get_site_url( 'movements.php?action=view&id=' . $movement->ID ); ?>" title="Dettagli">
 					<span class="dashicons dashicons-visibility"></span>

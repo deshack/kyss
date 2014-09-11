@@ -7,7 +7,10 @@
  * @since  0.12.0
  */
 
-$reports = KYSS_Report::get_list();
+if ( isset( $_GET['q'] ) )
+	$reports = KYSS_Report::search( $_GET['q'] );
+else
+	$reports = KYSS_Report::get_list();
 
 // Small workaround to remove array elements that evaluate to false.
 // Useful if `KYSS_Report::get_list()` adds a NULL element.

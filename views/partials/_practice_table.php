@@ -7,7 +7,10 @@
  * @since  0.12.0
  */
 
-$practices = KYSS_Practice::get_list();
+if ( isset( $_GET['q'] ) )
+	$practices = KYSS_Practice::search( $_GET['q'] );
+else
+	$practices = KYSS_Practice::get_list();
 
 // Small workaround to remove array elements that evaluate to false.
 // Useful if `KYSS_Practice::get_list()` adds a NULL element.

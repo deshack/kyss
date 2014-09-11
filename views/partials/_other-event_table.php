@@ -7,7 +7,10 @@
  * @since  
  */
 
-$other_events = KYSS_Event::get_events_list();
+if ( isset( $_GET['q'] ) )
+	$other_events = KYSS_Event::search( $_GET['q'] );
+else
+	$other_events = KYSS_Event::get_events_list();
 
 // Small workaround to remove array elements that evaluate to false.
 // Useful if `KYSS_Event::get_list()` adds a NULL element.
