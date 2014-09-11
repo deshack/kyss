@@ -503,10 +503,8 @@ class KYSS_Meeting extends KYSS_Event {
 		if ( ! $result = $kyssdb->query( $query ) )
 			return new KYSS_Error( $kyssdb->errno, $kyssdb->error, array( 'query' => $query ) );
 
-		if ( 0 === $result->num_rows ) {
-			trigger_error($query);
+		if ( 0 === $result->num_rows )
 			return false;
-		}
 
 		$meetings = array();
 		for ( $i = 0; $i < $result->num_rows; $i++ )
