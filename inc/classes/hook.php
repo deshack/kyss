@@ -16,9 +16,7 @@
  * @since  0.9.0
  */
 
-// Initialize the hook globals.
 global $hook;
-
 if ( ! isset( $hook ) )
 	$hook = new KYSS_Hook;
 
