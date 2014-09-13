@@ -47,8 +47,6 @@ if ( ! isset( $office ) || is_kyss_error( $office ) )
 <?php endif; ?>
 </h1>
 
-<?php alert_save( $after_save ); ?>
-
 <?php
 $form_action = '';
 switch ( $action ) {
@@ -59,6 +57,9 @@ switch ( $action ) {
 		$form_action = 'action=add&save=true';
 		break;
 }
+
+if ( isset( $after_save ) )
+	alert_save( $after_save );
 
 $offices_list = KYSS_Office::get_defaults();
 $users_list = KYSS_User::get_users_list()

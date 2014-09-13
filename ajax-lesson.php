@@ -7,6 +7,6 @@
  * @since  0.13.0
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/load.php' );
+require_once( dirname( __FILE__ ) . '/load.php' );
 
 KYSS_Lesson::delete( $_POST['corso'], $_POST['data'] );

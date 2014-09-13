@@ -7,7 +7,7 @@
  * @since  0.13.0
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/load.php' );
+require_once( dirname( __FILE__ ) . '/load.php' );
 
 $data['corso'] = $_POST['corso'];
 $data['utente'] = $_POST['utente'];
