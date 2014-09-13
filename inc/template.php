@@ -347,7 +347,6 @@ function upcoming_courses() {
 
 	if ( is_kyss_error( $courses ) ) {
 		trigger_error( $courses->get_error_message(), E_USER_WARNING );
-		trigger_error( $courses->get_error_data()['query'] );
 		return false;
 	}
 	if ( ! $courses )
@@ -395,7 +394,6 @@ function upcoming_meetings() {
 
 	if ( is_kyss_error( $meetings ) ) {
 		trigger_error( $meetings->get_error_message(), E_USER_WARNING );
-		trigger_error( $meetings->get_error_data()['query'] );
 		return false;
 	}
 	if ( ! $meetings )
