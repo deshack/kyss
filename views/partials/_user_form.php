@@ -50,11 +50,16 @@ if ( ! isset( $user ) || is_kyss_error( $user ) )
 	$user = KYSS_User::get_user_by('id', $id);
 ?>
 
+<h1 class="page-title">
 <?php if ( $action == 'edit' ) : ?>
-	<h1 class="page-title">Modifica utente <small><?php echo $user->nome . ' ' . $user->cognome; ?></small></h1>
+	Modifica utente <small><?php echo $user->nome . ' ' . $user->cognome; ?></small>
 <?php elseif ( $action == 'add' ) : ?>
-	<h1 class="page-title">Nuovo utente</h1>
+	Nuovo utente
 <?php endif; ?>
+	<a href="<?php echo get_site_url( 'users.php?action=add'); ?>" title="Aggiungi nuovo">
+		<span class="dashicons dashicons-plus"></span>
+	</a>
+</h1>
 
 <?php
 $form_action = '';
@@ -76,7 +81,7 @@ if ( isset( $after_save ) )
 	<div class="row">
 		<div class="medium-4 columns">
 			<label for="nome">Nome</label>
-			<input id="nome" name="nome" type="text"<?php echo isset( $user->nome ) ? get_value_html( $user->nome ) : '' ?> required autocomplete="off">
+			<input id="nome" name="nome" type="text"<?php echo isset( $user->nome ) ? get_value_html( $user->nome ) : '' ?> required autocomplete="off" autofocus>
 			<?php field_error(); ?>
 		</div>
 		<div class="medium-4 columns">

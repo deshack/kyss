@@ -19,7 +19,7 @@ global $hook, $kyss_version;
 			<span class="text">Copyright &copy; 2014 Dalla Costa Nicola &amp; Migliorini Mattia</span>
 		</div>
 		<div class="medium-6 columns text-right small-only-text-center">
-			<span class="text">KYSS <?php echo $kyss_version; ?></span>
+			<span class="text">KYSS <?php echo $kyss_version; ?> (Alpha1)</span>
 		</div>
 	</div>
 </footer>

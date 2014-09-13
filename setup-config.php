@@ -23,10 +23,10 @@ namespace admin\setup_config;
 define('INSTALLING', true);
 
 // Disable error reporting.
-//error_reporting(0);
+error_reporting(0);
 // Enable error reporting.
-error_reporting( E_ALL );
-ini_set('display_errors', 1);
+//error_reporting( E_ALL );
+//ini_set('display_errors', 1);
 
 // These defines are required to allow us to build paths.
 define('ABSPATH', dirname(__FILE__) . '/');
@@ -344,6 +344,16 @@ function write() {
 		$content .= "define('" . $const . "', '" . addcslashes( constant( $const ), "\\'" ) . "');\r\n";
 
 	$content .= "\r\n
+/**
+ * Application environment.
+ * 
+ * Accepts 'development', 'test', 'production'.
+ *
+ * @since 0.14.0
+ * @var string
+ */
+define( 'ENVIRONMENT', 'production' );
+
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');
 

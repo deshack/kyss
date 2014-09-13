@@ -6,3 +6,4 @@ lib
 **/*.log
 *.sql
 docs/parser
+sftp-config.json

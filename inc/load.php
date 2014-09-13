@@ -126,16 +126,18 @@ function set_internal_encoding() {
  *
  * `DEBUG` defaults to false.
  *
- * @access private
  * @since  0.8.0
+ * @since  0.14.0 Use `ENVIRONMENT` instead of `DEBUG`.
  */
 function debug_mode() {
-	if ( DEBUG ) {
+	if ( ( defined( 'ENVIRONMENT' ) && ENVIRONMENT == 'development' ) || DEBUG ) {
 		error_reporting( E_ALL );
 		ini_set( 'display_errors', 1);
 		ini_set( 'log_errors', 1);
 		ini_set( 'error_log', ABSPATH . 'log/kyss.log' );
-	} else {
+	} elseif ( (defined( 'ENVIRONMENT' ) && ENVIRONMENT == 'test' ) ) {
 		error_reporting( E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR );
+	} else {
+		error_reporting( E_CORE_ERROR | E_COMPILE_ERROR | E_ERROR | E_PARSE | E_USER_ERROR | E_RECOVERABLE_ERROR );
 	}
 }
