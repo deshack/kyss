@@ -742,9 +742,7 @@ class KYSS_Course extends KYSS_Event {
 			WHERE (
 				MONTH(e.data_inizio) >= MONTH(CURRENT_DATE())
 				AND
-				YEAR(e.data_inizio) = YEAR(CURRENT_DATE())
-				AND
-				MONTH(e.data_inizio) < MONTH(DATE_ADD(
+				MONTH(e.data_inizio) <= MONTH(DATE_ADD(
 					CURRENT_DATE(), INTERVAL 1 MONTH
 				)) AND
 				YEAR(e.data_inizio) <= YEAR(DATE_ADD(
