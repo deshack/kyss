@@ -46,15 +46,13 @@ $budgets = KYSS_Budget::get_list();
 $events = KYSS_Event::get_events_list();
 ?>
 
+<h1 class="page-title">
 <?php if ( $action == 'edit' ) : ?>
-	<h1 class="page-title">Modifica movimento 
-		<small>
-			<?php echo ( isset( $movement->ID ) ? $movement->ID : '' ); ?>
-		</small>
-	</h1>
+	Modifica movimento
 <?php elseif ( $action == 'add' ) : ?>
-	<h1 class="page-title">Nuovo movimento</h1>
+	Nuovo movimento
 <?php endif; ?>
+</h1>
 
 <?php
 $form_action = '';

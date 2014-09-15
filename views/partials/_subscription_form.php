@@ -19,7 +19,6 @@ require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/load.php' );
 $users = KYSS_User::get_users_list();
 ?>
 
-<td></td>
 <td>
 	<form>
 		<div class="row">

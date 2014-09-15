@@ -17,23 +17,18 @@ if ( ! empty( $subscriptions ) ) : ?>
 <table id="subscriptions">
 	<thead>
 		<tr>
-			<th width="2em">#</th>
 			<th>Utente</th>
 			<th>Azioni</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php
-			$c = 0;
 			foreach ( $subscriptions as $subscription ) {
-				$c++;
-				echo '<tr>';
 				$user = KYSS_User::get_user_by( 'id', $subscription->utente );
 				include( VIEWS . '/partials/_subscription_details.php' );
 				echo '</tr>';
 		} ?>
 		<tr>
-			<td></td>
 			<td></td>
 			<td>
 				<a class="add" title="Aggiungi">
