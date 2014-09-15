@@ -19,6 +19,7 @@ if ( ! isset( $user ) ) {
 	$user = KYSS_User::get_user_by('id',$_REQUEST['utente']);
 }
 ?>
+<td><?php echo isset( $c ) ? $c : ''; ?></td>
 <td id="<?php echo $user->ID; ?>">
 	<a href="<?php echo get_site_url( 'users.php?action=view&id=' . $user->ID ); ?>">
 		<?php echo $user->nome . ' ' . $user->cognome; ?>

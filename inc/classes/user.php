@@ -120,7 +120,7 @@ class KYSS_User {
 		global $kyssdb;
 
 		if ( !$user = $kyssdb->query(
-			"SELECT * FROM {$kyssdb->utenti}"
+			"SELECT * FROM {$kyssdb->utenti} ORDER BY cognome ASC"
 		) )
 			return false;
 

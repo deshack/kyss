@@ -19,6 +19,7 @@ require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/load.php' );
 $users = KYSS_User::get_users_list();
 ?>
 
+<td></td>
 <td>
 	<form>
 		<div class="row">
@@ -31,7 +32,7 @@ $users = KYSS_User::get_users_list();
 				<select name="utente">
 				<?php foreach ( $users as $user ) : ?>
 					<option value="<?php echo $user->ID; ?>"<?php echo isset( $subscription->utente ) ? selected( $subscription->utente, $user->ID, false ) : ''; ?>>
-						<?php echo $user->nome . ' ' . $user->cognome; ?>
+						<?php echo $user->cognome . ' ' . $user->nome; ?>
 					</option>
 				<?php endforeach; ?>
 				</select>
