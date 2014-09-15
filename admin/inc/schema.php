@@ -588,9 +588,11 @@ function populate_options() {
 		$insert .= sprintf( "('%s', '%s')", $kyssdb->real_escape_string($option), $kyssdb->real_escape_string($value) );
 	}
 
-	$query = "INSERT INTO {$kyssdb->options} (name, value) VALUES " . $insert;
+	if ( ! empty( $insert ) ) {
+		$query = "INSERT INTO {$kyssdb->options} (name, value) VALUES " . $insert;
 
-	if ( ! $kyssdb->query( $query ) ) {
-		trigger_error( $kyssdb->error, E_USER_ERROR );
+		if ( ! $kyssdb->query( $query ) ) {
+			trigger_error( $kyssdb->error, E_USER_ERROR );
+		}
 	}
 }

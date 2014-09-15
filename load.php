@@ -31,6 +31,7 @@ if ( file_exists( ABSPATH . 'config.php' ) ) {
 	require_once( INC . 'load.php' );
 	require_once( INC . 'functions.php' );
 	require_once( INC . 'version.php' );
+	require_once( INC . 'classes/kyss-error.php' );
 
 	check_php_version();
 

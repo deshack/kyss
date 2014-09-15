@@ -23,10 +23,10 @@ namespace admin\setup_config;
 define('INSTALLING', true);
 
 // Disable error reporting.
-error_reporting(0);
+//error_reporting(0);
 // Enable error reporting.
-//error_reporting( E_ALL );
-//ini_set('display_errors', 1);
+error_reporting( E_ALL );
+ini_set('display_errors', 1);
 
 // These defines are required to allow us to build paths.
 define('ABSPATH', dirname(__FILE__) . '/');
@@ -312,14 +312,23 @@ function create() {
  * displays the generated content and requests the user to create the file manually.
  *
  * @since  0.9.0
+ *
+ * @global  kyssdb
  */
 function write() {
+	global $kyssdb;
+
 	$config_file = ABSPATH . 'config.php';
 
 	define('DB_HOST', $_SESSION['dbhost']);
 	define('DB_USER', $_SESSION['dbuser']);
 	define('DB_PASS', $_SESSION['dbpass']);
 	define('DB_NAME', $_SESSION['dbname']);
+
+	load_kyssdb();
+
+	if ( $kyssdb->has_error() )
+		kyss_die( $kyssdb->last_error->get_error_message() . $tryagain );
 
 	// Prepare content for the config file.
 	$constants = array(

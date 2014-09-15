@@ -62,9 +62,14 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	} else {
 		$message = 'La password che hai scelto.';
 	}
-	$user_id = KYSS_User::create($user_name, $user_surname, $user_password, array( 'email' => $user_email ) );
-
-	$user = KYSS_User::get_user_by( 'id', $user_id );
+	if ( ! KYSS_User::email_exists( $user_email ) ) {
+		$user_id = KYSS_User::create($user_name, $user_surname, $user_password, array( 'email' => $user_email ) );
+		$user = KYSS_User::get_user_by( 'id', $user_id );
+	} else {
+		$user = KYSS_User::get_user_by( 'email', $user_email );
+		$user = $user->update( array( 'password' => $user_password ) );
+		$user_id = $user->ID;
+	}
 
 	/**
 	 * Fires after the application is fully installed.

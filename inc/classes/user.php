@@ -85,6 +85,8 @@ class KYSS_User {
 				$value = trim( $value );
 				if ( ! $value )
 					return false;
+				else
+					$value = "'{$value}'";
 				break;
 			default:
 				return false;
@@ -331,7 +333,7 @@ class KYSS_User {
 	 * @param  string $email The email to check.
 	 * @return bool True if email exists, false otherwise.
 	 */
-	private static function email_exists( $email ) {
+	public static function email_exists( $email ) {
 		if ( false !== self::get_user_by( 'email', $email ) )
 			return true;
 		return false;
