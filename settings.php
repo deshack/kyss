@@ -73,10 +73,11 @@ kyss_not_installed();
 
 // Load most of KYSS.
 // ToDo: Require all needed files.
-require(INC . 'formatting.php');
-require(CLASSES . 'kyss-pass.php');
-require(INC . 'options.php');
-require(INC . 'template.php');
+require( CLASSES . 'filesystem.php' );
+require( INC . 'formatting.php' );
+require( CLASSES . 'kyss-pass.php' );
+require( INC . 'options.php' );
+require( INC . 'template.php' );
 require( CLASSES . 'event.php' );
 require( CLASSES . 'document.php' );
 require( CLASSES . 'subscription.php' );
