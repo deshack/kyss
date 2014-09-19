@@ -93,12 +93,19 @@ if ( isset( $after_save ) )
 	<div class="row">
 		<div class="medium-6 columns">
 			<label for="importo">Importo</label>
-			<input id="importo" name="importo" type="text"<?php echo isset( $movement->importo ) ? $movement->importo : ''; ?> required>
-			<?php field_error(); ?>
+			<div class="row collapse">
+				<div class="small-1 columns">
+					<span class="prefix">&euro;</span>
+				</div>
+				<div class="small-11 columns">
+					<input id="importo" name="importo" type="text"<?php echo isset( $movement->importo ) ? get_value_html( number_format( $movement->importo, 2, ',', '.' ) ) : ''; ?> required>
+					<?php field_error(); ?>
+				</div>
+			</div>
 		</div>
 		<div class="medium-6 columns">
 			<label for="data">Data</label>
-			<input id="data" name="data" class="datepicker" type="text"<?php echo isset( $movement->data ) ? $movement->data : ''; ?> required>
+			<input id="data" name="data" class="datepicker" type="text"<?php echo isset( $movement->data ) ? get_value_html( $movement->data ) : ''; ?> required>
 			<?php field_error(); ?>
 		</div>
 	</div>
