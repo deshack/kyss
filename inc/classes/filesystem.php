@@ -13,7 +13,7 @@
  * @package  kYSS
  * @subpackage  Filesystem
  * @since 0.14.0
- * @version  1.0.0
+ * @version  1.0.1
  */
 class Filesystem {
 	/**
@@ -108,6 +108,52 @@ class Filesystem {
 				$success = false;
 
 		return $success;
+	}
+
+	/**
+	 * Remove directory at given path.
+	 *
+	 * @since  1.0.1
+	 * @access public
+	 *
+	 * @param  string|array $paths
+	 * @return  bool Whether the operation succeeded or not.
+	 */
+	public function delete_dir( $paths ) {
+		$paths = is_array( $paths ) ? $paths : func_get_args();
+
+		$dirs = array();
+		$files = array();
+		foreach ( $paths as $path ) {
+			$it = new RecursiveDirectoryIterator( $path, RecursiveDirectoryIterator::SKIP_DOTS );
+			$fit = new RecursiveIteratorIterator( $it, RecursiveIteratorIterator::CHILD_FIRST );
+			foreach ( $fit as $f ) {
+				if ( $f->isDir() )
+					$dirs[] = $f->getRealPath();
+				else
+					$files[] = $f->getRealPath();
+			}
+			$dirs[] = $path;
+		}
+
+		if ( ! empty( $files ) )
+			$this->delete( $files );
+		
+		// Assume that $dirs is not empty, because it has at least $paths.
+		$this->_remove_dirs( $dirs );
+	}
+
+	/**
+	 * Helper function to delete an array of directories.
+	 *
+	 * @since  0.14.0
+	 * @access private
+	 *
+	 * @param  array $dirs
+	 */
+	private function _remove_dirs( array $dirs ) {
+		foreach ( $dirs as $dir )
+			rmdir( $dir );
 	}
 
 	/**

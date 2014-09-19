@@ -17,10 +17,13 @@
 
 /**
  * KYSS Schema API
- *
- * @todo  Add Schema API
  */
-require_once(ABSPATH . 'admin/inc/schema.php');
+require_once(ADMIN . 'inc/schema.php');
+
+/**
+ * KYSS Update library.
+ */
+require_once(ADMIN . 'inc/update.php');
 
 /**
  * Installs the application.
@@ -82,4 +85,20 @@ function kyss_install( $title, $user_name, $user_surname, $user_email, $user_pas
 	
 	// TODO: remove 'empty message' string.
 	return array('url' => $guessurl, 'user_id' => $user_id, 'password' => $user_password, 'password_message' => $message );
+}
+
+/**
+ * Check for updates.
+ *
+ * @since  0.14.0
+ */
+function check_updates() {
+	$updates = new Update( true );
+
+	$result = $updates->check();
+
+	if ( is_kyss_error( $result ) )
+		trigger_error( $result->get_error_message() );
+	else
+		$GLOBALS['updates'] = $updates;
 }

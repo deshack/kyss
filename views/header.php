@@ -7,7 +7,7 @@
  * @since 0.11.0
  */
 
-global $hook, $current_user;
+global $hook, $current_user, $updates;
 
 $title = 'KYSS';
 
@@ -66,6 +66,13 @@ header( 'Content-Type: text/html; charset=utf-8' );
 	</ul>
 	<section class="top-bar-section">
 		<ul class="right">
+		<?php if ( $updates->has_updates() ) : ?>
+			<li>
+				<a href="<?php echo get_site_url( 'admin/update.php' ); ?>" title="Aggiornamenti disponibili" class="tooltip-bottom" data-tooltip aria-haspopup="true">
+					<span class="dashicons dashicons-update"></span>
+				</a>
+			</li>
+		<?php endif; ?>
 			<li>
 				<a href="<?php echo get_site_url( 'users.php?action=view&id=' . $current_user->ID ); ?>" title="Profilo utente" class="tooltip-bottom" data-tooltip aria-haspopup="true">
 					<span class="dashicons dashicons-admin-users"></span> <?php echo $current_user->nome . ' ' . $current_user->cognome; ?>

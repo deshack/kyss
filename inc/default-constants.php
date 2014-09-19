@@ -24,4 +24,12 @@ function initial_constants() {
 		 * @since  0.10.0
 		 */
 		define( 'DAY_IN_SECONDS', 86400 );
+
+	if ( !defined( 'TEMP_DIR' ) )
+		/**
+		 * Temporary directory.
+		 *
+		 * @since  0.14.0
+		 */
+		define( 'TEMP_DIR', ABSPATH . 'tmp/' );
 }

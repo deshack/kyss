@@ -30,6 +30,13 @@ define( 'CLASSES', INC . 'classes/' );
  */
 define( 'VIEWS', ABSPATH . 'views/' );
 
+/**
+ * Stores the location of the KYSS directory of admin.
+ *
+ * @since  0.14.0
+ */
+define( 'ADMIN', ABSPATH . 'admin/' );
+
 // Include files required for initialization.
 require( INC . 'load.php' );
 require( INC . 'default-constants.php' );
@@ -86,6 +93,10 @@ require( CLASSES . 'movement.php' );
 // Load pluggable functions.
 require(INC . 'pluggable.php');
 
+// Load admin functions.
+// TODO: Load only for admins.
+require( ADMIN . 'inc/upgrade.php' );
+
 // Set internal encoding.
 set_internal_encoding();
 
@@ -115,6 +126,13 @@ if ( false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || ! defined( 'INST
 	if ( ! empty( $login ) ) {
 		$GLOBALS['current_user'] = KYSS_User::get_user_by( 'id', $login );
 	}
+
+	/**
+	 * Check for updates.
+	 *
+	 * @todo  Do this only for admin users.
+	 */
+	check_updates();
 
 	$hook->run( 'after_init' );
 }
