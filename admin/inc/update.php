@@ -154,6 +154,8 @@ class Update {
 	/**
 	 * Log a message if logging is enabled.
 	 *
+	 * @todo  Send messages to the page via Ajax (id "updating").
+	 *
 	 * @since  1.0.0
 	 * @access private
 	 *
@@ -193,7 +195,7 @@ class Update {
 	/**
 	 * Check if we found available updates.
 	 *
-	 * @since  0.14.0
+	 * @since  1.0.0
 	 * @access public
 	 *
 	 * @return  bool
@@ -203,9 +205,57 @@ class Update {
 	}
 
 	/**
+	 * Check if we found an old version update.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 *
+	 * @return  bool
+	 */
+	public function has_old_update() {
+		return ! is_null( $this->latest_old );
+	}
+
+	/**
+	 * Check if we found a new version update.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 *
+	 * @return  bool
+	 */
+	public function has_new_update() {
+		return ! is_null( $this->latest );
+	}
+
+	/**
+	 * Retrieve old update version number.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 *
+	 * @return  string
+	 */
+	public function get_old_update() {
+		return $this->latest_old;
+	}
+
+	/**
+	 * Retrieve new update version number.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 *
+	 * @return  string
+	 */
+	public function get_new_update() {
+		return $this->latest;
+	}
+
+	/**
 	 * Retrieve updates version.
 	 *
-	 * @since  0.14.0
+	 * @since  1.0.0
 	 * @access public
 	 *
 	 * @return  string
@@ -259,7 +309,9 @@ class Update {
 
 		$update_file = trailingslashit( $this->url ) . $this->manifest;
 
-		$update = @file_get_contents( $update_file );
+		// We can't use Filesystem::get() here because it checks if $update_file
+		// is a file, while here it's a URI.
+		$update = file_get_contents( $update_file );
 
 		if ( $update === false ) {
 			// Could not read $update_file.
@@ -317,11 +369,18 @@ class Update {
 	 * @since  1.0.0
 	 * @access public
 	 *
+	 * @param string $update Optional. Type of the update to download.
+	 * Default 'latest'. Accepts 'latest', 'old'.
 	 * @return  string|KYSS_Error Path to the update package.
 	 */
-	public function download( $url ) {
+	public function download( $update = 'latest' ) {
+		if ( $update == 'old' )
+			$url = $this->latest_old_url;
+		else
+			$url = $this->latest_url;
+
 		$this->log( 'Downloading update...' );
-		$package = @file_get_contents( $url );
+		$package = file_get_contents( $url );
 
 		if ( $package === false ) {
 			$error = new KYSS_Error( 'download_failed', "Impossibile scaricare l'aggiornamento `$url`." );
@@ -329,7 +388,14 @@ class Update {
 			return $error;
 		}
 
-		$path = $this->temp . basename( $this->url );
+		if ( ! Filesystem::make_directory( $this->temp ) ) {
+			$error = new KYSS_Error( 'temp_dir_create_failed', "Impossibile creare la directory temporanea {$this->temp}." );
+			$this->log( $error );
+			return $error;
+		}
+
+		$path = basename( parse_url( $url, PHP_URL_PATH ) );
+		$path = $this->temp . $path;
 		$handle = fopen( $path, 'w' );
 		if ( ! $handle ) {
 			$error = new KYSS_Error( 'file_save_failed', "Impossibile salvare l'aggiornamento `$path`." );
@@ -357,16 +423,21 @@ class Update {
 	 * @return  bool|KYSS_Error
 	 */
 	public function install( $path ) {
-		$zip = zip_open( $path );
+		$zip = new ZipArchive;
+		$zip->open( $path );
+		$zip->extractTo( $this->temp );
+		$zip->close();
 
-		while ( $file = zip_read( $zip ) ) {
+
+
+		/*while ( $file = zip_read( $zip ) ) {
 			$filename = zip_entry_name( $file );
 			$dirname = $this->temp . dirname( $filename );
 
 			$this->log( 'Updating `' . $filename . '`.' );
 
 			if ( ! is_dir( $dirname ) )
-				if ( ! mkdir( $dirname, $this->permissions, true ) )
+				if ( ! Filesystem::make_directory( $dirname, $this->permissions, true ) )
 					$this->log( "Impossibile creare la directory `$dirname`." );
 
 			$contents = zip_entry_read( $file, zip_entry_filesize( $file ) );
@@ -376,7 +447,7 @@ class Update {
 				continue;
 
 			// Write to file.
-			if ( ! is_writable( $this->temp . $filename ) ) {
+			if ( ! Filesystem::is_writable( $this->temp . $filename ) ) {
 				$error = new KYSS_Error( 'not_writeable', 'Impossibile creare il file ' . $this->temp . $filename . ', percorso non scrivibile.' );
 				$this->log( $error );
 				return $error;
@@ -397,9 +468,9 @@ class Update {
 			}
 
 			fclose( $handle );
-		}
+		}*/
 
-		zip_close( $zip );
+		//zip_close( $zip );
 
 		if ( ! $this->test ) {
 			$this->remove_dir( $this->temp );
@@ -409,5 +480,31 @@ class Update {
 		$this->log( 'Aggiornamento installato.' );
 
 		return true;
+	}
+
+	/**
+	 * Perform an update.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 *
+	 * @param  string $series Optional. Series of KYSS to update.
+	 * Default 'latest'. Accepts 'latest', 'old'.
+	 * @return  bool|KYSS_Error
+	 */
+	public function update( $series = 'latest' ) {
+		$accepted_series = array( 'latest', 'old' );
+
+		if ( ! in_array( $series, $accepted_series ) )
+			return new KYSS_Error( 'invalid_series', "Invalid KYSS series: $series." );
+		$path = ABSPATH . 'tmp/kyss-0.13.0.zip';
+		// Retrieve the zip from the repository.
+		$path = $this->download( $series );
+		if ( is_kyss_error( $path ) )
+			trigger_error( $path->get_error_message() );
+		if ( $this->install( $path ) )
+			echo "Successfully updated.";
+		else
+			echo "Update failed.";
 	}
 }

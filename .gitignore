@@ -7,3 +7,4 @@ lib
 *.sql
 docs/parser
 sftp-config.json
+tmp/

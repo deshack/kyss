@@ -13,7 +13,8 @@
  * @package  kYSS
  * @subpackage  Filesystem
  * @since 0.14.0
- * @version  1.0.1
+ * @version  1.0.2
+ * @since Filesystem 1.0.2 Methods are all static.
  */
 class Filesystem {
 	/**
@@ -25,7 +26,7 @@ class Filesystem {
 	 * @param  string $path Path to check.
 	 * @return  bool
 	 */
-	public function exists( $path ) {
+	public static function exists( $path ) {
 		return file_exists( $path );
 	}
 
@@ -38,8 +39,8 @@ class Filesystem {
 	 * @param  string $path Path to the file.
 	 * @return string
 	 */
-	public function get( $path ) {
-		if ( $this->isFile( $path ) )
+	public static function get( $path ) {
+		if ( self::is_file( $path ) )
 			return file_get_contents( $path );
 		return new KYSS_Error( 'file_not_found', "Il file {$path} non esiste." );
 	}
@@ -54,7 +55,7 @@ class Filesystem {
 	 * @param  string $contents
 	 * @return int|false Number of bytes written. False on failure.
 	 */
-	public function put( $path, $contents ) {
+	public static function put( $path, $contents ) {
 		return file_put_contents( $path, $contents );
 	}
 
@@ -68,11 +69,11 @@ class Filesystem {
 	 * @param  string $data
 	 * @return int|false Number of bytes written. False on failure.
 	 */
-	public function prepend( $path, $data ) {
-		if ( $this->exists( $path ) )
-			return $this->put( $path, $data . $this->get( $path ) );
+	public static function prepend( $path, $data ) {
+		if ( self::exists( $path ) )
+			return self::put( $path, $data . self::get( $path ) );
 		else
-			return $this->put( $path, $data );
+			return self::put( $path, $data );
 	}
 
 	/**
@@ -85,7 +86,7 @@ class Filesystem {
 	 * @param string $data
 	 * @return int Number of bytes written. False on failure.
 	 */
-	public function append( $path, $data ) {
+	public static function append( $path, $data ) {
 		return file_put_contents( $path, $data, FILE_APPEND );
 	}
 
@@ -98,7 +99,7 @@ class Filesystem {
 	 * @param  string|array $paths
 	 * @return bool Whether the operation succeeded or not.
 	 */
-	public function delete( $paths ) {
+	public static function delete( $paths ) {
 		$paths = is_array( $paths ) ? $paths : func_get_args();
 
 		$success = true;
@@ -119,7 +120,7 @@ class Filesystem {
 	 * @param  string|array $paths
 	 * @return  bool Whether the operation succeeded or not.
 	 */
-	public function delete_dir( $paths ) {
+	public static function delete_dir( $paths ) {
 		$paths = is_array( $paths ) ? $paths : func_get_args();
 
 		$dirs = array();
@@ -137,21 +138,21 @@ class Filesystem {
 		}
 
 		if ( ! empty( $files ) )
-			$this->delete( $files );
+			self::delete( $files );
 		
 		// Assume that $dirs is not empty, because it has at least $paths.
-		$this->_remove_dirs( $dirs );
+		self::_remove_dirs( $dirs );
 	}
 
 	/**
-	 * Helper function to delete an array of directories.
+	 * Helper static function to delete an array of directories.
 	 *
 	 * @since  0.14.0
 	 * @access private
 	 *
 	 * @param  array $dirs
 	 */
-	private function _remove_dirs( array $dirs ) {
+	private static function _remove_dirs( array $dirs ) {
 		foreach ( $dirs as $dir )
 			rmdir( $dir );
 	}
@@ -166,7 +167,7 @@ class Filesystem {
 	 * @param  string $target
 	 * @return  bool
 	 */
-	public function move( $path, $target ) {
+	public static function move( $path, $target ) {
 		return rename( $path, $target );
 	}
 
@@ -180,7 +181,7 @@ class Filesystem {
 	 * @param  string $target
 	 * @return  bool
 	 */
-	public function copy( $path, $target ) {
+	public static function copy( $path, $target ) {
 		return copy( $path, $target );
 	}
 
@@ -193,7 +194,7 @@ class Filesystem {
 	 * @param  string $path
 	 * @return  string
 	 */
-	public function extension( $path ) {
+	public static function extension( $path ) {
 		return pathinfo( $path, PATHINFO_EXTENSION );
 	}
 
@@ -206,7 +207,7 @@ class Filesystem {
 	 * @param  string $path
 	 * @return  string
 	 */
-	public function type( $path ) {
+	public static function type( $path ) {
 		return filetype( $path );
 	}
 
@@ -219,7 +220,7 @@ class Filesystem {
 	 * @param  string $path
 	 * @return  int
 	 */
-	public function size( $path ) {
+	public static function size( $path ) {
 		return filesize( $path );
 	}
 
@@ -232,7 +233,7 @@ class Filesystem {
 	 * @param  string $path
 	 * @return  int
 	 */
-	public function last_modified( $path ) {
+	public static function last_modified( $path ) {
 		return filemtime( $path );
 	}
 
@@ -245,7 +246,7 @@ class Filesystem {
 	 * @param  string $directory
 	 * @return  bool
 	 */
-	public function is_directory( $directory ) {
+	public static function is_directory( $directory ) {
 		return is_dir( $directory );
 	}
 
@@ -258,7 +259,7 @@ class Filesystem {
 	 * @param  string $path
 	 * @return  bool
 	 */
-	public function is_writable( $path ) {
+	public static function is_writable( $path ) {
 		return is_writable( $path );
 	}
 
@@ -271,7 +272,7 @@ class Filesystem {
 	 * @param string $file
 	 * @return  bool
 	 */
-	public function is_file( $file ) {
+	public static function is_file( $file ) {
 		return is_file( $file );
 	}
 
@@ -285,7 +286,7 @@ class Filesystem {
 	 * @param  int $flags Optional.
 	 * @return  array
 	 */
-	public function glob( $pattern, $flags = 0 ) {
+	public static function glob( $pattern, $flags = 0 ) {
 		return glob( $pattern, $flags );
 	}
 
@@ -298,7 +299,7 @@ class Filesystem {
 	 * @param  string $directory
 	 * @return  array
 	 */
-	public function files( $directory ) {
+	public static function files( $directory ) {
 		$glob = glob( $directory . '/*' );
 
 		if ( $glob === false )
@@ -307,7 +308,7 @@ class Filesystem {
 		// To get the appropriate files, we'll simply glob the directory and filter
 		// out any "files" that are not truly files so we do not end up with any
 		// directories in our list, but only true files within the directory.
-		return array_filter( $glob, function( $file ) {
+		return array_filter( $glob, static function( $file ) {
 			return filetype( $file ) == 'file';
 		});
 	}
@@ -324,7 +325,9 @@ class Filesystem {
 	 * @param  bool $force
 	 * @return  bool
 	 */
-	public function make_directory( $path, $mode = 0755, $recursive = false, $force = false ) {
+	public static function make_directory( $path, $mode = 0755, $recursive = false, $force = false ) {
+		if ( self::is_directory( $path ) )
+			return true;
 		if ( $force )
 			return @mkdir( $path, $mode, $recursive );
 		return mkdir( $path, $mode, $recursive );
