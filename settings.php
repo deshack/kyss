@@ -60,7 +60,7 @@ initial_constants();
 debug_mode();
 
 // Load early KYSS files.
-require(CLASSES . 'hook.php');
+require( CLASSES . 'hook.php');
 require( INC . 'functions.php' );
 require( CLASSES . 'kyss-error.php' );
 require( CLASSES . 'user.php' );
@@ -79,7 +79,7 @@ KYSS_Groups::populate_defaults();
 kyss_not_installed();
 
 // Load most of KYSS.
-// ToDo: Require all needed files.
+// TODO: Require all needed files.
 require( CLASSES . 'filesystem.php' );
 require( INC . 'formatting.php' );
 require( CLASSES . 'kyss-pass.php' );
