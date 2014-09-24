@@ -160,20 +160,30 @@ class Update {
 	 * @access private
 	 *
 	 * @param  string|KYSS_Error $message Message to log.
+	 * @param  bool $echo Optional. Whether to echo $message. Default true.
 	 * @return  bool|KYSS_Error
 	 */
-	private function log( $message ) {
+	private function log( $message, $echo = true ) {
 		if ( ! $this->log )
 			return false;
 
-		$this->error = $message;
-		$log = fopen( $this->log_file, 'a' );
+		if ( is_kyss_error( $message ) ) {
+			$this->error = $message;
+			$message = $message->get_error_message();
+		}
 
+		if ( $echo ) {
+			echo "<p>$message</p>\n";
+			$levels = ob_get_level();
+			for ( $i = 0; $i < $levels; $i++ )
+				ob_end_flush();
+			flush();
+		}
+
+		$log = fopen( $this->log_file, 'a' );
 		if ( ! $log )
 			return new KYSS_Error( 'log_open_failed', 'Impossibile scrivere il file di log.' );
 
-		if ( is_kyss_error( $message ) )
-			$message = $message->get_error_message();
 		$message = date( '[Y-m-d H:i:s]' ) . $message . "\n";
 		fputs( $log, $message );
 		fclose( $log );
@@ -305,7 +315,7 @@ class Update {
 	public function check() {
 		global $kyss_version;
 
-		$this->log( 'Checking for a new update...' );
+		$this->log( 'Checking for a new update...', false );
 
 		$update_file = trailingslashit( $this->url ) . $this->manifest;
 
@@ -316,7 +326,7 @@ class Update {
 		if ( $update === false ) {
 			// Could not read $update_file.
 			$error = new KYSS_Error( 'manifest_open_failed', 'Impossibile aprire il file `' . $update_file . '`.' );
-			$this->log( $error );
+			$this->log( $error, false );
 			return $error;
 		}
 
@@ -346,11 +356,11 @@ class Update {
 			}
 
 			if ( ! is_null( $this->latest_old ) ) {
-				$this->log( 'Nuova old release trovata: ' . $this->latest_old );
+				$this->log( 'Nuova old release trovata: ' . $this->latest_old, false );
 				$update = true;
 			}
 			if ( ! is_null( $this->latest ) ) {
-				$this->log( 'Nuova release trovata: ' . $this->latest );
+				$this->log( 'Nuova release trovata: ' . $this->latest, false );
 				$update = true;
 			}
 
@@ -358,7 +368,7 @@ class Update {
 			return $update;
 		} else {
 			$error = new KYSS_Error( 'manifest_parse_failed', 'Impossibile leggere il file `' . $update_file . '`.' );
-			$this->log( $error );
+			$this->log( $error, false );
 			return $error;
 		}
 	}
@@ -428,49 +438,7 @@ class Update {
 		$zip->extractTo( $this->temp );
 		$zip->close();
 
-
-
-		/*while ( $file = zip_read( $zip ) ) {
-			$filename = zip_entry_name( $file );
-			$dirname = $this->temp . dirname( $filename );
-
-			$this->log( 'Updating `' . $filename . '`.' );
-
-			if ( ! is_dir( $dirname ) )
-				if ( ! Filesystem::make_directory( $dirname, $this->permissions, true ) )
-					$this->log( "Impossibile creare la directory `$dirname`." );
-
-			$contents = zip_entry_read( $file, zip_entry_filesize( $file ) );
-
-			// Skip if entry is a directory.
-			if ( substr( $filename, -1, 1 ) == '/' )
-				continue;
-
-			// Write to file.
-			if ( ! Filesystem::is_writable( $this->temp . $filename ) ) {
-				$error = new KYSS_Error( 'not_writeable', 'Impossibile creare il file ' . $this->temp . $filename . ', percorso non scrivibile.' );
-				$this->log( $error );
-				return $error;
-			}
-
-			$handle = @fopen( $this->temp . $filename, 'w' );
-
-			if ( ! $handle ) {
-				$error = new KYSS_Error( 'fopen_failed', 'Impossibile aggiornare il file ' . $this->temp . $filename );
-				$this->log( $error );
-				return $error;
-			}
-
-			if ( ! fwrite( $handle, $contents ) ) {
-				$error = new KYSS_Error( 'write_failed', 'Impossibile salvare il file ' . $this->temp . $filename );
-				$this->log( $error );
-				return $error;
-			}
-
-			fclose( $handle );
-		}*/
-
-		//zip_close( $zip );
+		$protected = $this->get_protected_files();
 
 		if ( ! $this->test ) {
 			$this->remove_dir( $this->temp );
@@ -506,5 +474,17 @@ class Update {
 			echo "Successfully updated.";
 		else
 			echo "Update failed.";
+	}
+
+	/**
+	 * Retrieve a list of protected files and directories.
+	 *
+	 * @since  1.0.0
+	 * @access private
+	 *
+	 * @return  array
+	 */
+	private function get_protected_files() {
+
 	}
 }

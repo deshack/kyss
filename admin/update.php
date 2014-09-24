@@ -9,6 +9,8 @@
 
 require_once( '../load.php' );
 
+ob_start();
+
 get_header();
 
 get_sidebar();
