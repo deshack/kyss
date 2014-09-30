@@ -46,6 +46,12 @@
 
 @import "compass/css3/transition";
 
+//--------------------------------------------------
+// KYSS Components
+//--------------------------------------------------
+
+@import "partials/forms";
+
 html,
 body {
 	height: 100%;

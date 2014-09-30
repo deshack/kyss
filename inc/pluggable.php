@@ -298,16 +298,17 @@ function kyss_mail( $to, $subject, $message, $headers = '', $attachments = array
 		foreach ( (array) $bcc as $recipient ) {
 			try {
 				// Break $recipient into name and address parts if in the format "Foo <bar@baz.com".
-			$recipient_name = '';
-			if ( preg_match( '/(.*)<(.+)>/', $recipient, $matches ) ) {
-				if ( count( $matches ) == 3 ) {
-					$recipient_name = $matches[1];
-					$recipient = $matches[2];
+				$recipient_name = '';
+				if ( preg_match( '/(.*)<(.+)>/', $recipient, $matches ) ) {
+					if ( count( $matches ) == 3 ) {
+						$recipient_name = $matches[1];
+						$recipient = $matches[2];
+					}
 				}
+				$mailer->AddBcc( $recipient, $recipient_name );
+			} catch ( phpmailerException $e ) {
+				continue;
 			}
-			$mailer->AddBcc( $recipient, $recipient_name );
-		} catch ( phpmailerException $e ) {
-			continue;
 		}
 	}
 

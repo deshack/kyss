@@ -3807,8 +3807,8 @@ textarea {
   background-color: white;
   font-family: inherit;
   border: 1px solid #cccccc;
-  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12), 0 1px 1.5px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12), 0 1px 1.5px rgba(0, 0, 0, 0.24);
   color: rgba(0, 0, 0, 0.75);
   display: block;
   font-size: 0.875rem;
@@ -8149,47 +8149,65 @@ th.hide-for-touch {
   display: table-cell !important;
 }
 
-/* line 50, ../../src/scss/kyss.scss */
+/* line 19, ../../src/scss/partials/_forms.scss */
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="month"]:focus,
+input[type="week"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="time"]:focus,
+input[type="url"]:focus,
+textarea:focus {
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 3px rgba(0, 0, 0, 0.23);
+}
+
+/* line 56, ../../src/scss/kyss.scss */
 html,
 body {
   height: 100%;
 }
 
-/* line 54, ../../src/scss/kyss.scss */
+/* line 60, ../../src/scss/kyss.scss */
 table {
   width: 100%;
 }
-/* line 57, ../../src/scss/kyss.scss */
+/* line 63, ../../src/scss/kyss.scss */
 table .label-select {
   line-height: 2.3125rem;
 }
-/* line 62, ../../src/scss/kyss.scss */
+/* line 68, ../../src/scss/kyss.scss */
 table select,
 table button,
 table .button {
   margin-bottom: 0;
 }
 
-/* line 67, ../../src/scss/kyss.scss */
+/* line 73, ../../src/scss/kyss.scss */
 fieldset legend {
   background: transparent;
 }
 
-/* line 72, ../../src/scss/kyss.scss */
+/* line 78, ../../src/scss/kyss.scss */
 .wrapper {
   max-width: none;
   height: calc(100% - 90px );
   overflow: auto;
 }
 
-/* line 78, ../../src/scss/kyss.scss */
+/* line 84, ../../src/scss/kyss.scss */
 #content {
   height: 100%;
   overflow: auto;
   padding-top: 2rem;
 }
 
-/* line 85, ../../src/scss/kyss.scss */
+/* line 91, ../../src/scss/kyss.scss */
 h1 .dashicons {
   width: 1.83333rem;
   height: 1.83333rem;
@@ -8198,7 +8216,7 @@ h1 .dashicons {
   vertical-align: middle;
 }
 
-/* line 92, ../../src/scss/kyss.scss */
+/* line 98, ../../src/scss/kyss.scss */
 h2 .dashicons {
   width: 1.54167rem;
   height: 1.54167rem;
@@ -8207,22 +8225,22 @@ h2 .dashicons {
   vertical-align: middle;
 }
 
-/* line 100, ../../src/scss/kyss.scss */
+/* line 106, ../../src/scss/kyss.scss */
 .button.ghost {
   background-color: transparent !important;
   border: 1px solid #c1c1c1;
 }
-/* line 104, ../../src/scss/kyss.scss */
+/* line 110, ../../src/scss/kyss.scss */
 .button.ghost:hover, .button.ghost:focus {
   background-color: gray !important;
 }
 
-/* line 112, ../../src/scss/kyss.scss */
+/* line 118, ../../src/scss/kyss.scss */
 .top-bar-section li:not(.has-form) a:not(.button) .dashicons {
   line-height: 45px;
 }
 
-/* line 118, ../../src/scss/kyss.scss */
+/* line 124, ../../src/scss/kyss.scss */
 #sidebar {
   background: #333333;
   padding: 0;
@@ -8230,16 +8248,16 @@ h2 .dashicons {
   overflow-y: auto;
 }
 
-/* line 125, ../../src/scss/kyss.scss */
+/* line 131, ../../src/scss/kyss.scss */
 .side-nav {
   padding-top: 0;
   padding-bottom: 0;
 }
-/* line 129, ../../src/scss/kyss.scss */
+/* line 135, ../../src/scss/kyss.scss */
 .side-nav li {
   margin: 0;
 }
-/* line 131, ../../src/scss/kyss.scss */
+/* line 137, ../../src/scss/kyss.scss */
 .side-nav li > a {
   padding: 1rem 0.5rem;
   color: #e7e7e7 !important;
@@ -8249,22 +8267,22 @@ h2 .dashicons {
   -o-transition: background-color 0.1s ease-out 0;
   transition: background-color 0.1s ease-out 0;
 }
-/* line 137, ../../src/scss/kyss.scss */
+/* line 143, ../../src/scss/kyss.scss */
 .side-nav li > a:hover, .side-nav li > a:focus {
   background-color: #aea79f;
   color: #dd4814 !important;
 }
-/* line 144, ../../src/scss/kyss.scss */
+/* line 150, ../../src/scss/kyss.scss */
 .side-nav ul {
   list-style-type: none;
   margin-left: 0;
   background: #454545;
 }
-/* line 150, ../../src/scss/kyss.scss */
+/* line 156, ../../src/scss/kyss.scss */
 .side-nav ul li > a {
   padding-left: 1rem;
 }
-/* line 154, ../../src/scss/kyss.scss */
+/* line 160, ../../src/scss/kyss.scss */
 .side-nav ul li > a:hover, .side-nav ul li > a:focus {
   background: #333333;
 }
@@ -8272,30 +8290,30 @@ h2 .dashicons {
 /**
  * jQuery UI Timepicker
  */
-/* line 166, ../../src/scss/kyss.scss */
+/* line 172, ../../src/scss/kyss.scss */
 .ui-timepicker-div .ui-widget-header {
   margin-bottom: 8px;
 }
-/* line 169, ../../src/scss/kyss.scss */
+/* line 175, ../../src/scss/kyss.scss */
 .ui-timepicker-div dl {
   text-align: left;
 }
-/* line 171, ../../src/scss/kyss.scss */
+/* line 177, ../../src/scss/kyss.scss */
 .ui-timepicker-div dl dt {
   float: left;
   clear: left;
   padding: 0 0 0 5px;
 }
-/* line 176, ../../src/scss/kyss.scss */
+/* line 182, ../../src/scss/kyss.scss */
 .ui-timepicker-div dl dd {
   margin: 0 10px 10px 45%;
 }
-/* line 180, ../../src/scss/kyss.scss */
+/* line 186, ../../src/scss/kyss.scss */
 .ui-timepicker-div td {
   font-size: 90%;
 }
 
-/* line 184, ../../src/scss/kyss.scss */
+/* line 190, ../../src/scss/kyss.scss */
 .ui-tpicker-grid-label {
   background: none;
   border: none;
@@ -8303,26 +8321,26 @@ h2 .dashicons {
   padding: 0;
 }
 
-/* line 190, ../../src/scss/kyss.scss */
+/* line 196, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl {
   direction: rtl;
 }
-/* line 192, ../../src/scss/kyss.scss */
+/* line 198, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl dl {
   text-align: right;
   padding: 0 5px 0 0;
 }
-/* line 195, ../../src/scss/kyss.scss */
+/* line 201, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl dl dt {
   float: right;
   clear: right;
 }
-/* line 199, ../../src/scss/kyss.scss */
+/* line 205, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl dl dd {
   margin: 0 45% 10px 10px;
 }
 
-/* line 208, ../../src/scss/kyss.scss */
+/* line 214, ../../src/scss/kyss.scss */
 .bottom-bar .text {
   color: #999999;
   padding: 0 1rem;
