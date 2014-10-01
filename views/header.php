@@ -56,7 +56,15 @@ header( 'Content-Type: text/html; charset=utf-8' );
 	$hook->run( 'kyss_head' );
 	?>
 </head>
-<body>
+<?php $body_classes = $hook->run('body_class', array( 'page' ) );
+	$body_class = (!empty($body_classes)) ? 'class="' : '';
+	foreach ( $body_classes as $class )
+		$body_class .= " $class";
+	if ( ! empty( $body_class ) )
+		$body_class .= '"';
+	unset( $body_classes );
+?>
+<body <?php echo $body_class; unset( $body_class ); ?>>
 
 <nav class="top-bar" data-topbar>
 	<ul class="title-area">

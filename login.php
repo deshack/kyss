@@ -84,6 +84,7 @@ function display_header( $title = 'Login', $message = '', $error = '' ) {
 	<title><?php echo $title; ?> &rsaquo; <?php echo get_option( 'sitename' ); ?></title>
 	<?php
 	kyss_css( 'kyss', true );
+	kyss_css( 'dashicons', true );
 	
 	/**
 	 * Fires in the login page header.
@@ -93,9 +94,9 @@ function display_header( $title = 'Login', $message = '', $error = '' ) {
 	$hook->run( 'login_head' );
 	?>
 </head>
-<body>
+<body class="login">
 <div class="row">
-	<h1 class="page-title text-center"><?php echo get_option( 'sitename' ); ?></h1>
+	<h1 class="page-title text-center">KYSS &rsaquo; Login</h1>
 	<?php
 	/**
 	 * Filter the message to display above the login form.
@@ -190,10 +191,10 @@ function form() {
 <div class="medium-6 large-4 small-centered columns text-center">
 	<form name="loginform" id="loginform" action="<?php echo get_site_url( 'login.php?step=1' ); ?>" method="post">
 
-		<label for="user_email">E-mail</label>
-		<input type="email" name="user_email" id="user_login" value="" size="20" autofocus>
-		<label for="user_pass">Password</label>
-		<input type="password" name="user_pass" id="user_pass" value="" size="20">
+		<label for="user_login" class="sr-only">E-mail</label>
+		<input type="email" name="user_email" id="user_login" value="" size="20" placeholder="E-mail" autofocus>
+		<label for="user_pass" class="sr-only">Password</label>
+		<input type="password" name="user_pass" id="user_pass" value="" size="20" placeholder="Password">
 
 		<?php
 		/**
@@ -205,10 +206,9 @@ function form() {
 		?>
 		<?php // TODO: handle checked ?>
 		<label for="rememberme"><input name="rememberme" id="rememberme" type="checkbox" value="forever"> Ricordami</label>
-		<input type="submit" name="submit" value="Login" class="button">
+		<button type="submit">Login</button>
 	</form>
 </div>
-
 <?php	
 }
 

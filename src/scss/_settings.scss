@@ -13,8 +13,17 @@ $rem-base: 16px;
 @import "foundation/functions";
 
 // Colors
-$orange:			#dd4814 !default;
-$orange-light:		#fdf6f2 !default;
+$indiego:			#3f51b5 !default; // 500
+// $indiego:			#1a237e; // 900
+$indiego-light:		#c5cae9 !default; // 100
+$indiego-dark:		#303f9f !default; // 700
+$indiego:			$indiego-dark;
+$ubuntu-orange:		#dd4814 !default;
+// $ubuntu-orange-light:	#fdf6f2 !default;
+$deep-orange:		#dd2c00 !default; // A700
+$deep-orange-light:	#ff6e40 !default; // A200
+$orange:			$ubuntu-orange;
+$orange-light:		$deep-orange-light;
 $gray-darker:		lighten(#000, 13.5%) !default;
 $gray-dark:			lighten(#000, 20%) !default;
 $gray-warm:			#aea79f !default;
@@ -22,6 +31,14 @@ $gray:				lighten(#000, 33.5%) !default;
 $gray-light:		lighten(#000, 60%) !default;
 $gray-lighter:		lighten(#000, 93.5%) !default;
 
+// Shadows for z-depth
+$z-depth-1:			0 1px 1.5px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.24) !default;
+$z-depth-2:			0 3px 3px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23) !default;
+$z-depth-3:			0 10px 10px rgba(0,0,0,0.19), 0 6px 3px rgba(0,0,0,0.23) !default;
+$z-depth-4:			0 14px 14px rgba(0,0,0,0.25), 0 10px 5px rgba(0,0,0,0.22) !default;
+$z-depth-5:			0 19px 19px rgba(0,0,0,0.3), 0 15px 6px rgba(0,0,0,0.22) !default;
+
+$main-color:		#333;
 // $experimental: true;
 
 // The default font-size is set to 100% of the browser style sheet (usually 16px)
@@ -1196,7 +1213,7 @@ $input-box-shadow: 0 1px 1px rgba(0,0,0,0.12), 0 1px 1.5px rgba(0,0,0,0.24);
 // $include-html-top-bar-classes: $include-html-classes;
 
 // Background color for the top bar
-// $topbar-bg-color: #333;
+$topbar-bg-color: $main-color;
 // $topbar-bg: $topbar-bg-color;
 
 // Height and margin

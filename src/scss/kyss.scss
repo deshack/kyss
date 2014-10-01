@@ -45,6 +45,7 @@
 //--------------------------------------------------
 
 @import "compass/css3/transition";
+@import "compass/css3/border-radius";
 
 //--------------------------------------------------
 // KYSS Components
@@ -55,6 +56,47 @@
 html,
 body {
 	height: 100%;
+}
+body.login {
+	background-color: $indiego;
+	h1 {
+		color: rgba(255,255,255,0.54);
+		font-size: rem-calc(56);
+	}
+}
+
+// Remove background color for Chrome autocomplete.
+input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0px 1000px $input-bg-color inset !important;
+	-webkit-text-fill-color: $input-font-color !important;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0 0 0 0); // IE6, IE7
+	clip: rect(0,0,0,0);
+	border: 0;
+
+	// Use in conjunction with .sr-only to only display content when it's
+	// focused. Useful for "Skip to main content" links:
+	// See http://www.w3.org/TR/2013/NOTE-WCAG20-TECHS-20130905/G1
+	// Credit: HTML5 Boilerplate
+	&.focusable {
+		&:active,
+		&:focus {
+			position: static;
+			width: auto;
+			height: auto;
+			margin: 0;
+			overflow: visible;
+			clip: auto;
+		}
+	}
 }
 
 table {

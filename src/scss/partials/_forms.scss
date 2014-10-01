@@ -20,3 +20,59 @@ textarea {
 		box-shadow: 0 3px 3px rgba(0,0,0,0.16), 0 3px 3px rgba(0,0,0,0.23);
 	}
 }
+
+//--------------------------------------------------
+// Login Form
+//--------------------------------------------------
+
+#loginform {
+	input[type="email"],
+	input[type="password"] {
+		font-size: rem-calc(16);
+		margin-top: rem-calc(16);
+		margin-bottom: rem-calc(8);
+		padding: 0;
+		padding-bottom: rem-calc(8);
+		border: none;
+		border-bottom: $input-border-width $input-border-style rgba(255,255,255,0.26);
+		background-color: transparent;
+		color: rgba(255,255,255,0.26);
+		box-shadow: none;
+		@include transition(border-bottom-color 0.4s, color 0.4s);
+
+		// Damned WebKit!
+		&:-webkit-autofill {
+			-webkit-box-shadow: 0 0 0px 1000px $indiego inset !important;
+			-webkit-text-fill-color: rgba(255,255,255,0.26) !important;
+			&:focus {
+				-webkit-text-fill-color: rgba(255,255,255,0.87) !important;
+			}
+		}
+
+		@media #{$medium-up} {
+			text-align: center;
+		}
+
+		&:focus {
+			border-bottom-color: $orange-light;
+			color: rgba(255,255,255,0.87);
+		}
+	}
+	label {
+		color: rgba(255,255,255,0.54);
+	}
+	button {
+		font-size: rem-calc(16);
+		line-height: 1;
+		text-transform: uppercase;
+		padding: rem-calc(10);
+		margin: rem-calc(16);
+		width: rem-calc(88);
+		text-align: center;
+		@include border-radius(rem-calc(2));
+		box-shadow: $z-depth-1;
+		&:focus {
+			box-shadow: $z-depth-2;
+		}
+	}
+}
