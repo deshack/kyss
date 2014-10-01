@@ -227,7 +227,7 @@ function kyss_mail( $to, $subject, $message, $headers = '', $attachments = array
 			$sitename = substr( $sitename, 4 );
 		}
 
-		if ( $sitename == 'localhost' )
+		if ( $sitename == 'localhost' || true )
 			$from_email = get_option( 'admin_email' );
 		else
 			$from_email = 'kyss@' . $sitename;

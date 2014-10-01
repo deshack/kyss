@@ -44,6 +44,28 @@ switch( $action ) {
 		break;
 }
 
+if ( isset( $_GET['notify'] ) && $_GET['notify'] ) {
+	if ( ! isset( $user ) ) {
+		trigger_error("Damn, no user here!", E_USER_WARNING);
+	} elseif ( $action == 'add' ) {
+		$subject = '[' . get_option('sitename') . '] Il tuo account KYSS';
+		$message = "Ciao {$user->nome}!\r\n" .
+			"È stato creato un nuovo account per te su KYSS. Di seguito trovi le credenziali per il tuo primo accesso.\r\n\r\n" .
+			"Email: {$user->email}\r\nPassword: {$_POST['password']}\r\n\r\n" .
+			"<b>Attenzione!</b>\r\nPer prima cosa, cambia la password che ti abbiamo fornito con una sicura. Per farlo, accedi a KYSS all'indirizzo\r\n" .
+			get_option('siteurl') . "\r\n\r\n";
+		if ( ! kyss_mail( $user->email, $subject, $message ) )
+			trigger_error('Email not sent.');
+	} elseif ( $action == 'edit' ) {
+		$subject = '[' . get_option('sitename') . '] Password modificata per il tuo account KYSS';
+		$message = "Ciao {$user->nome}!\r\n" .
+			"Ti scriviamo per avvisarti che la password del tuo account KYSS è stata modificata. Ora puoi accedere con le credenziali indicate di seguito.\r\n\r\n" .
+			"Email: " . $user->email . "\r\nPassword: " . $_POST['password'];
+		if ( ! kyss_mail( $user->email, $subject, $message ) )
+			trigger_error('Email not sent.');
+	}
+}
+
 if ( isset( $user ) )
 	$after_save = $user;
 if ( ! isset( $user ) || is_kyss_error( $user ) )
@@ -170,6 +192,26 @@ if ( isset( $after_save ) )
 		</div>
 	</div>
 </form>
+
+<script type="text/javascript">
+(function($) {
+	function notifyConfirm( form, message ) {
+		if ( $('#password').val().length > 0 ) {
+			if ( confirm( message ) ) {
+				var action = form.attr('action');
+				action += '&' + $.param( {notify:'1'} );
+				form.attr('action',action);
+			}
+		}
+	}
+	$('#add-user').on('submit', function() {
+		notifyConfirm( $(this), "Notificare l'utente via email?" );
+	});
+	$('#edit-user').on('submit', function() {
+		notifyConfirm( $(this), "Inviare la nuova password all'utente via email?" );
+	});
+})(jQuery);
+</script>
 
 <?php
 /**

@@ -41,7 +41,7 @@ class Update {
 	 * @access protected
 	 * @var string
 	 */
-	protected $log_file = ABSPATH . 'log/update.log';
+	protected $log_file;
 
 	/**
 	 * The last error as a KYSS_Error object.
@@ -148,6 +148,7 @@ class Update {
 	 * @param  bool $log Optional. Whether to activate logging or not. Default false.
 	 */
 	public function __construct( $log = false ) {
+		$this->log_file = ABSPATH . 'log/update.log';
 		$this->log = $log;
 	}
 
@@ -180,13 +181,13 @@ class Update {
 			flush();
 		}
 
-		$log = fopen( $this->log_file, 'a' );
-		if ( ! $log )
-			return new KYSS_Error( 'log_open_failed', 'Impossibile scrivere il file di log.' );
+		// $log = fopen( $this->log_file, 'a' );
+		// if ( ! $log )
+		// 	return new KYSS_Error( 'log_open_failed', 'Impossibile scrivere il file di log.' );
 
-		$message = date( '[Y-m-d H:i:s]' ) . $message . "\n";
-		fputs( $log, $message );
-		fclose( $log );
+		// $message = date( '[Y-m-d H:i:s]' ) . $message . "\n";
+		// fputs( $log, $message );
+		// fclose( $log );
 		return true;
 	}
 
