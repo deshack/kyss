@@ -8167,96 +8167,19 @@ textarea:focus {
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 3px rgba(0, 0, 0, 0.23);
 }
 
-/* line 30, ../../src/scss/partials/_forms.scss */
-#loginform input[type="email"],
-#loginform input[type="password"] {
-  font-size: 1rem;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  padding: 0;
-  padding-bottom: 0.5rem;
-  border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.26);
-  background-color: transparent;
-  color: rgba(255, 255, 255, 0.26);
-  box-shadow: none;
-  -webkit-transition: border-bottom-color 0.4s, color 0.4s;
-  -moz-transition: border-bottom-color 0.4s, color 0.4s;
-  -o-transition: border-bottom-color 0.4s, color 0.4s;
-  transition: border-bottom-color 0.4s, color 0.4s;
-}
-/* line 44, ../../src/scss/partials/_forms.scss */
-#loginform input[type="email"]:-webkit-autofill,
-#loginform input[type="password"]:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px #303f9f inset !important;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.26) !important;
-}
-/* line 47, ../../src/scss/partials/_forms.scss */
-#loginform input[type="email"]:-webkit-autofill:focus,
-#loginform input[type="password"]:-webkit-autofill:focus {
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.87) !important;
-}
-@media only screen and (min-width: 40.063em) {
-  /* line 30, ../../src/scss/partials/_forms.scss */
-  #loginform input[type="email"],
-  #loginform input[type="password"] {
-    text-align: center;
-  }
-}
-/* line 56, ../../src/scss/partials/_forms.scss */
-#loginform input[type="email"]:focus,
-#loginform input[type="password"]:focus {
-  border-bottom-color: #ff6e40;
-  color: rgba(255, 255, 255, 0.87);
-}
-/* line 61, ../../src/scss/partials/_forms.scss */
-#loginform label {
-  color: rgba(255, 255, 255, 0.54);
-}
-/* line 64, ../../src/scss/partials/_forms.scss */
-#loginform button {
-  font-size: 1rem;
-  line-height: 1;
-  text-transform: uppercase;
-  padding: 0.625rem;
-  margin: 1rem;
-  width: 5.5rem;
-  text-align: center;
-  -webkit-border-radius: 0.125rem;
-  -moz-border-radius: 0.125rem;
-  -ms-border-radius: 0.125rem;
-  -o-border-radius: 0.125rem;
-  border-radius: 0.125rem;
-  box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0, 0, 0, 0.24);
-}
-/* line 74, ../../src/scss/partials/_forms.scss */
-#loginform button:focus {
-  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.23);
-}
-
 /* line 57, ../../src/scss/kyss.scss */
 html,
 body {
   height: 100%;
 }
 
-/* line 60, ../../src/scss/kyss.scss */
-body.login {
-  background-color: #303f9f;
-}
 /* line 62, ../../src/scss/kyss.scss */
-body.login h1 {
-  color: rgba(255, 255, 255, 0.54);
-  font-size: 3.5rem;
-}
-
-/* line 69, ../../src/scss/kyss.scss */
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
   -webkit-text-fill-color: rgba(0, 0, 0, 0.75) !important;
 }
 
-/* line 74, ../../src/scss/kyss.scss */
+/* line 67, ../../src/scss/kyss.scss */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -8268,7 +8191,7 @@ input:-webkit-autofill {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
-/* line 91, ../../src/scss/kyss.scss */
+/* line 84, ../../src/scss/kyss.scss */
 .sr-only.focusable:active, .sr-only.focusable:focus {
   position: static;
   width: auto;
@@ -8278,41 +8201,41 @@ input:-webkit-autofill {
   clip: auto;
 }
 
-/* line 102, ../../src/scss/kyss.scss */
+/* line 95, ../../src/scss/kyss.scss */
 table {
   width: 100%;
 }
-/* line 105, ../../src/scss/kyss.scss */
+/* line 98, ../../src/scss/kyss.scss */
 table .label-select {
   line-height: 2.3125rem;
 }
-/* line 110, ../../src/scss/kyss.scss */
+/* line 103, ../../src/scss/kyss.scss */
 table select,
 table button,
 table .button {
   margin-bottom: 0;
 }
 
-/* line 115, ../../src/scss/kyss.scss */
+/* line 108, ../../src/scss/kyss.scss */
 fieldset legend {
   background: transparent;
 }
 
-/* line 120, ../../src/scss/kyss.scss */
+/* line 113, ../../src/scss/kyss.scss */
 .wrapper {
   max-width: none;
   height: calc(100% - 90px );
   overflow: auto;
 }
 
-/* line 126, ../../src/scss/kyss.scss */
+/* line 119, ../../src/scss/kyss.scss */
 #content {
   height: 100%;
   overflow: auto;
   padding-top: 2rem;
 }
 
-/* line 133, ../../src/scss/kyss.scss */
+/* line 126, ../../src/scss/kyss.scss */
 h1 .dashicons {
   width: 1.83333rem;
   height: 1.83333rem;
@@ -8321,7 +8244,7 @@ h1 .dashicons {
   vertical-align: middle;
 }
 
-/* line 140, ../../src/scss/kyss.scss */
+/* line 133, ../../src/scss/kyss.scss */
 h2 .dashicons {
   width: 1.54167rem;
   height: 1.54167rem;
@@ -8330,22 +8253,22 @@ h2 .dashicons {
   vertical-align: middle;
 }
 
-/* line 148, ../../src/scss/kyss.scss */
+/* line 141, ../../src/scss/kyss.scss */
 .button.ghost {
   background-color: transparent !important;
   border: 1px solid #c1c1c1;
 }
-/* line 152, ../../src/scss/kyss.scss */
+/* line 145, ../../src/scss/kyss.scss */
 .button.ghost:hover, .button.ghost:focus {
   background-color: gray !important;
 }
 
-/* line 160, ../../src/scss/kyss.scss */
+/* line 153, ../../src/scss/kyss.scss */
 .top-bar-section li:not(.has-form) a:not(.button) .dashicons {
   line-height: 45px;
 }
 
-/* line 166, ../../src/scss/kyss.scss */
+/* line 159, ../../src/scss/kyss.scss */
 #sidebar {
   background: #333333;
   padding: 0;
@@ -8353,16 +8276,16 @@ h2 .dashicons {
   overflow-y: auto;
 }
 
-/* line 173, ../../src/scss/kyss.scss */
+/* line 166, ../../src/scss/kyss.scss */
 .side-nav {
   padding-top: 0;
   padding-bottom: 0;
 }
-/* line 177, ../../src/scss/kyss.scss */
+/* line 170, ../../src/scss/kyss.scss */
 .side-nav li {
   margin: 0;
 }
-/* line 179, ../../src/scss/kyss.scss */
+/* line 172, ../../src/scss/kyss.scss */
 .side-nav li > a {
   padding: 1rem 0.5rem;
   color: #e7e7e7 !important;
@@ -8372,22 +8295,22 @@ h2 .dashicons {
   -o-transition: background-color 0.1s ease-out 0;
   transition: background-color 0.1s ease-out 0;
 }
-/* line 185, ../../src/scss/kyss.scss */
+/* line 178, ../../src/scss/kyss.scss */
 .side-nav li > a:hover, .side-nav li > a:focus {
   background-color: #aea79f;
   color: #dd4814 !important;
 }
-/* line 192, ../../src/scss/kyss.scss */
+/* line 185, ../../src/scss/kyss.scss */
 .side-nav ul {
   list-style-type: none;
   margin-left: 0;
   background: #454545;
 }
-/* line 198, ../../src/scss/kyss.scss */
+/* line 191, ../../src/scss/kyss.scss */
 .side-nav ul li > a {
   padding-left: 1rem;
 }
-/* line 202, ../../src/scss/kyss.scss */
+/* line 195, ../../src/scss/kyss.scss */
 .side-nav ul li > a:hover, .side-nav ul li > a:focus {
   background: #333333;
 }
@@ -8395,30 +8318,30 @@ h2 .dashicons {
 /**
  * jQuery UI Timepicker
  */
-/* line 214, ../../src/scss/kyss.scss */
+/* line 207, ../../src/scss/kyss.scss */
 .ui-timepicker-div .ui-widget-header {
   margin-bottom: 8px;
 }
-/* line 217, ../../src/scss/kyss.scss */
+/* line 210, ../../src/scss/kyss.scss */
 .ui-timepicker-div dl {
   text-align: left;
 }
-/* line 219, ../../src/scss/kyss.scss */
+/* line 212, ../../src/scss/kyss.scss */
 .ui-timepicker-div dl dt {
   float: left;
   clear: left;
   padding: 0 0 0 5px;
 }
-/* line 224, ../../src/scss/kyss.scss */
+/* line 217, ../../src/scss/kyss.scss */
 .ui-timepicker-div dl dd {
   margin: 0 10px 10px 45%;
 }
-/* line 228, ../../src/scss/kyss.scss */
+/* line 221, ../../src/scss/kyss.scss */
 .ui-timepicker-div td {
   font-size: 90%;
 }
 
-/* line 232, ../../src/scss/kyss.scss */
+/* line 225, ../../src/scss/kyss.scss */
 .ui-tpicker-grid-label {
   background: none;
   border: none;
@@ -8426,26 +8349,26 @@ h2 .dashicons {
   padding: 0;
 }
 
-/* line 238, ../../src/scss/kyss.scss */
+/* line 231, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl {
   direction: rtl;
 }
-/* line 240, ../../src/scss/kyss.scss */
+/* line 233, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl dl {
   text-align: right;
   padding: 0 5px 0 0;
 }
-/* line 243, ../../src/scss/kyss.scss */
+/* line 236, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl dl dt {
   float: right;
   clear: right;
 }
-/* line 247, ../../src/scss/kyss.scss */
+/* line 240, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl dl dd {
   margin: 0 45% 10px 10px;
 }
 
-/* line 256, ../../src/scss/kyss.scss */
+/* line 249, ../../src/scss/kyss.scss */
 .bottom-bar .text {
   color: #999999;
   padding: 0 1rem;
