@@ -95,6 +95,7 @@ function display_header( $title = 'Login', $message = '', $error = '' ) {
 	?>
 </head>
 <body class="login">
+<div class="container">
 <div class="row">
 	<h1 class="page-title text-center">KYSS &rsaquo; Login</h1>
 	<?php
@@ -156,7 +157,7 @@ function display_header( $title = 'Login', $message = '', $error = '' ) {
 function display_footer( $login_id = '' ) {
 	global $hook;
 ?>
-	</div><!-- .container -->
+	</div><!-- .row -->
 
 <?php if ( ! empty( $input_id ) ) : ?>
 	<script type="text/javascript">
@@ -172,6 +173,7 @@ function display_footer( $login_id = '' ) {
 	 */
 	$hook->run( 'login_footer' ); ?>
 	<div class="clearfix"></div>
+</div><!-- .container -->
 </body>
 </html>
 <?php
@@ -188,7 +190,7 @@ function form() {
 	global $hook;
 ?>
 
-<div class="medium-6 large-4 small-centered columns text-center">
+<div class="medium-6 large-4 small-centered columns sheet step text-center">
 	<form name="loginform" id="loginform" action="<?php echo get_site_url( 'login.php?step=1' ); ?>" method="post">
 
 		<label for="user_login" class="sr-only">E-mail</label>
@@ -205,8 +207,8 @@ function form() {
 		$hook->run( 'login_form' );
 		?>
 		<?php // TODO: handle checked ?>
-		<label for="rememberme"><input name="rememberme" id="rememberme" type="checkbox" value="forever"> Ricordami</label>
-		<button type="submit">Login</button>
+		<button type="submit" class="expand">Login</button>
+		<p class="checkbox-wrapper"><input name="rememberme" id="rememberme" type="checkbox" value="forever"><label for="rememberme" class="checkbox-label">Ricordami</label></p>
 	</form>
 </div>
 <?php	

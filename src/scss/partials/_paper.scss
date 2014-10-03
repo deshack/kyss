@@ -1,0 +1,52 @@
+//--------------------------------------------------
+// Sheets of paper
+//--------------------------------------------------
+
+.sheet,
+.sheets {
+	padding: rem-calc(16);
+	background-color: #fff;
+	border: none;
+	@media #{$medium-up} {
+		padding: rem-calc(30);
+	}
+	&.column,
+	&.columns {
+		padding-left: rem-calc(16);
+		padding-right: rem-calc(16);
+		@media #{$medium-up} {
+			padding-left: rem-calc(30);
+			padding-right: rem-calc(30);
+		}
+	}
+}
+
+// Seams are created when two sheets of paper share the
+// full length of a common side. Two sheets of paper
+// joined by a seam will generally move together.
+.seam {
+	box-shadow: none;
+	border: 1px solid rgba(0,0,0,0.12);
+}
+
+// Steps are created when two sheets of paper with different
+// z-order options overlap and thus typically move
+// independently of each other.
+.step {
+	&,
+	&.z-order-1 {
+		box-shadow: $z-depth-1;		
+	}
+	&.z-order-2 {
+		box-shadow: $z-depth-2;
+	}
+	&.z-order-3 {
+		box-shadow: $z-depth-3;
+	}
+	&.z-order-4 {
+		box-shadow: $z-depth-4;
+	}
+	&.z-order-5 {
+		box-shadow: $z-depth-5;
+	}
+}

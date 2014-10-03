@@ -5,6 +5,7 @@
 /**
  * Correct `block` display not defined in IE 8/9.
  */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic);
 /* line 22, ../../lib/foundation/scss/normalize.scss */
 article,
 aside,
@@ -1948,8 +1949,8 @@ select {
   position: relative;
   padding: 0.875rem 1.5rem 0.875rem 0.875rem;
   font-size: 0.8125rem;
-  background-color: #dd4814;
-  border-color: #be3e11;
+  background-color: #ff9100;
+  border-color: #db7d00;
   color: white;
 }
 /* line 105, ../../lib/foundation/scss/foundation/components/_alert-boxes.scss */
@@ -2569,7 +2570,7 @@ select {
 .breadcrumbs > * a,
 .breadcrumbs > * span {
   text-transform: uppercase;
-  color: #dd4814;
+  color: #ff9100;
 }
 /* line 71, ../../lib/foundation/scss/foundation/components/_breadcrumbs.scss */
 .breadcrumbs > *.current {
@@ -2633,8 +2634,8 @@ button, .button {
   padding-left: 2rem;
   font-size: 1rem;
   /*     @else                            { font-size: $padding - rem-calc(2); } */
-  background-color: #dd4814;
-  border-color: #b13a10;
+  background-color: #ff9100;
+  border-color: #cc7400;
   color: white;
   -webkit-transition: background-color 300ms ease-out;
   -moz-transition: background-color 300ms ease-out;
@@ -2647,7 +2648,7 @@ button, .button {
 }
 /* line 144, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button:hover, button:focus, .button:hover, .button:focus {
-  background-color: #b13a10;
+  background-color: #cc7400;
 }
 /* line 155, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button:hover, button:focus, .button:hover, .button:focus {
@@ -2750,8 +2751,8 @@ button.round, .button.round {
 }
 /* line 222, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled, button[disabled], .button.disabled, .button[disabled] {
-  background-color: #dd4814;
-  border-color: #b13a10;
+  background-color: #ff9100;
+  border-color: #cc7400;
   color: white;
   cursor: default;
   opacity: 0.7;
@@ -2760,7 +2761,7 @@ button.disabled, button[disabled], .button.disabled, .button[disabled] {
 }
 /* line 144, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
-  background-color: #b13a10;
+  background-color: #cc7400;
 }
 /* line 155, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
@@ -2768,7 +2769,7 @@ button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[dis
 }
 /* line 168, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
-  background-color: #dd4814;
+  background-color: #ff9100;
 }
 /* line 223, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled.secondary, button[disabled].secondary, .button.disabled.secondary, .button[disabled].secondary {
@@ -4282,7 +4283,7 @@ kbd {
   margin-bottom: inherit;
   padding: 0.25rem 0.5rem 0.375rem;
   font-size: 0.6875rem;
-  background-color: #dd4814;
+  background-color: #ff9100;
   color: white;
 }
 /* line 92, ../../lib/foundation/scss/foundation/components/_labels.scss */
@@ -4720,14 +4721,14 @@ ul.pagination li.unavailable:hover a, ul.pagination li.unavailable a:focus {
 }
 /* line 60, ../../lib/foundation/scss/foundation/components/_pagination.scss */
 ul.pagination li.current a {
-  background: #dd4814;
+  background: #ff9100;
   color: white;
   font-weight: bold;
   cursor: default;
 }
 /* line 67, ../../lib/foundation/scss/foundation/components/_pagination.scss */
 ul.pagination li.current a:hover, ul.pagination li.current a:focus {
-  background: #dd4814;
+  background: #ff9100;
 }
 /* line 119, ../../lib/foundation/scss/foundation/components/_pagination.scss */
 ul.pagination li {
@@ -4781,10 +4782,10 @@ ul.pagination li {
 .panel.callout {
   border-style: solid;
   border-width: 1px;
-  border-color: #f9cebe;
+  border-color: #ffe1b9;
   margin-bottom: 1.25rem;
   padding: 1.25rem;
-  background: #fef4f0;
+  background: #fff8f0;
 }
 /* line 48, ../../lib/foundation/scss/foundation/components/_panels.scss */
 .panel.callout > :first-child {
@@ -4809,7 +4810,7 @@ ul.pagination li {
 }
 /* line 74, ../../lib/foundation/scss/foundation/components/_panels.scss */
 .panel.callout a {
-  color: #dd4814;
+  color: #ff9100;
 }
 /* line 79, ../../lib/foundation/scss/foundation/components/_panels.scss */
 .panel.radius {
@@ -4888,7 +4889,7 @@ ul.pagination li {
 }
 /* line 57, ../../lib/foundation/scss/foundation/components/_progress-bars.scss */
 .progress .meter {
-  background: #dd4814;
+  background: #ff9100;
   height: 100%;
   display: block;
 }
@@ -5048,15 +5049,15 @@ dialog[open] {
 /* line 61, ../../lib/foundation/scss/foundation/components/_side-nav.scss */
 .side-nav li a:not(.button) {
   display: block;
-  color: #dd4814;
+  color: #ff9100;
 }
 /* line 65, ../../lib/foundation/scss/foundation/components/_side-nav.scss */
 .side-nav li a:not(.button):hover, .side-nav li a:not(.button):focus {
-  color: #ef7b52;
+  color: #ffb24d;
 }
 /* line 68, ../../lib/foundation/scss/foundation/components/_side-nav.scss */
 .side-nav li.active > a:first-child:not(.button) {
-  color: #ef7b52;
+  color: #ffb24d;
   font-weight: normal;
   font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 }
@@ -5253,7 +5254,7 @@ dialog[open] {
   -webkit-border-radius: 4px;
   border-radius: 4px;
   font-weight: normal;
-  background: #dd4814;
+  background: #ff9100;
   padding: 0.1875rem 1rem;
   cursor: default;
   color: white;
@@ -5262,7 +5263,7 @@ dialog[open] {
 .sub-nav dt.active a:hover,
 .sub-nav dd.active a:hover,
 .sub-nav li.active a:hover {
-  background: #be3e11;
+  background: #db7d00;
 }
 
 /* line 289, ../../lib/foundation/scss/foundation/components/_switch.scss */
@@ -5679,8 +5680,8 @@ table tfoot tr td {
 }
 /* line 50, ../../lib/foundation/scss/foundation/components/_thumbs.scss */
 .th:hover, .th:focus {
-  -webkit-box-shadow: 0 0 6px 1px rgba(221, 72, 20, 0.5);
-  box-shadow: 0 0 6px 1px rgba(221, 72, 20, 0.5);
+  -webkit-box-shadow: 0 0 6px 1px rgba(255, 145, 0, 0.5);
+  box-shadow: 0 0 6px 1px rgba(255, 145, 0, 0.5);
 }
 /* line 67, ../../lib/foundation/scss/foundation/components/_thumbs.scss */
 .th.radius {
@@ -5698,8 +5699,8 @@ table tfoot tr td {
 }
 /* line 40, ../../lib/foundation/scss/foundation/components/_tooltips.scss */
 .has-tip:hover, .has-tip:focus {
-  border-bottom: dotted 1px #632009;
-  color: #dd4814;
+  border-bottom: dotted 1px #734100;
+  color: #ff9100;
 }
 /* line 46, ../../lib/foundation/scss/foundation/components/_tooltips.scss */
 .has-tip.tip-left, .has-tip.tip-right {
@@ -5748,8 +5749,8 @@ table tfoot tr td {
 }
 /* line 84, ../../lib/foundation/scss/foundation/components/_tooltips.scss */
 .tooltip.opened {
-  color: #dd4814 !important;
-  border-bottom: dotted 1px #632009 !important;
+  color: #ff9100 !important;
+  border-bottom: dotted 1px #734100 !important;
 }
 
 /* line 90, ../../lib/foundation/scss/foundation/components/_tooltips.scss */
@@ -6005,14 +6006,14 @@ meta.foundation-mq-topbar {
 }
 /* line 300, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
 .top-bar-section ul li > a.button {
-  background: #dd4814;
+  background: #ff9100;
   font-size: 0.8125rem;
   padding-right: 15px;
   padding-left: 15px;
 }
 /* line 305, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
 .top-bar-section ul li > a.button:hover {
-  background: #a1350f;
+  background: #ba6a00;
 }
 /* line 309, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
 .top-bar-section ul li > a.button.secondary {
@@ -6045,12 +6046,12 @@ meta.foundation-mq-topbar {
 }
 /* line 338, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
 .top-bar-section ul li.active > a {
-  background: #dd4814;
+  background: #ff9100;
   color: white;
 }
 /* line 341, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
 .top-bar-section ul li.active > a:hover {
-  background: #be3e11;
+  background: #db7d00;
   color: white;
 }
 /* line 349, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
@@ -6228,11 +6229,11 @@ meta.foundation-mq-topbar {
     padding: 0 15px;
     line-height: 45px;
     color: white;
-    background: #dd4814;
+    background: #ff9100;
   }
   /* line 484, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
   .top-bar-section li.active:not(.has-form) a:not(.button):hover {
-    background: #be3e11;
+    background: #db7d00;
   }
   /* line 493, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
   .top-bar-section .has-dropdown > a {
@@ -6337,7 +6338,7 @@ meta.foundation-mq-topbar {
   }
   /* line 603, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
   .no-js .top-bar-section ul li:active > a {
-    background: #dd4814;
+    background: #ff9100;
     color: white;
   }
   /* line 611, ../../lib/foundation/scss/foundation/components/_top-bar.scss */
@@ -6603,13 +6604,13 @@ td {
 /* Default Link Styles */
 /* line 230, ../../lib/foundation/scss/foundation/components/_type.scss */
 a {
-  color: #dd4814;
+  color: #ff9100;
   text-decoration: none;
   line-height: inherit;
 }
 /* line 236, ../../lib/foundation/scss/foundation/components/_type.scss */
 a:hover, a:focus {
-  color: #be3e11;
+  color: #db7d00;
 }
 /* line 238, ../../lib/foundation/scss/foundation/components/_type.scss */
 a img {
@@ -8167,19 +8168,19 @@ textarea:focus {
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 3px rgba(0, 0, 0, 0.23);
 }
 
-/* line 57, ../../src/scss/kyss.scss */
+/* line 60, ../../src/scss/kyss.scss */
 html,
 body {
   height: 100%;
 }
 
-/* line 62, ../../src/scss/kyss.scss */
+/* line 65, ../../src/scss/kyss.scss */
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
   -webkit-text-fill-color: rgba(0, 0, 0, 0.75) !important;
 }
 
-/* line 67, ../../src/scss/kyss.scss */
+/* line 70, ../../src/scss/kyss.scss */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -8191,7 +8192,7 @@ input:-webkit-autofill {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
-/* line 84, ../../src/scss/kyss.scss */
+/* line 87, ../../src/scss/kyss.scss */
 .sr-only.focusable:active, .sr-only.focusable:focus {
   position: static;
   width: auto;
@@ -8201,41 +8202,41 @@ input:-webkit-autofill {
   clip: auto;
 }
 
-/* line 95, ../../src/scss/kyss.scss */
+/* line 98, ../../src/scss/kyss.scss */
 table {
   width: 100%;
 }
-/* line 98, ../../src/scss/kyss.scss */
+/* line 101, ../../src/scss/kyss.scss */
 table .label-select {
   line-height: 2.3125rem;
 }
-/* line 103, ../../src/scss/kyss.scss */
+/* line 106, ../../src/scss/kyss.scss */
 table select,
 table button,
 table .button {
   margin-bottom: 0;
 }
 
-/* line 108, ../../src/scss/kyss.scss */
+/* line 111, ../../src/scss/kyss.scss */
 fieldset legend {
   background: transparent;
 }
 
-/* line 113, ../../src/scss/kyss.scss */
+/* line 116, ../../src/scss/kyss.scss */
 .wrapper {
   max-width: none;
   height: calc(100% - 90px );
   overflow: auto;
 }
 
-/* line 119, ../../src/scss/kyss.scss */
+/* line 122, ../../src/scss/kyss.scss */
 #content {
   height: 100%;
   overflow: auto;
   padding-top: 2rem;
 }
 
-/* line 126, ../../src/scss/kyss.scss */
+/* line 129, ../../src/scss/kyss.scss */
 h1 .dashicons {
   width: 1.83333rem;
   height: 1.83333rem;
@@ -8244,7 +8245,7 @@ h1 .dashicons {
   vertical-align: middle;
 }
 
-/* line 133, ../../src/scss/kyss.scss */
+/* line 136, ../../src/scss/kyss.scss */
 h2 .dashicons {
   width: 1.54167rem;
   height: 1.54167rem;
@@ -8253,22 +8254,22 @@ h2 .dashicons {
   vertical-align: middle;
 }
 
-/* line 141, ../../src/scss/kyss.scss */
+/* line 144, ../../src/scss/kyss.scss */
 .button.ghost {
   background-color: transparent !important;
   border: 1px solid #c1c1c1;
 }
-/* line 145, ../../src/scss/kyss.scss */
+/* line 148, ../../src/scss/kyss.scss */
 .button.ghost:hover, .button.ghost:focus {
   background-color: gray !important;
 }
 
-/* line 153, ../../src/scss/kyss.scss */
+/* line 156, ../../src/scss/kyss.scss */
 .top-bar-section li:not(.has-form) a:not(.button) .dashicons {
   line-height: 45px;
 }
 
-/* line 159, ../../src/scss/kyss.scss */
+/* line 162, ../../src/scss/kyss.scss */
 #sidebar {
   background: #333333;
   padding: 0;
@@ -8276,16 +8277,16 @@ h2 .dashicons {
   overflow-y: auto;
 }
 
-/* line 166, ../../src/scss/kyss.scss */
+/* line 169, ../../src/scss/kyss.scss */
 .side-nav {
   padding-top: 0;
   padding-bottom: 0;
 }
-/* line 170, ../../src/scss/kyss.scss */
+/* line 173, ../../src/scss/kyss.scss */
 .side-nav li {
   margin: 0;
 }
-/* line 172, ../../src/scss/kyss.scss */
+/* line 175, ../../src/scss/kyss.scss */
 .side-nav li > a {
   padding: 1rem 0.5rem;
   color: #e7e7e7 !important;
@@ -8295,22 +8296,22 @@ h2 .dashicons {
   -o-transition: background-color 0.1s ease-out 0;
   transition: background-color 0.1s ease-out 0;
 }
-/* line 178, ../../src/scss/kyss.scss */
+/* line 181, ../../src/scss/kyss.scss */
 .side-nav li > a:hover, .side-nav li > a:focus {
   background-color: #aea79f;
-  color: #dd4814 !important;
+  color: #ff9100 !important;
 }
-/* line 185, ../../src/scss/kyss.scss */
+/* line 188, ../../src/scss/kyss.scss */
 .side-nav ul {
   list-style-type: none;
   margin-left: 0;
   background: #454545;
 }
-/* line 191, ../../src/scss/kyss.scss */
+/* line 194, ../../src/scss/kyss.scss */
 .side-nav ul li > a {
   padding-left: 1rem;
 }
-/* line 195, ../../src/scss/kyss.scss */
+/* line 198, ../../src/scss/kyss.scss */
 .side-nav ul li > a:hover, .side-nav ul li > a:focus {
   background: #333333;
 }
@@ -8318,30 +8319,30 @@ h2 .dashicons {
 /**
  * jQuery UI Timepicker
  */
-/* line 207, ../../src/scss/kyss.scss */
+/* line 210, ../../src/scss/kyss.scss */
 .ui-timepicker-div .ui-widget-header {
   margin-bottom: 8px;
 }
-/* line 210, ../../src/scss/kyss.scss */
+/* line 213, ../../src/scss/kyss.scss */
 .ui-timepicker-div dl {
   text-align: left;
 }
-/* line 212, ../../src/scss/kyss.scss */
+/* line 215, ../../src/scss/kyss.scss */
 .ui-timepicker-div dl dt {
   float: left;
   clear: left;
   padding: 0 0 0 5px;
 }
-/* line 217, ../../src/scss/kyss.scss */
+/* line 220, ../../src/scss/kyss.scss */
 .ui-timepicker-div dl dd {
   margin: 0 10px 10px 45%;
 }
-/* line 221, ../../src/scss/kyss.scss */
+/* line 224, ../../src/scss/kyss.scss */
 .ui-timepicker-div td {
   font-size: 90%;
 }
 
-/* line 225, ../../src/scss/kyss.scss */
+/* line 228, ../../src/scss/kyss.scss */
 .ui-tpicker-grid-label {
   background: none;
   border: none;
@@ -8349,26 +8350,26 @@ h2 .dashicons {
   padding: 0;
 }
 
-/* line 231, ../../src/scss/kyss.scss */
+/* line 234, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl {
   direction: rtl;
 }
-/* line 233, ../../src/scss/kyss.scss */
+/* line 236, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl dl {
   text-align: right;
   padding: 0 5px 0 0;
 }
-/* line 236, ../../src/scss/kyss.scss */
+/* line 239, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl dl dt {
   float: right;
   clear: right;
 }
-/* line 240, ../../src/scss/kyss.scss */
+/* line 243, ../../src/scss/kyss.scss */
 .ui-timepicker-rtl dl dd {
   margin: 0 45% 10px 10px;
 }
 
-/* line 249, ../../src/scss/kyss.scss */
+/* line 252, ../../src/scss/kyss.scss */
 .bottom-bar .text {
   color: #999999;
   padding: 0 1rem;

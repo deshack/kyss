@@ -589,8 +589,8 @@ select {
   position: relative;
   padding: 0.875rem 1.5rem 0.875rem 0.875rem;
   font-size: 0.8125rem;
-  background-color: #dd4814;
-  border-color: #be3e11;
+  background-color: #ff9100;
+  border-color: #db7d00;
   color: white;
 }
 /* line 105, ../../lib/foundation/scss/foundation/components/_alert-boxes.scss */
@@ -669,8 +669,8 @@ button, .button {
   padding-left: 2rem;
   font-size: 1rem;
   /*     @else                            { font-size: $padding - rem-calc(2); } */
-  background-color: #dd4814;
-  border-color: #b13a10;
+  background-color: #ff9100;
+  border-color: #cc7400;
   color: white;
   -webkit-transition: background-color 300ms ease-out;
   -moz-transition: background-color 300ms ease-out;
@@ -683,7 +683,7 @@ button, .button {
 }
 /* line 144, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button:hover, button:focus, .button:hover, .button:focus {
-  background-color: #b13a10;
+  background-color: #cc7400;
 }
 /* line 155, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button:hover, button:focus, .button:hover, .button:focus {
@@ -786,8 +786,8 @@ button.round, .button.round {
 }
 /* line 222, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled, button[disabled], .button.disabled, .button[disabled] {
-  background-color: #dd4814;
-  border-color: #b13a10;
+  background-color: #ff9100;
+  border-color: #cc7400;
   color: white;
   cursor: default;
   opacity: 0.7;
@@ -796,7 +796,7 @@ button.disabled, button[disabled], .button.disabled, .button[disabled] {
 }
 /* line 144, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
-  background-color: #b13a10;
+  background-color: #cc7400;
 }
 /* line 155, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
@@ -804,7 +804,7 @@ button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[dis
 }
 /* line 168, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
-  background-color: #dd4814;
+  background-color: #ff9100;
 }
 /* line 223, ../../lib/foundation/scss/foundation/components/_buttons.scss */
 button.disabled.secondary, button[disabled].secondary, .button.disabled.secondary, .button[disabled].secondary {
@@ -3176,13 +3176,13 @@ td {
 /* Default Link Styles */
 /* line 230, ../../lib/foundation/scss/foundation/components/_type.scss */
 a {
-  color: #dd4814;
+  color: #ff9100;
   text-decoration: none;
   line-height: inherit;
 }
 /* line 236, ../../lib/foundation/scss/foundation/components/_type.scss */
 a:hover, a:focus {
-  color: #be3e11;
+  color: #db7d00;
 }
 /* line 238, ../../lib/foundation/scss/foundation/components/_type.scss */
 a img {

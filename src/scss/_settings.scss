@@ -21,8 +21,10 @@ $ubuntu-orange:		#dd4814 !default;
 $deep-orange:		#ff3d00 !default; // A400
 $deep-orange-dark:	#dd2c00 !default; // A700
 $deep-orange-light:	#ff6e40 !default; // A200
-$orange:			$ubuntu-orange;
-$orange-light:		$deep-orange-light;
+$orange:			#ff9100 !default; // A400
+$orange-dark:		#ff6d00 !default; // A700
+$orange-light:		#ffab40 !default; // A200
+$orange-lighter:	#ffd180 !default; // A100
 $gray-darker:		lighten(#000, 13.5%) !default;
 $gray-dark:			lighten(#000, 20%) !default;
 $gray-warm:			#aea79f !default;

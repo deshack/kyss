@@ -3,29 +3,64 @@
 //--------------------------------------------------
 
 @import "settings";
+@import "mixins";
 @import "normalize";
 
 @import
-  "foundation/components/block-grid",
-  "foundation/components/buttons",
-  "foundation/components/clearing",
-  "foundation/components/forms",
-  "foundation/components/grid",
-  "foundation/components/keystrokes",
-  "foundation/components/labels",
-  "foundation/components/type",
-  "foundation/components/visibility";
+	"foundation/components/block-grid",
+	"foundation/components/buttons",
+	"foundation/components/clearing",
+	"foundation/components/forms",
+	"foundation/components/grid",
+	"foundation/components/keystrokes",
+	"foundation/components/labels",
+	"foundation/components/type",
+	"foundation/components/visibility";
 
 @import "compass/css3/transition";
 @import "compass/css3/border-radius";
 
+@import "partials/paper";
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic);
+
 // General styles
 body {
-	background-color: $indiego;
+	background-color: #fff;
+	color: rgba(0,0,0,0.87);
+}
+::-moz-selection {
+	background: $orange;
+	color: rgba(255,255,255,0.87);
+}
+::selection {
+	background: $orange;
+	color: rgba(255,255,255,0.87);
+}
+.sheet,
+.sheets {
+	background-color: #f7f7f7;
+}
+.container {
+	margin: 0 rem-calc(16);
+	padding: rem-calc(16) 0;
+	@media #{$small-only} {
+		margin: 0 rem-calc(10);
+	}
 }
 h1 {
-	color: rgba(255,255,255,0.54);
+	color: rgba(0,0,0,0.54);
 	font-size: rem-calc(56);
+	margin: 1rem 0 2rem;
+}
+@media #{$small-only} {
+	.columns {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	h1 {
+		font-size: rem-calc(45);
+	}
 }
 .sr-only {
 	position: absolute;
@@ -65,41 +100,70 @@ h1 {
 		padding: 0;
 		padding-bottom: rem-calc(8);
 		border: none;
-		border-bottom: 1px solid rgba(255,255,255,0.26);
+		border-bottom: $input-border-width $input-border-style rgba(0,0,0,0.26);
 		background-color: transparent;
-		color: rgba(255,255,255,0.26);
+		color: rgba(0,0,0,0.54);
 		box-shadow: none;
+		@include placeholder {
+			color: rgba(0,0,0,0.26);
+		}
 		@include transition(border-bottom-color 0.4s, color 0.4s);
+
+		&:focus {
+			border-bottom-color: $orange-light;
+		}
 
 		// Damned WebKit!
 		&:-webkit-autofill {
 			-webkit-box-shadow: 0 0 0px 1000px $indiego inset !important;
-			-webkit-text-fill-color: rgba(255,255,255,0.26) !important;
+			-webkit-text-fill-color: rgba(0,0,0,0.26) !important;
 			&:focus {
-				-webkit-text-fill-color: rgba(255,255,255,0.87) !important;
+				-webkit-text-fill-color: rgba(0,0,0,0.54) !important;
 			}
 		}
+	}
+	.checkbox-wrapper {
+		margin-bottom: rem-calc(8);
+	}
+	input[type="checkbox"] {
+		width: rem-calc(20);
+		height: rem-calc(20);
+		margin-bottom: 0;
+		vertical-align: middle;
+		position: relative;
+		top: -1px;
+		*overflow: hidden;
 
-		&:focus {
-			border-bottom-color: $orange-light;
-			color: rgba(255,255,255,0.87);
+		&:checked {
+			background: $success-color !important;
 		}
 	}
+	.checkbox-label {
+		display: inline-block;
+		padding-left: rem-calc(20);
+		text-indent: rem-calc(-20);
+		font-size: rem-calc(16);
+		line-height: rem-calc(20);
+	}
 	label {
-		color: rgba(255,255,255,0.54);
+		color: rgba(0,0,0,0.54);
 	}
 	button {
 		font-size: rem-calc(16);
 		line-height: 1;
 		text-transform: uppercase;
 		padding: rem-calc(10);
-		margin: rem-calc(16);
-		width: rem-calc(88);
+		margin: rem-calc(16) 0;
 		text-align: center;
 		@include border-radius(rem-calc(2));
 		box-shadow: $z-depth-1;
+		&:hover {
+			background-color: $orange-dark;
+		}
 		&:focus {
+			background-color: $orange-dark;
 			box-shadow: $z-depth-2;
+			outline: none;
 		}
 	}
 }
