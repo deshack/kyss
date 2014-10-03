@@ -59,9 +59,21 @@ body {
 }
 body.login {
 	background-color: $indiego;
+	.container {
+		margin: rem-calc(16);
+	}
 	h1 {
 		color: rgba(255,255,255,0.54);
 		font-size: rem-calc(56);
+	}
+	@media #{$small-only} {
+		.columns {
+			padding-left: 0;
+			padding-right: 0;
+		}
+		h1 {
+			font-size: rem-calc(45);
+		}
 	}
 }
 

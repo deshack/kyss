@@ -40,6 +40,11 @@ textarea {
 		box-shadow: none;
 		@include transition(border-bottom-color 0.4s, color 0.4s);
 
+		&:focus {
+			border-bottom-color: $orange-light;
+			color: rgba(255,255,255,0.87);
+		}
+
 		// Damned WebKit!
 		&:-webkit-autofill {
 			-webkit-box-shadow: 0 0 0px 1000px $indiego inset !important;
@@ -48,15 +53,30 @@ textarea {
 				-webkit-text-fill-color: rgba(255,255,255,0.87) !important;
 			}
 		}
+	}
+	.checkbox-wrapper {
+		margin-top: rem-calc(16);
+		margin-bottom: rem-calc(8);
+	}
+	input[type="checkbox"] {
+		width: rem-calc(20);
+		height: rem-calc(20);
+		margin-bottom: 0;
+		vertical-align: middle;
+		position: relative;
+		top: -1px;
+		*overflow: hidden;
 
-		@media #{$medium-up} {
-			text-align: center;
+		&:checked {
+			background: $success-color !important;
 		}
-
-		&:focus {
-			border-bottom-color: $orange-light;
-			color: rgba(255,255,255,0.87);
-		}
+	}
+	.checkbox-label {
+		display: inline-block;
+		padding-left: rem-calc(20);
+		text-indent: rem-calc(-20);
+		font-size: rem-calc(16);
+		line-height: rem-calc(20);
 	}
 	label {
 		color: rgba(255,255,255,0.54);
@@ -67,12 +87,13 @@ textarea {
 		text-transform: uppercase;
 		padding: rem-calc(10);
 		margin: rem-calc(16);
-		width: rem-calc(88);
+		min-width: rem-calc(88);
 		text-align: center;
 		@include border-radius(rem-calc(2));
 		box-shadow: $z-depth-1;
 		&:focus {
 			box-shadow: $z-depth-2;
+			outline: none;
 		}
 	}
 }
