@@ -132,7 +132,8 @@ if ( false === strpos( $_SERVER['PHP_SELF'], 'install.php' ) || ! defined( 'INST
 	 *
 	 * @todo  Do this only for admin users.
 	 */
-	check_updates();
+	if ( false === strpos( $_SERVER['PHP_SELF'], 'login' ) && ping( UPDATE_URI ) )
+		check_updates();
 
 	$hook->run( 'after_init' );
 }

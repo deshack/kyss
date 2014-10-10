@@ -22,12 +22,12 @@
 
 @import "partials/paper";
 
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,700,400italic);
 
 // General styles
 body {
 	background-color: #fff;
-	color: rgba(0,0,0,0.87);
+	color: rgba(0,0,0,0.54);
 }
 ::-moz-selection {
 	background: $orange;
@@ -37,8 +37,8 @@ body {
 	background: $orange;
 	color: rgba(255,255,255,0.87);
 }
-.sheet,
-.sheets {
+.card,
+.cards {
 	background-color: #f7f7f7;
 }
 .container {
@@ -92,6 +92,9 @@ h1 {
 
 // Login form
 #loginform {
+	p {
+		font-weight: 300;
+	}
 	input[type="email"],
 	input[type="password"] {
 		font-size: rem-calc(16);
@@ -115,7 +118,7 @@ h1 {
 
 		// Damned WebKit!
 		&:-webkit-autofill {
-			-webkit-box-shadow: 0 0 0px 1000px $indiego inset !important;
+			-webkit-box-shadow: 0 0 0px 1000px #f7f7f7 inset !important;
 			-webkit-text-fill-color: rgba(0,0,0,0.26) !important;
 			&:focus {
 				-webkit-text-fill-color: rgba(0,0,0,0.54) !important;
@@ -126,6 +129,14 @@ h1 {
 		margin-bottom: rem-calc(8);
 	}
 	input[type="checkbox"] {
+		border: 1px solid #bbb;
+		background: #fff;
+		color: #555;
+		display: inline-block;
+		line-height: 0;
+		outline: 0;
+		padding: 0 !important;
+		text-align: center;
 		width: rem-calc(20);
 		height: rem-calc(20);
 		margin-bottom: 0;

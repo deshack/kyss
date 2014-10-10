@@ -384,3 +384,31 @@ function kyss_mail( $to, $subject, $message, $headers = '', $attachments = array
 	}
 }
 endif; // kyss_mail()
+
+if ( ! function_exists( 'ping' ) ) :
+/**
+ * Ping host.
+ *
+ * If only the `$host` parameter is given, uses `exec()` to
+ * execute a standard ping, otherwise uses `fsockopen()`.
+ *
+ * @since  0.15.0
+ *
+ * @param  string $host Host to ping.
+ * @param  int $port Optional. Specific port number to ping.
+ * @param  int $timeout Optional. Ping timeout in seconds. Default 6.
+ * @return bool Whether the host is up or not.
+ */
+function ping( $host, $port = null, $timeout = 6 ) {
+	if ( is_null( $port ) ) {
+		exec( sprintf( 'ping -c 1 -W 5 %s', escapeshellarg( $host ) ), $res, $rval );
+		return $rval === 0;
+	} else {
+		$fsock = fsockopen( $host, $port, $errno, $errstr, $timeout );
+		if ( ! $fsock )
+			return false;
+		else
+			return true;
+	}
+}
+endif; // ping()

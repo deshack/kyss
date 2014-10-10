@@ -74,7 +74,7 @@ header( 'Content-Type: text/html; charset=utf-8' );
 	</ul>
 	<section class="top-bar-section">
 		<ul class="right">
-		<?php if ( $updates->has_updates() ) : ?>
+		<?php if ( isset( $updates ) && $updates->has_updates() ) : ?>
 			<li>
 				<a href="<?php echo get_site_url( 'admin/update.php' ); ?>" title="Aggiornamenti disponibili" class="tooltip-bottom" data-tooltip aria-haspopup="true">
 					<span class="dashicons dashicons-update"></span>

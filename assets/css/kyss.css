@@ -8289,7 +8289,7 @@ h2 .dashicons {
 /* line 175, ../../src/scss/kyss.scss */
 .side-nav li > a {
   padding: 1rem 0.5rem;
-  color: #e7e7e7 !important;
+  color: rgba(255, 255, 255, 0.87) !important;
   -webkit-transition: background-color 0.1s ease-out;
   -webkit-transition-delay: 0;
   -moz-transition: background-color 0.1s ease-out 0;
@@ -8299,7 +8299,7 @@ h2 .dashicons {
 /* line 181, ../../src/scss/kyss.scss */
 .side-nav li > a:hover, .side-nav li > a:focus {
   background-color: #aea79f;
-  color: #ff9100 !important;
+  color: rgba(0, 0, 0, 0.54) !important;
 }
 /* line 188, ../../src/scss/kyss.scss */
 .side-nav ul {

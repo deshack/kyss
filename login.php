@@ -190,9 +190,9 @@ function form() {
 	global $hook;
 ?>
 
-<div class="medium-6 large-4 small-centered columns sheet step text-center">
+<div class="medium-6 large-4 small-centered columns card step text-center">
 	<form name="loginform" id="loginform" action="<?php echo get_site_url( 'login.php?step=1' ); ?>" method="post">
-
+		<p>Accedi a KYSS</p>
 		<label for="user_login" class="sr-only">E-mail</label>
 		<input type="email" name="user_email" id="user_login" value="" size="20" placeholder="E-mail" autofocus>
 		<label for="user_pass" class="sr-only">Password</label>

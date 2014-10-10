@@ -174,13 +174,13 @@ h2 .dashicons {
 		margin: 0;
 		> a {
 			padding: 1rem 0.5rem;
-			color: $secondary-color !important;
+			color: rgba(255,255,255,0.87) !important;
 			@include transition( background-color .1s ease-out 0 );
 
 			&:hover,
 			&:focus {
 				background-color: $gray-warm;
-				color: $primary-color !important;
+				color: rgba(0,0,0,0.54) !important;
 			}
 		}
 	}
