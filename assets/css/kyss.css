@@ -8299,7 +8299,7 @@ h2 .dashicons {
 /* line 181, ../../src/scss/kyss.scss */
 .side-nav li > a:hover, .side-nav li > a:focus {
   background-color: #aea79f;
-  color: rgba(0, 0, 0, 0.54) !important;
+  color: #333 !important;
 }
 /* line 188, ../../src/scss/kyss.scss */
 .side-nav ul {

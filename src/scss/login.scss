@@ -167,13 +167,15 @@ h1 {
 		margin: rem-calc(16) 0;
 		text-align: center;
 		@include border-radius(rem-calc(2));
-		box-shadow: $z-depth-1;
+		// box-shadow: 0 0 0;
+		@include transition(all 0.4s);
 		&:hover {
-			background-color: $orange-dark;
+			background-color: $orange-light;
+			box-shadow: $z-depth-1;
 		}
 		&:focus {
 			background-color: $orange-dark;
-			box-shadow: $z-depth-2;
+			box-shadow: $z-depth-inset-1;
 			outline: none;
 		}
 	}
