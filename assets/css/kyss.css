@@ -8150,7 +8150,24 @@ th.hide-for-touch {
   display: table-cell !important;
 }
 
-/* line 19, ../../src/scss/partials/_forms.scss */
+/* line 18, ../../src/scss/partials/_forms.scss */
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="time"],
+input[type="url"],
+textarea {
+  border: none;
+}
+/* line 20, ../../src/scss/partials/_forms.scss */
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="date"]:focus,
