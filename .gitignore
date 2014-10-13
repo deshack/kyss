@@ -8,3 +8,4 @@ lib
 docs/parser
 sftp-config.json
 tmp/
+core/config/config.php
