@@ -53,8 +53,11 @@ class KYSS {
 	 * @access public
 	 */
 	public function __construct() {
+		// Open connection to the database.
+		$this->db_connect();
+
 		// Create array with URL parts in $url.
-		$this->splitUrl();
+		$this->split_url();
 
 		// Check for controller.
 		if ( file_exists( ABSPATH . 'core/controller/' . $this->controller . '.php' ) ) {
@@ -88,8 +91,11 @@ class KYSS {
 	 * @since 1.0.0
 	 * @access private
 	 */
-	private function splitUrl() {
-		$url = trim( $_SERVER['REQUEST_URI'], '/' );
+	private function split_url() {
+		if ( ! isset( $_GET['url'] ) )
+			return;
+
+		$url = trim( $_GET['url'], '/' );
 		$url = filter_var( $url, FILTER_SANITIZE_URL );
 		$url = explode( '/', $url );
 
@@ -101,5 +107,22 @@ class KYSS {
 		$this->controller = array_shift( $url );
 		$this->action = array_shift( $url );
 		$this->parameters = (!empty( $url ) ? $url : null);
+	}
+
+	/**
+	 * Open a connection to the database.
+	 *
+	 * Uses PDO in order to support multiple drivers, not only MySQL.
+	 * It also sets fetch mode to "objects".
+	 *
+	 * @since  1.0.0
+	 * @access private
+	 */
+	private function db_connect() {
+		$options = array( PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING );
+
+		// Generate a database connection, using the PDO connector.
+		// TODO: Define `DB_TYPE` constant.
+		$this->db = new PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS, $options );
 	}
 }
