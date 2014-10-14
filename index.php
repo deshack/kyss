@@ -7,6 +7,7 @@
  * @since  0.1.0
  */
 
+if ( false ) :
 require_once( 'load.php' );
 
 $hook->add( 'kyss_title', function( $title ) {
@@ -33,3 +34,10 @@ get_sidebar();
 
 <?php
 get_footer();
+
+else :
+
+// Load application bootstrap.
+require 'core/lib/boot.php';
+
+endif;

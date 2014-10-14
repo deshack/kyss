@@ -24,18 +24,11 @@ define('URL', 'http://www.example.com/');
  *
  * @since  0.4.0
  */
+define('DB_TYPE', 'mysql');
 define('DB_HOST', 'localhost');
 define('DB_USER', 'kyss');
 define('DB_PASS', 'kysspass');
 define('DB_NAME', 'kyss');
-
-/**
- * Path to view files.
- *
- * @since  0.15.0
- * @var string
- */
-define('PATH_VIEWS', 'core/views/');
 
 /**
  * Application environment.
@@ -55,3 +48,27 @@ define('ENVIRONMENT', 'development');
  */
 if ( ! defined('ABSPATH') )
 	define('ABSPATH', dirname( dirname( dirname(__FILE__) ) ) . '/' );
+
+/**
+ * Path to controller files.
+ *
+ * @since  0.15.0
+ * @var string
+ */
+define('PATH_CONTROLLERS', ABSPATH . 'core/controllers/');
+
+/**
+ * Path to model files.
+ *
+ * @since  0.15.0
+ * @var  string
+ */
+define('PATH_MODELS', ABSPATH . 'core/models/');
+
+/**
+ * Path to view files.
+ *
+ * @since  0.15.0
+ * @var string
+ */
+define('PATH_VIEWS', ABSPATH . 'core/views/');
