@@ -1,5 +1,4 @@
 *.sublime*
-config.php
 node_modules
 .sass-cache
 lib/*
@@ -10,3 +9,6 @@ sftp-config.json
 tmp/
 config/*.php
 !core/config/*
+
+# Should be removed after the switch to MVC.
+config.php

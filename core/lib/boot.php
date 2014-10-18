@@ -24,7 +24,7 @@ if ( file_exists( 'core/config/config.php' ) )
  * @param  string $class Class name
  */
 function lib_autoloader( $class ) {
-	$path = ABSPATH . 'core/lib/' . strtolower($class) . '.class.php';
+	$path = PATH_LIBRARY . strtolower($class) . '.class.php';
 	if ( file_exists( $path ) )
 		include_once $path;
 }
@@ -75,6 +75,11 @@ spl_autoload_register( 'lib_autoloader' );
 spl_autoload_register( 'controller_autoloader' );
 spl_autoload_register( 'model_autoloader' );
 spl_autoload_register( 'exception_autoloader' );
+
+/**
+ * Include core functions.
+ */
+require PATH_LIBRARY . 'functions.php';
 
 // Start KYSS.
 $kyss = new KYSS;

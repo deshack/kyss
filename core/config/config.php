@@ -36,6 +36,14 @@ if ( ! defined('ENVIRONMENT') )
 	define('ENVIRONMENT', 'production');
 
 /**
+ * Path to library files.
+ *
+ * @since  0.15.0
+ * @var string
+ */
+define('PATH_LIBRARY', ABSPATH . 'core/lib/');
+
+/**
  * Path to controller files.
  *
  * @since  0.15.0
