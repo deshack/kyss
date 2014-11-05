@@ -32,10 +32,39 @@ class Controller {
 	 *
 	 * @since  1.0.0
 	 * @access public
+	 * @final
 	 *
 	 * @param  Model $model Optional. The associated model.
 	 */
-	public function __construct( Model $model = null ) {
+	final public function __construct( Model $model = null ) {
+		$this->before();
+
 		$this->model = $model;
+
+		$this->after();
+	}
+
+	/**
+	 * Run actions at the beginning of the constructor.
+	 *
+	 * Empty by default.
+	 *
+	 * @since  1.0.0
+	 * @access protected
+	 */
+	protected function before() {
+
+	}
+
+	/**
+	 * Run actions at the end of the constructor.
+	 *
+	 * Empty by default.
+	 *
+	 * @since  1.0.0
+	 * @access protected
+	 */
+	protected function after() {
+
 	}
 }
