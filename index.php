@@ -7,7 +7,7 @@
  * @since  0.1.0
  */
 
-if ( true ) :
+if ( false ) :
 require_once( 'load.php' );
 
 $hook->add( 'kyss_title', function( $title ) {
