@@ -10,6 +10,8 @@
  * @since  0.15.0
  */
 
+use \KYSS\Exceptions\DeprecatedException;
+
 //--------------------------------------------------
 // Library to handle deprecations.
 //--------------------------------------------------
@@ -17,10 +19,8 @@
 /**
  * Mark function as deprecated and inform when it has been used.
  *
- * There is a hook `deprecated_function_run` that will be called that can be used
+ * There is a hook `deprecated_function_exception` that will be called that can be used
  * to get the backtrace up to what file and function called the deprecated function.
- *
- * The current behavior is to trigger a user error if debug is active.
  *
  * This function is to be used in every function that is deprecated.
  *
@@ -36,38 +36,125 @@
 function _deprecated_function( $function, $version, $replacement = null ) {
 	global $hook;
 
+	$message = sprintf( '%1$s is <strong>deprecated</strong> since version %2$s!', $function, $version );
+	if ( ! is_null( $replacement ) )
+		$message .= sprintf( ' Use %s instead.', $replacement );
+	else
+		$message .= ' No alternative available.';
+
 	/**
 	 * Fires when deprecated function is called.
 	 *
 	 * @since  0.15.0
 	 *
+	 * @param  DeprecatedException The exception.
 	 * @param  string $function The function that was called.
 	 * @param  string $version The version of KYSS that deprecated the function.
-	 * @param  string $replacement The function that should have been called.
+	 * @param  string $replacement The function that should have been called instead.
 	 */
-	$hook->run( 'deprecated_function', $function, $version, $replacement );
+	$hook->run( 'deprecated_function_exception',
+		new DeprecatedException( $message ),
+		$function,
+		$version,
+		$replacement
+	);
+}
+
+/**
+ * Mark file as deprecated and inform when it has been used.
+ *
+ * There is a hook `deprecated_file_exception` that will be called that can be used
+ * to get the backtrace up to what file and function included the deprecated file.
+ *
+ * This function is to be used in every file that is deprecated.
+ *
+ * @since 0.15.0
+ * @access private
+ *
+ * @global  hook
+ *
+ * @param  string $file The file that was included.
+ * @param  string $version The version of KYSS that deprecated the file.
+ * @param  string $replacement Optional. The file that should have been included
+ * based on ABSPATH. Default null.
+ * @param  string $message Optional. A message regarding the change. Default empty.
+ */
+function _deprecated_file( $file, $version, $replacement = null, $message = '' ) {
+	global $hook;
+
+	$text = sprintf( '%1$s is <strong>deprecated</strong> since version %2$s!', $file, $version );
+	if ( ! is_null( $replacement ) )
+		$text .= sprintf( ' Use %s instead.', $replacement );
+	else
+		$text .= ' No alternative available.';
+	$text .= " $message";
 
 	/**
-	 * Decide whether to trigger an exception for deprecated functions.
-	 *
-	 * This doesn't take into account the application environment, but the
-	 * environment setup filters this value.
+	 * Fires when deprecated file is included.
 	 *
 	 * @since  0.15.0
 	 *
-	 * @param  bool $trigger Whether to trigger the error for deprecated functions.
-	 * Default false.
-	 * @return bool
+	 * @param  DeprecatedException The exception.
+	 * @param  string $file The file that was called.
+	 * @param  string $version The version of KYSS that deprecated the file.
+	 * @param  string $replacement The file that should have been included instead.
 	 */
-	if ( $hook->run( 'deprecated_function_trigger_exception', true ) ) {
-		$message = sprintf( '%1$s is <strong>deprecated</strong> since version %2$s!', $function, $version );
-		if ( ! is_null( $replacement ) )
-			$message .= sprintf( ' Use %s instead', $replacement );
-		else
-			$message .= ' No alternative available.';
+	$hook->run( 'deprecated_file_exception',
+		new DeprecatedException( $text ),
+		$file,
+		$version,
+		$replacement
+	);
+}
 
-		throw new \KYSS\Exceptions\DeprecatedException( $message );
-	}
+/**
+ * Mark function argument as deprecated and inform when it has been used.
+ *
+ * This function is to be used whenever a deprecated function argument is used.
+ * Before this function is called, the argument must be checked for whether it was
+ * used by comparing it to its default value or evaluating whether it is empty.
+ *
+ * @example
+ * ```
+ * if ( ! empty( $deprecated ) )
+ * 	_deprecated_argument( __FUNCTION__, '0.15.0' );
+ * ```
+ *
+ * There is a hook `deprecated_argument_exception` that will be called that can be used
+ * to get the backtrace up to what file and function used the deprecated argument.
+ *
+ * @since  0.15.0
+ * @access private
+ *
+ * @global  hook
+ *
+ * @param  string $function The function that was called.
+ * @param  string $version The version of KYSS that deprecated the argument.
+ * @param  string $message Optional. A message regarding the change. Default null.
+ */
+function _deprecated_argument( $function, $version, $message = null ) {
+	global $hook;
+
+	$text = sprintf( '%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s!', $function, $version );
+	if ( ! is_null( $message ) )
+		$text .= " $message";
+	else
+		$text .= ' No alternative available.';
+
+	/**
+	 * Fires when deprecated argument is used.
+	 *
+	 * @since  0.15.0
+	 *
+	 * @param  DeprecatedException The exception.
+	 * @param  string $function The function that was called.
+	 * @param  string $version The version of KYSS that deprecated the argument.
+	 */
+	$hook->run( 'deprecated_argument_exception',
+		new DeprecatedException( $text ),
+		$function,
+		$version
+	);
 }
 
 
@@ -108,6 +195,6 @@ function trailingslashit( $string ) {
  */
 function untrailingslashit( $string ) {
 	_deprecated_function( __FUNCTION__, '0.15.0', 'untrailingslash()' );
-	
+
 	return rtrim( $string, '/\\' );
 }
