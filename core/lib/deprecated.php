@@ -90,6 +90,8 @@ function _deprecated_function( $function, $version, $replacement = null ) {
  * @return string String with trailing slash added.
  */
 function trailingslashit( $string ) {
+	_deprecated_function( __FUNCTION__, '0.15.0', 'trailingslash()' );
+
 	return untrailingslashit( $string ) . '/';
 }
 
@@ -105,5 +107,7 @@ function trailingslashit( $string ) {
  * @return  string String without the trailing slashes.
  */
 function untrailingslashit( $string ) {
+	_deprecated_function( __FUNCTION__, '0.15.0', 'untrailingslash()' );
+	
 	return rtrim( $string, '/\\' );
 }

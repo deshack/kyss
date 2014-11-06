@@ -2,6 +2,8 @@
 /**
  * Tests for Exception's trace.
  *
+ * @todo  Move to PHPUnit.
+ *
  * @package  KYSS
  * @subpackage  Tests
  * @since  0.15.0
