@@ -12,6 +12,11 @@
 namespace KYSS\Exceptions;
 
 /**
+ * This class uses some KYSS functions.
+ */
+require_once dirname( dirname( __FILE__ ) ) . '/lib/functions.php';
+
+/**
  * Generic KYSS Exception class.
  *
  * @package  KYSS
@@ -60,7 +65,7 @@ class KYSSException extends \Exception {
 			$current = "$file:$line";
 			$result[] = sprintf( "\t%s in %s%s",
 				$current,
-				array_key_exists( 'class', $trace[0] ) ? $trace[0]['class'] . '.' : '',
+				array_key_exists( 'class', $trace[0] ) ? $trace[0]['class'] . '->' : '',
 				array_key_exists( 'function', $trace[0] ) ? $trace[0]['function'] . '()' : ''
 			);
 

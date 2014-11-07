@@ -23,3 +23,5 @@ $loader->register();
 // Register the base directory for KYSS Core.
 // TODO: Replace with ABSPATH constant.
 $loader->add_namespace( 'KYSS', dirname( dirname( __FILE__ ) ) );
+
+$test = new \KYSS\Exceptions\KYSSException;

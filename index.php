@@ -38,6 +38,9 @@ get_footer();
 else :
 
 // Load application bootstrap.
-require 'core/lib/boot.php';
+// require 'core/lib/boot.php';
+
+// Initialize KYSS
+require 'core/Bootstrap/init.php';
 
 endif;
