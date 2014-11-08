@@ -5,13 +5,19 @@
  * Make sure your current working directory is core/ and run this test with:
  * `phpunit --bootstrap Bootstrap/Autoloader.php Tests/AutoloaderTest`
  *
- * @package  KYSS
- * @subpackage  Tests
+ * @package  KYSS\Tests
  * @since  0.15.0
  */
 
 namespace KYSS\Tests;
 
+/**
+ * Mock Autoloader class.
+ *
+ * @package  KYSS\Tests
+ * @since  0.15.0
+ * @version  1.0.0
+ */
 class MockAutoloader extends \KYSS\Bootstrap\Autoloader {
 	protected $files = array();
 
@@ -27,8 +33,7 @@ class MockAutoloader extends \KYSS\Bootstrap\Autoloader {
 /**
  * Test for Autoloader class.
  *
- * @package  KYSS
- * @subpackage  Tests
+ * @package  KYSS\Tests
  * @since  0.15.0
  * @version  1.0.0
  */

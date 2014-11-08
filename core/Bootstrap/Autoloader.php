@@ -4,8 +4,7 @@
  *
  * Follows the {@link(PSR-4, http://www.php-fig.org/psr/psr-4/)} standard.
  *
- * @package  KYSS
- * @subpackage  Bootstrap
+ * @package  KYSS\Bootstrap
  * @since  0.15.0
  */
 
@@ -18,8 +17,7 @@ namespace KYSS\Bootstrap;
  *
  * @internal Missing examples.
  *
- * @package KYSS
- * @subpackage  Bootstrap
+ * @package KYSS\Bootstrap
  * @since  0.15.0
  * @version  1.0.0
  * @link(PSR-4 Class Example, https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md#class-example)

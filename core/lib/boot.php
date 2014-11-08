@@ -8,7 +8,10 @@
  * @package  KYSS
  * @subpackage  Bootstrap
  * @since  0.15.0
+ * @deprecated 0.15.0 Bootstrap moved to core/Bootstrap/init.php
  */
+
+_deprecated_file( __FILE__, '0.15.0', 'core/Bootstrap/init.php' );
 
 if ( file_exists( 'core/config/config.php' ) )
 	/**

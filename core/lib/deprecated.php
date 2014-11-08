@@ -5,8 +5,7 @@
  * You shouldn't use these functions and look for the alternatives instead.
  * The functions will be removed in a later version.
  *
- * @package  KYSS
- * @subpackage  Deprecated
+ * @package  KYSS\Library
  * @since  0.15.0
  */
 
@@ -156,7 +155,6 @@ function _deprecated_argument( $function, $version, $message = null ) {
 		$version
 	);
 }
-
 
 //--------------------------------------------------
 // Deprecated functions

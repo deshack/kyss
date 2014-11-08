@@ -4,8 +4,7 @@
  *
  * Replaces the old KYSS_Error class.
  *
- * @package  KYSS
- * @subpackage  Exception
+ * @package  KYSS\Exceptions
  * @since  0.15.0
  */
 
@@ -19,8 +18,7 @@ require_once dirname( dirname( __FILE__ ) ) . '/lib/functions.php';
 /**
  * Generic KYSS Exception class.
  *
- * @package  KYSS
- * @subpackage  Exception
+ * @package  KYSS\Exceptions
  * @since  0.15.0
  * @version  1.1.0
  */

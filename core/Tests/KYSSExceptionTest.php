@@ -4,8 +4,7 @@
  *
  * @todo  Move to PHPUnit.
  *
- * @package  KYSS
- * @subpackage  Tests
+ * @package  KYSS\Tests
  * @since  0.15.0
  */
 
@@ -15,8 +14,7 @@ use \KYSS\Exceptions\KYSSException;
 /**
  * ExceptionTraceTest class.
  *
- * @package  KYSS
- * @subpackage  Tests
+ * @package  KYSS\Tests
  * @since  0.15.0
  * @version  1.0.0
  */

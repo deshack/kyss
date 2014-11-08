@@ -2,8 +2,7 @@
 /**
  * Initialize KYSS.
  *
- * @package  KYSS
- * @subpackage  Bootstrap
+ * @package  KYSS\Bootstrap
  * @since  0.15.0
  */
 
