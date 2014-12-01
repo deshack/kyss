@@ -13,7 +13,7 @@
  * @package  KYSS
  * @subpackage Library
  * @since  0.15.0
- * @version  1.0.0
+ * @version  1.0.1
  */
 class Router {
 	/**
@@ -50,11 +50,14 @@ class Router {
 	 * or the fallback.
 	 *
 	 * @since  1.0.0
+	 * @since  1.0.1 Introduced `$url` parameter.
 	 * @access public
+	 *
+	 * @param  string $url The requested URL.
 	 */
-	public function __construct() {
+	public function __construct( $url ) {
 		// Split URL into controller, action and optionally parameters.
-		$this->split_url();
+		$this->split_url( $url );
 
 		// Instantiate the controller.
 		$this->init_controller();
@@ -69,13 +72,13 @@ class Router {
 	 * Splits the URL into controller, action, and parameters.
 	 *
 	 * @since  1.0.0
+	 * @since  1.0.1 Introduced `$url` parameter.
 	 * @access private
+	 *
+	 * @param  string $url The requested URL.
 	 */
-	private function split_url() {
-		if ( ! isset( $_GET['url'] ) )
-			return;
-
-		$url = trim( $_GET['url'], '/' );
+	private function split_url( $url ) {
+		$url = trim( $url, '/' );
 		$url = filter_var( $url, FILTER_SANITIZE_URL );
 		$url = explode( '/', $url );
 
@@ -103,7 +106,7 @@ class Router {
 		} else {
 			// Invalid URL, show home/index without parameters.
 			// TODO: Show Error 404 Page instead.
-			$this->controller = new HomeController;
+			$this->controller = new DashboardController;
 			$this->action = 'index';
 			$this->parameters = null;
 		}

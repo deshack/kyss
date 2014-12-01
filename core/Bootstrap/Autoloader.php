@@ -94,7 +94,6 @@ class Autoloader {
 		while ( false !== $pos = strrpos( $prefix, '\\' ) ) {
 			// Retain the trailing namespace separator in the prefix.
 			$prefix = substr( $class, 0, $pos + 1 );
-			var_dump($prefix);
 
 			// The rest is the relative class name.
 			$relative_class = substr( $class, $pos + 1 );

@@ -23,4 +23,4 @@ $loader->register();
 // TODO: Replace with ABSPATH constant.
 $loader->add_namespace( 'KYSS', dirname( dirname( __FILE__ ) ) );
 
-$test = new \KYSS\Exceptions\KYSSException;
+$kyss = new KYSS;
