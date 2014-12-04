@@ -1,15 +1,15 @@
 {
   "name": "kyss",
-  "version": "0.13.0",
+  "version": "0.16.0-dev",
   "authors": [
     "Mattia Migliorini <deshack@ubuntu.com>",
     "Nicola Dalla Costa"
   ],
-  "description": "Simple management system for Linux User Groups to handle members, meetings, documents, and other useful stuffs.",
+  "description": "Simple management system for organizations to handle members, meetings, documents, and other useful stuffs.",
   "moduleType": [
     "node"
   ],
-  "license": "GPLv2+",
+  "license": "GPLv3",
   "private": true,
   "ignore": [
     "**/.*",
@@ -17,10 +17,10 @@
     "bower_components",
     "lib",
     "test",
-    "tests"
+    "tests",
+    "vendor"
   ],
-  "dependencies": {
-    "destrap": "deshack/destrap#^0.3.0",
-    "foundation": "~5.1.0"
+  "devDependencies": {
+    "materialize": "*"
   }
 }

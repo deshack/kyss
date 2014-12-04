@@ -1,0 +1,16 @@
+{
+    "name": "deshack/kyss",
+    "description": "Keep Your Stuff Simple is a management system aimed at organizations.",
+    "require": {
+        "symfony/class-loader": "~2.6",
+        "symfony/debug": "~2.6",
+        "symfony/routing": "~2.6"
+    },
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Mattia Migliorini",
+            "email": "deshack@ubuntu.com"
+        }
+    ]
+}
